@@ -12,9 +12,7 @@ export const config = {
   },
 };
 
-const uri =
-  process.env.MONGODB_URI ||
-  "mongodb+srv://admin:admin@cluster1.pzyia.mongodb.net/test";
+const uri = process.env.MONGODB_URI || "mongodb+srv://admin:admin@cluster1.pzyia.mongodb.net/test";
 const client = new MongoClient(uri);
 
 export default async function handler(
