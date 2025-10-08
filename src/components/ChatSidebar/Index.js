@@ -22,7 +22,7 @@ export default function ChatSidebar({ isOpen,
   });
 
   const [receiverInfo, setReceiverInfo] = useState({
-    name: "",
+    name: "", 
     photo: "",
     contact: ""
   });
