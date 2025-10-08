@@ -70,7 +70,7 @@ const Header: React.FC = () => {
         <div className={Style.MobileTopbar}>
           <Link href="/">
             <div className={Style.logo}>
-              <h3>ON Aaaksh</h3>
+              <h3>ON</h3>
               <div className={Style.logoDesc}>
                 <h4>Shoper</h4>
                 <span>Sale & Rent</span>
