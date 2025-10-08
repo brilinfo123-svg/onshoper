@@ -27,7 +27,6 @@ export default function ChatSidebar({ isOpen,
     contact: ""
   });
 
-  console.log("userInfo", userInfo);
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
