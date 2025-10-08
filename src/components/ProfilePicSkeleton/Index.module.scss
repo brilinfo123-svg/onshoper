@@ -1,0 +1,185 @@
+// Profile Picture Skeleton
+.profilePicSkeleton {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  // Size variants
+  &.small {
+    .skeletonAvatar {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .skeletonName {
+      width: 80px;
+      height: 12px;
+    }
+    
+    .skeletonUsername {
+      width: 60px;
+      height: 10px;
+    }
+  }
+
+  &.medium {
+    .skeletonAvatar {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .skeletonName {
+      width: 100px;
+      height: 14px;
+    }
+    
+    .skeletonUsername {
+      width: 80px;
+      height: 12px;
+    }
+  }
+
+  &.large {
+    .skeletonAvatar {
+      width: 64px;
+      height: 64px;
+    }
+    
+    .skeletonName {
+      width: 120px;
+      height: 16px;
+    }
+    
+    .skeletonUsername {
+      width: 100px;
+      height: 14px;
+    }
+  }
+
+  &.xlarge {
+    .skeletonAvatar {
+      width: 96px;
+      height: 96px;
+    }
+    
+    .skeletonName {
+      width: 150px;
+      height: 18px;
+    }
+    
+    .skeletonUsername {
+      width: 120px;
+      height: 16px;
+    }
+  }
+
+  // Shape variants
+  &.circle {
+    .skeletonAvatar {
+      border-radius: 50%;
+    }
+  }
+
+  &.square {
+    .skeletonAvatar {
+      border-radius: 8px;
+    }
+  }
+
+  &.rounded {
+    .skeletonAvatar {
+      border-radius: 12px;
+    }
+  }
+}
+
+.skeletonAvatar {
+  @extend .skeletonShimmer;
+  flex-shrink: 0;
+}
+
+.skeletonTextContainer {
+  gap: 6px;
+  margin-top: 20px;
+}
+
+.skeletonName {
+  @extend .skeletonShimmer;
+  border-radius: 4px;
+}
+
+.skeletonUsername {
+  @extend .skeletonShimmer;
+  border-radius: 4px;
+}
+
+// Standalone avatar without text
+.standaloneAvatar {
+  display: inline-block;
+  
+  &.small {
+    width: 32px;
+    height: 32px;
+  }
+  
+  &.medium {
+    width: 48px;
+    height: 48px;
+  }
+  
+  &.large {
+    width: 64px;
+    height: 64px;
+  }
+  
+  &.xlarge {
+    width: 96px;
+    height: 96px;
+  }
+  
+  &.circle {
+    border-radius: 50%;
+  }
+  
+  &.square {
+    border-radius: 8px;
+  }
+  
+  &.rounded {
+    border-radius: 12px;
+  }
+}
+
+// Skeleton Animation (if not already defined)
+@keyframes skeletonLoading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeletonShimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeletonLoading 1.5s infinite;
+}
+
+// Pulse animation alternative
+@keyframes skeletonPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.skeletonPulse {
+  animation: skeletonPulse 2s infinite;
+  background-color: #f0f0f0;
+}

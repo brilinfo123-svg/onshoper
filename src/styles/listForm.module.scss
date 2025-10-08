@@ -1,0 +1,79 @@
+.reviewWrapper {
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 20px;
+  
+    .title {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+  
+    .commentBox {
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      resize: none;
+      min-height: 140px;
+    }
+  
+    .ratingSection {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+  
+      h3 {
+        font-size: 16px;
+        font-weight: 100;
+        margin-right: 10px;
+        position: relative;
+        bottom: -1px;
+      }
+  
+      .star {
+        font-size: 24px;
+        color: lightgray;
+        cursor: pointer;
+        transition: color 0.3s ease;
+  
+        &.active {
+          color: gold;
+        }
+      }
+    }
+  
+    .submitButton {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  
+    .thankYouSection {
+      text-align: center;
+  
+      h2 {
+        color: #4caf50;
+      }
+  
+      p {
+        font-size: 1rem;
+        margin: 10px 0;
+      }
+    }
+  }
+  

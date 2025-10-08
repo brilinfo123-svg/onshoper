@@ -1,0 +1,53 @@
+.embla {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .emblaViewport {
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .emblaContainer {
+    display: flex;
+    user-select: none;
+  }
+  
+  .emblaSlide {
+    position: relative;
+    min-width: 100%; // 1 slide per view
+    padding: 10px;
+  }
+  
+  .emblaSlideImg {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    display: block;
+  }
+  
+  .emblaPrev,
+  .emblaNext {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10;
+    padding: 0.3rem 0.6rem;
+    border-radius: 50%;
+  }
+  
+  .emblaPrev {
+    left: 10px;
+  }
+  
+  .emblaNext {
+    right: 10px;
+  }
+  

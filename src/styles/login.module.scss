@@ -1,0 +1,162 @@
+.container {
+  max-width: 400px;
+  margin: 5rem auto;
+  padding: 2rem 2.5rem;
+  background: #fff;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.07);
+  border-radius: 12px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+.heading {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #333;
+  font-weight: 700;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  button {
+    flex: 1;
+    padding: 1rem 0;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 7px 14px rgba(0,0,0,0.1);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s ease;
+
+    &.mobileButton {
+      background: #10b981; /* Green */
+      &::before{
+        font-size: 22px !important;
+      }
+    }
+    &.mobileButton:hover {
+      background: #059669;
+    }
+
+    &.emailButton {
+      background: #3b82f6; /* Blue */
+      &::before{
+        font-size: 20px !important;
+      }
+    }
+    &.emailButton:hover {
+      background: #2563eb;
+    }
+  }
+}
+
+/* Icon styles using emoji for simplicity */
+
+.optionButton {
+  padding: 1rem 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 7px 14px rgba(102, 126, 234, 0.4);
+  transition: background 0.3s ease;
+  width: 100%;
+}
+
+.optionButton:hover {
+  background: linear-gradient(135deg, #5563d5 0%, #5a3d94 100%);
+}
+
+.inputGroup {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.inputGroup label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.inputGroup input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.5);
+}
+
+.button {
+  width: 100%;
+  padding: 0.9rem 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 7px 14px rgba(102, 126, 234, 0.4);
+  transition: background 0.3s ease;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.button:hover {
+  background: #5563d5;
+}
+
+.backButton {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.75rem 0;
+  background: transparent;
+  border: 2px solid #667eea;
+  border-radius: 10px;
+  color: #667eea;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.backButton:hover {
+  background: #667eea;
+  color: white;
+}
+
+.message {
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.error {
+  color: #dc2626;
+}
+
+.success {
+  color: #16a34a;
+}

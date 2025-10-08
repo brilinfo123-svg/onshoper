@@ -1,0 +1,26 @@
+.averageRating {
+  text-align: center;
+  margin: 0;
+
+  h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+}
+
+.starsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+}
+
+.star {
+  font-size: 20px;
+  color: #ccc; // Default empty star color
+  transition: color 0.3s ease;
+}
+
+.filled {
+  color: #ff9100; // Full star gold color
+}

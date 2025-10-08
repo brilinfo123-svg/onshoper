@@ -1,0 +1,49 @@
+.paymentContainer {
+    max-width: 500px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .heading {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .category {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #555;
+  }
+  
+  .price {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #444;
+  }
+  
+  .payButton {
+    padding: 1rem 2rem;
+    background-color: #6366f1;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  
+    &:hover {
+      background-color: #4f46e5;
+    }
+  
+    &:disabled {
+      background-color: #a5b4fc;
+      cursor: not-allowed;
+    }
+  }
+  

@@ -1,0 +1,56 @@
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+main{
+  position: relative;
+  height: 100wh;
+}
+body {
+  /* font-family: Helvetica, sans-serif; */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fff;
+  font-family: 'Poppins', sans-serif;
+ 
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+h1,h2,h3,h4,h5,h5,p, span{
+  color: #000;
+}
+input, textarea{
+  background-color: #fff;
+  color: #000;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+.container{
+  width: 100%;
+  max-width: 1740px;
+  padding: 0 5px;
+  margin: 0 auto;
+}
+.containerFlued{
+  width: 100%;
+  max-width: 1920px;
+  padding: 0 40px;
+  margin: 0 auto;
+}
+section{
+  max-width: 1920px;
+}

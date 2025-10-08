@@ -1,0 +1,42 @@
+/* components/Button.module.scss */
+button {
+    padding: 15px 40px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    width: 250px;
+  }
+  
+  .red {
+    background-color: red;
+    color: white;
+  }
+  
+  .blue {
+    background-color: blue;
+    color: white;
+  }
+  
+  .green {
+    background-color: green;
+    color: white;
+  }
+  
+  .yellow {
+    background-color: yellow;
+    color: black;
+  }
+  .orage {
+    background-color: #ff6500;
+    color: #fff;
+  }
+  .black{
+    background-color: #000;
+    color: #fff;
+  }
+  /* Add hover effects */
+  .button:hover {
+    opacity: 0.8;
+  }
+  

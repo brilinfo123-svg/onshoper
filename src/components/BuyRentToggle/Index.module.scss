@@ -1,0 +1,26 @@
+.btnWrapper {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+  button {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  
+    &:hover {
+      background-color: #f5f5f5;
+    }
+  }
+  
+}
+
+
+.activeBtn {
+  background-color: #ff6d01;
+  color: #fff;
+  border-color: #ff6d01;
+}

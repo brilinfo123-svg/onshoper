@@ -1,0 +1,64 @@
+// components/index.module.scss
+.featureWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  
+  .featureButton {
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(110, 142, 251, 0.3);
+  
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(110, 142, 251, 0.5);
+    }
+  
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+  }
+  
+  .active {
+    background: linear-gradient(135deg, #ffcc00, #0072ff);
+    box-shadow: 0 0 10px rgba(0, 114, 255, 0.6);
+  
+    .timerDot {
+      display: inline-block;
+      margin-right: 6px;
+      width: 10px;
+      height: 10px;
+      background: #fff;
+      border-radius: 50%;
+      animation: pulse 1s infinite;
+      vertical-align: middle;
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.4);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  

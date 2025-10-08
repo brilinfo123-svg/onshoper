@@ -1,0 +1,142 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f7f7f7;
+  padding: 10px;
+  border-radius: 10px;
+  height: 440px;
+  overflow: scroll;
+  display: block;
+  @media screen and (max-width: 767px) {
+    height: 350px;
+  }
+}
+
+.tabelWrapper{
+  position: relative;
+  .loader{
+    position: absolute;
+    background-color: antiquewhite;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+.tableContainer {
+  background: #fff;
+  position: relative;
+  border-radius: 8px;
+  width: 100%;
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    text-align: left;
+    padding: 6px 10px;
+  }
+
+  th {
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #e0e0e0;
+    @media screen and (max-width: 767px) {
+      font-size: 14px;
+    }
+    &:first-child{
+      display: flex;
+    }
+    &:nth-child(2){
+      width: 100%;
+    }
+    
+  }
+
+  td {
+    color: #555;
+    border-top: 1px solid #e0e0e0;
+    @media screen and (max-width: 767px) {
+      font-size: 14px;
+    }
+    &.servicePrice{
+      display: flex;
+      span{
+        &::before{
+          margin: 0;
+        }
+      }
+    }
+    input{
+      border: none;
+      border: 1px solid #ddd;
+      padding: 10px;
+      background-color: #f0f8ff;
+    }
+    &.discount {
+      color: green; /* You can change the color as needed */
+      text-align: center;
+    }
+    .removeButton{
+      background-color: red;
+      padding: 8px 10px;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .editButton{
+      border: none;
+      padding: 8px 10px;
+      border-radius: 5px;
+      margin-right: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .saveButton, .cancelButton{
+      border: none;
+      padding: 8px 10px;
+      border-radius: 5px;
+      margin-right: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .saveButton{
+      background-color: #2ca32c;
+      color: #fff;
+    }
+    .cancelButton{
+      background-color: #1b66ed;
+      color: #fff;
+      margin: 0;
+    }
+    &:last-child{
+      width: 150px;
+      display: block;
+      display: flex;
+      justify-content: space-between;
+      @media screen and (max-width: 767px) {
+        font-size: 14px;
+        width: auto;
+      }
+      }
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  // tr:hover {
+  //   background-color: #f1f1f1;
+  // }
+}
+
+
+

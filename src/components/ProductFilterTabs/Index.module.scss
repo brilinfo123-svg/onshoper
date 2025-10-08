@@ -1,0 +1,144 @@
+.container {
+    padding: 20px;
+  }
+  .productGrid{
+    padding: 0 !important;
+  }
+  .buttonGroup {
+    margin-bottom: 20px;
+  }
+  
+  .btn {
+    margin-right: 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background-color: #e5e7eb;
+    color: #000;
+    transition: background-color 0.2s ease;
+  }
+  
+  .activeSale {
+    background-color: #2563eb;
+    color: #fff;
+  }
+  
+  .activeRent {
+    background-color: #16a34a;
+    color: #fff;
+  }
+  
+  .productCard {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+  
+    h3 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+  
+    p {
+      margin-bottom: 5px;
+    }
+  }
+  
+
+
+  .rowFlex{
+    display: flex;
+    padding-top: 40px;
+    align-items: flex-start;
+    @media screen and (max-width: 767px) {
+      display: block;
+      padding-top: 30px;
+    }
+  
+  }
+  .productGrid{
+    padding-left: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+    gap: 20px; /* Space between grid items */
+    width: 100%;
+    transition: opacity 0.5s ease-in-out;
+    // align-items: flex-start;
+    @media screen and (min-width: 992px) and (max-width: 1199px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media screen and (min-width: 768px) and (max-width: 991px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    @media screen and (max-width: 767px) {
+      padding-left: 0;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+  }
+
+
+  .buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  
+    button {
+      padding: 10px 30px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.1s ease;
+      font-weight: 600;
+  
+      &:hover {
+        box-shadow: 3px 4px 7px -5px;
+      }
+    }
+  
+    .activeBtn {
+      background: #007bff;
+      color: #fff;
+      border-color: #007bff;
+      box-shadow: 3px 4px 7px -5px;
+      font-weight: 600;
+    }
+  }
+  
+  .viewMoreWrapper {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0;
+  
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px; // pill shape
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+      }
+  
+      &:active {
+        transform: translateY(0);
+        box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3);
+      }
+    }
+  }
+  
+
+  

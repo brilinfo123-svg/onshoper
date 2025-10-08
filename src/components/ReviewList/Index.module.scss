@@ -1,0 +1,239 @@
+// .reviewWrapper {
+//     margin: 0 auto;
+//     padding: 25px;
+//     background-color: #f9f9f9;
+//     border: 1px solid #ddd;
+//     border-radius: 8px;
+//     margin: 20px 0 50px;
+  
+//     .title {
+//         font-size: 20px;
+//         color: #333;
+//         margin-bottom: 20px;
+//     }
+  
+//     .commentBox {
+//       width: 100%;
+//       border: 1px solid #ccc;
+//       border-radius: 4px;
+//       padding: 10px;
+//       font-size: 1rem;
+//       margin-bottom: 15px;
+//       resize: none;
+//       min-height: 140px;
+//     }
+  
+//     .ratingSection {
+//         margin-bottom: 15px;
+//         display: flex;
+//         align-items: center;
+  
+//       h3 {
+//         font-size: 16px;
+//         font-weight: 100;
+//         margin-right: 10px;
+//         position: relative;
+//         bottom: -1px;
+//       }
+  
+//       .star {
+//         font-size: 24px;
+//         color: lightgray;
+//         cursor: pointer;
+//         transition: color 0.3s ease;
+  
+//         &.active {
+//           color: gold;
+//         }
+//       }
+//     }
+  
+//     .submitButton {
+//       background-color: #333;
+//       color: #fff;
+//       border: none;
+//       padding: 10px 20px;
+//       border-radius: 4px;
+//       font-size: 1rem;
+//       cursor: pointer;
+//       transition: background-color 0.3s ease;
+  
+//       &:hover {
+//         background-color: #0056b3;
+//       }
+//     }
+  
+//     .thankYouSection {
+//       text-align: center;
+  
+//       h2 {
+//         color: #4caf50;
+//       }
+  
+//       p {
+//         font-size: 1rem;
+//         margin: 10px 0;
+//       }
+//     }
+//   }
+  
+
+
+
+.reviewWrapper {
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+  .commentHeadig{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+  }
+
+  .commentBox {
+    width: 100%;
+    height: 160px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+    outline: none;
+    transition: border 0.3s ease;
+
+    &:focus {
+      border-color: #007bff;
+    }
+  }
+.ratingBtnWrap{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  .ratingSection {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 15px 0;
+
+    h3 {
+      font-size: 16px;
+      color: #555;
+    }
+
+    .star {
+      font-size: 24px;
+      cursor: pointer;
+      color: #ccc;
+      transition: color 0.3s ease;
+
+      &.active {
+        color: #f5c518;
+      }
+
+      &:hover {
+        color: #f5c518;
+      }
+    }
+  }
+}
+  .submitButton {
+    padding: 15px 40px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    
+    &:hover {
+      background: #0056b3;
+    }
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  }
+
+  .apiResponse {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+    color: green;
+  }
+
+  .thankYouSection {
+    text-align: center;
+    padding: 20px;
+    background: #fffbe1;
+    border-radius: 10px;
+    margin-bottom: 30px;
+     .thankChild{
+    h2 {
+      font-size: 22px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      margin: 5px 0;
+    }
+    }
+  }
+
+ 
+}
+.allReviewContainer{
+  height: 395px;
+  overflow: scroll;
+  .reviewItem {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    .comments{
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+    p {
+      font-size: 14px;
+      color: #333;
+    }
+
+    strong {
+      font-weight: bold;
+    }
+  }
+}
+
+.starsContainer {
+  display: flex;
+  gap: 5px;
+}
+
+.star {
+  font-size: 18px;
+  color: #ccc; // Default color (empty star)
+  transition: color 0.3s ease-in-out;
+}
+
+.filled {
+  color: #ffc107; // Yellow filled star
+  font-size: 18px;
+}

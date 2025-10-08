@@ -1,0 +1,172 @@
+// components/Sidebar.module.scss
+.sidebarWrapper{
+  @media screen and (max-width: 767px) {
+    margin-bottom: 15px;
+  }
+  .toggleButton {
+    display: none; // Hidden by default for desktop
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: #ffce45;
+    color: #000;
+    @media screen and (max-width: 767px) {
+      display: block;
+    }
+  }
+  .sidebar {
+    width: 280px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    display: block;
+    @media screen and (min-width: 768px) and (max-width: 991px) {
+      width: 250px;
+      padding: 15px;
+    }
+    @media screen and (max-width: 767px) {
+      width: 100%;
+    }
+    &.visibleOnMobile {
+      display: block; // Visible when toggled on mobile
+      animation: slideIn 0.5s ease forwards;
+    }
+
+    &.hiddenOnMobile {
+      @media screen and (max-width: 767px) {
+        animation: slideOut 0.5s ease forwards;
+      }
+    }
+    h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+    .searchInput {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      font-size: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #fff;
+    }
+    ul {
+      list-style: none;
+      padding: 10px 0;
+      overflow: scroll;
+      @media screen and (max-width: 767px) {
+        list-style: none;
+        padding: 0;
+        height: 360px;
+        overflow: overlay;
+      }
+      li {
+
+        label {
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          cursor: pointer;
+          color: #4e4e4e;;
+          input[type="checkbox"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            border: 1px solid #b9b9b9;
+            border-radius: 4px; /* Rounded corners */
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &:checked {
+              background-color: #388e3c; /* Background color when checked */
+              border-color: #388e3c; /* Border color when checked */
+              position: relative;
+              &::before {
+                content: "✔"; /* Unicode for checkmark */
+                color: white;
+                font-size: 14px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+              }
+            }
+          }
+          input {
+            margin-right: 8px;
+            width: 17px;
+            height: 17px;
+            background-color: #fff;
+          }
+        }
+        li{
+          padding-left: 29px;
+          @media screen and (min-width: 768px) and (max-width: 991px) {
+            padding-left: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@keyframes slideIn {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 500px; // Adjust based on your content height
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    max-height: 500px;
+    opacity: 1;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+    display: none;
+  }
+}
+
+.categoryHeader {
+  background: #f8f8f8;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  transition: background 0.3s;
+  &:hover {
+    background: #ececec;
+  }
+  span{
+    font-size: 14px;
+  }
+}
+
+.subcategoryList {
+  padding: 5px 15px;
+  background: #fff;
+  @media screen and (max-width: 767px) {
+    height: auto !important;
+  }
+
+  li {
+    padding: 6px 0;
+    @media screen and (min-width: 768px) and (max-width: 991px) {
+      padding: 5px 0;
+    }
+    label {
+      cursor: pointer;
+    }
+  }
+}

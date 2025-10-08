@@ -1,0 +1,267 @@
+.rowFlex{
+    display: flex;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    @media screen and (max-width: 767px) {
+      display: block;
+      padding-top: 20px;
+    }
+    .productGrid{
+      display: grid;
+      min-height: 300px;
+      grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+      gap: 20px; /* Space between grid items */
+      width: 100%;
+      position: relative;
+      @media screen and (max-width: 767px) {
+        padding-left: 0;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 5px;
+      }
+      .shopNotFound{
+        background-color: #f8f9fa;
+        position: absolute;
+        width: 100%;
+        left: 10px;
+        height: 100%;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        p{
+          font-weight: bold;
+        }
+      }
+      .card{
+        @media screen and (max-width: 767px) {
+            border-radius: 0;
+        }
+        a{
+          @media screen and (max-width: 767px) {
+              display: flex;
+              align-items: center;
+              padding: 10px;
+          }
+          .image {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            padding: 8px;
+            border-bottom: 0;
+            @media screen and (max-width: 767px) {
+              padding: 0;
+              height: 120px;
+              width: 150px;
+            }
+            @media screen and (max-width: 374px) {
+              height: 150px;
+            }
+          }
+          .content {
+            @media screen and (max-width: 767px) {
+              padding: 0 15px;
+              display: flex !important;
+              flex-direction: column;
+              justify-content: space-between;
+              height: 100%;
+              box-sizing: border-box;
+            }
+            }
+            .timeStamp{
+              @media screen and (max-width: 767px) {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+              }
+            }
+            .location{
+              @media screen and (max-width: 767px) {
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%; // fallback
+                max-width: 17ch;
+              }
+            }
+          .PriceNumber{
+            @media screen and (max-width: 767px) {
+              font-size: 16px;
+            }
+          }
+        }
+        
+      }
+    }
+  }
+  .btnAlign{
+    text-align: center;
+    padding: 50px 0;
+  }
+  // .MobileSearch{
+  //   background-color: #ddd;
+  //   width: 100%;
+  //   padding: 10px 15px;
+  //   @media screen and (min-width: 992px) {
+  //     display: none;
+  //   }
+  //   .contentWrap{
+  //     padding: 0;
+  //     max-width: 100%;
+  //   }
+  // }
+
+  .buttons {
+    display: flex;
+    margin: 40px 0 0;
+    // padding-left: 20px;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    .openFilterBtn{
+      background: #000;
+      color: #fff;
+      border-color: #ff8c00;
+      box-shadow: 3px 4px 7px -5px;
+      font-weight: 600;
+      border: none;
+      padding: 0 30px;
+      border-radius: 5px;
+      display: none;
+      letter-spacing: 0.5px;
+      @media screen and (max-width: 992px) {
+        display: block;
+        padding: 0 20px;
+      }
+      @media screen and (max-width: 374px) {
+        padding: 0 15px;
+      }
+    }
+    @media screen and (max-width: 767px) {
+      padding: 10px;
+    }
+    .btnWrapper{
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      @media screen and (max-width: 767px) {
+        gap: 5px;
+      }
+    button {
+      padding: 10px 30px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.1s ease;
+      font-weight: 600;
+      color: #000;
+      &:hover {
+        box-shadow: 3px 4px 7px -5px;
+      }
+      @media screen and (max-width: 767px) {
+        font-size: 12px;
+        padding: 10px 20px;
+      }
+    }
+  
+    .activeBtn {
+      background: #007bff;
+      color: #fff;
+      border-color: #007bff;
+      box-shadow: 3px 4px 7px -5px;
+      font-weight: 600;
+    }
+  }
+  .priceFilter {
+    display: flex;
+    gap: 10px;
+    @media (max-width: 992px) {
+      gap: 5px;
+    }
+    // background: #f1f5f9;
+    // padding: 1rem;
+    // border-radius: 10px;
+    // border: 1px solid #e2e8f0;
+
+    .priceInput {
+      display: flex;
+      // flex-direction: column;
+      gap: 0.4rem;
+      align-items: center;
+      @media (max-width: 992px) {
+        display: block;
+        display: none;
+      }
+
+      label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #000;
+        text-transform: uppercase;
+        margin-right: 10px;
+        @media (max-width: 992px) {
+          font-size: 12px;
+          margin-bottom: 4px;
+          display: block;
+        }
+      }
+
+      input {
+        padding: 10px 20px;
+        border-radius: 50px;
+        border: none;
+        outline: none;
+        border: 1px solid #aaaaaa;
+        transition: all 0.2s ease;
+        @media (max-width: 992px) {
+          font-size: 12px;
+          max-width: 100px;
+          border-radius: 5px;
+        }
+        &:focus {
+          border-color: #007bff;
+          box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+      }
+    }
+  }
+}
+.notFoundShops{
+  background-color: #f0f8ff;
+  width: 100%;
+  display: block;
+  left: 20px;
+  right: 0;
+  min-height: 300px;
+  padding: 30px;
+  position: absolute;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  @media screen and (max-width: 767px) {
+    left: -2px;
+    right: 0px;
+  }
+  img{
+    width: 150px;
+    height: fit-content;
+    @media screen and (max-width: 767px) {
+      width: 100px;
+    }
+  }
+  P{
+    font-size: 20px;
+    color: #404040;
+    margin-top: 15px;
+    @media screen and (max-width: 767px) {
+      font-size: 16px;
+    }
+  }
+}

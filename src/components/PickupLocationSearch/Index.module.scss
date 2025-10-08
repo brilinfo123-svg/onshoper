@@ -1,0 +1,145 @@
+.container {
+  position: relative;
+  width: 100%;
+  .inputContainer {
+    position: relative;
+    align-items: center;
+    margin-top: 20px;
+    .input {
+      width: 100%;
+      padding: 12px 45px 12px 12px;
+      border: 1px solid #ececec;
+      border-radius: 0;
+      margin-top: 0 !important;
+      border-top: none;
+      background-color: #fafafa;
+      font-size: 14px;
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+      }
+    }
+    .locationButton {
+      border: none;
+      cursor: pointer;
+      color: #666;
+      padding: 15px 0;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background-color: #0070f3;
+      color: #fff;
+      font-size: 16px;
+      
+      // &:hover {
+      //   color: #007bff;
+      //   background-color: #f0f0f0;
+      // }
+      
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      svg{
+        margin-right: 10px;
+        font-size: 40px !important;
+        width: 25px;
+        height: 25px;
+      }
+    }
+    
+    .spinner {
+      width: 25px;
+      height: 25px;
+      border: 2px solid #fff;
+      border-top: 2px solid #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      position: absolute;
+      right: 20px;
+    }
+  }
+}
+
+.errorContainer {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+  border-radius: 4px;
+}
+
+.errorText {
+  margin: 0 0 10px 0;
+  color: #d32f2f;
+  font-size: 14px;
+}
+
+.helpButton {
+  background: none;
+  border: none;
+  color: #1976d2;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+
+
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+  li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  }
+}

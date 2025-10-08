@@ -1,0 +1,20 @@
+.premiumAdd{
+  display: inline-block;
+  padding: 5px 15px;
+  background-color: #ef9800;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 10px;
+  span{
+    color: #fff;
+  }
+  @media screen and (max-width: 767px) {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+}

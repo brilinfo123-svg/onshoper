@@ -1,0 +1,75 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #e17108, #6111b6);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 2s ease, visibility 2s ease; // ⏳ smoother fade
+
+  &.fadeOut {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.logo {
+  display: flex;
+  gap: 5px;
+  @media screen and (max-width: 768px) {
+    gap: 0;
+  }
+}
+
+.letter {
+  font-size: 6rem;
+  font-weight: bold;
+  color: white;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
+  @media screen and (max-width: 768px) {
+    font-size: 30px;
+  }
+}
+
+.letter:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.letter:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.letter:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.letter:nth-child(4) {
+  animation-delay: 0.8s;
+}
+.letter:nth-child(5) {
+  animation-delay: 1s;
+}
+.letter:nth-child(6) {
+  animation-delay: 1.2s;
+}
+.letter:nth-child(7) {
+  animation-delay: 1.4s;
+}
+.letter:nth-child(8) {
+  animation-delay: 1.6s;
+}
+
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

@@ -1,0 +1,84 @@
+// styles/OffersSection.module.scss
+
+.offersSection {
+  padding: 2rem 2rem 80px;
+  text-align: center;
+  background-color: #f0f8ff;
+  margin: 20px 0 0;
+  :global(.slick-list){
+    margin: 0 -10px;
+  }
+  :global(.slick-slide){
+    padding: 0 10px;
+    &:last-child{
+      margin-right: 0;
+    }
+    
+  }
+  :global(.slick-dots){
+    bottom: -50px !important;
+  }
+  h2{
+    margin-bottom: 30px;
+  }
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.offerCard {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+  img{
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
+  .offerExpiry{
+    background-color: #faebd7;
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+
+.offerTitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1e3d58;
+  text-align: left;
+}
+
+.offerDescription {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 15px;
+  text-align: left;
+}
+
+.offerButtons {
+  margin-top: 1rem;
+}
+
+.prevBtn,
+.nextBtn {
+  background-color: #1e3d58;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 0.5rem;
+}
+
+.prevBtn:hover,
+.nextBtn:hover {
+  background-color: #1a2a3c;
+}

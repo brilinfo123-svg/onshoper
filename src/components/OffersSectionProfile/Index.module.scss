@@ -1,0 +1,116 @@
+.offersSection{
+  h2{
+    text-align: center;
+    font-size: 35px;
+    margin-bottom: 30px;
+  }
+  padding:50px 0 50px;
+.offerTable {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+
+  th, td {
+    padding: 15px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #ddd;
+  }
+
+  td {
+    background-color: #fff;
+    color: #555;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+  }
+
+  td input,
+  td textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+    resize: none;
+    font-family: sans-serif;
+  }
+
+  td input:focus,
+  td textarea:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #f9f9f9;
+  }
+
+  tr:hover td {
+    background-color: #f1f1f1;
+  }
+
+  .editButton,
+  .deleteButton {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+
+    &.deleteButton {
+      background-color: #dc3545;
+
+      &:hover {
+        background-color: #c82333;
+      }
+    }
+  }
+
+  .editButton,.saveButton {
+    margin-right: 10px;
+    width: 100%;
+  }
+  .actionBtn{
+    display: flex;
+    justify-content: flex-end;
+  }
+  .saveButton,
+  .cancelButton {
+    background-color: #2ca32c;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+
+    &.cancelButton {
+      background-color: #6c757d;
+      
+
+      &:hover {
+        background-color: #5a6268;
+      }
+    }
+  }
+}
+}
