@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import io from "socket.io-client";
-import styles from "./Index.module.scss";
+import styles from "./index.module.scss";
 
 // Use a ref to maintain a single socket instance
 let socket;
