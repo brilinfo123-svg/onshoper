@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { MongoClient, ObjectId } from "mongodb";
 
 // MongoDB connection URI
-const MONGODB_URI = 'mongodb+srv://admin:admin@cluster1.pzyia.mongodb.net/test';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://admin:admin@cluster1.pzyia.mongodb.net/test';
 const client = new MongoClient(MONGODB_URI);
 
 // Define the shape of the documents in the collection

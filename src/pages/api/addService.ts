@@ -1,6 +1,6 @@
 import { MongoClient, ObjectId } from "mongodb";
 
-const MONGODB_URI = "mongodb+srv://admin:admin@cluster1.pzyia.mongodb.net/test";
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://admin:admin@cluster1.pzyia.mongodb.net/test';
 const DATABASE_NAME = "test";
 const COLLECTION_NAME = "localshops";
 

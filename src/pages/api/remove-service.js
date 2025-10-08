@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     }
 
     try {
-      const MONGODB_URI = "mongodb+srv://admin:admin@cluster1.pzyia.mongodb.net/test";
+      const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://admin:admin@cluster1.pzyia.mongodb.net/test';
       const client = new MongoClient(MONGODB_URI);
 
       await client.connect();

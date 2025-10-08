@@ -1,9 +1,9 @@
-// /utils/mongodb.js
 import mongoose from 'mongoose';
 
-const MONGODB_URI = 'mongodb+srv://admin:admin@cluster1.pzyia.mongodb.net/test';
+// Use environment variable if available, otherwise fallback to default
+const uri = process.env.MONGODB_URI || 'mongodb+srv://admin:admin@cluster1.pzyia.mongodb.net/test';
 
-if (!MONGODB_URI) {
+if (!uri) {
   throw new Error('Please define the MONGODB_URI environment variable');
 }
 
@@ -19,7 +19,7 @@ async function connectToDatabase() {
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI).then((mongooseInstance) => {
+    cached.promise = mongoose.connect(uri).then((mongooseInstance) => {
       return mongooseInstance;
     });
   }
