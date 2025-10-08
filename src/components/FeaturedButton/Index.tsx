@@ -2,7 +2,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import styles from "./index.module.scss";
+import styles from "./Index.module.scss";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

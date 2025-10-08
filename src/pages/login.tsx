@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
-import styles from "@/styles/Login.module.scss";
+import styles from "@/styles/login.module.scss";
 import Swal from "sweetalert2";
 
 export default function LoginPage() {

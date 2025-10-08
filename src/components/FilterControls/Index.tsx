@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import styles from "./index.module.scss";
+import styles from "./Index.module.scss";
 
 const FilterControls = ({
   isVisible,

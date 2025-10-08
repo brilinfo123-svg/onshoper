@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styles from "./index.module.scss";
+import styles from "./Index.module.scss";
 
 interface OffersSliderProps {
   onCityChange: (city: string, isManual?: boolean) => void;
