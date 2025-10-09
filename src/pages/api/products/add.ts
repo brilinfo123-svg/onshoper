@@ -44,14 +44,8 @@ export default async function handler(
   if (req.method !== "POST")
     return res.status(405).json({ message: "Method Not Allowed" });
 
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-  const termFileDir = path.join(process.cwd(), "public", "termFile");
-
-  await fs.mkdir(uploadDir, { recursive: true });
-  await fs.mkdir(termFileDir, { recursive: true });
 
   const form = new IncomingForm({
-    uploadDir,
     keepExtensions: true,
     multiples: true,
   });
