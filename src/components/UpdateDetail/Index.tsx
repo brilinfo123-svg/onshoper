@@ -62,24 +62,25 @@ export default function ProfileForm() {
 
   const uploadImage = async (): Promise<string> => {
     if (!selectedFile) return photo;
-
+  
     const formData = new FormData();
     formData.append("file", selectedFile);
-
+  
     const res = await fetch("/api/upload/user-photo", {
       method: "POST",
       body: formData,
     });
-
+  
     if (!res.ok) {
       const errorText = await res.text();
       console.error("Upload failed:", errorText);
       throw new Error("Image upload failed");
     }
-
+  
     const data = await res.json();
     return data.filePath;
   };
+  
 
   const updateProfile = async () => {
     if (!session?.user?.contact) {
