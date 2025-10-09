@@ -5,12 +5,34 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { MongoClient } from "mongodb";
 import ShopOwner from "@/models/ShopOwner";
 import categoryRules from "@/config/categoryRules";
+import { v2 as cloudinary } from 'cloudinary';
+import multer from 'multer';
+import streamifier from 'streamifier';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
+  api_key: process.env.CLOUDINARY_API_KEY!,
+  api_secret: process.env.CLOUDINARY_API_SECRET!,
+});
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 export const config = {
   api: {
     bodyParser: false,
   },
 };
+
+// const uploadToCloudinary = (file: Express.Multer.File, folder: string): Promise<string> => {
+//   return new Promise((resolve, reject) => {
+//     const stream = cloudinary.uploader.upload_stream({ folder }, (error, result) => {
+//       if (error || !result) return reject(error);
+//       resolve(result.secure_url);
+//     });
+//     streamifier.createReadStream(file.buffer).pipe(stream);
+//   });
+// };
 
 const uri = process.env.MONGODB_URI || "mongodb+srv://admin:admin@cluster1.pzyia.mongodb.net/test";
 const client = new MongoClient(uri);
@@ -40,47 +62,40 @@ export default async function handler(
     const images: string[] = [];
     let coverImage = "";
     let rentalTermsFile = "";
-
+    
+    const uploadToCloudinary = async (file: any, folder: string): Promise<string> => {
+      const fileBuffer = await fs.readFile(file.filepath); // ✅ Read buffer from disk
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream({ folder }, (error, result) => {
+          if (error || !result) return reject(error);
+          resolve(result.secure_url);
+        });
+        streamifier.createReadStream(fileBuffer).pipe(stream); // ✅ Use buffer here
+      });
+    };
+    
+    
     // ✅ Handle multiple images
     if (files.images) {
-      const fileArray = Array.isArray(files.images)
-        ? files.images
-        : [files.images];
-
+      const fileArray = Array.isArray(files.images) ? files.images : [files.images];
       for (const file of fileArray) {
-        const oldPath = file.filepath;
-        const newFilename = `${Date.now()}-${file.originalFilename}`;
-        const newPath = path.join(uploadDir, newFilename);
-        await fs.rename(oldPath, newPath);
-        images.push(`/uploads/${newFilename}`);
+        const url = await uploadToCloudinary(file, 'product-images');
+        images.push(url);
       }
     }
-
+    
     // ✅ Handle single cover image
     if (files.coverImage) {
-      const coverFile = Array.isArray(files.coverImage)
-        ? files.coverImage[0]
-        : files.coverImage;
-
-      const oldPath = coverFile.filepath;
-      const newFilename = `${Date.now()}-cover-${coverFile.originalFilename}`;
-      const newPath = path.join(uploadDir, newFilename);
-      await fs.rename(oldPath, newPath);
-      coverImage = `/uploads/${newFilename}`;
+      const coverFile = Array.isArray(files.coverImage) ? files.coverImage[0] : files.coverImage;
+      coverImage = await uploadToCloudinary(coverFile, 'product-cover');
     }
-
+    
     // ✅ Handle rental terms file
     if (files.rentalTermsFile) {
-      const termsFile = Array.isArray(files.rentalTermsFile)
-        ? files.rentalTermsFile[0]
-        : files.rentalTermsFile;
-
-      const oldPath = termsFile.filepath;
-      const newFilename = `${Date.now()}-terms-${termsFile.originalFilename}`;
-      const newPath = path.join(termFileDir, newFilename);
-      await fs.rename(oldPath, newPath);
-      rentalTermsFile = `/termFile/${newFilename}`;
+      const termsFile = Array.isArray(files.rentalTermsFile) ? files.rentalTermsFile[0] : files.rentalTermsFile;
+      rentalTermsFile = await uploadToCloudinary(termsFile, 'rental-terms');
     }
+    
 
     const category = fields.category?.toString();
     const subCategory = fields.subcategory?.toString() || "";

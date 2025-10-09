@@ -221,8 +221,8 @@ const PropertyDetailPage: React.FC = () => {
     }
   }, [session]);
   
-
   
+
   useEffect(() => {
     const paidUntil = shopData?.shopOwner?.paidUntil
       ? new Date(shopData.shopOwner.paidUntil)
@@ -254,8 +254,8 @@ const PropertyDetailPage: React.FC = () => {
     return () => clearInterval(timer);
   }, [shopData?.shopOwner?.paidUntil]);
 
-  console.log("shopData:", shopData);
-  console.log("session", session);
+  console.log("shopData Aakash:", shopData?.user);
+  // console.log("session", session);
 
   const tabs = [
     {

@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  images: {
+    domains: ['res.cloudinary.com'], // ✅ Add this line for Cloudinary support
+  },
   async headers() {
     return [
       {
@@ -15,7 +18,7 @@ const nextConfig: NextConfig = {
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
-        ...config.resolve.fallback, // Keep existing fallbacks
+        ...config.resolve.fallback,
         fs: false,
         dns: false,
         net: false,
@@ -36,10 +39,7 @@ const nextConfig: NextConfig = {
         path: require.resolve('path-browserify'),
         zlib: require.resolve('browserify-zlib'),
       };
-    }
 
-    // Add externals for MongoDB packages on client side
-    if (!isServer) {
       config.externals = [
         ...(config.externals || []),
         { 'connect-mongodb-session': 'commonjs connect-mongodb-session' },
@@ -50,7 +50,6 @@ const nextConfig: NextConfig = {
 
     return config;
   },
-  // Enable server components external packages
   experimental: {
     serverComponentsExternalPackages: ['mongoose', 'mongodb'],
   },

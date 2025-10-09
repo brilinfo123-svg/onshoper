@@ -533,7 +533,7 @@ function AllCategoryRentalForm() {
     }));
   };
 
-  console.log("Is terms accepted?", formData.termsAccepted);
+  // console.log("Is terms accepted?", formData.termsAccepted);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
