@@ -8,6 +8,9 @@
     font-weight: 700;
     margin-bottom: 30px;
     color: #333;
+    @media screen and (max-width: 767px) {
+      font-size: 25px;
+    }
   }
 
   .benefitsGrid {
