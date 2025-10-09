@@ -17,6 +17,7 @@
         padding-left: 0;
         grid-template-columns: repeat(1, 1fr);
         gap: 5px;
+        min-height: auto;
       }
       .shopNotFound{
         background-color: #f8f9fa;

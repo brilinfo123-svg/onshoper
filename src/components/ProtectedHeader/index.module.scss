@@ -243,6 +243,11 @@
         height: 38px;
         font-size: 28px;
       }
+      @media screen and (max-width: 992px) {
+        width: 37px;
+        height: 32px;
+        font-size: 20px;
+      }
     }
     .logoDesc{
       h4{
@@ -256,6 +261,10 @@
           font-size: 22px;
           height: 18px;
         }
+        @media screen and (max-width: 767px) {
+          font-size: 18px;
+          height: 13px;
+        }
       }
       span{
         color: #fff;
@@ -265,6 +274,9 @@
         @media screen and (max-width: 991.99px) {
           color: #000;
           font-size: 8px;
+        }
+        @media screen and (max-width: 767px) {
+          font-size: 7px;
         }
       }
     }
