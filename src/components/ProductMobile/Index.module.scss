@@ -128,14 +128,20 @@
 .carouselName {
   font-size: 14px;
   text-align: center;
-  color: #555;
+  color: #000;
   font-weight: 500;
-  @media screen and (min-width: 992px) and (max-width: 1439px){
-    width: 35px;
-    height: 35px;
-  }
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   @media (max-width: 768px) {
-    font-size: 8px;
+    font-size: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
  }
 }
 
@@ -513,6 +519,9 @@
   -khtml-user-select: none;
   -webkit-tap-highlight-color: transparent;
   gap: 15px;
+  @media screen and (max-width: 767px) {
+    gap: 10px;
+  }
 }
 
 .embla__slide {
@@ -531,7 +540,7 @@
     min-width: 12%;
   }
   @media (max-width: 768px) {
-    min-width: 16%;
+    min-width: 18%;
     padding: 0;
   }
   

@@ -15,6 +15,9 @@
     @media screen and (max-width: 992px) {
       padding: 8px 0 8px 15px;
     }
+    @media screen and (max-width: 767px) {
+      padding: 5px 10px;
+    }
   }
   .filterLocationWrapper{
     display: flex;
@@ -133,7 +136,8 @@
     }
     @media screen and (max-width: 767px) {
       left: 15px;
-      top: 13px
+      top: 13px;
+      padding: 5px 5px;
     }
 
     .showinDeskTop {
@@ -242,6 +246,11 @@
         height: 38px;
         font-size: 28px;
       }
+      @media screen and (max-width: 992px) {
+        width: 37px;
+        height: 32px;
+        font-size: 20px;
+      }
     }
     .logoDesc{
       h4{
@@ -255,6 +264,10 @@
           font-size: 22px;
           height: 18px;
         }
+        @media screen and (max-width: 767px) {
+          font-size: 18px;
+          height: 13px;
+        }
       }
       span{
         color: #fff;
@@ -263,6 +276,9 @@
         letter-spacing: 2px;
         @media screen and (max-width: 992px) {
           color: #000;
+          font-size: 8px;
+        }
+        @media screen and (max-width: 767px) {
           font-size: 8px;
         }
       }
@@ -355,6 +371,7 @@
       @media screen and (max-width: 767px) {
         font-size: 14px;
         padding: 10px 10px;
+        margin-left: 5px;
       }
     }
 
@@ -795,7 +812,9 @@
   align-items: center;
   justify-content: center;
   padding: 8px;
-
+  &::before{
+    color: #000000;
+  }
   .icon-heart,
   .icon-heart-empty {
     font-size: 20px;
