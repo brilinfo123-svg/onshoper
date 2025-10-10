@@ -1,7 +1,7 @@
 const categoryRules = {
     Car: { freeLimit: 1, pricePerExtra: 500 },
     Mobiles: { freeLimit: 1, pricePerExtra: 250 },
-    Furniture: { freeLimit: 1, pricePerExtra: 199 },
+    Furniture: { freeLimit: 1, pricePerExtra: 5 },
     Fashion: { freeLimit: 1, pricePerExtra: 99 },
     Jobs: { freeLimit: 1, pricePerExtra: 199 },
     Vehicles: { freeLimit: 1, pricePerExtra: 250 },

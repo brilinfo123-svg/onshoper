@@ -21,7 +21,7 @@ interface ShopData {
 const categoryPrices: Record<string, number> = {
   Car: 500,
   Mobiles: 250,
-  Furniture: 199,
+  Furniture: 5,
   Fashion: 99,
   Jobs: 199,
   Vehicles: 250,
@@ -67,7 +67,7 @@ function Package() {
         }
       }, [session]);
     
-      const handleDummyPayment = async () => {
+      const handleRazorpayPayment = async () => {
         if (!shopOwnerID) {
           Swal.fire({
             title: "Missing Info",
@@ -80,34 +80,58 @@ function Package() {
       
         setLoading(true);
       
-        setTimeout(async () => {
-          await fetch("/api/payment/confirm", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              shopOwnerID,
-              transactionId: `dummy_txn_${Date.now()}`,
-              method: "Dummy",
-              amount,
-              category,
-            }),
-          });
+        const res = await fetch("/api/payment/createOrder", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount, category }),
+        });
       
-          Swal.fire({
-            title: "Payment Successful",
-            html: `
-              <p>Dummy payment successful for category <strong>${category}</strong>.</p>
-              <p>You can now post <strong>unlimited featured ads</strong> for 2 months in this category.</p>
-            `,
-            icon: "success",
-            confirmButtonText: "Start Posting",
-          }).then(() => {
-            router.push("/ProductForm");
-          });
+        const { order } = await res.json();
       
-          setLoading(false);
-        }, 1500);
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+          amount: order.amount,
+          currency: order.currency,
+          name: "OnShoper",
+          description: `Featured Ads for ${category}`,
+          order_id: order.id,
+          handler: async function (response) {
+            await fetch("/api/payment/confirm", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                shopOwnerID,
+                transactionId: response.razorpay_payment_id,
+                method: "Razorpay",
+                amount,
+                category,
+              }),
+            });
+      
+            Swal.fire({
+              title: "Payment Successful",
+              html: `
+                <p>Payment successful for category <strong>${category}</strong>.</p>
+                <p>You can now post <strong>unlimited featured ads</strong> for 2 months in this category.</p>
+              `,
+              icon: "success",
+              confirmButtonText: "Start Posting",
+            }).then(() => {
+              router.push("/ProductForm");
+            });
+          },
+          prefill: {
+            email: session?.user?.email,
+            contact: session?.user?.contact,
+          },
+          theme: { color: "#3399cc" },
+        };
+      
+        const rzp = new window.Razorpay(options);
+        rzp.open();
+        setLoading(false);
       };
+      
       
 
 
@@ -153,7 +177,7 @@ function Package() {
 
                 <p className={styles.category}>Category: <strong>{category}</strong></p>      
                 <p className={styles.price}>Total: <span> ₹{amount}</span></p>
-                <button onClick={handleDummyPayment} disabled={loading || !shopOwnerID} className={styles.featureButton}>
+                <button onClick={handleRazorpayPayment} disabled={loading || !shopOwnerID} className={styles.featureButton}>
                   {loading ? 'Processing...' : `Proceed Payment`}
                 </button>
                  {/* <FeatureButton shopOwnerID={session.user.id} /> */}
