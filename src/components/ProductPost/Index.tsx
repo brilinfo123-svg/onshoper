@@ -187,7 +187,7 @@ const ProductCard = ({
                 {salaryFrom ? `₹${Number(salaryFrom).toLocaleString("en-IN")}` : ""}
                 {salaryFrom && salaryTo ? " - " : ""}
                 {salaryTo ? `₹${Number(salaryTo).toLocaleString("en-IN")}` : ""}
-                {salaryPeriod && (<span className={style.priceType}> / {salaryPeriod}</span>)}
+                {salaryPeriod && (<span className={style.priceType}>{salaryPeriod}</span>)}
               </span>
               {/* <span className={style.priceType}>{salaryPeriod}</span> */}
             </div>
@@ -198,7 +198,7 @@ const ProductCard = ({
               <span className={`${styles.PriceNumber} ${filter.PriceNumber}`}>
                 ₹{price}
               </span>
-              <span className={style.priceType}> / Day</span>
+              <span className={style.priceType}>Per Day</span>
             </div>
           )}
           {priceWeek > 0 && (
@@ -206,7 +206,7 @@ const ProductCard = ({
               ₹<span className={`${styles.PriceNumber} ${filter.PriceNumber}`}>
                 {priceWeek}
               </span>
-              <span className={style.priceType}> / Week</span>
+              <span className={style.priceType}>Weekly</span>
             </div>
           )}
           {priceMonth > 0 && (
@@ -214,7 +214,7 @@ const ProductCard = ({
               ₹<span className={`${styles.PriceNumber} ${filter.PriceNumber}`}>
                 {priceMonth}
               </span>
-              <span className={style.priceType}> / Month</span>
+              <span className={style.priceType}>Monthly</span>
             </div>
           )}
           {SalePrice > 0 && (

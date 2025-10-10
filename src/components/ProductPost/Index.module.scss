@@ -1,4 +1,23 @@
 
+.priceType{
+  font-size: 12px;
+  background-color: #000;
+  color: #fff;
+  width: max-content;
+  border-radius: 5px;
+  display: block;
+  padding: 3px 6px;
+  font-weight: 600;
+  @media screen and (max-width: 767px) {
+    font-size: 10px;
+    display: block;
+    text-align: center;
+    padding: 5px 10px;
+    margin-top: 4px;
+    width: max-content;
+    border-radius: 5px;
+  }
+}
 
 .favoriteIcon {
   position: absolute;

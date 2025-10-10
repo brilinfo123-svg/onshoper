@@ -13,10 +13,12 @@
     align-items: center;
     padding: 0 0 0 15px;
     @media screen and (max-width: 991.99px) {
-      padding: 8px 0 8px 15px;
+      padding: 10px 15px 10px 15px;
+      background-color: #000000;
     }
     @media screen and (max-width: 767px) {
       padding: 5px 10px;
+      background-color: #000000;
     }
   }
   .filterLocationWrapper{
@@ -257,7 +259,7 @@
         height: 30px;
         color: #fff;
         @media screen and (max-width: 991.99px) {
-          color: #000;
+          color: #ffffff;
           font-size: 22px;
           height: 18px;
         }
@@ -272,7 +274,7 @@
         text-transform: uppercase;
         letter-spacing: 2px;
         @media screen and (max-width: 991.99px) {
-          color: #000;
+          color: #ffffff;
           font-size: 8px;
         }
         @media screen and (max-width: 767px) {
@@ -1046,9 +1048,12 @@
 
 .favoritesGrid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
   padding: 20px;
+  @media (max-width: 768px) {
+    padding: 10px 5px;
+  }
 }
 
 .favoriteProductCard {

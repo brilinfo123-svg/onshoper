@@ -21,7 +21,7 @@ interface ShopData {
 const categoryPrices: Record<string, number> = {
   Car: 500,
   Mobiles: 250,
-  Furniture: 5,
+  Furniture: 199,
   Fashion: 99,
   Jobs: 199,
   Vehicles: 250,

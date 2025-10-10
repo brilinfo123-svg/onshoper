@@ -12,11 +12,11 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 0 0 15px;
-    @media screen and (max-width: 992px) {
-      padding: 8px 0 8px 15px;
+    @media screen and (max-width: 991.99px) {
+      padding: 0px 0 0px 15px;
     }
     @media screen and (max-width: 767px) {
-      padding: 8px 10px;
+      padding: 5px 10px;
     }
   }
   .filterLocationWrapper{
@@ -1053,8 +1053,8 @@
 
 .favoritesGrid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
   padding: 20px;
 }
 

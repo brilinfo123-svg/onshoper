@@ -15,12 +15,16 @@
     height: 170px;
     background-blend-mode: overlay;
     background-color: #00000078;
+    @media screen and (min-width: 768px) and (max-width: 991px) {
+      padding: 20px;
+      height: auto;
+    }
     @media (max-width: 768px) {
       padding: 20px;
       height: auto;
     }
     .content {
-      max-width: 60%;
+      max-width: 90%;
       @media (max-width: 768px) {
         max-width: 80%;
       }
@@ -35,6 +39,9 @@
         font-weight: 700;
         margin: 10px 0;
         color: #fff;
+        @media screen and (min-width: 768px) and (max-width: 991px) {
+          font-size: 16px;
+        }
         @media (max-width: 768px) {
           font-size: 14px;
         }
@@ -43,6 +50,9 @@
       .search {
         font-size: 1rem;
         color: #d1d1d1;
+        @media screen and (min-width: 768px) and (max-width: 991px) {
+          font-size: 14px;
+        }
         @media (max-width: 768px) {
           font-size: 12px;
         }
@@ -63,6 +73,9 @@
       border-radius: 5px;
       font-size: 0.8rem;
       color: #d1d1d1;
+      @media screen and (min-width: 768px) and (max-width: 991px) {
+        font-size: 12px;
+      }
       @media (max-width: 768px) {
         font-size: 10px;
       }
