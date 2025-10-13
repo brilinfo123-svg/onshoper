@@ -18,6 +18,7 @@ import Button from "@/components/Button/Index";
 import Swal from "sweetalert2";
 import { signOut } from "next-auth/react";
 import Head from "next/head";
+import Loader from "@/components/loader/Index";
 
 interface ShopData {
   products(arg0: string, products: any): unknown;
@@ -38,7 +39,7 @@ const PropertyDetailPage: React.FC = () => {
   const { data: session } = useSession();
   const [shopData, setShopData] = useState<ShopData | null>(null);
   const [shop, setShop] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const shopOwnerID = shopData?.user?._id;
   const [products, setProducts] = useState([]);
@@ -71,9 +72,13 @@ const PropertyDetailPage: React.FC = () => {
   
     if (!confirm.isConfirmed) return;
   
+    setLoading(true); // ✅ Start loader
+  
     try {
       const res = await fetch("/api/account/delete", {
         method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contact: session.user.contact }),
       });
   
       const result = await res.json();
@@ -85,7 +90,7 @@ const PropertyDetailPage: React.FC = () => {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          signOut({ callbackUrl: "/" }); // ✅ logout after deletion
+          signOut({ callbackUrl: "/login" });
         });
       } else {
         Swal.fire("Error", result.message || "Failed to delete account.", "error");
@@ -93,8 +98,11 @@ const PropertyDetailPage: React.FC = () => {
     } catch (err) {
       console.error(err);
       Swal.fire("Error", "Something went wrong.", "error");
+    } finally {
+      setLoading(false); // ✅ Stop loader
     }
   };
+  
 
   const handleDelete = async (productId: string) => {
     const confirm = await Swal.fire({
@@ -107,6 +115,8 @@ const PropertyDetailPage: React.FC = () => {
     });
   
     if (!confirm.isConfirmed) return;
+  
+    setLoading(true); // ✅ Start loader
   
     try {
       const res = await fetch(`/api/products/deleteProduct?id=${productId}`, {
@@ -138,8 +148,11 @@ const PropertyDetailPage: React.FC = () => {
         icon: "error",
         confirmButtonText: "OK",
       });
+    } finally {
+      setLoading(false); // ✅ Stop loader
     }
   };
+  
   
 
   useEffect(() => {
@@ -260,7 +273,7 @@ const PropertyDetailPage: React.FC = () => {
   const tabs = [
     {
       label: <span className="icon-picture">My Ads</span>,
-      content: <>
+      content: <div className={styles.myAdss}>
         
         <div className={styles.makeProductFutured}>
           <h2>My Products</h2>
@@ -332,8 +345,8 @@ const PropertyDetailPage: React.FC = () => {
             )}
           </>
         )}
-
-      </>,
+        {loading && <Loader message="Deleting, please wait..." />}
+      </div>,
     },
     // {
     //   label: <span className="icon-heart">Wishlist</span>,

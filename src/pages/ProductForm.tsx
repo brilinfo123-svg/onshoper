@@ -9,6 +9,7 @@ import Link from "next/link";
 import IndiaAddressForm from "@/components/India/Index";
 import Swal from "sweetalert2";
 import Head from "next/head";
+import Loader from "@/components/loader/Index";
 
 const categories = {
   Vehicles: ["Motorcycles", "Scooters", "Bicycles", "Spare Parts"],
@@ -570,6 +571,7 @@ function AllCategoryRentalForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
      // Validate SaleType
      const newErrors: { [key: string]: string } = {};
     // ✅ Skip SaleType & price validation for these categories
@@ -820,7 +822,7 @@ if (!formData.termsAccepted) {
         method: "POST",
         body: payload,
       });
-
+  
       if (res.status === 403) {
         const data = await res.json();
         Swal.fire({
@@ -831,10 +833,10 @@ if (!formData.termsAccepted) {
         }).then(() => {
           window.location.href = data.redirectUrl || "/payment";
         });
-      
+        setLoading(false);
         return;
       }
-      
+  
       const result = await res.json();
       if (result.success) {
         Swal.fire({
@@ -853,11 +855,16 @@ if (!formData.termsAccepted) {
           confirmButtonText: "Try Again",
         });
       }
-      // alert(result.success ? "Product added successfully!" : "Failed to add product.");
-      // if (result.success) window.location.reload();
     } catch (err) {
       console.error(err);
-      alert("An error occurred while submitting the form.");
+      Swal.fire({
+        title: "Error",
+        text: "An error occurred while submitting the form.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -2078,7 +2085,15 @@ if (!formData.termsAccepted) {
               </label>
               <button type="button" className={styles.backButton} onClick={() => goToStep(4, true)}>← Back</button>
             </div>
-          <div className={styles.buttonGroup}><button type="submit" className={styles.submitButton}>Post Ad</button></div>   
+
+            <button type="submit" disabled={loading} className={styles.submitButton}>
+            {loading ? (
+              <Loader message="please wait..." />
+            ) : (
+              "Post Product"
+            )}
+          </button>
+          {/* <div className={styles.buttonGroup}><button type="submit" className={styles.submitButton}>Post Ad</button></div>    */}
         </div>
       </>
       )}

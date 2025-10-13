@@ -5,10 +5,13 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import styles from "./Index.module.scss";
 import Swal from "sweetalert2";
+import Loader from "../loader/Index";
+
 
 export default function ProfileForm() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [updatingProfile, setUpdatingProfile] = useState(false);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -93,6 +96,8 @@ export default function ProfileForm() {
       return;
     }
   
+    setUpdatingProfile(true); // ✅ Start loader
+  
     try {
       const photoPath = await uploadImage();
   
@@ -109,18 +114,21 @@ export default function ProfileForm() {
       });
   
       if (res.ok) {
+        setPhoto(photoPath);
+        setSelectedFile(null);
+        setPreviewPhoto("");
+        await loadProfile();
+      
+        setUpdatingProfile(false); // ✅ Hide loader first
+      
         await Swal.fire({
           title: "Profile Updated",
           text: "Your profile has been successfully updated.",
           icon: "success",
           confirmButtonText: "OK",
-        }).then(() => {
-          window.location.reload(); // ✅ Refresh only after user clicks OK
         });
-        setPhoto(photoPath);
-        setSelectedFile(null);
-        setPreviewPhoto("");
-        await loadProfile();
+      
+        window.location.reload();  // ✅ Reload after loader is hidden
       } else {
         const errorText = await res.text();
         console.error("Update failed:", errorText);
@@ -139,15 +147,20 @@ export default function ProfileForm() {
         icon: "error",
         confirmButtonText: "OK",
       });
+    } finally {
+      setUpdatingProfile(false); // ✅ Ensure loader stops even on error
     }
   };
+  
   
 
   if (status === "loading") return <p>Loading...</p>;
 
   return (
     <div className={styles.container}>
+      {updatingProfile && <Loader message="Updating profile..."/>}
       <div className={styles.profileImage}>
+        
       <div className={styles.imageUpload}>
           <div className={styles.imagePreview}>
             <img src={previewPhoto || "/images/profile.png"} alt="Profile Photo" />
