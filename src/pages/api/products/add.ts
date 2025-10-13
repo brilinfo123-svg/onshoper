@@ -58,15 +58,24 @@ export default async function handler(
     let rentalTermsFile = "";
     
     const uploadToCloudinary = async (file: any, folder: string): Promise<string> => {
-      const fileBuffer = await fs.readFile(file.filepath); // ✅ Read buffer from disk
+      const fileBuffer = await fs.readFile(file.filepath);
+    
       return new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream({ folder }, (error, result) => {
-          if (error || !result) return reject(error);
-          resolve(result.secure_url);
-        });
-        streamifier.createReadStream(fileBuffer).pipe(stream); // ✅ Use buffer here
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder,
+            resource_type: "auto", // ✅ Allows all formats: image, video, raw
+          },
+          (error, result) => {
+            if (error || !result) return reject(error);
+            resolve(result.secure_url);
+          }
+        );
+    
+        streamifier.createReadStream(fileBuffer).pipe(stream);
       });
     };
+    
     
     
     // ✅ Handle multiple images
