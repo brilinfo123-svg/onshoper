@@ -24,7 +24,7 @@ export default function ChatSidebar({ isOpen,
   const [receiverInfo, setReceiverInfo] = useState({
     name: "", 
     photo: "",
-    contact: ""
+    contact: "" 
   });
 
   const [chats, setChats] = useState([]);
