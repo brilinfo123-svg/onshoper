@@ -151,71 +151,46 @@ export default function ChatSidebar({ isOpen,
   // Socket.io connection management
   useEffect(() => {
     if (!session?.user?.id) return;
-
-    // Initialize socket connection
-    const initializeSocket = async () => {
-      try {
-        // First ensure the socket API route exists
-        await fetch("/api/socket");
-
-        // Connect to socket.io
-        socketRef.current = io();
-
-        socketRef.current.on("connect", () => {
-          console.log('Connected to socket server');
-          setIsConnected(true);
-          setError("");
-
-          // Join the user's room for real-time updates
-          socketRef.current.emit("join", session.user.id);
+  
+    const socket = io("https://socket-server-gf0a.onrender.com"); // ✅ Render server
+  
+    socket.on("connect", () => {
+      console.log("✅ Connected to socket server");
+      setIsConnected(true);
+      setError("");
+      socket.emit("join", session.user.id);
+    });
+  
+    socket.on("receiveMessage", (msg) => {
+      console.log("📩 Received message:", msg);
+  
+      if (selectedChat && (
+        (msg.sender === session.user.id && msg.receiver === selectedChat.otherUserId) ||
+        (msg.sender === selectedChat.otherUserId && msg.receiver === session.user.id)
+      )) {
+        setMessages(prev => {
+          const messageExists = prev.some(m => m._id === msg._id);
+          return messageExists ? prev : [...prev, msg];
         });
-
-        socketRef.current.on("receiveMessage", (msg) => {
-          console.log("Received message via socket:", msg);
-
-          if (selectedChat && (
-            (msg.sender === session.user.id && msg.receiver === selectedChat.otherUserId) ||
-            (msg.sender === selectedChat.otherUserId && msg.receiver === session.user.id)
-          )) {
-            // Add the message to current chat
-            setMessages(prev => {
-              const messageExists = prev.some(m => m._id === msg._id);
-              if (!messageExists) {
-                return [...prev, msg];
-              }
-              return prev;
-            });
-
-            // Refresh chats to update last message
-            fetchChats();
-          }
-        });
-
-        socketRef.current.on("disconnect", () => {
-          console.log('Disconnected from socket server');
-          setIsConnected(false);
-        });
-
-        socketRef.current.on("connect_error", (err) => {
-          console.error('Socket connection error:', err);
-          setIsConnected(false);
-          setError("Real-time connection failed");
-        });
-
-      } catch (error) {
-        console.error('Error initializing socket:', error);
-        setIsConnected(false);
+  
+        fetchChats();
       }
-    };
-
-    initializeSocket();
-
-    // Cleanup on component unmount
+    });
+  
+    socket.on("disconnect", () => {
+      console.log("❌ Disconnected from socket server");
+      setIsConnected(false);
+    });
+  
+    socket.on("connect_error", (err) => {
+      console.error("⚠️ Socket connection error:", err);
+      setIsConnected(false);
+      setError("Real-time connection failed");
+    });
+  
+    // Cleanup
     return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-        socketRef.current = null;
-      }
+      socket.disconnect();
     };
   }, [session, selectedChat]);
 
