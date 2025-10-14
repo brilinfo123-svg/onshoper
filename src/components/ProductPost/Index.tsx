@@ -90,8 +90,6 @@ const ProductCard = ({
   const { addFavorite, removeFavorite, isFavorite } = useFavorites(); // Use the context
   const [favorite, setFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  console.log("year", year);
   
   // ✅ Check if this product is already in favorites from context
   useEffect(() => {
