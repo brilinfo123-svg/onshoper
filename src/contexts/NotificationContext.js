@@ -37,44 +37,41 @@ export const NotificationProvider = ({ children }) => {
   // Initialize socket connection for real-time notifications
   useEffect(() => {
     if (!session?.user?.id || isOnChatPage) return;
-
+  
     const initializeSocket = async () => {
       try {
-        await fetch('/api/socket');
-        const newSocket = io();
-
+        const newSocket = io("https://socket-server-gf0a.onrender.com");
+  
         newSocket.on('connect', () => {
           console.log('Connected to notification server');
           setSocket(newSocket);
         });
-
-        // Listen for new messages
+  
         newSocket.on('receiveMessage', (message) => {
-          const isOnSenderChatPage = router.pathname.startsWith('/chat/') && 
+          const isOnSenderChatPage = router.pathname.startsWith('/chat/') &&
                                       router.query.userId === message.sender;
-        
-          // ✅ Only count messages sent by others
+  
           const isIncoming = message.receiver === session.user.id && message.sender !== session.user.id;
-        
+  
           if (isIncoming && !isOnSenderChatPage) {
             const currentCount = notifications[message.sender] || 0;
-        
+  
             setNotifications(prev => {
               const updatedCount = currentCount + 1;
-        
+  
               if (Notification.permission === 'granted' && currentCount === 0) {
                 new Notification('New Message', {
                   body: `New message from ${message.senderName || 'Someone'}`,
                   icon: '/icon.png'
                 });
               }
-        
+  
               return {
                 ...prev,
                 [message.sender]: updatedCount
               };
             });
-        
+  
             if (currentCount === 0) {
               toast.info(`💬 New message from ${message.senderName || 'Someone'}`, {
                 position: "top-right",
@@ -93,40 +90,33 @@ export const NotificationProvider = ({ children }) => {
             }
           }
         });
-        
-        
-
+  
         newSocket.on('disconnect', () => {
           console.log('Disconnected from notification server');
         });
-
+  
         newSocket.on('connect_error', (error) => {
           console.error('Socket connection error:', error);
         });
-
-        return () => {
-          if (newSocket) {
-            newSocket.disconnect();
-          }
-        };
+  
       } catch (error) {
         console.error('Error initializing notification socket:', error);
       }
     };
-
+  
     initializeSocket();
-
-    // Request notification permission
+  
     if ('Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission();
     }
-
+  
     return () => {
       if (socket) {
         socket.disconnect();
       }
     };
-  }, [session?.user?.id, isOnChatPage, router, notifications]); // Added notifications to dependencies
+  }, [session?.user?.id, isOnChatPage, router, notifications]);
+   // Added notifications to dependencies
 
   // Clear notification for a specific chat
   const clearNotification = (userId) => {
