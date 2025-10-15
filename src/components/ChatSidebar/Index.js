@@ -469,7 +469,7 @@ export default function ChatSidebar({ isOpen,
       sendMessage();
     }
   };
-
+  const user = chats.otherUser;
   return (
     <div className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
       <div className={styles.sidebarHeader}>
@@ -493,9 +493,11 @@ export default function ChatSidebar({ isOpen,
                 )}
                 
               </div>
-              <span className={`status-dot ${onlineUsers[user._id] ? "online" : "offline"}`}>
-                {onlineUsers[user._id] ? '🟢 Online' : '🔴 Offline'}
-              </span>
+              {user && (
+                <span className={`status-dot ${onlineUsers[user._id] ? "online" : "offline"}`}>
+                  {onlineUsers[user._id] ? "🟢 Online" : "🔴 Offline"}
+                </span>
+              )}
           </div>
               
 {/* 
