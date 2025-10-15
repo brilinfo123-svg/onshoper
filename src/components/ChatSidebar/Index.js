@@ -37,7 +37,7 @@ export default function ChatSidebar({ isOpen,
   const [messagesLoading, setMessagesLoading] = useState(false);
   const [sendingMessage, setSendingMessage] = useState(false);
   const [deletingChats, setDeletingChats] = useState({});
-  const [isConnected, setIsConnected] = useState(false);
+  // const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState("");
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
@@ -194,19 +194,19 @@ export default function ChatSidebar({ isOpen,
   
       socketRef.current.on("connect", () => {
         console.log("✅ Connected to socket server");
-        setIsConnected(true);
+        setOnlineUsers(true);
         setError("");
         socketRef.current.emit("join", session.user.id);
       });
   
       socketRef.current.on("disconnect", () => {
         console.log("❌ Disconnected from socket server");
-        setIsConnected(false);
+        setOnlineUsers(false);
       });
   
       socketRef.current.on("connect_error", (err) => {
         console.error("⚠️ Socket connection error:", err);
-        setIsConnected(false);
+        setOnlineUsers(false);
         setError("Real-time connection failed");
       });
     }
@@ -469,7 +469,7 @@ export default function ChatSidebar({ isOpen,
       sendMessage();
     }
   };
-  const user = chats.otherUser;
+
   return (
     <div className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
       <div className={styles.sidebarHeader}>
@@ -493,11 +493,9 @@ export default function ChatSidebar({ isOpen,
                 )}
                 
               </div>
-              {user && (
-                <span className={`status-dot ${onlineUsers[user._id] ? "online" : "offline"}`}>
-                  {onlineUsers[user._id] ? "🟢 Online" : "🔴 Offline"}
-                </span>
-              )}
+              <span className={`status-dot ${onlineUsers[user._id] ? "online" : "offline"}`}>
+                {onlineUsers[user._id] ? '🟢 Online' : '🔴 Offline'}
+              </span>
           </div>
               
 {/* 
@@ -563,18 +561,18 @@ export default function ChatSidebar({ isOpen,
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Type a message..."
-                  disabled={sendingMessage || !isConnected}
+                  disabled={sendingMessage || !onlineUsers}
                   className={styles.messageInput}
                 />
                 <button
                   onClick={sendMessage}
-                  disabled={sendingMessage || !newMessage.trim() || !isConnected}
+                  disabled={sendingMessage || !newMessage.trim() || !onlineUsers}
                   className={styles.sendButton}
                 >
                   {sendingMessage ? 'Sending...' : 'Send'}
                 </button>
               </div>
-              {!isConnected && (
+              {!onlineUsers && (
                 <span className={styles.connectionStatus}>Connecting...</span>
               )}
             </div>
