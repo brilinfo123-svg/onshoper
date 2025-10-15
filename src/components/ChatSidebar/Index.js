@@ -37,42 +37,17 @@ export default function ChatSidebar({ isOpen,
   const [messagesLoading, setMessagesLoading] = useState(false);
   const [sendingMessage, setSendingMessage] = useState(false);
   const [deletingChats, setDeletingChats] = useState({});
-  // const [isConnected, setIsConnected] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState("");
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
   const socketRef = useRef(null);
   const { notifications, clearNotification } = useNotifications();
   const [receiverMap, setReceiverMap] = useState({});
-  const [onlineUsers, setOnlineUsers] = useState({});
 
   const socketURL = "https://socket-server-gf0a.onrender.com";
   
-  useEffect(() => {
-    if (!socketRef.current) return;
-  
-    const handleUserOnline = (userId) => {
-      setOnlineUsers((prev) => ({ ...prev, [userId]: true }));
-    };
-  
-    const handleUserOffline = (userId) => {
-      setOnlineUsers((prev) => {
-        const updated = { ...prev };
-        delete updated[userId];
-        return updated;
-      });
-    };
-  
-    socketRef.current.on("userOnline", handleUserOnline);
-    socketRef.current.on("userOffline", handleUserOffline);
-  
-    return () => {
-      socketRef.current.off("userOnline", handleUserOnline);
-      socketRef.current.off("userOffline", handleUserOffline);
-    };
-  }, []);
-  
-  
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       if (!session?.user?.contact) return;
@@ -194,19 +169,19 @@ export default function ChatSidebar({ isOpen,
   
       socketRef.current.on("connect", () => {
         console.log("✅ Connected to socket server");
-        setOnlineUsers(true);
+        setIsConnected(true);
         setError("");
         socketRef.current.emit("join", session.user.id);
       });
   
       socketRef.current.on("disconnect", () => {
         console.log("❌ Disconnected from socket server");
-        setOnlineUsers(false);
+        setIsConnected(false);
       });
   
       socketRef.current.on("connect_error", (err) => {
         console.error("⚠️ Socket connection error:", err);
-        setOnlineUsers(false);
+        setIsConnected(false);
         setError("Real-time connection failed");
       });
     }
@@ -493,9 +468,9 @@ export default function ChatSidebar({ isOpen,
                 )}
                 
               </div>
-              <span className={`status-dot ${onlineUsers[user._id] ? "online" : "offline"}`}>
-                {onlineUsers[user._id] ? '🟢 Online' : '🔴 Offline'}
-              </span>
+              <span className={`${styles.connectionStatus} ${isConnected ? styles.connected : styles.disconnected}`}>
+                  {isConnected ? '🟢 Online' : '🔴 Offline'}
+                </span>
           </div>
               
 {/* 
@@ -561,18 +536,18 @@ export default function ChatSidebar({ isOpen,
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Type a message..."
-                  disabled={sendingMessage || !onlineUsers}
+                  disabled={sendingMessage || !isConnected}
                   className={styles.messageInput}
                 />
                 <button
                   onClick={sendMessage}
-                  disabled={sendingMessage || !newMessage.trim() || !onlineUsers}
+                  disabled={sendingMessage || !newMessage.trim() || !isConnected}
                   className={styles.sendButton}
                 >
                   {sendingMessage ? 'Sending...' : 'Send'}
                 </button>
               </div>
-              {!onlineUsers && (
+              {!isConnected && (
                 <span className={styles.connectionStatus}>Connecting...</span>
               )}
             </div>
