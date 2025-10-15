@@ -3,7 +3,9 @@ import { useSession } from "next-auth/react";
 import { useNotifications } from "@/contexts/NotificationContext";
 import styles from "./Index.module.scss";
 import { useRouter } from "next/router";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
+
+const socketURL = "https://socket-server-gf0a.onrender.com";
 
 export default function ChatSidebar({ isOpen,
   onClose,
@@ -43,7 +45,7 @@ export default function ChatSidebar({ isOpen,
   const { notifications, clearNotification } = useNotifications();
   const [receiverMap, setReceiverMap] = useState({});
 
-
+  const socketURL = "https://socket-server-gf0a.onrender.com";
   
 
   useEffect(() => {
@@ -149,55 +151,72 @@ export default function ChatSidebar({ isOpen,
   }, [messages]);
 
   // Socket.io connection management
+
+  
   useEffect(() => {
     if (!session?.user?.id) return;
   
-    const socket = io("https://socket-server-gf0a.onrender.com", {
-      transports: ["websocket"], // ✅ Prevents polling fallback
-      reconnection: true,
-      reconnectionAttempts: 10,
-      reconnectionDelay: 1000,
-    });
+    // ✅ Use ref to persist socket instance across renders
+    const socketRef = useRef(null);
   
-    socket.on("connect", () => {
-      console.log("✅ Connected to socket server");
-      setIsConnected(true);
-      setError("");
-      socket.emit("join", session.user.id);
-    });
+    // ✅ Initialize socket only once
+    if (!socketRef.current) {
+      socketRef.current = io(socketURL, {
+        transports: ["websocket"],
+        reconnection: true,
+        reconnectionAttempts: 10,
+        reconnectionDelay: 1000,
+      });
   
-    socket.on("receiveMessage", (msg) => {
+      socketRef.current.on("connect", () => {
+        console.log("✅ Connected to socket server");
+        setIsConnected(true);
+        setError("");
+        socketRef.current.emit("join", session.user.id);
+      });
+  
+      socketRef.current.on("disconnect", () => {
+        console.log("❌ Disconnected from socket server");
+        setIsConnected(false);
+      });
+  
+      socketRef.current.on("connect_error", (err) => {
+        console.error("⚠️ Socket connection error:", err);
+        setIsConnected(false);
+        setError("Real-time connection failed");
+      });
+    }
+  
+    // ✅ Scoped message listener for current chat
+    const handleMessage = (msg) => {
       console.log("📩 Received message:", msg);
   
-      if (selectedChat && (
-        (msg.sender === session.user.id && msg.receiver === selectedChat.otherUserId) ||
-        (msg.sender === selectedChat.otherUserId && msg.receiver === session.user.id)
-      )) {
-        setMessages(prev => {
-          const messageExists = prev.some(m => m._id === msg._id);
-          return messageExists ? prev : [...prev, msg];
+      const isCurrentChat =
+        selectedChat &&
+        ((msg.sender === session.user.id && msg.receiver === selectedChat.otherUserId) ||
+          (msg.sender === selectedChat.otherUserId && msg.receiver === session.user.id));
+  
+      if (isCurrentChat) {
+        setMessages((prev) => {
+          const exists = prev.some((m) => m._id === msg._id);
+          return exists ? prev : [...prev, msg];
         });
   
         fetchChats();
       }
-    });
-  
-    socket.on("disconnect", () => {
-      console.log("❌ Disconnected from socket server");
-      setIsConnected(false);
-    });
-  
-    socket.on("connect_error", (err) => {
-      console.error("⚠️ Socket connection error:", err);
-      setIsConnected(false);
-      setError("Real-time connection failed");
-    });
-  
-    // Cleanup
-    return () => {
-      socket.disconnect();
     };
-  }, [session, selectedChat]);
+  
+    // ✅ Attach listener only when selectedChat changes
+    socketRef.current.on("receiveMessage", handleMessage);
+  
+    // ✅ Cleanup listener on chat change
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.off("receiveMessage", handleMessage);
+      }
+    };
+  }, [session?.user?.id, selectedChat]);
+  
 
   const fetchChats = async () => {
     try {
