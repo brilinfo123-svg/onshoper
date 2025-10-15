@@ -498,7 +498,7 @@ export default function ChatSidebar({ isOpen,
         {selectedChat ? (
           // Chat View
           <div className={styles.chatContainer}>
-            {error && <div className={styles.error}>{error}</div>}
+            {/* {error && <div className={styles.error}>{error}</div>} */}
 
             <div className={styles.messagesContainer} ref={messagesContainerRef}>
               {messagesLoading ? (
@@ -542,15 +542,15 @@ export default function ChatSidebar({ isOpen,
                 />
                 <button
                   onClick={sendMessage}
-                  disabled={sendingMessage || !newMessage.trim() || !isConnected}
+                  // disabled={sendingMessage || !newMessage.trim() || !isConnected}
                   className={styles.sendButton}
                 >
                   {sendingMessage ? 'Sending...' : 'Send'}
                 </button>
               </div>
-              {!isConnected && (
+              {/* {!isConnected && (
                 <span className={styles.connectionStatus}>Connecting...</span>
-              )}
+              )} */}
             </div>
           </div>
         ) : (
