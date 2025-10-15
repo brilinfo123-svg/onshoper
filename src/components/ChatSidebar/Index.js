@@ -503,13 +503,7 @@ export default function ChatSidebar({ isOpen,
             <div className={styles.messagesContainer} ref={messagesContainerRef}>
               <div className={styles.messagesList}>
                 {messagesLoading ? (
-                  <div className={styles.loading}>
-                  {[...Array(4)].map((_, index) => (
-                    <div key={index} className={styles.skeletonMessage}>
-                      <div className={styles.skeletonBubble}></div>
-                    </div>
-                  ))}
-                </div>                
+                 <div className={styles.fetchingText}>Fetching messages<span>.</span><span>.</span><span>.</span></div>             
                 ) : messages.length === 0 ? (
                   <div className={styles.noMessages}>No messages yet. Start a conversation!</div>
                 ) : (
