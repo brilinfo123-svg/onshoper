@@ -501,33 +501,40 @@ export default function ChatSidebar({ isOpen,
             {/* {error && <div className={styles.error}>{error}</div>} */}
 
             <div className={styles.messagesContainer} ref={messagesContainerRef}>
-              {messagesLoading ? (
-                <div className={styles.loading}>Loading messages...</div>
-              ) : messages.length === 0 ? (
-                <div className={styles.noMessages}>No messages yet. Start a conversation!</div>
-              ) : (
-                <div className={styles.messagesList}>
-                  {messages.map((message) => (
-                    <div key={message._id} className={`${styles.message} ${message.sender === session.user.id ? styles.sent : styles.received}`}>
-                      <div className={styles.messageContent}>
-                        {/* {message.coverImage && (
-                          <img src={message.coverImage} alt="Product" className={styles.messageImage} />
-                        )} */}
-                        {/* <p>{message.otherUserName || `User ${message.sender}`}</p> */}
-                        {/* <span className={styles.senderName}>
-                          {message.senderName || `User ${message.sender}`}
-                        </span> */}
-                        <p>{message.message}</p>
-                        <span className={styles.messageTime}>
-                          {formatMessageDate(message.createdAt)}
-                        </span>
-                      </div>
+              <div className={styles.messagesList}>
+                {messagesLoading ? (
+                  <div className={styles.loading}>
+                  {[...Array(4)].map((_, index) => (
+                    <div key={index} className={styles.skeletonMessage}>
+                      <div className={styles.skeletonBubble}></div>
                     </div>
                   ))}
-                  <div ref={messagesEndRef} />
-                </div>
-              )}
+                </div>                
+                ) : messages.length === 0 ? (
+                  <div className={styles.noMessages}>No messages yet. Start a conversation!</div>
+                ) : (
+                  <>
+                    {messages.map((message) => (
+                      <div
+                        key={message._id}
+                        className={`${styles.message} ${
+                          message.sender === session.user.id ? styles.sent : styles.received
+                        }`}
+                      >
+                        <div className={styles.messageContent}>
+                          <p>{message.message}</p>
+                          <span className={styles.messageTime}>
+                            {formatMessageDate(message.createdAt)}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                    <div ref={messagesEndRef} />
+                  </>
+                )}
+              </div>
             </div>
+
 
             <div className={styles.messageInputContainer}>
               <div className={styles.inputWrapper}>
@@ -537,7 +544,7 @@ export default function ChatSidebar({ isOpen,
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Type a message..."
-                  disabled={sendingMessage || !isConnected}
+                  // disabled={sendingMessage || !isConnected}
                   className={styles.messageInput}
                 />
                 <button
