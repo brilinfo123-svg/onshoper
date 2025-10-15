@@ -157,7 +157,6 @@ export default function ChatSidebar({ isOpen,
     if (!session?.user?.id) return;
   
     // ✅ Use ref to persist socket instance across renders
-    const socketRef = useRef(null);
   
     // ✅ Initialize socket only once
     if (!socketRef.current) {
