@@ -176,6 +176,9 @@ const ProductCard = ({
         <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} priority />
 
         <div className={`${styles.content} ${filter.content}`}>
+        <span className={styles.category}>
+          {category} {">"} {subCategory}
+        </span>
         <div className={styles.flexRowPrice}>
         <div className={`${styles.prices}`}>
           {/* ✅ Show salary for Jobs */}

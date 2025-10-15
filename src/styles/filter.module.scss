@@ -71,8 +71,16 @@
             .timeStamp{
               @media screen and (max-width: 767px) {
                 position: absolute;
-                bottom: 10px;
-                right: 10px;
+                bottom: 26px;
+                left: 98px;
+              }
+              p{
+                @media screen and (max-width: 767px) {
+                  position: inherit;
+                  bottom: auto;
+                  right: auto;
+                  width: max-content;
+                }
               }
             }
             .location{
@@ -82,7 +90,7 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 max-width: 100%; // fallback
-                max-width: 17ch;
+                max-width: 30ch;
               }
             }
           .PriceNumber{

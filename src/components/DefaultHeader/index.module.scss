@@ -13,10 +13,12 @@
     align-items: center;
     padding: 0 0 0 15px;
     @media screen and (max-width: 991.99px) {
-      padding: 0px 0 0px 15px;
+      padding: 10px 15px 10px 15px;
+      background-color: #000000;
     }
     @media screen and (max-width: 767px) {
       padding: 5px 10px;
+      background-color: #000000;
     }
   }
   .filterLocationWrapper{
@@ -247,8 +249,8 @@
         font-size: 28px;
       }
       @media screen and (max-width: 992px) {
-        width: 37px;
-        height: 32px;
+        width: 34px;
+        height: 30px;
         font-size: 20px;
       }
     }
@@ -259,14 +261,14 @@
         font-family: monospace;
         height: 30px;
         color: #fff;
-        @media screen and (max-width: 992px) {
-          color: #000;
+        @media screen and (max-width: 991.99px) {
+          color: #ffffff;
           font-size: 22px;
           height: 18px;
         }
         @media screen and (max-width: 767px) {
-          font-size: 18px;
-          height: 13px;
+          font-size: 16px;
+          height: 11px;
         }
       }
       span{
@@ -274,8 +276,8 @@
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 2px;
-        @media screen and (max-width: 992px) {
-          color: #000;
+        @media screen and (max-width: 991.99px) {
+          color: #ffffff;
           font-size: 8px;
         }
         @media screen and (max-width: 767px) {

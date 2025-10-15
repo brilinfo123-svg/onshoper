@@ -1930,8 +1930,10 @@ if (!formData.termsAccepted) {
           
           <div className={styles.fileManageWrap}>
             <div className={styles.formGroup}>
-              <label>Cover Image</label>
+            <div className={styles.fileUpload}>
+              <label htmlFor="file" className="icon-upload-cloud-outline"> Upload Cover Image</label>
               <input type="file" accept="image/*" onChange={handleCoverImageChange} ref={coverImageInputRef} />
+            </div>
               {formData.coverImage && (
                 <div className={styles.imagePreviewBox}>
                   <img src={URL.createObjectURL(formData.coverImage)} alt="Cover Preview" />
@@ -1941,8 +1943,10 @@ if (!formData.termsAccepted) {
             </div>
 
             <div className={styles.formGroup}>
-              <label>Upload Images</label>
+            <div className={styles.fileUpload}>
+              <label htmlFor="file" className="icon-upload-cloud-outline"> Product Images</label>
               <input type="file" multiple accept="image/*" onChange={handleImageChange} ref={fileInputRef} />
+            </div>
               <div className={`${styles.imagePreviewWrapper} ${styles.SpaceBox}`}>
                 {formData.images.map((img, idx) => (
                   <div key={idx} className={`${styles.imagePreviewBox} ${styles.NewPreviewBox}`}>
@@ -1959,8 +1963,10 @@ if (!formData.termsAccepted) {
             <>
               {formData.SaleType !== "Sale" && (
                 <div className={styles.formGroup}>
-                  <label htmlFor="rentalTermsFile">Upload Terms (PDF/Image)</label>
+                  <div className={styles.fileUpload}>
+                  <label htmlFor="rentalTermsFile" className="icon-upload-cloud-outline">Upload Terms (PDF/Image)</label>
                   <input type="file" id="rentalTermsFile" name="rentalTermsFile" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => handleFileChange(e, "rentalTermsFile")} />
+                </div>
                 </div>
               )}
             </>
