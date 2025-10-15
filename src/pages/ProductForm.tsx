@@ -148,7 +148,7 @@ function AllCategoryRentalForm() {
 
   // const shopOwnerID = shopData?.registration?._id;
   const shopOwnerID = shopData?.user?._id;
-  console.log("shopOwner_Id", shopData?.user?._id  );
+  // console.log("shopOwner_Id", shopData?.user?._id  );
 
 
   const [pickupLat, setPickupLat] = useState(null);

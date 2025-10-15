@@ -38,81 +38,70 @@ export const NotificationProvider = ({ children }) => {
   useEffect(() => {
     if (!session?.user?.id || isOnChatPage) return;
 
-    const initializeSocket = async () => {
-      try {
-        await fetch('/api/socket');
-        const newSocket = io();
-
-        newSocket.on('connect', () => {
-          console.log('Connected to notification server');
-          setSocket(newSocket);
-        });
-
-        // Listen for new messages
-        newSocket.on('receiveMessage', (message) => {
-          const isOnSenderChatPage = router.pathname.startsWith('/chat/') && 
-                                      router.query.userId === message.sender;
-        
-          // ✅ Only count messages sent by others
-          const isIncoming = message.receiver === session.user.id && message.sender !== session.user.id;
-        
-          if (isIncoming && !isOnSenderChatPage) {
-            const currentCount = notifications[message.sender] || 0;
-        
-            setNotifications(prev => {
-              const updatedCount = currentCount + 1;
-        
-              if (Notification.permission === 'granted' && currentCount === 0) {
-                new Notification('New Message', {
-                  body: `New message from ${message.senderName || 'Someone'}`,
-                  icon: '/icon.png'
-                });
-              }
-        
-              return {
-                ...prev,
-                [message.sender]: updatedCount
-              };
+    const initializeSocket = () => {
+      const newSocket = io("https://socket-server-gf0a.onrender.com", {
+        transports: ["websocket"],
+        reconnection: true,
+  reconnectionAttempts: 10,
+  reconnectionDelay: 1000,
+      });
+    
+      newSocket.on("connect", () => {
+        console.log("✅ Connected to notification server");
+        setSocket(newSocket);
+      });
+    
+      newSocket.on("receiveMessage", (message) => {
+        const isOnSenderChatPage =
+          router.pathname.startsWith("/chat/") &&
+          router.query.userId === message.sender;
+    
+        const isIncoming =
+          message.receiver === session.user.id &&
+          message.sender !== session.user.id;
+    
+        if (isIncoming && !isOnSenderChatPage) {
+          const currentCount = notifications[message.sender] || 0;
+    
+          setNotifications((prev) => ({
+            ...prev,
+            [message.sender]: currentCount + 1,
+          }));
+    
+          if (Notification.permission === "granted" && currentCount === 0) {
+            new Notification("New Message", {
+              body: `New message from ${message.senderName || "Someone"}`,
+              icon: "/icon.png",
             });
-        
-            if (currentCount === 0) {
-              toast.info(`💬 New message from ${message.senderName || 'Someone'}`, {
-                position: "top-right",
-                autoClose: 6000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                toastId: `message-${message.sender}-${Date.now()}`,
-                onClick: () => {
-                  router.push(`/chat/${message.sender}`);
-                }
-              });
-            }
           }
-        });
-        
-        
-
-        newSocket.on('disconnect', () => {
-          console.log('Disconnected from notification server');
-        });
-
-        newSocket.on('connect_error', (error) => {
-          console.error('Socket connection error:', error);
-        });
-
-        return () => {
-          if (newSocket) {
-            newSocket.disconnect();
+    
+          if (currentCount === 0) {
+            toast.info(`💬 New message from ${message.senderName || "Someone"}`, {
+              position: "top-right",
+              autoClose: 6000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              theme: "colored",
+              toastId: `message-${message.sender}-${Date.now()}`,
+              onClick: () => {
+                router.push(`/chat/${message.sender}`);
+              },
+            });
           }
-        };
-      } catch (error) {
-        console.error('Error initializing notification socket:', error);
-      }
+        }
+      });
+    
+      newSocket.on("disconnect", () => {
+        console.log("❌ Disconnected from notification server");
+      });
+    
+      newSocket.on("connect_error", (error) => {
+        console.error("⚠️ Socket connection error:", error);
+      });
     };
+    
 
     initializeSocket();
 

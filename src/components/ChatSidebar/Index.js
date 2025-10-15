@@ -152,7 +152,12 @@ export default function ChatSidebar({ isOpen,
   useEffect(() => {
     if (!session?.user?.id) return;
   
-    const socket = io("https://socket-server-gf0a.onrender.com"); // ✅ Render server
+    const socket = io("https://socket-server-gf0a.onrender.com", {
+      transports: ["websocket"], // ✅ Prevents polling fallback
+      reconnection: true,
+      reconnectionAttempts: 10,
+      reconnectionDelay: 1000,
+    });
   
     socket.on("connect", () => {
       console.log("✅ Connected to socket server");

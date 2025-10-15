@@ -18,29 +18,20 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001';
-
-    const socketInstance = io(socketUrl, {
+    const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001', {
       transports: ['websocket'],
-      reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000,
     });
 
     setSocket(socketInstance);
 
     socketInstance.on('connect', () => {
       setIsConnected(true);
-      console.log('✅ Connected to socket server');
+      console.log('Connected to server');
     });
 
     socketInstance.on('disconnect', () => {
       setIsConnected(false);
-      console.log('❌ Disconnected from socket server');
-    });
-
-    socketInstance.on('connect_error', (err) => {
-      console.error('⚠️ Socket connection error:', err.message);
+      console.log('Disconnected from server');
     });
 
     return () => {

@@ -56,9 +56,9 @@ const PropertyDetailPage: React.FC = () => {
     setVisibleCount((prevCount) => prevCount + 3);
   };
 
-  console.log("wishlistProducts", wishlistProducts);
-  // console.log(shopOwnerID);
-  console.log("Sesstion Data", session)
+  // console.log("wishlistProducts", wishlistProducts);
+  // // console.log(shopOwnerID);
+  // console.log("Sesstion Data", session)
 
   const handleDeleteAccount = async () => {
     const confirm = await Swal.fire({

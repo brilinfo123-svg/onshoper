@@ -90,7 +90,7 @@ const [selectedCity, setSelectedCity] = useState<string>("All Cities");
     setSelectedCity(savedCity);
   }, []);
 
-  console.log("location", products);
+  // console.log("location", products);
   // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
