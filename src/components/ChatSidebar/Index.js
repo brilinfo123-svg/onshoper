@@ -49,7 +49,7 @@ export default function ChatSidebar({ isOpen,
   const socketURL = "https://socket-server-gf0a.onrender.com";
   
   useEffect(() => {
-    if (!socket) return;
+    if (!socketRef.current) return;
   
     const handleUserOnline = (userId) => {
       setOnlineUsers((prev) => ({ ...prev, [userId]: true }));
@@ -63,14 +63,15 @@ export default function ChatSidebar({ isOpen,
       });
     };
   
-    socket.on("userOnline", handleUserOnline);
-    socket.on("userOffline", handleUserOffline);
+    socketRef.current.on("userOnline", handleUserOnline);
+    socketRef.current.on("userOffline", handleUserOffline);
   
     return () => {
-      socket.off("userOnline", handleUserOnline);
-      socket.off("userOffline", handleUserOffline);
+      socketRef.current.off("userOnline", handleUserOnline);
+      socketRef.current.off("userOffline", handleUserOffline);
     };
-  }, [socket]);
+  }, []);
+  
   
   useEffect(() => {
     const fetchUserInfo = async () => {
