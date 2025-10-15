@@ -1,5 +1,5 @@
 // /pages/_app.tsx
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SessionProvider, useSession } from "next-auth/react";
 import DefaultHeader from "@/components/DefaultHeader/Index";
 import { NotificationProvider } from '../contexts/NotificationContext';
@@ -19,9 +19,18 @@ import type { AppProps } from "next/app";
 import MobileBottomNav from "@/components/MobileBottomNav/Index";
 
 export default function App({ Component, pageProps }: AppProps) {
+
+  const [, setIsChatOpen] = useState(false);
+  const [, setSelectedChatUser] = useState(null);
+  const [, setAccountOpen] = useState(false);
+  const [, setNotificationsOpen] = useState(false);
+
   return (
     <SessionProvider session={pageProps.session}>
-      <NotificationProvider>
+      <NotificationProvider setIsChatOpen={setIsChatOpen}
+      setSelectedChatUser={setSelectedChatUser}
+      setAccountOpen={setAccountOpen}
+      setNotificationsOpen={setNotificationsOpen}>
         <FavoriteProvider>
           <ChatProvider>
             <CityFilterProvider> {/* 👈 Wrap here */}
