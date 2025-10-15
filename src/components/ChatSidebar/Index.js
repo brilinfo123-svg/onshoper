@@ -4,6 +4,7 @@ import { useNotifications } from "@/contexts/NotificationContext";
 import styles from "./Index.module.scss";
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
+import SkeletonChatItem from "@/components/SkeletonChatItem/Index";
 
 const socketURL = "https://socket-server-gf0a.onrender.com";
 
@@ -556,7 +557,7 @@ export default function ChatSidebar({ isOpen,
           // Chat List View
           <div className={styles.chatList}>
             {loading ? (
-              <div className={styles.loading}>Loading chats...</div>
+              <SkeletonChatItem />
             ) : chats.length === 0 ? (
               <div className={styles.noChats}>No chats yet</div>
             ) : (

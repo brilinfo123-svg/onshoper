@@ -1,0 +1,47 @@
+/* SkeletonChatItem.module.scss */
+.skeletonItem {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  margin-right: 12px;
+}
+
+.textBlock {
+  flex: 1;
+}
+
+.lineShort,
+.lineLong {
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+.lineShort {
+  width: 40%;
+}
+
+.lineLong {
+  width: 80%;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #f0f0f0;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
+}
