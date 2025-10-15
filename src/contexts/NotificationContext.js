@@ -52,28 +52,29 @@ export const NotificationProvider = ({ children }) => {
       });
     
       newSocket.on("receiveMessage", (message) => {
+        const isOnSenderChatPage =
+          router.pathname.startsWith("/chat/") &&
+          router.query.userId === message.sender;
+    
         const isIncoming =
           message.receiver === session.user.id &&
           message.sender !== session.user.id;
-      
-        const isChatWithSenderOpen =
-          isChatOpen && selectedChatUser?.id === message.sender;
-      
-        if (isIncoming && !isChatWithSenderOpen) {
+    
+        if (isIncoming && !isOnSenderChatPage) {
           const currentCount = notifications[message.sender] || 0;
-      
+    
           setNotifications((prev) => ({
             ...prev,
             [message.sender]: currentCount + 1,
           }));
-      
+    
           if (Notification.permission === "granted" && currentCount === 0) {
             new Notification("New Message", {
               body: `New message from ${message.senderName || "Someone"}`,
               icon: "/icon.png",
             });
           }
-      
+    
           if (currentCount === 0) {
             toast.info(`💬 New message from ${message.senderName || "Someone"}`, {
               position: "top-right",
@@ -84,18 +85,13 @@ export const NotificationProvider = ({ children }) => {
               draggable: true,
               theme: "colored",
               toastId: `message-${message.sender}-${Date.now()}`,
-              onClick: () => {
-                setSelectedChatUser?.({
-                  id: message.sender,
-                  name: message.senderName || "Someone",
-                });
-                setIsChatOpen?.(true);
-              },
+              // onClick: () => {
+              //   router.push(`/chat/${message.sender}`);
+              // },
             });
           }
         }
       });
-      
     
       newSocket.on("disconnect", () => {
         console.log("❌ Disconnected from notification server");
