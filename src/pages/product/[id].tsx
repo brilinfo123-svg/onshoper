@@ -353,6 +353,8 @@ const ProductDetails = () => {
   //       </div>
   //   },
   // ];
+  console.log("Product:", product);
+  console.log("Title:", product?.title);
 
   return (
     <div className="container">
@@ -544,69 +546,114 @@ const ProductDetails = () => {
 
             {/* Vehicle Info */}
             <section className={styles.card}>
-              <h2>{product.title}</h2>
-              {isMobile && 
-                  <section className={`${styles.card} ${styles.priceCard} ${styles.forMobile}`}>
-                    <h2 className="icon-tag-1">Price</h2>
-                        {product?.category === "Jobs" ? (
-                          <div className={styles.salarySection}>
-                            <div className={`${styles.salaryCard} ${styles.to}`}>
-                              <div className={styles.iconWrapper}>
-                                <i className="icon-down-open-mini"></i>
-                              </div>
-                              <div className={styles.textWrapper}>
-                                <span className={styles.label}>Salary From</span>
-                                <span className={styles.amount}>₹{product?.salaryFrom || "N/A"}</span>
-                              </div>
-                            </div>
-                            <div className={`${styles.salaryCard} ${styles.from}`}>
-                              <div className={styles.iconWrapper}>
-                                <i className="icon-up-open-mini"></i>
-                              </div>
-                              <div className={styles.textWrapper}>
-                                <span className={styles.label}>Salary To</span>
-                                <span className={styles.amount}>₹{product?.salaryTo || "N/A"}</span>
-                              </div>
-                            </div>
+              {isMobile &&
+                <section className={`${styles.card} ${styles.priceCard} ${styles.forMobile}`}>
+                  <h2 className="icon-tag-1">Price</h2>
+                  {product?.category === "Jobs" ? (
+                    <div className={styles.salarySection}>
+                      <div className={`${styles.salaryCard} ${styles.to}`}>
+                        <div className={styles.iconWrapper}>
+                          <i className="icon-down-open-mini"></i>
+                        </div>
+                        <div className={styles.textWrapper}>
+                          <span className={styles.label}>Salary From</span>
+                          <span className={styles.amount}>₹{product?.salaryFrom || "N/A"}</span>
+                        </div>
+                      </div>
+                      <div className={`${styles.salaryCard} ${styles.from}`}>
+                        <div className={styles.iconWrapper}>
+                          <i className="icon-up-open-mini"></i>
+                        </div>
+                        <div className={styles.textWrapper}>
+                          <span className={styles.label}>Salary To</span>
+                          <span className={styles.amount}>₹{product?.salaryTo || "N/A"}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : product.SaleType === "Sale" ? (
+                    <p className={styles.SalePrice}>{product.SalePrice}</p>
+                  ) : (
+                    <div className={styles.rentPrices}>
+                      {product.priceMonth ? (
+                        <div className={`${styles.priceBox} ${styles.active}`}>
+                          <div className={styles.wrap}>
+                            <i className="icon-calendar"></i>
+                            <span className={styles.duration}>Monthly</span>
                           </div>
-                          ) : product.SaleType === "Sale" ? (
-                            <p className={styles.SalePrice}>{product.SalePrice}</p>
-                          ) : (
-                            <div className={styles.rentPrices}>
-                              {product.priceMonth ? (
-                                <div className={`${styles.priceBox} ${styles.active}`}>
-                                  <div className={styles.wrap}>
-                                  <i className="icon-calendar"></i>
-                                  <span className={styles.duration}>Monthly</span>
-                                  </div>
-                                  <span className={styles.amount}>₹{product.priceMonth}</span>
-                                </div>
-                              ) : (
-                                <>
-                                  {product.priceWeek && (
-                                    <div className={`${styles.priceBox} ${styles.active}`}>
-                                      <div className={styles.wrap}>
-                                      <i className="icon-calendar"></i>
-                                      <span className={styles.duration}>Weekly</span>
-                                      </div>
-                                      <span className={styles.amount}>₹{product.priceWeek}</span>
-                                    </div>
-                                  )}
-                                  {product.price && (
-                                    <div className={`${styles.priceBox} ${styles.active}`}>
-                                      <div className={styles.wrap}>
-                                      <i className="icon-calendar"></i>
-                                      <span className={styles.duration}>Per Day</span>
-                                      </div>
-                                      <span className={styles.amount}>₹{product.price}</span>
-                                    </div>
-                                  )}
-                                </>
-                              )}
+                          <span className={styles.amount}>₹{product.priceMonth}</span>
+                        </div>
+                      ) : (
+                        <>
+                          {product.priceWeek && (
+                            <div className={`${styles.priceBox} ${styles.active}`}>
+                              <div className={styles.wrap}>
+                                <i className="icon-calendar"></i>
+                                <span className={styles.duration}>Weekly</span>
+                              </div>
+                              <span className={styles.amount}>₹{product.priceWeek}</span>
                             </div>
                           )}
-                  </section>
+                          {product.price && (
+                            <div className={`${styles.priceBox} ${styles.active}`}>
+                              <div className={styles.wrap}>
+                                <i className="icon-calendar"></i>
+                                <span className={styles.duration}>Per Day</span>
+                              </div>
+                              <span className={styles.amount}>₹{product.price}</span>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  )}
+                </section>
               }
+              <h2>
+                {product?.title && (
+                  <h2>
+                    {product.title}
+
+                    {/* 🚗 Vehicle Details */}
+                    {["Cars", "Motorcycles", "Scooters", "Commercial Vehicles"].includes(product.subcategory) && (
+                      <>
+                        {product.year && ` - years ${product.year}`}
+                        {product.KmDriven && ` , ${Number(product.KmDriven).toLocaleString("en-IN")} km`}
+                        {product.fuel && ` , ${product.fuel}`}
+                        {product.transmission && ` , ${product.transmission}`}
+                        {product.carBrand && ` , ${product.carBrand}`}
+                        {product.carModel && ` , ${product.carModel}`}
+                        {product.commercialBrand && ` , ${product.commercialBrand}`}
+                      </>
+                    )}
+
+                    {/* 📱 Mobile Details */}
+                    {product.subcategory === "Mobile Phones" && (
+                      <>
+                        {product.MobileModel && ` , ${product.MobileModel}`}
+                      </>
+                    )}
+
+                    {/* 💼 Job Details */}
+                    {product.category?.toLowerCase() === "jobs" && (
+                      <>
+                        {product.positionType && ` - (${product.positionType})`}
+                        {(product.salaryFrom || product.salaryTo) && (
+                          <>
+                            {" - "}
+                            {product.salaryFrom && `₹${Number(product.salaryFrom).toLocaleString("en-IN")}`}
+                            {product.salaryFrom && product.salaryTo && " to "}
+                            {product.salaryTo && `₹${Number(product.salaryTo).toLocaleString("en-IN")}`}
+                            {product.salaryPeriod && ` , ${product.salaryPeriod}`}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </h2>
+                )}
+
+              </h2>
+
+
               <div className={styles.formRow}>
                 <div className={styles.labelCol}>
                   <ul className={styles.infoList}>
@@ -756,83 +803,84 @@ const ProductDetails = () => {
                     <p>{product.description}</p>
                   </section>
                 </div>
-               
+
                 <div className={styles.PeriveAddress}>
-                {isDesckTop &&
-                  <section className={`${styles.card} ${styles.priceCard}`}>
-                    <h2 className="icon-tag-1">Price</h2>
-                        {product?.category === "Jobs" ? (
-                          <div className={styles.salarySection}>
-                            <div className={`${styles.salaryCard} ${styles.to}`}>
-                              <div className={styles.iconWrapper}>
-                                <i className="icon-down-open-mini"></i>
-                              </div>
-                              <div className={styles.textWrapper}>
-                                <span className={styles.label}>Salary From</span>
-                                <span className={styles.amount}>₹{product?.salaryFrom || "N/A"}</span>
-                              </div>
+                  {isDesckTop &&
+                    <section className={`${styles.card} ${styles.priceCard}`}>
+                      <h2 className="icon-tag-1">Price</h2>
+                      {product?.category === "Jobs" ? (
+                        <div className={styles.salarySection}>
+                          <div className={`${styles.salaryCard} ${styles.to}`}>
+                            <div className={styles.iconWrapper}>
+                              <i className="icon-down-open-mini"></i>
                             </div>
-                            <div className={`${styles.salaryCard} ${styles.from}`}>
-                              <div className={styles.iconWrapper}>
-                                <i className="icon-up-open-mini"></i>
-                              </div>
-                              <div className={styles.textWrapper}>
-                                <span className={styles.label}>Salary To</span>
-                                <span className={styles.amount}>₹{product?.salaryTo || "N/A"}</span>
-                              </div>
+                            <div className={styles.textWrapper}>
+                              <span className={styles.label}>Salary From</span>
+                              <span className={styles.amount}>₹{product?.salaryFrom || "N/A"}</span>
                             </div>
                           </div>
-                          ) : product.SaleType === "Sale" ? (
-                            <p className={styles.SalePrice}>{product.SalePrice}</p>
+                          <div className={`${styles.salaryCard} ${styles.from}`}>
+                            <div className={styles.iconWrapper}>
+                              <i className="icon-up-open-mini"></i>
+                            </div>
+                            <div className={styles.textWrapper}>
+                              <span className={styles.label}>Salary To</span>
+                              <span className={styles.amount}>₹{product?.salaryTo || "N/A"}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ) : product.SaleType === "Sale" ? (
+                        <p className={styles.SalePrice}>{product.SalePrice}</p>
+                      ) : (
+                        <div className={styles.rentPrices}>
+                          {product.priceMonth ? (
+                            <div className={`${styles.priceBox} ${styles.active}`}>
+                              <div className={styles.wrap}>
+                                <i className="icon-calendar"></i>
+                                <span className={styles.duration}>Monthly</span>
+                              </div>
+                              <span className={styles.amount}>₹{product.priceMonth}</span>
+                            </div>
                           ) : (
-                            <div className={styles.rentPrices}>
-                              {product.priceMonth ? (
+                            <>
+                              {product.priceWeek && (
                                 <div className={`${styles.priceBox} ${styles.active}`}>
                                   <div className={styles.wrap}>
-                                  <i className="icon-calendar"></i>
-                                  <span className={styles.duration}>Monthly</span>
+                                    <i className="icon-calendar"></i>
+                                    <span className={styles.duration}>Weekly</span>
                                   </div>
-                                  <span className={styles.amount}>₹{product.priceMonth}</span>
+                                  <span className={styles.amount}>₹{product.priceWeek}</span>
                                 </div>
-                              ) : (
-                                <>
-                                  {product.priceWeek && (
-                                    <div className={`${styles.priceBox} ${styles.active}`}>
-                                      <div className={styles.wrap}>
-                                      <i className="icon-calendar"></i>
-                                      <span className={styles.duration}>Weekly</span>
-                                      </div>
-                                      <span className={styles.amount}>₹{product.priceWeek}</span>
-                                    </div>
-                                  )}
-                                  {product.price && (
-                                    <div className={`${styles.priceBox} ${styles.active}`}>
-                                      <div className={styles.wrap}>
-                                      <i className="icon-calendar"></i>
-                                      <span className={styles.duration}>Per Day</span>
-                                      </div>
-                                      <span className={styles.amount}>₹{product.price}</span>
-                                    </div>
-                                  )}
-                                </>
                               )}
-                            </div>
+                              {product.price && (
+                                <div className={`${styles.priceBox} ${styles.active}`}>
+                                  <div className={styles.wrap}>
+                                    <i className="icon-calendar"></i>
+                                    <span className={styles.duration}>Per Day</span>
+                                  </div>
+                                  <span className={styles.amount}>₹{product.price}</span>
+                                </div>
+                              )}
+                            </>
                           )}
+                        </div>
+                      )}
 
-                  </section>
+                    </section>
                   }
                   {/* Social Media Section */}
-                  <div className={styles.socialMedia}>
-                    <div className={styles.socialLinks}>
-                      {product.facebook && <a href={product.facebook} target="_blank" rel="noopener noreferrer"><span className="icon-facebook"></span>Facebook</a>}
-                      {product.instagram && <a href={product.instagram} target="_blank" rel="noopener noreferrer"><span className="icon-instagram"></span>Instagram</a>}
-                      {product.twitter && <a href={product.twitter} target="_blank" rel="noopener noreferrer"><span className="icon-twitter-circled"></span>Twitter</a>}
+                  {(product.facebook || product.instagram || product.twitter) && (
+                    <div className={styles.socialMedia}>
+                      <div className={styles.socialLinks}>
+                        {product.facebook && <a href={product.facebook} target="_blank" rel="noopener noreferrer"><span className="icon-facebook"></span>Facebook</a>}
+                        {product.instagram && <a href={product.instagram} target="_blank" rel="noopener noreferrer"><span className="icon-instagram"></span>Instagram</a>}
+                        {product.twitter && <a href={product.twitter} target="_blank" rel="noopener noreferrer"><span className="icon-twitter-circled"></span>Twitter</a>}
+                      </div>
                     </div>
-                  </div>
-                </div>
-               
-              </div>
+                  )}
 
+                </div>
+              </div>
             </section>
           </div>
         </div>
@@ -870,7 +918,7 @@ const ProductDetails = () => {
                 {/* <p>{shopData ? (<span className="icon-phone"> {shopData.registration?.mobile || "Gurmeet Kour"}</span>) : (<span>Loading...</span>)}</p> */}
                 {shopData ? (
                   <>
-                    <p>{shopData ? (<span className="icon-mail"> {shopData.user?.email || "Add Email"}</span>) : (<span>Loading...</span>)}</p>
+                    <p>{shopData ? (<span className="icon-mail"> {shopData.user?.email || "Not Provided"}</span>) : (<span>Loading...</span>)}</p>
                   </>
                 ) : (
                   <ProfilePicSkeleton size="xlarge" showCircle={false}
@@ -910,7 +958,7 @@ const ProductDetails = () => {
           </div> */}
 
           <div className={styles.sellerInfo}>
-            <div className={styles.name}>Address</div>
+            <div className={`${styles.name} ${"icon-location-alt"}`}>Address</div>
             <div className={styles.address}>
               {/* {product.location} || {product.location} */}
               <p>{product?.location?.city || "Null"} {">"} {product?.location?.area || "Null"}</p>

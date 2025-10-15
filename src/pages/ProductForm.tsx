@@ -1931,7 +1931,7 @@ if (!formData.termsAccepted) {
           <div className={styles.fileManageWrap}>
             <div className={styles.formGroup}>
             <div className={styles.fileUpload}>
-              <label htmlFor="file" className="icon-upload-cloud-outline"> Upload Cover Image</label>
+              <label htmlFor="file" className="icon-upload-cloud-outline">Cover Image</label>
               <input type="file" accept="image/*" onChange={handleCoverImageChange} ref={coverImageInputRef} />
             </div>
               {formData.coverImage && (
