@@ -44,10 +44,34 @@ export default function ChatSidebar({ isOpen,
   const socketRef = useRef(null);
   const { notifications, clearNotification } = useNotifications();
   const [receiverMap, setReceiverMap] = useState({});
+  const [onlineUsers, setOnlineUsers] = useState({});
 
   const socketURL = "https://socket-server-gf0a.onrender.com";
   
-
+  useEffect(() => {
+    if (!socket) return;
+  
+    const handleUserOnline = (userId) => {
+      setOnlineUsers((prev) => ({ ...prev, [userId]: true }));
+    };
+  
+    const handleUserOffline = (userId) => {
+      setOnlineUsers((prev) => {
+        const updated = { ...prev };
+        delete updated[userId];
+        return updated;
+      });
+    };
+  
+    socket.on("userOnline", handleUserOnline);
+    socket.on("userOffline", handleUserOffline);
+  
+    return () => {
+      socket.off("userOnline", handleUserOnline);
+      socket.off("userOffline", handleUserOffline);
+    };
+  }, [socket]);
+  
   useEffect(() => {
     const fetchUserInfo = async () => {
       if (!session?.user?.contact) return;
@@ -468,9 +492,9 @@ export default function ChatSidebar({ isOpen,
                 )}
                 
               </div>
-              <span className={`${styles.connectionStatus} ${isConnected ? styles.connected : styles.disconnected}`}>
-                  {isConnected ? '🟢 Online' : '🔴 Offline'}
-                </span>
+              <span className={`status-dot ${onlineUsers[user._id] ? "online" : "offline"}`}>
+                {onlineUsers[user._id] ? '🟢 Online' : '🔴 Offline'}
+              </span>
           </div>
               
 {/* 
