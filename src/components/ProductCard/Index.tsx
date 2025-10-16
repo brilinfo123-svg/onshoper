@@ -6,9 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import styles from "./Index.module.scss";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import StarRating from "../StarRating/Index";
 import PremiumBadge from "../PremiumBadge/Index";
-import AverageRating from "../RatingAvrage/Index";
 
 type ProductCardProps = {
   image: string;
@@ -119,7 +117,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <p className={styles.shopDescription}>{shopDescription}</p>
 
         <div className={styles.importantDetail}>
-          <AverageRating shopKeeperID={userShopId} />
+          {/* <AverageRating shopKeeperID={userShopId} /> */}
           <p className={styles.distance}>
             <span className="icon-map-signs"></span> {distance}
           </p>
