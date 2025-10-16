@@ -26,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <ChatProvider>
             <CityFilterProvider> {/* 👈 Wrap here */}
               <ToastContainer position="top-right" autoClose={3000} />
-              <AutoUnfeaturePoller />
+              {/* <AutoUnfeaturePoller /> */}
               <HeaderComponent />
               <main>
                 <Component {...pageProps} />
@@ -49,14 +49,14 @@ const HeaderComponent = () => {
 };
 
 // 👇 Auto poll /api/unfeature-expired
-const AutoUnfeaturePoller = () => {
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetch("../api/unfeature-expired");
-    }, 10000); // every 10 seconds
+// const AutoUnfeaturePoller = () => {
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       fetch("../api/unfeature-expired");
+//     }, 86400000); // every 1 day
 
-    return () => clearInterval(interval);
-  }, []);
+//     return () => clearInterval(interval);
+//   }, []);
 
-  return null;
-};
+//   return null;
+// };

@@ -1879,33 +1879,6 @@ if (!formData.termsAccepted) {
               </div>
             </div>
           )}
-
-          {/* Pickup Option */}
-          {/* <div className={styles.formGroup}>
-            <label htmlFor="pickupOption">Pickup Option</label>
-            <select
-              id="pickupOption"
-              name="pickupOption"
-              value={formData.pickupOption}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Option</option>
-              <option value="Owner Delivery">Owner Delivery</option>
-              <option value="User Pickup">User Pickup</option>
-            </select>
-          </div> */}
-
-
-
-
-         
-
-          {/* <div className={styles.flexRow}>
-            <div className={styles.formGroup}><label>Price Per Day (₹)</label><input name="price" type="number" value={formData.price} onChange={handleChange} /></div>
-            <div className={styles.formGroup}><label>Price Per Week (₹)</label><input name="priceWeek" type="number" value={formData.priceWeek} onChange={handleChange} /></div>
-            <div className={styles.formGroup}><label>Price Per Month (₹)</label><input name="priceMonth" type="number" value={formData.priceMonth} onChange={handleChange} /></div>
-          </div> */}
           <div className={styles.formGroup}>
             <label>Title</label>
             <input type="text" name="title" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />

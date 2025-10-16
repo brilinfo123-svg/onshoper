@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "@/styles/ProductForm.module.scss";
-import PickupLocationSearch from "@/components/PickupLocationSearch/Index";
 import Swal from "sweetalert2";
 
 interface Product {

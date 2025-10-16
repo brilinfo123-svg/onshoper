@@ -251,8 +251,8 @@ const ProductCard = ({
                 }
 
                 if (subCategory === "Mobile Phones") {
-                  if (mobileBrand || mobileModel) {
-                    extraText += ` ${mobileBrand || ""} ${mobileModel || ""}`.trim();
+                  if (mobileModel) {
+                    extraText += `${mobileModel || ""}`.trim();
                   }
                 }
                 if (category?.toLowerCase() === "jobs") {
@@ -266,7 +266,7 @@ const ProductCard = ({
                     {displayTitle.length > 80
                       ? displayTitle.slice(0, 80) + "..."
                       : displayTitle}
-                    {extraText && <span>{extraText}</span>}
+                    {extraText && <span className={style.extraText}>{extraText}</span>}
                   </>
                 );
               })()}

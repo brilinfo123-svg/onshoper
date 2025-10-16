@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import styles from "@/styles/package.module.scss";
 import { withProtectedPage } from "@/components/withProtectedPage";
-import FeatureButton from "@/components/FeaturedButton/Index";
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 import Swal from "sweetalert2";

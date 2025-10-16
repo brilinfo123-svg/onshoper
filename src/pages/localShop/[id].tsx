@@ -8,9 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Tabs from "@/components/Tabs/Index";
 import UpdateDetail from "@/components/UpdateDetail/Index";
-import ServiceList from "@/components/ServiceList/Index";
 import { useSession } from "next-auth/react";
-import AverageRating from "@/components/RatingAvrage/Index";
 
 // Assuming you have a fetch function to get the shop details by ID
 const fetchShopDetails = async (id: string) => {
@@ -241,7 +239,7 @@ const ShopProfile: React.FC = () => {
       label: <span>Services or Products</span>, content:
         <div className={styles.personalInfo}>
           <div className={styles.description}>
-          <ServiceList services={shop?.services} length={false} />
+          
           </div>
           <div>
           </div>
@@ -331,7 +329,6 @@ const ShopProfile: React.FC = () => {
                   <Image src="/images/profile.png" width="100" height="100" alt="userProfile" />
                   <h3>{shop.fullName || "Not Provided"}</h3>
                   {/* <Link href="#">Edit Profile</Link> */}
-                  <AverageRating shopKeeperID={ShopKeeperID} />
 
                   <div className={styles.subscribers}>
                     <p><span className="icon-group"></span>Subscribers: <span>25</span></p>

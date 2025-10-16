@@ -3,15 +3,12 @@ import { useCallback, useEffect, useState } from "react";
 import { format, formatDistanceToNow } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
 import Link from "next/link";
-import ChatBox from "@/components/ChatBox/Index";
 import styles from "@/styles/ProductDetails.module.scss";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import StarRating from "@/components/StarRating/Index";
-import Tabs from "@/components/Tabs/Index";
 import ProductDetailsSkeleton from "@/components/ProductDetailsSkeleton/Index";
 import ProfilePicSkeleton from "@/components/ProfilePicSkeleton/Index";
 import useEmblaCarousel from 'embla-carousel-react';
@@ -19,6 +16,7 @@ import { useChat } from "@/contexts/ChatContext";
 import Layout from "@/components/Layout/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import Head from "next/head";
+import RelatedProducts from "@/components/RelatedProducts/Index";
 
 // import { WheelGesturesPlugin } from 'emb';
 
@@ -58,11 +56,9 @@ const ProductDetails = () => {
   const router = useRouter();
   const { id } = router.query;
   const [product, setProduct] = useState<any>(null);
-  const [seller, setSeller] = useState<any>(null);
+  const [, setSeller] = useState<any>(null);
   const { data: session } = useSession();
   const [shopData, setShopData] = useState<ShopData | null>(null);
-  const [showChat, setShowChat] = useState(false);
-  const [shop, setShop] = useState<any>(null); // State to store shop details
   const [showImageModal, setShowImageModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { openChat } = useChat();
@@ -70,15 +66,7 @@ const ProductDetails = () => {
   const isMobile = useMediaQuery("(max-width: 992px)");
   const isDesckTop = useMediaQuery("(min-width: 992px)");
   // Google Maps configuration
-  const mapContainerStyle = {
-    width: '100%',
-    height: '400px'
-  };
 
-  const defaultCenter = {
-    lat: 20.5937, // India coordinates
-    lng: 78.9629
-  };
 
   const SallerName = shopData?.user?.name;
   const SallerMobile = shopData?.user?.contact;
@@ -86,7 +74,6 @@ const ProductDetails = () => {
 
 
   console.log("session:", session);
-  console.log("SallerName", SallerName);
 
   const [isHomeDeliveryAvailable, setIsHomeDeliveryAvailable] = useState(true);
 
@@ -153,23 +140,6 @@ const ProductDetails = () => {
       alert('Mobile number not available');
     }
   };
-
-  // const startChat = () => {
-  //   if (!session) {
-  //     router.push('/login');
-  //     return;
-  //   }
-  //   // URL parameters ke through extra data send karo
-  //   router.push({
-  //     pathname: `/chat/${product.shopOwnerID}`,
-  //     query: {
-  //       sellerName: SallerName,
-  //       productId: product._id,
-  //       productTitle: product.title
-  //     }
-  //   });
-  // };
-
 
   // console.log("currentUserId:", session?.user?.id);
   // console.log("otherUserId:", product?.shopOwnerID);
@@ -354,7 +324,6 @@ const ProductDetails = () => {
   //   },
   // ];
   console.log("Product:", product);
-  console.log("Title:", product?.title);
 
   return (
     <div className="container">
@@ -617,19 +586,19 @@ const ProductDetails = () => {
                     {["Cars", "Motorcycles", "Scooters", "Commercial Vehicles"].includes(product.subcategory) && (
                       <>
                         {product.year && ` - years ${product.year}`}
-                        {product.KmDriven && ` , ${Number(product.KmDriven).toLocaleString("en-IN")} km`}
-                        {product.fuel && ` , ${product.fuel}`}
-                        {product.transmission && ` , ${product.transmission}`}
-                        {product.carBrand && ` , ${product.carBrand}`}
-                        {product.carModel && ` , ${product.carModel}`}
-                        {product.commercialBrand && ` , ${product.commercialBrand}`}
+                        {product.KmDriven && `, ${Number(product.KmDriven).toLocaleString("en-IN")} km`}
+                        {product.fuel && `, ${product.fuel}`}
+                        {product.transmission && `, ${product.transmission}`}
+                        {product.carBrand && `, ${product.carBrand}`}
+                        {product.carModel && `, ${product.carModel}`}
+                        {product.commercialBrand && `, ${product.commercialBrand}`}
                       </>
                     )}
 
                     {/* 📱 Mobile Details */}
                     {product.subcategory === "Mobile Phones" && (
                       <>
-                        {product.MobileModel && ` , ${product.MobileModel}`}
+                        {product.MobileModel && `, ${product.MobileModel}`}
                       </>
                     )}
 
@@ -643,7 +612,7 @@ const ProductDetails = () => {
                             {product.salaryFrom && `₹${Number(product.salaryFrom).toLocaleString("en-IN")}`}
                             {product.salaryFrom && product.salaryTo && " to "}
                             {product.salaryTo && `₹${Number(product.salaryTo).toLocaleString("en-IN")}`}
-                            {product.salaryPeriod && ` , ${product.salaryPeriod}`}
+                            {product.salaryPeriod && `, ${product.salaryPeriod}`}
                           </>
                         )}
                       </>
@@ -1026,8 +995,9 @@ const ProductDetails = () => {
               <p className="no-location">Location information not available</p>
             )}
           </div>
-
+         
         </div>
+       
       </div>
       {/* <button onClick={startChat} className={styles.chatButton}>
         Chat with Seller
@@ -1037,6 +1007,15 @@ const ProductDetails = () => {
       <Layout hideOnOverlayClick={true} children={undefined} >
         {/* Your page content */}
       </Layout>
+      {product?.category && product?.subcategory && product?._id && (
+  <RelatedProducts
+    category={product.category}
+    subcategory={product.subcategory}
+    currentProductId={product._id}
+  />
+)}
+      Aaalash
+
     </div>
   );
 };

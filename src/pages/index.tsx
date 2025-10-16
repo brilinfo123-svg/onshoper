@@ -1,19 +1,14 @@
 "use client";
 
-import Banner from "@/components/Banner/Index";
 import Benefits from "@/components/Benefits/Index";
 import Button from "@/components/Button/Index";
 import SkeletonCard from "@/components/SkeletonCard/Index";
 import ProductPost from "@/components/ProductPost/Index";
-import India from "@/components/India/Index";
-import Sidebar from "@/components/Sidebar/Index";
 import styles from "@/styles/Home.module.scss";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 import ProductMobile from "@/components/ProductMobile/Index";
 import BannerPost from "@/components/BannerPost";
-import FilterLocation from "@/components/FilterLocation/Index";
-import { useCityFilter } from "@/contexts/CityFilterContext";
 import IntroAnimation from "@/components/IntroAnimation/Index";
 import Head from "@/components/Head";
 

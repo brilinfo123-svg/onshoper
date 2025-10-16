@@ -1,7 +1,7 @@
 
 .priceType{
   font-size: 12px;
-  background-color: #d88e03;
+  background-color: #708090;
   color: #fff;
   width: max-content;
   border-radius: 5px;
@@ -18,7 +18,12 @@
     border-radius: 2px;
   }
 }
-
+.extraText{
+  @media screen and (max-width: 767px) {
+    display: block;
+    margin: 0px 0 4px;
+  }
+}
 .favoriteIcon {
   position: absolute;
   top: 16px;

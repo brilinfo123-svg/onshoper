@@ -9,7 +9,6 @@ import Link from "next/link";
 import ProductPost from "@/components/ProductPost/Index";
 import FeatureButton from "@/components/FeaturedButton/Index";
 import Tabs from "@/components/Tabs/Index";
-import StarRating from "@/components/StarRating/Index";
 import UpdateDetail from "@/components/UpdateDetail/Index";
 
 import styles from "@/styles/Profile.module.scss";
@@ -55,10 +54,6 @@ const PropertyDetailPage: React.FC = () => {
   const handleViewMore = () => {
     setVisibleCount((prevCount) => prevCount + 3);
   };
-
-  // console.log("wishlistProducts", wishlistProducts);
-  // // console.log(shopOwnerID);
-  // console.log("Sesstion Data", session)
 
   const handleDeleteAccount = async () => {
     const confirm = await Swal.fire({

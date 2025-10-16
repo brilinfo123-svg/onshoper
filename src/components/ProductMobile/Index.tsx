@@ -282,7 +282,6 @@ const ProductMobile = ({
             <button 
               className={`${styles.carouselControl} ${styles.leftArrow} ${"icon-left-open-big"}`} 
               onClick={scrollPrev}
-              disabled={!emblaApi || !emblaApi.canScrollPrev()}
             ></button>
 
             <div className={styles.embla}>

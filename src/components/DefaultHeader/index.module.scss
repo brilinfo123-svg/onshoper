@@ -201,12 +201,12 @@
           a {
             display: flex;
             align-items: center;
-            padding: 10px 10px;
+            padding: 20px 0px;
             background-color: #fff;
             border-bottom: 1px solid #ddd;
 
-            span {
-              margin-left: 5px;
+            &::before {
+              margin-right: 10px;
             }
 
             @media screen and (max-width: 767px) {
@@ -291,7 +291,7 @@
     list-style: none;
     align-items: center;
     background-color: #fff;
-    padding: 6px 10px;
+    padding: 6px 6px;
     border-radius: 10px;
     @media screen and (max-width: 992px) {
       padding: 4px 0px;

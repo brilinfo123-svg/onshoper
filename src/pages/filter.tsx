@@ -10,6 +10,8 @@ import Image from "next/image";
 import Head from "next/head";
 
 interface Product {
+  year: number;
+  KmDriven: number;
   positionType: string;
   salaryPeriod: string;
   salaryTo: number;
@@ -55,7 +57,6 @@ const Filter: React.FC = () => {
   const searchTerm = searchParams.get("searchTerm") || "";
   const city = searchParams.get("city") || "Select City";
   const categorySlug = searchParams.get("category") || "";
-  const [selectedCity, setSelectedCity] = useState<string>("Select City");
 
   // Read subcategories from URL query param and split to array
   const subcategoriesParam = searchParams.get("subcategories") || "";
@@ -67,11 +68,9 @@ const Filter: React.FC = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [productsLoading, setProductsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [displayCount, setDisplayCount] = useState(12);
   const [minPrice, setMinPrice] = useState<number | "">("");
   const [maxPrice, setMaxPrice] = useState<number | "">("");
   const [filterType, setFilterType] = useState<"all" | "Sale" | "Rent">("all");
-  const [visibleCount, setVisibleCount] = useState(12);
   const [showFilter, setShowFilter] = useState(false);
 
   const { data: session } = useSession();
@@ -309,7 +308,7 @@ const Filter: React.FC = () => {
           setMaxPrice={setMaxPrice}
           setFilterType={setFilterType}
           onApplyFilters={() => {
-            setVisibleCount(displayCount);
+            // setVisibleCount(displayCount);
             setShowFilter(false);
           }}
           onClose={() => setShowFilter(false)}
@@ -344,18 +343,18 @@ const Filter: React.FC = () => {
             </div>
           </div>
           <div className={styles.btnWrapper}>
-            <button className={filterType === "Sale" ? styles.activeBtn : ""} onClick={() => { setFilterType("Sale"); setVisibleCount(displayCount); }}>
+            <button className={filterType === "Sale" ? styles.activeBtn : ""} onClick={() => { setFilterType("Sale"); }}>
               Buy
               {/* ({saleTotal}) */}
             </button>
             <button className={filterType === "Rent" ? styles.activeBtn : ""}
-              onClick={() => { setFilterType("Rent"); setVisibleCount(displayCount); }}>
+              onClick={() => { setFilterType("Rent");}}>
               Rent
               {/* ({rentTotal}) */}
             </button>
             <button
               className={filterType === "all" ? styles.activeBtn : ""}
-              onClick={() => { setFilterType("all"); setVisibleCount(displayCount); }}
+              onClick={() => { setFilterType("all"); }}
             >
               See All
               {/* ({allTotal}) */}
@@ -396,7 +395,7 @@ const Filter: React.FC = () => {
             ) : (
               filteredProducts
                 .sort((a, b) => (b.feature ? 1 : 0) - (a.feature ? 1 : 0))
-                .slice(0, displayCount)
+                
                 .map((product) => (
                   <ProductPost
                     key={product._id}
@@ -425,6 +424,8 @@ const Filter: React.FC = () => {
                     mobileModel={product.MobileModel}
                     salaryFrom={product.salaryFrom}
                     salaryTo={product.salaryTo}
+                    year={product.year}
+                    KmDriven={product.KmDriven}
                     salaryPeriod={product.salaryPeriod}
                     positionType={product.positionType}
                   />
