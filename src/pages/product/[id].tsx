@@ -852,6 +852,19 @@ const ProductDetails = () => {
               </div>
             </section>
           </div>
+          {/* <div className={styles.DesckTop}>
+              {isDesckTop && 
+              <div className={styles.MobileView}>
+              {product?.category && product?.subcategory && product?._id && (
+                  <RelatedProducts
+                    category={product.category}
+                    subcategory={product.subcategory}
+                    currentProductId={product._id}
+                  />
+                )}
+              </div>
+              }
+          </div> */}
         </div>
 
         {/* Right Column */}
@@ -1007,15 +1020,19 @@ const ProductDetails = () => {
       <Layout hideOnOverlayClick={true} children={undefined} >
         {/* Your page content */}
       </Layout>
-      {product?.category && product?.subcategory && product?._id && (
-  <RelatedProducts
-    category={product.category}
-    subcategory={product.subcategory}
-    currentProductId={product._id}
-  />
-)}
-      Aaalash
-
+      {/* {isDesckTop &&  */}
+      <div className="container">
+      <div className={styles.DesckTop}>
+          {product?.category && product?.subcategory && product?._id && (
+              <RelatedProducts
+                category={product.category}
+                subcategory={product.subcategory}
+                currentProductId={product._id}
+              />
+            )}
+      </div>
+      </div>
+    {/* } */}
     </div>
   );
 };

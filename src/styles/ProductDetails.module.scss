@@ -4,7 +4,9 @@
   font-size: 1.4rem;
 }
 
-
+.DesckTop{
+  margin-bottom: 30px;
+}
 
 
 
@@ -12,10 +14,9 @@
   display: flex;
   gap: 20px;
   margin-top: 50px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   @media screen and (max-width: 767px) {
     display: block;
-    margin-top: 20px;
   }
 
   .termFile {
@@ -1100,13 +1101,16 @@
           display: flex;
           align-items: center;
           justify-content: center;
+          flex-direction: row-reverse;
         }
         .wrap{
           @media screen and (max-width: 767px) {
-            margin-right: 15px;
-            border-right: 1px solid #404040;
-            padding-right: 15px;
+            margin-left: 15px;
+            border-left: 1px solid #404040;
+            padding-left: 15px;
             margin-top: 0;
+            display: flex;
+            align-items: center;
           }
         }
         .amount {

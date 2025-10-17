@@ -1,12 +1,15 @@
 .relatedWrapper {
   margin-top: 40px;
-  padding: 0 20px;
 }
 
 .heading {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  @media screen and (max-width: 767px) {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
 }
 
 .embla {
@@ -18,8 +21,29 @@
 }
 
 .emblaSlide {
-  flex: 0 0 250px;
-  padding: 0 10px;
+  flex: 0 0 280px;
+  padding: 0 5px;
+  @media screen and (min-width: 768px) and (max-width: 1199px){
+    flex: 0 0 230px;
+    padding: 0 4px;
+  }
+  @media screen and (max-width: 767px){
+    flex: 0 0 150px;
+    padding: 0 3px;
+  }
+  span{
+    p{
+      @media screen and (max-width: 767px){
+      right: 0 !important;
+      top: 126px !important;
+      }
+    }
+  }
+  img{
+    @media screen and (max-width: 767px){
+      height: 140px;
+    }
+  }
 }
 
 .card {
