@@ -281,3 +281,12 @@
   .suggestionItem:hover {
     background-color: #f0f0f0;
   }
+
+  .stickyBanner {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: #fff; // or your banner background
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); // optional shadow
+    transition: box-shadow 0.3s ease;
+  }

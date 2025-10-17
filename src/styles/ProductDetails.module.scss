@@ -1050,9 +1050,11 @@
   h2 {
     font-size: 1.2rem;
     color: #444;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     @media screen and (max-width: 767px) {
       font-size: 16px;
+      margin-bottom: 20px;
+      line-height: 25px;
     }
   }
 
@@ -1208,10 +1210,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 14px;
-  border-radius: 10px;
+  padding: 0 0px 13px;
   background: #fff;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   border: 2px solid transparent;
 
@@ -1227,6 +1227,9 @@
 
   .textWrapper {
     width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column-reverse;
     .label {
       font-size: 13px;
       font-weight: 500;
@@ -1240,23 +1243,23 @@
       font-size: 18px;
       font-weight: 700;
       color: #222;
-      margin-top: 5px;
+      margin-bottom: 5px;
       display: block;
     }
   }
 
   &.from {
-    border-color: #2ecc71;
+    border: none;
+    border-bottom: 1.5px solid #2ecc71;
     .iconWrapper {
-      background: rgba(46, 204, 113, 0.1);
       color: #2ecc71;
     }
   }
 
   &.to {
-    border-color: #3498db;
+    border: none;
+    border-bottom: 1.5px solid #3498db;
     .iconWrapper {
-      background: rgba(52, 152, 219, 0.1);
       color: #3498db;
     }
   }

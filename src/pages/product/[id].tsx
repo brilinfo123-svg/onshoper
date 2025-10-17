@@ -521,18 +521,18 @@ const ProductDetails = () => {
                   {product?.category === "Jobs" ? (
                     <div className={styles.salarySection}>
                       <div className={`${styles.salaryCard} ${styles.to}`}>
-                        <div className={styles.iconWrapper}>
+                        {/* <div className={styles.iconWrapper}>
                           <i className="icon-down-open-mini"></i>
-                        </div>
+                        </div> */}
                         <div className={styles.textWrapper}>
                           <span className={styles.label}>Salary From</span>
                           <span className={styles.amount}>₹{product?.salaryFrom || "N/A"}</span>
                         </div>
                       </div>
                       <div className={`${styles.salaryCard} ${styles.from}`}>
-                        <div className={styles.iconWrapper}>
+                        {/* <div className={styles.iconWrapper}>
                           <i className="icon-up-open-mini"></i>
-                        </div>
+                        </div> */}
                         <div className={styles.textWrapper}>
                           <span className={styles.label}>Salary To</span>
                           <span className={styles.amount}>₹{product?.salaryTo || "N/A"}</span>
@@ -780,18 +780,18 @@ const ProductDetails = () => {
                       {product?.category === "Jobs" ? (
                         <div className={styles.salarySection}>
                           <div className={`${styles.salaryCard} ${styles.to}`}>
-                            <div className={styles.iconWrapper}>
+                            {/* <div className={styles.iconWrapper}>
                               <i className="icon-down-open-mini"></i>
-                            </div>
+                            </div> */}
                             <div className={styles.textWrapper}>
                               <span className={styles.label}>Salary From</span>
                               <span className={styles.amount}>₹{product?.salaryFrom || "N/A"}</span>
                             </div>
                           </div>
                           <div className={`${styles.salaryCard} ${styles.from}`}>
-                            <div className={styles.iconWrapper}>
+                            {/* <div className={styles.iconWrapper}>
                               <i className="icon-up-open-mini"></i>
-                            </div>
+                            </div> */}
                             <div className={styles.textWrapper}>
                               <span className={styles.label}>Salary To</span>
                               <span className={styles.amount}>₹{product?.salaryTo || "N/A"}</span>

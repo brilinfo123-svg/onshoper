@@ -113,7 +113,7 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
   };
 
   return (
-    <div className={`${Style.banner} ${bannerClass}`}>
+    <div className={`${Style.banner} ${bannerClass} ${Style.stickyBanner}`}>
       <div className={`${Style.content} ${contentClass}`}>
         {/* <div className={Style.bannerContent}>
           <h1 className={Style.heading}>{searchTitle}</h1>

@@ -46,20 +46,6 @@ const RelatedProducts: React.FC<Props> = ({ category, subcategory, currentProduc
     }, []);
 
   useEffect(() => {
-    if (!emblaApi) return;
-  
-    const autoplay = setInterval(() => {
-      if (emblaApi.canScrollNext()) {
-        emblaApi.scrollNext();
-      } else {
-        emblaApi.scrollTo(0); // loop back to start
-      }
-    }, 3000); // 3 seconds per slide
-  
-    return () => clearInterval(autoplay); // cleanup on unmount
-  }, [emblaApi]);
-
-  useEffect(() => {
     const fetchRelated = async () => {
       if (!category && !subcategory) return;
 
