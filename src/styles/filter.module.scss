@@ -51,8 +51,10 @@
             border-bottom: 0;
             @media screen and (max-width: 767px) {
               padding: 0;
-              height: 120px;
+              height: 140px;
               width: 150px;
+              object-fit: cover;
+              object-position: center;
             }
             @media screen and (max-width: 374px) {
               height: 150px;

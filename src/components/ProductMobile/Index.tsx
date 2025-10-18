@@ -121,6 +121,24 @@ const ProductMobile = ({
     "Washing Machines": "/icons/laundryMachine.png",
     "Other Electronics": "/icons/electric-appliance.png",
 
+
+     // Books & Sports
+     "Gym & Fitness": "/icons/dumbbell.png",
+     "Books": "/icons/stack-of-books.png",
+     "Musical Instruments": "/icons/guitar.png",
+     "Sports Equipment": "/icons/sports.png",
+     "Collectibles": "/icons/data-collection.png",
+     "Board Games": "/icons/dice.png",
+     "Toys": "icons/teddy-bear.png",
+
+
+    // Feshion subcategories
+    "Ethnic Wear": "/icons/sari.png",
+    "Eyewear": "/icons/sunglasses.png",
+    "Footwear": "/icons/sneakers.png",
+    "Women’s Clothing": "/icons/fashion.png",
+    "Men’s Clothing": "/icons/male-clothes.png",
+    "Kids": "/icons/baby-clothing.png",
     
 
     // Furniture subcategories

@@ -81,7 +81,7 @@ const RelatedProducts: React.FC<Props> = ({ category, subcategory, currentProduc
 
   return (
     <div className={styles.relatedWrapper}>
-      <h2 className={styles.heading}>Related Products</h2>
+      <h3 className={styles.heading}>Related Products</h3>
       {/* <p className={styles.count}>Found {relatedProducts.length} items</p> */}
       <div className={styles.embla} ref={emblaRef}>
         <div className={styles.emblaContainer}>
