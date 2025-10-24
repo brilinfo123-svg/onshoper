@@ -1858,26 +1858,26 @@ if (!formData.termsAccepted) {
           {!["House & Apartments", "Cars", "Motorcycles", "Land & Plots", "PG & Guest House", "Shops & Offices", "Commercial Properties"].includes(selectedSubcategory) && (
             !["Services", "Jobs", "Education & Learning", "Commercial Vehicles", "Events & Entertainment"].includes(selectedCategory) &&
             <div className={styles.formGroup}>
-              <label>Select Pickup Option</label>
-              <div className={styles.pickupOptions}>
-                <label className={`${styles.radioCard} ${formData.pickupOption === "Owner Delivery" ? styles.selected : ""}`}>
-                  <input type="radio" name="pickupOption" value="Owner Delivery" checked={formData.pickupOption === "Owner Delivery"}
-                    onChange={handleChange} />
-                  <div>
-                    <strong>Owner Delivery</strong>
-                    <p>Owner will deliver the item to your location.</p>
-                  </div>
-                </label>
+                <label>Will you deliver to the customer's doorstep?</label>
+                <div className={styles.pickupOptions}>
+                  <label className={`${styles.radioCard} ${formData.pickupOption === "Owner Delivery" ? styles.selected : "" }`}>
+                    <input type="radio" name="pickupOption" value="Owner Delivery" checked={formData.pickupOption === "Owner Delivery"} onChange={handleChange}/>
+                    <div>
+                      <strong>Yes, I’ll deliver</strong>
+                      <p>Item will be delivered to the customer.</p>
+                    </div>
+                  </label>
 
-                <label className={`${styles.radioCard} ${formData.pickupOption === "User Pickup" ? styles.selected : ""}`}>
-                  <input type="radio" name="pickupOption" value="User Pickup" checked={formData.pickupOption === "User Pickup"} onChange={handleChange}/>
-                  <div>
-                    <strong>User Pickup</strong>
-                    <p>User has to visit and pick up the item.</p>
-                  </div>
-                </label>
+                  <label className={`${styles.radioCard} ${formData.pickupOption === "User Pickup" ? styles.selected : ""}`}>
+                    <input type="radio" name="pickupOption" value="User Pickup" checked={formData.pickupOption === "User Pickup"} onChange={handleChange}/>
+                    <div>
+                      <strong>No, pickup only</strong>
+                      <p>Customer must collect the item.</p>
+                    </div>
+                  </label>
+                </div>
               </div>
-            </div>
+
           )}
           <div className={styles.formGroup}>
             <label>Title</label>

@@ -65,6 +65,8 @@ const ProductDetails = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 992px)");
   const isDesckTop = useMediaQuery("(min-width: 992px)");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedState, setSelectedState] = useState("");
   // Google Maps configuration
 
 
@@ -113,7 +115,7 @@ const ProductDetails = () => {
     }
   };
 
-
+ 
 
   const handleCallClick = () => {
     if (SallerMobile) {
@@ -175,6 +177,23 @@ const ProductDetails = () => {
   // }, [shop?.homeDelivery]);
 
 
+  // When reading from localStorage:
+useEffect(() => {
+  const fullLocation = localStorage.getItem("selectedCity") || "";
+
+if (fullLocation === "All Cities") {
+  setSelectedState(""); // no state filter
+  setSelectedCity("");  // no city filter
+} else if (fullLocation.includes("/")) {
+  const [state, city] = fullLocation.split("/").map((s) => s.trim());
+  setSelectedState(state);
+  setSelectedCity(city);
+} else {
+  setSelectedState(fullLocation); // fallback if only state is selected
+  setSelectedCity(""); // no city
+}
+}, []);
+
 
   useEffect(() => {
     const fetchProductAndSeller = async () => {
@@ -204,7 +223,6 @@ const ProductDetails = () => {
 
     fetchProductAndSeller();
   }, [id]);
-
 
   // Embla Carousel hooks
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -323,7 +341,7 @@ const ProductDetails = () => {
   //       </div>
   //   },
   // ];
-  console.log("Product:", product);
+  // console.log("Product:", product);
 
   return (
     <div className="container">
@@ -367,11 +385,7 @@ const ProductDetails = () => {
           {product.images?.length > 1 ? (
             <Slider {...sliderSettings}>
               {product.images.map((img: string, index: number) => (
-                <div
-                  key={index}
-                  className={styles.slide}
-                  onClick={() => openImageModal(index)}
-                >
+                <div key={index} className={styles.slide} onClick={() => openImageModal(index)}>
                   <Image
                     src={img || "/images/watercolor.png"} // fallback for broken image
                     alt={`product-${index}`}
@@ -383,16 +397,8 @@ const ProductDetails = () => {
               ))}
             </Slider>
           ) : product.images?.length === 1 ? (
-            <div
-              className={styles.slide}
-              onClick={() => openImageModal(0)}
-            >
-              <Image
-                src={product.images[0] || "/images/watercolor.png"} // fallback for single image
-                alt="product-single"
-                width={600}
-                height={400}
-                style={{ objectFit: "contain", width: "100%", height: "100%", cursor: "pointer" }}
+            <div className={styles.slide} onClick={() => openImageModal(0)}>
+              <Image src={product.images[0] || "/images/watercolor.png"} alt="product-single" width={600} height={400} style={{ objectFit: "contain", width: "100%", height: "100%", cursor: "pointer" }}
               />
             </div>
           ) : (
@@ -914,57 +920,67 @@ const ProductDetails = () => {
               </a> */}
             </div>
           </div>
-          {/* <div className={styles.focusedata}>
+          <div className={styles.focusedata}>
             <div className={styles.deliveryContainer}>
               <div className={styles.deliveryCard}>
-                {product.pickupOption === "owner" ? (
-                  <div className="optionDeleviry">
-                    <h2>Available Home Delivery <span className="icon-ok-circled"></span></h2>
-                    <p>If you need something delivered to your doorstep, just give us a call, and we’ll handle the rest!</p>
-                    <button onClick={handleCallClick} className={styles.callButton}>
+                {product?.pickupOption === "Owner Delivery" ? (
+                  <div className={styles.ownerDelivery}>
+                    <h2>
+                      Home Delivery Available <span className="icon-ok-circled"></span>
+                    </h2>
+                    <p>This item will be delivered to your doorstep by the owner.</p>
+                    {/* <button onClick={handleCallClick} className={styles.callButton}>
                       <span className="icon-phone"></span> Call Now
-                    </button>
+                    </button> */}
                   </div>
-                ) : product.pickupOption === "customer" ? (
-                  <div className={styles.notDelivery}>
-                    <h2>Only Customer Pickup <span className="icon-cancel-squared"></span></h2>
-                    <p>Please visit the owner's location to collect the product.</p>
+                ) : product?.pickupOption === "User Pickup" ? (
+                  <div className={styles.userPickup}>
+                    <h2>Customer Pickup Only</h2>
+                    <p>Please visit the seller’s location to collect this item.</p>
                   </div>
                 ) : (
-                  <div className={styles.notDelivery}>
-                    <h2>Delivery Option Not Provided <span className="icon-help-circled"></span></h2>
+                  <div className={styles.unknownDelivery}>
+                    <h2>
+                      Delivery Option Not Provided <span className="icon-help-circled"></span>
+                    </h2>
                   </div>
                 )}
               </div>
             </div>
-          </div> */}
+          </div>
+
 
           <div className={styles.sellerInfo}>
-            <div className={`${styles.name} ${"icon-location-alt"}`}>Address</div>
+            <div className={`${styles.name} icon-location-alt`}>Address</div>
             <div className={styles.address}>
-              {/* {product.location} || {product.location} */}
-              <p>{product?.location?.city || "Null"} {">"} {product?.location?.area || "Null"}</p>
+              <p>
+                {product?.location?.city && product?.location?.area
+                  ? `${product.location.city} > ${product.location.area}`
+                  : product?.location?.city
+                  ? product.location.city
+                  : product?.location?.state
+                  ? product.location.state
+                  : "Location not available"}
+              </p>
             </div>
-            <div className={styles.shopID}><p><b>ID</b>: {product?._id || "Gurmeet Kour"}</p></div>
+            <div className={styles.shopID}>
+              <p><b>ID</b>: {product?._id || "Gurmeet Kour"}</p>
+            </div>
           </div>
+
           {/* Terms */}
-          {product.termsAccepted && (
+          {product.SaleType === "Rent" && product.termsAccepted && (
             product.rentalTermsFile ? (
-              <Link
-                href={product.rentalTermsFile}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div className={`${styles.card} ${styles.terms}`}>
-                  View / Download Terms PDF
-                </div>
+              <Link href={product.rentalTermsFile} target="_blank" rel="noopener noreferrer">
+                <div className={`${styles.card} ${styles.terms}`}>View / Download Terms PDF</div>
               </Link>
             ) : (
               <div className={`${styles.card} ${styles.noTerms}`}>
-                No Any Terms
+                No Terms Provided
               </div>
             )
           )}
+
 
 
           <div className="location-section">
@@ -1023,13 +1039,15 @@ const ProductDetails = () => {
       {/* {isDesckTop &&  */}
       <div className="container">
       <div className={styles.DesckTop}>
-          {product?.category && product?.subcategory && product?._id && (
-              <RelatedProducts
-                category={product.category}
-                subcategory={product.subcategory}
-                currentProductId={product._id}
-              />
-            )}
+      {product?.category && product?.subcategory && product?._id && (
+          <RelatedProducts
+              category={product.category}
+              subcategory={product.subcategory}
+              currentProductId={product._id}
+              city={selectedCity}
+              state={selectedState}/>
+        )}
+
       </div>
       </div>
     {/* } */}

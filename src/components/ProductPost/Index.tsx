@@ -277,7 +277,14 @@ const ProductCard = ({
             <p className={styles.description}>
               {description.length > 80 ? description.slice(0, 80) + "..." : description}
             </p>
-            <span className={`${"icon-location"} ${filter.location}`}>{location?.area ? `${location?.city} / ${location?.area}` : `${location?.state} / ${location?.city}`}</span>
+            <span className={`${"icon-location"} ${filter.location}`}>
+            {location?.area
+              ? `${location?.city} / ${location?.area}`
+              : location?.state && location?.city
+              ? `${location?.state} / ${location?.city}`
+              : location?.state || location?.city || "Location not available"}
+          </span>
+
           </div>
 
           {/* CTA Buttons */}
