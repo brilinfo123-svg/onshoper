@@ -272,6 +272,7 @@ const PropertyDetailPage: React.FC = () => {
         
         <div className={styles.makeProductFutured}>
           <h2>My Products</h2>
+          <p>Listed Ads: <strong>{products.length}</strong></p>
           {/* <Button className={`${styles["highlight-button"]} ${"icon-star"}`} href="/subscription" color="yellow" text="black" onClick={undefined}> Make Featured</Button> */}
         </div>
         {loading ? (
