@@ -73,15 +73,14 @@
             .timeStamp{
               @media screen and (max-width: 767px) {
                 position: absolute;
-                bottom: 26px;
+                bottom: 25.5px;
                 left: 98px;
               }
               p{
                 @media screen and (max-width: 767px) {
-                  position: inherit;
-                  bottom: auto;
-                  right: auto;
+                  left: 4px;
                   width: max-content;
+                  top: 0;
                 }
               }
             }
