@@ -6,7 +6,7 @@ import SkeletonCard from "@/components/SkeletonCard/Index";
 import ProductPost from "@/components/ProductPost/Index";
 import styles from "@/styles/Home.module.scss";
 import { useSession } from "next-auth/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ProductMobile from "@/components/ProductMobile/Index";
 import BannerPost from "@/components/BannerPost";
 import IntroAnimation from "@/components/IntroAnimation/Index";
@@ -72,14 +72,13 @@ export default function Home() {
   // const [minPrice, setMinPrice] = useState<number | "">("");
   const [maxPrice, setMaxPrice] = useState<number | "">("");
   const { filterType } = useFilter();
-  
+  const productsRef = useRef<HTMLDivElement>(null);
   const [visibleCount, setVisibleCount] = useState(10);
   
 
 
-  const [products, setProducts] = useState<any[]>([]);
+const [products, setProducts] = useState<any[]>([]);
 const [selectedCity, setSelectedCity] = useState<string>("All Cities");
-console.log(products, "products");
   const { data: session } = useSession();
   const [shopData, setShopData] = useState<ShopData | null>(null);
 
@@ -222,7 +221,7 @@ const filteredProducts = useMemo(() => {
       {/* <FilterLocation onCityChange={handleCityChange} /> */}
       
       <div className="container">
-        <div className={styles.rowFlex}>
+        <div className={styles.rowFlex} id="products-section" ref={productsRef}>
           {/* Sidebar Filter */}
           {/* {productsLoading ? (
             <div className={styles.sidebarSkeleton}>

@@ -178,7 +178,7 @@ const Header: React.FC = () => {
     }
   };
 
-  console.log("Current filterType:", filterType);
+  
 
   // Skeleton Loading Component
   const HeaderSkeleton = () => (

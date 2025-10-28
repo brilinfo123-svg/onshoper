@@ -4,7 +4,7 @@ import ProductPost from "@/components/ProductPost/Index";
 import SkeletonCard from "@/components/SkeletonCard/Index";
 import styles from "@/styles/filter.module.scss";
 import FilterControls from "@/components/FilterControls/Index";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Head from "next/head";
@@ -75,7 +75,7 @@ const Filter: React.FC = () => {
   const [maxPrice, setMaxPrice] = useState<number | "">("");
   // const [filterType, setFilterType] = useState<"all" | "Sale" | "Rent">("all");
   const [showFilter, setShowFilter] = useState(false);
-
+const productsRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
   const [shopData, setShopData] = useState<ShopData | null>(null);
 
@@ -313,7 +313,7 @@ useEffect(() => {
 </Head>
 
     <div className="main">
-      <div className="container">
+      <div className="container" id="products-section" ref={productsRef}>
         <FilterControls
           isVisible={showFilter} // ✅ pass visibility as prop
           minPrice={minPrice}

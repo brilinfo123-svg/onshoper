@@ -27,6 +27,11 @@ export const FilterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const setFilterType = (type: FilterType) => {
     setFilterTypeState(type);
     localStorage.setItem("filterType", type);
+
+    const target = document.querySelector("#products-section");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   return (
