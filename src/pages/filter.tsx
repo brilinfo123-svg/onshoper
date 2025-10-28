@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Head from "next/head";
+import { useFilter } from "@/contexts/FilterContext";
 
 interface Product {
   year: number;
@@ -57,6 +58,8 @@ const Filter: React.FC = () => {
   const searchTerm = searchParams.get("searchTerm") || "";
   const city = searchParams.get("city") || "Select City";
   const categorySlug = searchParams.get("category") || "";
+  const { filterType } = useFilter();
+  
 
   // Read subcategories from URL query param and split to array
   const subcategoriesParam = searchParams.get("subcategories") || "";
@@ -70,11 +73,23 @@ const Filter: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [minPrice, setMinPrice] = useState<number | "">("");
   const [maxPrice, setMaxPrice] = useState<number | "">("");
-  const [filterType, setFilterType] = useState<"all" | "Sale" | "Rent">("all");
+  // const [filterType, setFilterType] = useState<"all" | "Sale" | "Rent">("all");
   const [showFilter, setShowFilter] = useState(false);
 
   const { data: session } = useSession();
   const [shopData, setShopData] = useState<ShopData | null>(null);
+
+
+useEffect(() => {
+  let filtered = [...products];
+
+  if (filterType !== "all") {
+    filtered = filtered.filter((p) => (p.SaleType || p.type) === filterType);
+  }
+
+  setFilteredProducts(filtered);
+}, [products, filterType]);
+
 
   // Sync URL subcategories to state on mount or URL change
   useEffect(() => {
@@ -306,7 +321,7 @@ const Filter: React.FC = () => {
           filterType={filterType}
           setMinPrice={setMinPrice}
           setMaxPrice={setMaxPrice}
-          setFilterType={setFilterType}
+          // setFilterType={setFilterType}
           onApplyFilters={() => {
             // setVisibleCount(displayCount);
             setShowFilter(false);
@@ -343,22 +358,22 @@ const Filter: React.FC = () => {
             </div>
           </div>
           <div className={styles.btnWrapper}>
-            <button className={filterType === "Sale" ? styles.activeBtn : ""} onClick={() => { setFilterType("Sale"); }}>
-              Buy
+            {/* <button className={filterType === "Sale" ? styles.activeBtn : ""} onClick={() => { setFilterType("Sale"); }}>
+              Buy */}
               {/* ({saleTotal}) */}
-            </button>
+            {/* </button>
             <button className={filterType === "Rent" ? styles.activeBtn : ""}
               onClick={() => { setFilterType("Rent");}}>
-              Rent
+              Rent */}
               {/* ({rentTotal}) */}
-            </button>
+            {/* </button>
             <button
               className={filterType === "all" ? styles.activeBtn : ""}
               onClick={() => { setFilterType("all"); }}
-            >
-              See All
+            > */}
+              {/* See All */}
               {/* ({allTotal}) */}
-            </button>
+            {/* </button> */}
           </div>
         </div>
         <div className={styles.rowFlex}>

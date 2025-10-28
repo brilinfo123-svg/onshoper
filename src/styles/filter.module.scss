@@ -69,6 +69,9 @@
               height: 100%;
               box-sizing: border-box;
             }
+            @media screen and (max-width: 375px) {
+              padding-right: 5px;
+            }
             }
             .timeStamp{
               @media screen and (max-width: 767px) {
@@ -92,6 +95,10 @@
                 text-overflow: ellipsis;
                 max-width: 100%; // fallback
                 max-width: 30ch;
+              }
+              @media screen and (max-width: 375px) {
+                max-width: 20ch;
+                font-size: 9px;
               }
             }
           .PriceNumber{
@@ -142,10 +149,7 @@
       letter-spacing: 0.5px;
       @media screen and (max-width: 992px) {
         display: block;
-        padding: 0 20px;
-      }
-      @media screen and (max-width: 374px) {
-        padding: 0 15px;
+        padding: 10px 20px;
       }
     }
     @media screen and (max-width: 767px) {
@@ -175,6 +179,9 @@
       @media screen and (max-width: 767px) {
         font-size: 12px;
         padding: 10px 20px;
+      }
+      @media screen and (max-width: 375px) {
+        padding: 10px 15px;
       }
     }
   

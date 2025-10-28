@@ -95,9 +95,9 @@
         text-overflow: ellipsis;
         line-clamp: 1; /* modern spec */
         font-size: 12px;
-        min-height: 35px;
+        min-height: 40px;
         margin: 0 0 5px;
-        line-height: 17px;
+        line-height: 15px;
       }
       span{
         // display: block;
@@ -205,6 +205,10 @@
       cursor: pointer;
       text-transform: uppercase;
       font-weight: 600;
+      @media screen and (max-width: 767px) {
+        font-weight: 500;
+        font-size: 13px;
+      }
     }
     a{
       display: inline-block;
@@ -220,6 +224,11 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       width: 100%;
+      @media screen and (max-width: 767px) {
+        padding: 7px 0;
+        font-weight: 500;
+        font-size: 13px;
+      }
     }
   }
     .descWrap{

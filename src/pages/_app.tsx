@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { SessionProvider, useSession } from "next-auth/react";
 import DefaultHeader from "@/components/DefaultHeader/Index";
 import { NotificationProvider } from '../contexts/NotificationContext';
+import { FilterProvider } from "@/contexts/FilterContext"; 
 import { CityFilterProvider } from "@/contexts/CityFilterContext";
 import { FavoriteProvider } from '../contexts/FavoriteContext';
 import { ChatProvider } from '@/contexts/ChatContext'; // Import ChatProvider
@@ -21,10 +22,11 @@ import MobileBottomNav from "@/components/MobileBottomNav/Index";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider session={pageProps.session}>
-      <NotificationProvider>
-        <FavoriteProvider>
-          <ChatProvider>
-            <CityFilterProvider> {/* 👈 Wrap here */}
+    <NotificationProvider>
+      <FavoriteProvider>
+        <ChatProvider>
+          <CityFilterProvider>
+            <FilterProvider> {/* 👈 Wrap your app here */}
               <ToastContainer position="top-right" autoClose={3000} />
               <AutoUnfeaturePoller />
               <HeaderComponent />
@@ -33,11 +35,12 @@ export default function App({ Component, pageProps }: AppProps) {
               </main>
               <Footer />
               <MobileBottomNav />
-            </CityFilterProvider>
-          </ChatProvider>
-        </FavoriteProvider>
-      </NotificationProvider>
-    </SessionProvider>
+            </FilterProvider>
+          </CityFilterProvider>
+        </ChatProvider>
+      </FavoriteProvider>
+    </NotificationProvider>
+  </SessionProvider>
   );
 }
 

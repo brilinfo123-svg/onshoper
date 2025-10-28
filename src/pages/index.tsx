@@ -11,6 +11,8 @@ import ProductMobile from "@/components/ProductMobile/Index";
 import BannerPost from "@/components/BannerPost";
 import IntroAnimation from "@/components/IntroAnimation/Index";
 import Head from "@/components/Head";
+import { useFilter } from "@/contexts/FilterContext";
+
 
 interface Product {
   KmDriven: number;
@@ -69,14 +71,15 @@ export default function Home() {
   const [displayCount] = useState(10);
   // const [minPrice, setMinPrice] = useState<number | "">("");
   const [maxPrice, setMaxPrice] = useState<number | "">("");
-  const [filterType, setFilterType] = useState<"all" | "Sale" | "Rent">("all");
+  const { filterType } = useFilter();
+  
   const [visibleCount, setVisibleCount] = useState(10);
   
 
 
   const [products, setProducts] = useState<any[]>([]);
 const [selectedCity, setSelectedCity] = useState<string>("All Cities");
-
+console.log(products, "products");
   const { data: session } = useSession();
   const [shopData, setShopData] = useState<ShopData | null>(null);
 

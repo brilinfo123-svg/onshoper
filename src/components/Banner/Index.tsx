@@ -108,9 +108,14 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
   const handleSearch = (term?: string) => {
     const query = term || searchTerm;
     if (!query) return;
+  
+    // ✅ Clear suggestions when search is triggered
+    setFilteredSuggestions([]);
+  
     const queryString = new URLSearchParams({ searchTerm: query }).toString();
     router.push(`/filter?${queryString}`);
   };
+  
 
   return (
     <div className={`${Style.banner} ${bannerClass} ${Style.stickyBanner}`}>

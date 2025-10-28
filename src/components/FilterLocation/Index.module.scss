@@ -27,8 +27,22 @@
   align-items: center;
 
   svg{
-    margin-right: 10px !important;
+    margin-right: 5px !important;
     color: #007bff;
+  }
+  span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    max-width: 10ch;
+    @media screen and (max-width: 413.98px) {
+      font-size: 13px;
+    }
+    @media screen and (max-width: 374px) {
+      max-width: 9ch;
+      font-size: 12px;
+    }
   }
 
   &:hover {
@@ -40,14 +54,21 @@
     padding: 10px 15px;
     font-size: 14px;
     background-color: transparent;
-    color: #fff;
+    // color: #fff;
     border-radius: 0;
     svg{
       color: #007bff;
+      @media screen and (max-width: 374px) {
+        width: 18px;
+        margin-right: 2px !important;
+      }
     }
   }
   @media screen and (max-width: 767px) {
     padding: 5px 10px;
+  }
+  @media screen and (max-width: 413.98px) {
+    padding: 5px;
   }
 }
 

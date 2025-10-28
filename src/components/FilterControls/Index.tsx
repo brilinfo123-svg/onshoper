@@ -10,7 +10,7 @@ const FilterControls = ({
   filterType,
   setMinPrice,
   setMaxPrice,
-  setFilterType,
+  // setFilterType,
   onClose,
   onApplyFilters
 }) => {

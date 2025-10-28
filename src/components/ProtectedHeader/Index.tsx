@@ -14,6 +14,8 @@ import ProductPost from "@/components/ProductPost/Index";
 import ChatSidebar from "@/components/ChatSidebar/Index";
 import Layout from "../Layout/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
+import { useFilter } from "@/contexts/FilterContext";
+
 
 
 
@@ -34,10 +36,8 @@ const Header: React.FC = () => {
   const favoritesSidebarRef = useRef<HTMLDivElement | null>(null);
   const { favorites } = useFavorites();
   const [isChatOpen, setIsChatOpen] = useState(false);
-  // const { setSelectedCity } = useCityFilter();
-  // Check if we're currently on a chat page
   const isOnChatPage = router.pathname.startsWith('/chat');
-
+  const { filterType, setFilterType } = useFilter();
   // Don't show notifications if we're on chat page
   const totalNotifications = isOnChatPage ? 0 : getTotalNotifications();
 
@@ -177,6 +177,9 @@ const Header: React.FC = () => {
       });
     }
   };
+
+  console.log("Current filterType:", filterType);
+
   // Skeleton Loading Component
   const HeaderSkeleton = () => (
     <header className={Style.header}>
@@ -232,7 +235,18 @@ const Header: React.FC = () => {
               </div>
             </div>
         </Link>
+          <div className={Style.wrapper}>
+          <div className={Style.toggleWrapper}>
+            <div className={Style.toggleTrack}>
+              <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
+              <button onClick={() => setFilterType("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
+              <button onClick={() => setFilterType("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
+              <button onClick={() => setFilterType("all")} className={filterType === "all" ? Style.active : ""}>All</button>
+            </div>
+          </div>
+
         <FilterLocation onCityChange={handleCityChange} />
+          </div>
         </div>
       }
       {/* <h4 className={Style.showinMobile}>
@@ -260,12 +274,22 @@ const Header: React.FC = () => {
         {/* Banner (hidden on mobile) */}
         <div className={Style.filterLocationWrapper}>
           {!isMobile && <FilterLocation onCityChange={handleCityChange} />}
-        
         <Banner />
         </div>
 
         {/* Action Section */}
+        
         <div className={Style.actionSection}>
+        {!isMobile && 
+          <div className={Style.toggleWrapper}>
+            <div className={Style.toggleTrack}>
+              <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
+              <button onClick={() => setFilterType("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
+              <button onClick={() => setFilterType("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
+              <button onClick={() => setFilterType("all")} className={filterType === "all" ? Style.active : ""}>All</button>
+            </div>
+          </div>
+          }
           <div className={`${Style.sidebar} ${isSidebarOpen ? Style.sidebarOpen : ""}`}>
             <button className={Style.closeButton} onClick={closeSidebar}>&times;</button>
             <ul>

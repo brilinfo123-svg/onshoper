@@ -14,17 +14,21 @@
     padding: 0 0 0 15px;
     @media screen and (max-width: 991.99px) {
       padding: 10px 15px 10px 15px;
-      background-color: #000000;
+      // background-color: #000000;
     }
     @media screen and (max-width: 767px) {
-      padding: 5px 10px;
-      background-color: #000000;
+      padding: 5px;
+      // background-color: #000000;
+    }
+    .wrapper{
+      display: flex;
+      align-items: center;
     }
   }
   .filterLocationWrapper{
     display: flex;
     width: 100%;
-    justify-content: center;
+    justify-content: end;
   }
   .toggleButton {
     font-size: 16px;
@@ -251,6 +255,18 @@
         height: 30px;
         font-size: 20px;
       }
+      @media screen and (max-width: 413.98px) {
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+        margin-right: 5px;
+      }
+      @media screen and (max-width: 374px) {
+        width: 28px;
+        height: 28px;
+        font-size: 18px;
+        margin-right: 4px;
+      }
     }
     .logoDesc{
       h4{
@@ -260,7 +276,7 @@
         height: 30px;
         color: #fff;
         @media screen and (max-width: 991.99px) {
-          color: #ffffff;
+          color: #000;
           font-size: 22px;
           height: 18px;
         }
@@ -268,18 +284,32 @@
           font-size: 16px;
           height: 11px;
         }
+        @media screen and (max-width: 413.98px) {
+          font-size: 15px;
+          height: 10px;
+        }
+        @media screen and (max-width: 374px) {
+          font-size: 13px;
+          height: 8px;
+        }
       }
       span{
-        color: #fff;
+        color: #000;
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 2px;
         @media screen and (max-width: 991.99px) {
-          color: #ffffff;
+          color: #000;
           font-size: 8px;
         }
         @media screen and (max-width: 767px) {
           font-size: 7px;
+        }
+        @media screen and (max-width: 413.98px) {
+          letter-spacing: 1.2px;
+        }
+        @media screen and (max-width: 374px) {
+          letter-spacing: 0.5px;
         }
       }
     }
@@ -321,7 +351,7 @@
 
     .sellAdd {
       background-color: #fff;
-      padding: 14px 14px;
+      padding: 14px 10px;
       color: #000;
       font-size: 14px;
       font-weight: 600;
@@ -1319,5 +1349,132 @@
   
   &.open {
     display: block;
+  }
+}
+
+
+
+
+
+
+.toggleWrapper {
+  display: flex;
+  justify-content: center;
+  margin-right: 20px;
+  @media screen and (max-width: 767px) {
+    margin-right: 10px;
+  }
+  @media screen and (max-width: 413.98px) {
+    margin-right: 8px;
+  }
+  @media screen and (max-width: 374px) {
+    margin-right: 6px;
+  }
+}
+
+.toggleTrack {
+  position: relative;
+  display: flex;
+  background: #eee;
+  border-radius: 30px;
+  overflow: hidden;
+  width: 180px;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  @media screen and (max-width: 767px) {
+    width: 140px;
+    height: 30px;
+  }
+  @media screen and (max-width: 413.98px) {
+    width: 130px;
+  }
+  @media screen and (max-width: 374px) {
+    width: 110px;
+    height: 28px;
+  }
+}
+
+.toggleTrack button {
+  flex: 1;
+  font-size: 14px;
+  border: none;
+  background: transparent;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 2;
+  padding: 8px 15px;
+  color: #333;
+  transition: color 0.3s ease;
+  position: relative;
+  @media screen and (max-width: 767px) {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+  @media screen and (max-width: 413.98px) {
+    padding: 8px 5px;
+  }
+  @media screen and (max-width: 374px) {
+    font-size: 11px;
+  }
+}
+
+.toggleTrack button.active {
+  color: #fff;
+}
+
+.toggleThumb {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  background: #000;
+  border-radius: 30px;
+  transition: left 0.3s ease;
+  z-index: 0; // 👈 lowered to avoid blocking clicks
+  pointer-events: none; // 👈 ensures it doesn't block button clicks
+  @media screen and (max-width: 767px) {
+    background-color: #007bff;
+    border-radius: 20px;
+    width: 45px;
+  }
+  @media screen and (max-width: 413.98px) {
+    width: 42px;
+  }
+  @media screen and (max-width: 374px) {
+    width: 40px;
+  }
+}
+
+.toggleThumb.Sale {
+  left: 0;
+}
+
+.toggleThumb.Rent {
+  left: 60px;
+  @media screen and (max-width: 767px) {
+    left: 47px;
+  }
+  @media screen and (max-width: 413.98px) {
+    left: 45px;
+  }
+  @media screen and (max-width: 374px) {
+    left: 35px;
+  }
+}
+
+.toggleThumb.all {
+  left: 125px;
+  @media screen and (max-width: 767px) {
+    left: 95px;
+  }
+  @media screen and (max-width: 413.98px) {
+    left: 88px;
+  }
+  @media screen and (max-width: 374px) {
+    left: 75px;
   }
 }

@@ -119,7 +119,7 @@ const OffersSlider: React.FC<OffersSliderProps> = ({ onCityChange }) => {
               fill="currentColor"
             />
           </svg>
-          {selectedCity}
+          <span>{selectedCity}</span>
         </button>
       </div>
 
