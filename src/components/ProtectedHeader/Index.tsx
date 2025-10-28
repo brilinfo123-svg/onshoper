@@ -245,7 +245,7 @@ const Header: React.FC = () => {
             </div>
           </div>
 
-        <FilterLocation onCityChange={handleCityChange} />
+          <FilterLocation onCityChange={handleCityChange} />
           </div>
         </div>
       }

@@ -290,11 +290,11 @@
         }
         @media screen and (max-width: 374px) {
           font-size: 13px;
-          height: 8px;
+          height: 7px;
         }
       }
       span{
-        color: #000;
+        color: #fff;
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 2px;
@@ -1445,7 +1445,7 @@
     width: 42px;
   }
   @media screen and (max-width: 374px) {
-    width: 40px;
+    width: 37px;
   }
 }
 
@@ -1462,7 +1462,7 @@
     left: 45px;
   }
   @media screen and (max-width: 374px) {
-    left: 35px;
+    left: 37px;
   }
 }
 
@@ -1475,6 +1475,6 @@
     left: 88px;
   }
   @media screen and (max-width: 374px) {
-    left: 75px;
+    left: 74px;
   }
 }

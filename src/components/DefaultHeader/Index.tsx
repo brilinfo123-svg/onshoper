@@ -7,6 +7,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Banner from "../Banner/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
+import { useFilter } from "@/contexts/FilterContext";
 
 
 const Header: React.FC = () => {
@@ -15,6 +16,7 @@ const Header: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const { data: session } = useSession();
+  const { filterType, setFilterType } = useFilter();
 
   const handleProtectedRedirect = (path: string) => {
     if (session?.user) {
@@ -77,7 +79,18 @@ const Header: React.FC = () => {
               </div>
             </div>
           </Link>
+          <div className={Style.wrapper}>
+          <div className={Style.toggleWrapper}>
+            <div className={Style.toggleTrack}>
+              <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
+              <button onClick={() => setFilterType("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
+              <button onClick={() => setFilterType("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
+              <button onClick={() => setFilterType("all")} className={filterType === "all" ? Style.active : ""}>All</button>
+            </div>
+          </div>
+
           <FilterLocation onCityChange={handleCityChange} />
+          </div>
         </div>
       )}
 
@@ -99,6 +112,16 @@ const Header: React.FC = () => {
         <div className={Style.filterLocationWrapper}>
           {!isMobile && <FilterLocation onCityChange={handleCityChange} />}
           <Banner />
+          {!isMobile && 
+          <div className={Style.toggleWrapper}>
+            <div className={Style.toggleTrack}>
+              <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
+              <button onClick={() => setFilterType("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
+              <button onClick={() => setFilterType("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
+              <button onClick={() => setFilterType("all")} className={filterType === "all" ? Style.active : ""}>All</button>
+            </div>
+          </div>
+          }
         </div>
 
         <ul className={Style.rightMenus}>
