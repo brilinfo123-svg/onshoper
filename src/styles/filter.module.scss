@@ -9,10 +9,16 @@
     .productGrid{
       display: grid;
       min-height: 300px;
-      grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+      grid-template-columns: repeat(5, 1fr); /* 4 equal columns */
       gap: 20px; /* Space between grid items */
       width: 100%;
       position: relative;
+      @media screen and (max-width: 1440px) {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      @media screen and (max-width: 1025px) {
+        grid-template-columns: repeat(3, 1fr);
+      }
       @media screen and (max-width: 767px) {
         padding-left: 0;
         grid-template-columns: repeat(1, 1fr);

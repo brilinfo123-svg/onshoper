@@ -150,32 +150,48 @@ const [selectedCity, setSelectedCity] = useState<string>("All Cities");
 // Filter products based on selected criteria
 // Filter products based on selected criteria
 const filteredProducts = useMemo(() => {
+  const rentFallbackCategories = ["Services", "Jobs"]; // Optional: add more if needed
+
   let filtered = products.filter((product) => {
-    // Apply Sale/Rent filter
-    if (filterType !== "all" && (product.SaleType || product.type) !== filterType) {
+    const saleType = product.SaleType || product.type;
+
+    // ✅ Show all Rent products
+    if (filterType === "Rent") {
+      const isRentType = saleType === "Rent";
+      const isFallbackCategory = rentFallbackCategories.includes(product.category);
+      if (!isRentType && !isFallbackCategory) return false;
+    }
+
+    // ✅ Show only Sale products
+    if (filterType === "Sale" && saleType !== "Sale") {
       return false;
     }
 
-    // Apply category filter
-    if (selectedCategories.length > 0 && !selectedCategories.includes(product.category)) {
+    // ✅ Category filter (if user manually selects)
+    if (
+      selectedCategories.length > 0 &&
+      !selectedCategories.includes(product.category)
+    ) {
       return false;
     }
 
-    // Apply subcategory filter
-    if (selectedSubcategories.length > 0 && !selectedSubcategories.includes(product.subcategory || "")) {
+    // ✅ Subcategory filter
+    if (
+      selectedSubcategories.length > 0 &&
+      !selectedSubcategories.includes(product.subcategory || "")
+    ) {
       return false;
     }
 
-    // Apply price filter - handle both Sale and Rent products
-    
     return true;
   });
 
-  // City filter apply karo
+  // ✅ City filter
   filtered = filterProductsByCity(filtered, selectedCity);
 
   return filtered;
 }, [products, filterType, selectedCategories, selectedSubcategories, selectedCity]);
+
 
 
   const handleViewMore = () => {

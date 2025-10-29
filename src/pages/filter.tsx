@@ -80,16 +80,33 @@ const productsRef = useRef<HTMLDivElement>(null);
   const [shopData, setShopData] = useState<ShopData | null>(null);
 
 
-useEffect(() => {
-  let filtered = [...products];
-
-  if (filterType !== "all") {
-    filtered = filtered.filter((p) => (p.SaleType || p.type) === filterType);
-  }
-
-  setFilteredProducts(filtered);
-}, [products, filterType]);
-
+  // useEffect(() => {
+  //   const rentFallbackCategories = ["Services", "Jobs"];
+  //   let filtered = [...products];
+  
+  //   if (filterType !== "all") {
+  //     filtered = filtered.filter((p) => {
+  //       const saleType = p.SaleType || p.type;
+  //       const isRentType = saleType === "Rent";
+  //       const isSaleType = saleType === "Sale";
+  
+  //       if (filterType === "Sale") {
+  //         return isSaleType;
+  //       }
+  
+  //       if (filterType === "Rent") {
+  //         const isFallbackCategory = rentFallbackCategories.includes(p.category);
+  //         return isRentType || (!saleType && isFallbackCategory);
+  //       }
+  
+  //       return true;
+  //     });
+  //   }
+  
+  //   setFilteredProducts(filtered);
+  // }, [products, filterType]);
+  
+  
 
   // Sync URL subcategories to state on mount or URL change
   useEffect(() => {
@@ -246,9 +263,28 @@ useEffect(() => {
     
 
     // ✅ Sale/Rent filter
+    // ✅ Sale/Rent filter with fallback categories
     if (filterType !== "all") {
-      filtered = filtered.filter((p) => (p.SaleType || p.type) === filterType);
+      const rentFallbackCategories = ["Services", "Jobs"];
+
+      filtered = filtered.filter((p) => {
+        const saleType = p.SaleType || p.type;
+        const isRentType = saleType === "Rent";
+        const isSaleType = saleType === "Sale";
+
+        if (filterType === "Sale") {
+          return isSaleType;
+        }
+
+        if (filterType === "Rent") {
+          const isFallbackCategory = rentFallbackCategories.includes(p.category);
+          return isRentType || (!saleType && isFallbackCategory);
+        }
+
+        return true;
+      });
     }
+
 
     setFilteredProducts(filtered);
   }, [
