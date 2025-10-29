@@ -46,8 +46,7 @@ const Header: React.FC = () => {
 
 
   const handleFilterChange = (type: "Sale" | "Rent" | "all") => {
-    setIsLoading(true);
-  
+
     const messageMap = {
       Sale: "Switched to Sale ads",
       Rent: "Switched to Rental ads",
@@ -56,11 +55,15 @@ const Header: React.FC = () => {
   
     // ✅ Show SweetAlert message
     Swal.fire({
-      position: "center",
+      toast: true, // ✅ Enable toast mode
+      position: "top-end",
       icon: "success",
       title: messageMap[type],
       showConfirmButton: false,
       timer: 1500,
+      customClass: {
+        title: "swal-title-small", // 👈 Custom class for title
+      },
       // toast: true,
     });
   
@@ -431,7 +434,7 @@ const Header: React.FC = () => {
         </div>
 
         <ul className={Style.rightMenus}>
-        {!isMobile && <li><Link href="/ProductForm" className={`${Style.sellAdd} ${"icon-shop"}`} onClick={closeSidebar}>Sale/Rent</Link></li>}
+        {!isMobile && <li><Link href="/ProductForm" className={`${Style.sellAdd} ${"icon-shop"}`} onClick={closeSidebar}>Sell/Rent</Link></li>}
           <li className={Style.notificationItem}>
           <div className={`${Style.Notification} icon-bell`} onClick={() => setIsChatOpen(true)} role="button" tabIndex={0}>
             {totalNotifications > 0 && (
@@ -454,7 +457,7 @@ const Header: React.FC = () => {
           <li>
             <button className={`${Style.toggleButton}`} onClick={toggleSidebar}>
               <span className="icon-user-circle"></span>
-              <span>Account</span>
+              {/* <span>Account</span> */}
             </button>
           </li>
           }

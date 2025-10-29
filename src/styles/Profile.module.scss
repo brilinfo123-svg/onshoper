@@ -869,7 +869,7 @@ tr:nth-child(odd) {
 }
 
 .header {
-  background: linear-gradient(135deg, #1e1e2f, #2c2c3e);
+  background: linear-gradient(135deg, #ededed, #bdbdbd);
   padding: 20px 30px;
   border-radius: 12px;
   box-shadow: 0 0 12px rgba(0, 255, 170, 0.15);
@@ -940,15 +940,15 @@ tr:nth-child(odd) {
   }
 }
 .header h1 {
-  font-size: 2rem;
+  font-size: 25px;
   font-weight: 700;
-  color: #fff;
+  color: #606060;
   margin-bottom: 10px;
   letter-spacing: 1px;
   margin-bottom: 0;
   @media screen and (max-width: 767px) {
-    font-size: 20px;
-    max-width: 300px;
+    font-size: 16px;
+    max-width: 360px;
     margin: 0 auto;
   }
 }

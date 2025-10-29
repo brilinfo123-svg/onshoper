@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import Banner from "../Banner/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import { useFilter } from "@/contexts/FilterContext";
+import Swal from "sweetalert2";
 
 
 const Header: React.FC = () => {
@@ -25,6 +26,37 @@ const Header: React.FC = () => {
       router.push("/login");
     }
   };
+
+    const handleFilterChange = (type: "Sale" | "Rent" | "all") => {
+    
+      const messageMap = {
+        Sale: "Switched to Sale ads",
+        Rent: "Switched to Rental ads",
+        all: "Exploring all ads",
+      };
+    
+      // ✅ Show SweetAlert message
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: messageMap[type],
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          title: "swal-title-small", // 👈 Custom class for title
+        },
+      });
+    
+      setTimeout(() => {
+        setFilterType(type);
+        setIsLoading(false);
+        const target = document.querySelector("#products-section");
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 1000);
+    };
+
   useEffect(() => {
     const checkIsMobile = () => setIsMobile(window.innerWidth <= 991);
     checkIsMobile();
@@ -43,6 +75,8 @@ const Header: React.FC = () => {
       router.push({ pathname: "/filter", query: { city } });
     }
   };
+
+  
 
   const HeaderSkeleton = () => (
     <header className={Style.header}>
@@ -83,9 +117,9 @@ const Header: React.FC = () => {
           <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
-              <button onClick={() => setFilterType("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
-              <button onClick={() => setFilterType("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
-              <button onClick={() => setFilterType("all")} className={filterType === "all" ? Style.active : ""}>All</button>
+              <button onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
+              <button onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
+              <button onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
           </div>
 
@@ -116,9 +150,9 @@ const Header: React.FC = () => {
           <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
-              <button onClick={() => setFilterType("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
-              <button onClick={() => setFilterType("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
-              <button onClick={() => setFilterType("all")} className={filterType === "all" ? Style.active : ""}>All</button>
+              <button onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
+              <button onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
+              <button onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
           </div>
           }
@@ -128,7 +162,7 @@ const Header: React.FC = () => {
           {!isMobile && (
             <li>
               <Link href="/ProductForm" className={`${Style.sellAdd} icon-shop`} rel="noopener noreferrer">
-                Sale/Rent
+              Sell/Rent
               </Link>
             </li>
           )}

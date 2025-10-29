@@ -39,7 +39,8 @@
     left: 1rem;
     z-index: 1001;
     border-left: 1px solid #000;
-    padding-left: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
     color: #000;
 
     @media screen and (max-width: 767px) {
@@ -48,7 +49,7 @@
     }
 
     :global(.icon-user-circle) {
-      font-size: 22px;
+      font-size: 25px;
 
       @media screen and (max-width: 767px) {
         font-size: 18px;
@@ -136,6 +137,9 @@
     padding: 10px 30px;
     border-bottom: 1px solid #ddd;
 
+    @media screen and (min-width: 992px) and (max-width: 1199px) {
+      padding: 10px 10px;
+    }
     @media screen and (max-width: 991.99px) {
       padding: 10px 15px;
       gap: 0px;
@@ -276,6 +280,10 @@
         font-family: monospace;
         height: 30px;
         color: #fff;
+        @media screen and (min-width: 992px) and (max-width: 1199px) {
+          font-size: 25px;
+          height: 28px;
+        }
         @media screen and (max-width: 991.99px) {
           color: #000;
           font-size: 22px;
@@ -337,7 +345,9 @@
       margin-right: 20px;
       font-size: 16px;
       border-radius: 8px;
-
+      @media screen and (min-width: 992px) and (max-width: 1199px) {
+        margin-right: 10px;
+      }
       &.upgrade {
         background-color: gold;
         color: #000;
@@ -841,7 +851,11 @@
   align-items: center;
   justify-content: center;
   padding: 8px;
-
+  font-size: 20px;
+  @media screen and (max-width: 767px) {
+    font-size: 18px;
+    color: #636363;
+  }
   .icon-heart,
   .icon-heart-empty {
     font-size: 20px;
@@ -1387,6 +1401,9 @@
   position: relative;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    width: 160px;
+  }
   @media screen and (max-width: 767px) {
     width: 140px;
     height: 30px;
@@ -1412,6 +1429,9 @@
   color: #333;
   transition: color 0.3s ease;
   position: relative;
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    padding: 8px 10px;
+  }
   @media screen and (max-width: 767px) {
     font-size: 12px;
     padding: 8px 10px;
@@ -1438,6 +1458,9 @@
   transition: left 0.3s ease;
   z-index: 0; // 👈 lowered to avoid blocking clicks
   pointer-events: none; // 👈 ensures it doesn't block button clicks
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    width: 55px;
+  }
   @media screen and (max-width: 767px) {
     background-color: #007bff;
     border-radius: 20px;
@@ -1457,6 +1480,9 @@
 
 .toggleThumb.Rent {
   left: 60px;
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    left: 52px;
+  }
   @media screen and (max-width: 767px) {
     left: 47px;
   }
@@ -1470,6 +1496,9 @@
 
 .toggleThumb.all {
   left: 125px;
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    left: 106px;
+  }
   @media screen and (max-width: 767px) {
     left: 95px;
   }

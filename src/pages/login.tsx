@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import styles from "@/styles/login.module.scss";
@@ -13,26 +13,64 @@ export default function LoginPage() {
   const [otpSent, setOtpSent] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [timer, setTimer] = useState(0);
+  const [canResend, setCanResend] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    let countdown: NodeJS.Timeout;
+    if (otpSent && timer > 0) {
+      countdown = setInterval(() => {
+        setTimer((prev) => {
+          if (prev <= 1) {
+            clearInterval(countdown);
+            setCanResend(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(countdown);
+  }, [otpSent, timer]);
+
+  const fetchOtpExpiry = async () => {
+    const res = await fetch("/api/Verification/get-expiry", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contact }),
+    });
+
+    const data = await res.json();
+
+    if (data.expiresAt) {
+      const expiryTime = new Date(data.expiresAt).getTime();
+      const now = Date.now();
+      const secondsLeft = Math.max(Math.floor((expiryTime - now) / 1000), 0);
+      setTimer(secondsLeft);
+      setCanResend(secondsLeft === 0);
+    }
+  };
 
   const sendOtp = async () => {
     setError("");
     setMessage("");
     if (!contact) return setError(`Please enter your ${loginType}`);
-  
+
     const res = await fetch("/api/Verification/send-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ contact }),
     });
-  
+
     const data = await res.json();
-  
+
     if (data.success) {
       setOtpSent(true);
       setMessage("OTP sent successfully");
-  
-      // ✅ Show OTP in alert for testing
+      setCanResend(false);
+      await fetchOtpExpiry();
+
       if (data.otp) {
         alert(`Your OTP is: ${data.otp}`);
       }
@@ -40,27 +78,26 @@ export default function LoginPage() {
       setError("Failed to send OTP");
     }
   };
-  
 
   const verifyOtp = async () => {
     setError("");
     setMessage("");
     if (otp.length !== 6) return setError("Enter valid 6-digit OTP");
-  
+
     const res = await fetch("/api/Verification/verify-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ contact, otp }),
     });
-  
+
     const data = await res.json();
-  
+
     if (data.user) {
       const result = await signIn("credentials", {
         redirect: false,
         contact,
       });
-  
+
       if (result?.ok) {
         Swal.fire({
           icon: "success",
@@ -69,7 +106,7 @@ export default function LoginPage() {
           timer: 2000,
           showConfirmButton: false,
         });
-  
+
         setTimeout(() => router.push("/"), 2000);
       } else {
         setError("Login failed");
@@ -78,7 +115,6 @@ export default function LoginPage() {
       setError("Invalid OTP");
     }
   };
-  
 
   const handleBack = () => {
     setLoginType("");
@@ -87,8 +123,16 @@ export default function LoginPage() {
     setOtpSent(false);
     setError("");
     setMessage("");
+    setTimer(0);
+    setCanResend(false);
   };
 
+  const formatCountdown = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+  
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Login</h2>
@@ -97,14 +141,14 @@ export default function LoginPage() {
         <div className={styles.options}>
           <button
             onClick={() => setLoginType("mobile")}
-            className={`${styles.mobileButton} ${styles.optionButton} ${"icon-mobile"}`}
+            className={`${styles.mobileButton} ${styles.optionButton} icon-mobile`}
           >
             Login with Mobile
           </button>
           OR
           <button
             onClick={() => setLoginType("email")}
-            className={`${styles.emailButton} ${styles.optionButton} ${"icon-mail"}`}
+            className={`${styles.emailButton} ${styles.optionButton} icon-mail`}
           >
             Login with Email
           </button>
@@ -115,28 +159,27 @@ export default function LoginPage() {
         <div className={styles.inputGroup}>
           <label>{loginType === "mobile" ? "Mobile Number" : "Email Address"}</label>
           <input
-              type={loginType === "mobile" ? "tel" : "email"}
-              placeholder={loginType === "mobile" ? "Enter mobile number" : "Enter email address"}
-              value={contact}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (loginType === "mobile") {
-                  // Allow only digits
-                  if (/^\d*$/.test(value)) {
-                    setContact(value);
-                    if (value.length > 0 && value.length !== 10) {
-                      setError("Mobile number must be 10 digits");
-                    } else {
-                      setError("");
-                    }
-                  }
-                } else {
+            type={loginType === "mobile" ? "tel" : "email"}
+            placeholder={loginType === "mobile" ? "Enter mobile number" : "Enter email address"}
+            value={contact}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (loginType === "mobile") {
+                if (/^\d*$/.test(value)) {
                   setContact(value);
-                  setError("");
+                  if (value.length > 0 && value.length !== 10) {
+                    setError("Mobile number must be 10 digits");
+                  } else {
+                    setError("");
+                  }
                 }
-              }}
-              maxLength={loginType === "mobile" ? 10 : undefined}
-            />
+              } else {
+                setContact(value);
+                setError("");
+              }
+            }}
+            maxLength={loginType === "mobile" ? 10 : undefined}
+          />
 
           <button className={styles.button} onClick={sendOtp}>
             Send OTP
@@ -163,6 +206,15 @@ export default function LoginPage() {
           <button className={styles.backButton} onClick={handleBack}>
             ← Back
           </button>
+
+          {!canResend ? (
+           <p className={styles.timerText}>Resend available in {formatCountdown(timer)}</p>
+
+          ) : (
+            <button className={styles.resendButton} onClick={sendOtp}>
+              Resend OTP
+            </button>
+          )}
         </div>
       )}
 

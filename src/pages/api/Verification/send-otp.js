@@ -13,16 +13,15 @@ export default async function handler(req, res) {
   }
 
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+  const expiresAt = new Date(Date.now() + 2 * 60 * 1000); // ⏱️ 2 minutes expiry
 
   await Otp.findOneAndUpdate(
     { contact },
     { otp, expiresAt },
-    { upsert: true }
+    { upsert: true, new: true, setDefaultsOnInsert: true }
   );
 
-  console.log(`OTP for ${contact} is ${otp}`); // For dev logging
+  console.log(`OTP for ${contact} is ${otp}`);
 
-  // ✅ Return OTP in response (for testing only)
-  res.status(200).json({ success: true, otp });
+  res.status(200).json({ success: true, otp }); // Return OTP for testing only
 }

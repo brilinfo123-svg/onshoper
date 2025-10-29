@@ -25,7 +25,9 @@
   border-left: 1px solid #ddd;
   display: flex;
   align-items: center;
-
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    padding: 20px 10px;
+  }
   svg{
     margin-right: 5px !important;
     color: #007bff;

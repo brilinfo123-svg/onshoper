@@ -16,10 +16,11 @@ export default async function handler(req, res) {
   const record = await Otp.findOne({ contact });
 
   if (!record) {
-    return res.status(401).json({ error: "OTP not found" });
+    return res.status(401).json({ error: "OTP not found or expired" });
   }
 
   if (Date.now() > record.expiresAt.getTime()) {
+    await Otp.deleteOne({ contact }); // Clean up expired OTP
     return res.status(401).json({ error: "OTP expired" });
   }
 
@@ -27,7 +28,7 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: "Invalid OTP" });
   }
 
-  await Otp.deleteOne({ contact });
+  await Otp.deleteOne({ contact }); // Clean up after successful verification
 
   let user = await User.findOne({ contact });
 
