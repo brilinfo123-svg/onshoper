@@ -1480,22 +1480,38 @@
 }
 
 
-.loader {
+.fullPageOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
 }
 
-.spinner {
-  width: 30px;
-  height: 30px;
-  border: 4px solid #ccc;
-  border-top: 4px solid #4e72f0;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+.messageBox {
+  background: #fff;
+  padding: 30px 50px;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4e72f0;
+  text-align: center;
+  animation: popIn 0.4s ease;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
+
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+

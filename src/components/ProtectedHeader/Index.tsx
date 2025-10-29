@@ -15,7 +15,7 @@ import ChatSidebar from "@/components/ChatSidebar/Index";
 import Layout from "../Layout/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import { useFilter } from "@/contexts/FilterContext";
-
+import Swal from "sweetalert2";
 
 
 
@@ -39,8 +39,45 @@ const Header: React.FC = () => {
   const isOnChatPage = router.pathname.startsWith('/chat');
   const { filterType, setFilterType } = useFilter();
   // Don't show notifications if we're on chat page
+  const [fullPageMessage, setFullPageMessage] = useState<string | null>(null);
+
+
   const totalNotifications = isOnChatPage ? 0 : getTotalNotifications();
 
+
+  const handleFilterChange = (type: "Sale" | "Rent" | "all") => {
+    setIsLoading(true);
+  
+    const messageMap = {
+      Sale: "Switched to Sale ads",
+      Rent: "Switched to Rental ads",
+      all: "Exploring all ads",
+    };
+  
+    // ✅ Show SweetAlert message
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: messageMap[type],
+      showConfirmButton: false,
+      timer: 1500,
+      // toast: true,
+    });
+  
+    setTimeout(() => {
+      setFilterType(type);
+      setIsLoading(false);
+  
+      const target = document.querySelector("#products-section");
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 1000);
+  };
+  
+  
+
+  
   useEffect(() => {
     // Check if device is mobile
     const checkIsMobile = () => {
@@ -218,6 +255,14 @@ const Header: React.FC = () => {
 
   return (
     <header className={Style.header}>
+{fullPageMessage && (
+  <div className={Style.fullPageOverlay}>
+    <div className={Style.messageBox}>
+      {fullPageMessage}
+    </div>
+  </div>
+)}
+
       {!isDesckTop && 
         <div className={Style.MobileTopbar}>
         <Link href="/">
@@ -239,9 +284,9 @@ const Header: React.FC = () => {
           <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
-              <button onClick={() => setFilterType("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
-              <button onClick={() => setFilterType("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
-              <button onClick={() => setFilterType("all")} className={filterType === "all" ? Style.active : ""}>All</button>
+              <button onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
+              <button onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
+              <button onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
           </div>
 
@@ -284,9 +329,9 @@ const Header: React.FC = () => {
           <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
-              <button onClick={() => setFilterType("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
-              <button onClick={() => setFilterType("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
-              <button onClick={() => setFilterType("all")} className={filterType === "all" ? Style.active : ""}>All</button>
+              <button onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
+              <button onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
+              <button onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
           </div>
           }
