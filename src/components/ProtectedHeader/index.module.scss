@@ -570,10 +570,13 @@
 }
 
 // Mobile responsive styles for skeleton
+// .headerScalton{
+//     width: 80%;
+// }
 @media (max-width: 768px) {
   .skeletonLogo {
-    width: 120px;
-    height: 25px;
+    width: 95px;
+    height: 45px;
   }
 
   .skeletonBanner {
@@ -583,6 +586,7 @@
   .skeletonButton {
     width: 80px;
     height: 35px;
+    margin: 0 6px;
   }
 
   .skeletonNotification {
@@ -593,6 +597,7 @@
   .skeletonAccount {
     width: 100px;
     height: 35px;
+    margin: 0 6px;
   }
 }
 

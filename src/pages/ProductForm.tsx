@@ -25,7 +25,7 @@ const categories = {
   Jobs: ["Part-time", "Full-time", "Internships", "Work from Home", "Freelancers", "Driver Jobs", "Delivery Jobs", "Office Jobs"],
   "Pets & Pet Care": ["Dogs", "Cats", "Birds", "Fish & Aquariums", "Pet Accessories", "Pet Care Services", "Other Pets"],
   "Tools & Equipment": ["Power Tools", "Construction Tools", "Cleaning Tools", "Farming Tools", "Medical Equipment"],
-  "Education & Learning": ["Tuition", "Competitive Exam Material", "School/College Books", "Skill Courses", "Coaching Classes"],
+  "Education & Learning": ["Tuition", "Competitive Exam Material", "Skill Courses", "Coaching Classes"],
   "Events & Entertainment": ["Party Supplies", "Costumes", "DJ & Sound Systems", "Lighting Equipment", "Stage Setup"],
   Mobiles: ["Mobile Phones", "Tablets", "Accessories"],
 };

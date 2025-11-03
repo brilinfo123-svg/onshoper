@@ -69,7 +69,7 @@ const Header: React.FC = () => {
   
     setTimeout(() => {
       setFilterType(type);
-      setIsLoading(false);
+      setIsLoading(true);
   
       const target = document.querySelector("#products-section");
       if (target) {
@@ -237,7 +237,7 @@ const Header: React.FC = () => {
         )}
 
         {/* Action Section Skeleton */}
-        <ul className={Style.rightMenus}>
+        <ul className={`${Style.rightMenus} ${Style.headerScalton}`}>
           <li>
             <div className={Style.skeletonButton}></div>
           </li>
@@ -258,13 +258,13 @@ const Header: React.FC = () => {
 
   return (
     <header className={Style.header}>
-{fullPageMessage && (
-  <div className={Style.fullPageOverlay}>
-    <div className={Style.messageBox}>
-      {fullPageMessage}
-    </div>
-  </div>
-)}
+      {fullPageMessage && (
+        <div className={Style.fullPageOverlay}>
+          <div className={Style.messageBox}>
+            {fullPageMessage}
+          </div>
+        </div>
+      )}
 
       {!isDesckTop && 
         <div className={Style.MobileTopbar}>

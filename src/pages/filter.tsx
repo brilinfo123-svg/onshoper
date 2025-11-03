@@ -11,6 +11,8 @@ import Head from "next/head";
 import { useFilter } from "@/contexts/FilterContext";
 
 interface Product {
+  brand: string;
+  carBrand: any;
   year: number;
   KmDriven: number;
   positionType: string;
@@ -59,12 +61,9 @@ const Filter: React.FC = () => {
   const city = searchParams.get("city") || "Select City";
   const categorySlug = searchParams.get("category") || "";
   const { filterType } = useFilter();
-  
 
-  // Read subcategories from URL query param and split to array
   const subcategoriesParam = searchParams.get("subcategories") || "";
   const subcategoriesFromUrl = subcategoriesParam ? subcategoriesParam.split(",") : [];
-
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
@@ -75,38 +74,64 @@ const Filter: React.FC = () => {
   const [maxPrice, setMaxPrice] = useState<number | "">("");
   // const [filterType, setFilterType] = useState<"all" | "Sale" | "Rent">("all");
   const [showFilter, setShowFilter] = useState(false);
-const productsRef = useRef<HTMLDivElement>(null);
+  const productsRef = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
   const [shopData, setShopData] = useState<ShopData | null>(null);
 
 
-  // useEffect(() => {
-  //   const rentFallbackCategories = ["Services", "Jobs"];
-  //   let filtered = [...products];
-  
-  //   if (filterType !== "all") {
-  //     filtered = filtered.filter((p) => {
-  //       const saleType = p.SaleType || p.type;
-  //       const isRentType = saleType === "Rent";
-  //       const isSaleType = saleType === "Sale";
-  
-  //       if (filterType === "Sale") {
-  //         return isSaleType;
-  //       }
-  
-  //       if (filterType === "Rent") {
-  //         const isFallbackCategory = rentFallbackCategories.includes(p.category);
-  //         return isRentType || (!saleType && isFallbackCategory);
-  //       }
-  
-  //       return true;
-  //     });
-  //   }
-  
-  //   setFilteredProducts(filtered);
-  // }, [products, filterType]);
-  
-  
+  // Unique brands for Cars
+// 1. Normalize subcategories from URL (lowercase trim)
+const normalizedSubcategories = subcategoriesFromUrl.map((sub) =>
+  sub.toLowerCase().trim()
+);
+
+// 2. Unique brand extraction based on normalized subcategories
+
+const carBrandCounts = products
+  .filter(
+    (p) =>
+      p.category === "Car" &&
+      p.subcategory &&
+      normalizedSubcategories.includes(p.subcategory.toLowerCase()) &&
+      typeof p.carBrand === "string"
+  )
+  .reduce<Record<string, number>>((acc, p) => {
+    acc[p.carBrand] = (acc[p.carBrand] || 0) + 1;
+    return acc;
+  }, {});
+
+// Vehicle brands with counts
+const vehicleBrandCounts = products
+  .filter(
+    (p) =>
+      p.category === "Vehicles" &&
+      p.subcategory &&
+      normalizedSubcategories.includes(p.subcategory.toLowerCase()) &&
+      typeof p.brand === "string"
+  )
+  .reduce<Record<string, number>>((acc, p) => {
+    acc[p.brand] = (acc[p.brand] || 0) + 1;
+    return acc;
+  }, {});
+
+// Mobile brands with counts
+const mobileBrandCounts = products
+  .filter(
+    (p) =>
+      p.category === "Mobiles" &&
+      p.subcategory &&
+      normalizedSubcategories.includes(p.subcategory.toLowerCase()) &&
+      typeof p.MobileBrand === "string"
+  )
+  .reduce<Record<string, number>>((acc, p) => {
+    acc[p.MobileBrand] = (acc[p.MobileBrand] || 0) + 1;
+    return acc;
+  }, {});
+
+const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
+  category: string;
+  brand: string;
+} | null>(null);
 
   // Sync URL subcategories to state on mount or URL change
   useEffect(() => {
@@ -168,8 +193,24 @@ const productsRef = useRef<HTMLDivElement>(null);
       filtered = filtered.filter((p) => p.category === categorySlug);
     }
 
-
-
+     // Apply brand filter if selected
+     if (selectedFilterBrand) {
+      const { category, brand } = selectedFilterBrand;
+  
+      if (category === "Car") {
+        filtered = filtered.filter(
+          (p) => p.category === "Car" && p.carBrand === brand
+        );
+      } else if (category === "Vehicles") {
+        filtered = filtered.filter(
+          (p) => p.category === "Vehicles" && p.brand === brand
+        );
+      } else if (category === "Mobiles") {
+        filtered = filtered.filter(
+          (p) => p.category === "Mobiles" && p.MobileBrand === brand
+        );
+      }
+    }
 
     // Search term filter
     if (searchTerm) {
@@ -265,7 +306,7 @@ const productsRef = useRef<HTMLDivElement>(null);
     // ✅ Sale/Rent filter
     // ✅ Sale/Rent filter with fallback categories
     if (filterType !== "all") {
-      const rentFallbackCategories = ["Services", "Jobs"];
+      const rentFallbackCategories = ["Services", "Jobs", "Education & Learning"];
 
       filtered = filtered.filter((p) => {
         const saleType = p.SaleType || p.type;
@@ -285,7 +326,6 @@ const productsRef = useRef<HTMLDivElement>(null);
       });
     }
 
-
     setFilteredProducts(filtered);
   }, [
     products,
@@ -297,6 +337,7 @@ const productsRef = useRef<HTMLDivElement>(null);
     minPrice,
     maxPrice,
     filterType,
+    selectedFilterBrand,
   ]);
   const cleanPrice = (value: string | number | undefined): number => {
     if (typeof value === "string") {
@@ -305,6 +346,7 @@ const productsRef = useRef<HTMLDivElement>(null);
     }
     return typeof value === "number" ? value : 0;
   };
+
 
 
   
@@ -350,9 +392,7 @@ const productsRef = useRef<HTMLDivElement>(null);
 
     <div className="main">
       <div className="container" id="products-section" ref={productsRef}>
-        <FilterControls
-          isVisible={showFilter} // ✅ pass visibility as prop
-          minPrice={minPrice}
+        <FilterControls isVisible={showFilter} minPrice={minPrice}
           maxPrice={maxPrice}
           filterType={filterType}
           setMinPrice={setMinPrice}
@@ -370,12 +410,7 @@ const productsRef = useRef<HTMLDivElement>(null);
             <button className={styles.openFilterBtn} onClick={() => setShowFilter(true)}><span className="icon-filter" />Filter</button>
             <div className={styles.priceInput}>
               <label htmlFor="minPrice" className="icon-rupee">From</label>
-              <input
-                id="minPrice"
-                type="number"
-                placeholder="Min Price"
-                value={minPrice}
-                onChange={(e) =>
+              <input id="minPrice" type="number" placeholder="Min Price" value={minPrice} onChange={(e) =>
                   setMinPrice(e.target.value ? cleanPrice(e.target.value) : "")
                 }
               />
@@ -394,22 +429,85 @@ const productsRef = useRef<HTMLDivElement>(null);
             </div>
           </div>
           <div className={styles.btnWrapper}>
-            {/* <button className={filterType === "Sale" ? styles.activeBtn : ""} onClick={() => { setFilterType("Sale"); }}>
-              Buy */}
-              {/* ({saleTotal}) */}
-            {/* </button>
-            <button className={filterType === "Rent" ? styles.activeBtn : ""}
-              onClick={() => { setFilterType("Rent");}}>
-              Rent */}
-              {/* ({rentTotal}) */}
-            {/* </button>
-            <button
-              className={filterType === "all" ? styles.activeBtn : ""}
-              onClick={() => { setFilterType("all"); }}
-            > */}
-              {/* See All */}
-              {/* ({allTotal}) */}
-            {/* </button> */}
+            <>
+            <div className={styles.btnWrapper}>
+  {Object.keys(carBrandCounts).length > 0 && (
+    <div>
+      <h4>Car Brands</h4>
+      {Object.entries(carBrandCounts).map(([brand, count]) => (
+        <button
+          key={brand}
+          onClick={() => setSelectedFilterBrand({ category: "Car", brand })}
+          style={{
+            margin: "0 5px",
+            backgroundColor:
+              selectedFilterBrand?.category === "Car" && selectedFilterBrand?.brand === brand
+                ? "blue"
+                : "gray",
+            color: "white",
+            cursor: "pointer",
+          }}
+        >
+          {brand} ({count})
+        </button>
+      ))}
+    </div>
+  )}
+
+  {Object.keys(vehicleBrandCounts).length > 0 && (
+    <div>
+      <h4>Vehicle Brands</h4>
+      {Object.entries(vehicleBrandCounts).map(([brand, count]) => (
+        <button
+          key={brand}
+          onClick={() => setSelectedFilterBrand({ category: "Vehicles", brand })}
+          style={{
+            margin: "0 5px",
+            backgroundColor:
+              selectedFilterBrand?.category === "Vehicles" && selectedFilterBrand?.brand === brand
+                ? "blue"
+                : "gray",
+            color: "white",
+            cursor: "pointer",
+          }}
+        >
+          {brand} ({count})
+        </button>
+      ))}
+    </div>
+  )}
+
+  {Object.keys(mobileBrandCounts).length > 0 && (
+    <div>
+      <h4>Mobile Brands</h4>
+      {Object.entries(mobileBrandCounts).map(([brand, count]) => (
+        <button
+          key={brand}
+          onClick={() => setSelectedFilterBrand({ category: "Mobiles", brand })}
+          style={{
+            margin: "0 5px",
+            backgroundColor:
+              selectedFilterBrand?.category === "Mobiles" && selectedFilterBrand?.brand === brand
+                ? "blue"
+                : "gray",
+            color: "white",
+            cursor: "pointer",
+          }}
+        >
+          {brand} ({count})
+        </button>
+      ))}
+    </div>
+  )}
+</div>   
+
+{/* Add a clear filter button */}
+{selectedFilterBrand && (
+  <div style={{ marginTop: "10px" }}>
+    <button onClick={() => setSelectedFilterBrand(null)}>Clear Brand Filter</button>
+  </div>
+)}
+            </>
           </div>
         </div>
         <div className={styles.rowFlex}>

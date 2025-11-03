@@ -150,7 +150,7 @@ const [selectedCity, setSelectedCity] = useState<string>("All Cities");
 // Filter products based on selected criteria
 // Filter products based on selected criteria
 const filteredProducts = useMemo(() => {
-  const rentFallbackCategories = ["Services", "Jobs"]; // Optional: add more if needed
+  const rentFallbackCategories = ["Services", "Jobs", "Education & Learning"]; // Optional: add more if needed
 
   let filtered = products.filter((product) => {
     const saleType = product.SaleType || product.type;

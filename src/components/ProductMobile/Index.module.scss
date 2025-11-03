@@ -510,6 +510,9 @@
   flex: 1;
   background: #f0f8ff;
   border-radius: 8px;
+  @media screen and (max-width: 767px) {
+    min-height: 95px;
+  }
 }
 
 .embla__viewport {
