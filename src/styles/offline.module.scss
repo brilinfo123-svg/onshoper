@@ -1,0 +1,87 @@
+.wrapper {
+    height: 100vh;
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+      
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    animation: slideDown 0.8s ease forwards;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 30px;
+  }
+  }
+  
+  .content {
+    text-align: center;
+    z-index: 2;
+    animation: fadeIn 1s ease forwards;
+  }
+
+  
+  .retryButton {
+    padding: 10px 20px;
+    background-color: #00bcd4;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  
+  .retryButton:hover {
+    background-color: #0097a7;
+  }
+  
+  .bgAnimation {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 1%, transparent 1%);
+    background-size: 50px 50px;
+    animation: rotateBg 20s linear infinite;
+    z-index: 1;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes rotateBg {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  

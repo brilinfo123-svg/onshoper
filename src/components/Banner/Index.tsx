@@ -46,6 +46,41 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
 
   const router = useRouter();
 
+
+  const rotatingPlaceholders = [
+    "Search Mobile Phones...",
+    "Search Cars...",
+    "Search Motorcycles...",
+    "Search Electronics...",
+    "Search Fashion & Clothing...",
+    "Search Cameras...",
+    "Search Laptops...",
+    "Search Furniture...",
+    "Search Jobs...",
+    "Search Real Estate...",
+    "Search Services...",
+    "Search Commercial Vehicles...",
+    "Search Education & Learning...",
+    "Search Commercial Property...",
+    "Search Residential Property...",
+    "Search PG & Hostels...",
+  ];
+  
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [dynamicPlaceholder, setDynamicPlaceholder] = useState(rotatingPlaceholders[0]);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderIndex((prevIndex) => (prevIndex + 1) % rotatingPlaceholders.length);
+    }, 1500); // change every 1 second
+  
+    return () => clearInterval(interval); // cleanup on unmount
+  }, []);
+  
+  useEffect(() => {
+    setDynamicPlaceholder(rotatingPlaceholders[placeholderIndex]);
+  }, [placeholderIndex]);
+  
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -129,7 +164,7 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
           <div className={Style.searchBox}>
             <input
               type="text"
-              placeholder="Search by category..."
+              placeholder={dynamicPlaceholder}
               className={Style.searchInput}
               value={searchTerm}
               onChange={handleSearchChange}
