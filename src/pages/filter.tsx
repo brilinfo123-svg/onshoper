@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Head from "next/head";
 import { useFilter } from "@/contexts/FilterContext";
+import Modal from "@/components/Modal/Index";
 
 interface Product {
   brand: string;
@@ -61,7 +62,7 @@ const Filter: React.FC = () => {
   const city = searchParams.get("city") || "Select City";
   const categorySlug = searchParams.get("category") || "";
   const { filterType } = useFilter();
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const subcategoriesParam = searchParams.get("subcategories") || "";
   const subcategoriesFromUrl = subcategoriesParam ? subcategoriesParam.split(",") : [];
   const [products, setProducts] = useState<Product[]>([]);
@@ -428,87 +429,100 @@ const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
               />
             </div>
           </div>
-          <div className={styles.btnWrapper}>
+          <div>
+      <button className={styles.filterByBrand} onClick={() => setIsModalOpen(true)}>Filter By Brands</button>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+
             <>
             <div className={styles.btnWrapper}>
-  {Object.keys(carBrandCounts).length > 0 && (
-    <div>
-      <h4>Car Brands</h4>
-      {Object.entries(carBrandCounts).map(([brand, count]) => (
-        <button
-          key={brand}
-          onClick={() => setSelectedFilterBrand({ category: "Car", brand })}
-          style={{
-            margin: "0 5px",
-            backgroundColor:
-              selectedFilterBrand?.category === "Car" && selectedFilterBrand?.brand === brand
-                ? "blue"
-                : "gray",
-            color: "white",
-            cursor: "pointer",
-          }}
-        >
-          {brand} ({count})
-        </button>
-      ))}
-    </div>
-  )}
+              {Object.keys(carBrandCounts).length > 0 && (
+                <div>
+                  <h4>Car Brands</h4>
+                  <div className={styles.btnGroup}>
+                  {Object.entries(carBrandCounts).map(([brand, count]) => (
+                    <button
+                      key={brand}
+                      onClick={() => {
+                        setSelectedFilterBrand({ category: "Car", brand });
+                        setIsModalOpen(false);
+                      }}
+                      className={
+                        selectedFilterBrand?.category === "Car" && selectedFilterBrand?.brand === brand
+                          ? styles.activeButton
+                          : ""
+                      }
+                    >
+                      {brand} ({count})
+                    </button>
+                  ))}
+                  </div>
+                </div>
+              )}
 
-  {Object.keys(vehicleBrandCounts).length > 0 && (
-    <div>
-      <h4>Vehicle Brands</h4>
-      {Object.entries(vehicleBrandCounts).map(([brand, count]) => (
-        <button
-          key={brand}
-          onClick={() => setSelectedFilterBrand({ category: "Vehicles", brand })}
-          style={{
-            margin: "0 5px",
-            backgroundColor:
-              selectedFilterBrand?.category === "Vehicles" && selectedFilterBrand?.brand === brand
-                ? "blue"
-                : "gray",
-            color: "white",
-            cursor: "pointer",
-          }}
-        >
-          {brand} ({count})
-        </button>
-      ))}
-    </div>
-  )}
+              {Object.keys(vehicleBrandCounts).length > 0 && (
+                <div>
+                  <h4>Vehicle Brands</h4>
+                  {Object.entries(vehicleBrandCounts).map(([brand, count]) => (
+                    <button
+                      key={brand}
+                      onClick={() => {
+                        setSelectedFilterBrand({ category: "Vehicles", brand });
+                        setIsModalOpen(false);
+                      }}
+                      
+                    >
+                      {brand} ({count})
+                    </button>
+                  ))}
+                </div>
+              )}
 
-  {Object.keys(mobileBrandCounts).length > 0 && (
-    <div>
-      <h4>Mobile Brands</h4>
-      {Object.entries(mobileBrandCounts).map(([brand, count]) => (
-        <button
-          key={brand}
-          onClick={() => setSelectedFilterBrand({ category: "Mobiles", brand })}
-          style={{
-            margin: "0 5px",
-            backgroundColor:
-              selectedFilterBrand?.category === "Mobiles" && selectedFilterBrand?.brand === brand
-                ? "blue"
-                : "gray",
-            color: "white",
-            cursor: "pointer",
-          }}
-        >
-          {brand} ({count})
-        </button>
-      ))}
-    </div>
-  )}
-</div>   
-
-{/* Add a clear filter button */}
-{selectedFilterBrand && (
-  <div style={{ marginTop: "10px" }}>
-    <button onClick={() => setSelectedFilterBrand(null)}>Clear Brand Filter</button>
-  </div>
-)}
+              {Object.keys(mobileBrandCounts).length > 0 && (
+                <div>
+                  <h4>Mobile Brands</h4>
+                  <div className={styles.btnGroup}>
+                  {Object.entries(mobileBrandCounts).map(([brand, count]) => (
+                    <button
+                      key={brand}
+                      onClick={() => {
+                        setSelectedFilterBrand({ category: "Mobiles", brand });
+                        setIsModalOpen(false);
+                      }}
+                      style={{
+                        backgroundColor:
+                          selectedFilterBrand?.category === "Mobiles" && selectedFilterBrand?.brand === brand
+                            ? "blue"
+                            : "",
+                        color: "black",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {brand} ({count})
+                    </button>
+                  ))}
+                  </div>
+                </div>
+              )}
+              {/* Add a clear filter button */}
+              {selectedFilterBrand && (
+                  <div style={{ marginTop: "10px" }}>
+                    <button
+                    className={styles.clearBrands}
+                      onClick={() => {
+                        setSelectedFilterBrand(null);
+                        setIsModalOpen(false); // Close the modal after clearing
+                      }}
+                    >
+                      Clear Brand Filter
+                    </button>
+                  </div>
+                )}
+            </div>   
             </>
-          </div>
+      </Modal>
+    </div>
+         
         </div>
         <div className={styles.rowFlex}>
           {/* Sidebar Filter */}

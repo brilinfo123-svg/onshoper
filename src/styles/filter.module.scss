@@ -162,8 +162,6 @@
       padding: 10px;
     }
     .btnWrapper{
-      display: flex;
-      align-items: baseline;
       gap: 12px;
       @media screen and (max-width: 767px) {
         gap: 5px;
@@ -287,4 +285,75 @@
       font-size: 16px;
     }
   }
+}
+
+
+.btnWrapper {
+  > div {
+    background: #fff;
+
+    h4 {
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      color: #222;
+      font-weight: 600;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 6px;
+    }
+
+    button {
+      padding: 8px 14px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 25px;
+      background-color: #ddd;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+      min-width: 100px;
+      text-align: center;
+      font-weight: 400 !important;
+
+      &:hover {
+        background-color: #0070f3;
+        color: #fff !important;
+        box-shadow: 0 4px 12px rgb(0 112 243 / 0.4);
+        transform: translateY(-2px);
+      }
+
+      &.active, /* agar aap class active bhi use karte hain */
+      &[style*='background-color: blue'] {
+        background-color: #0070f3 !important;
+        color: white !important;
+        box-shadow: 0 4px 12px rgb(0 112 243 / 0.6);
+      }
+    }
+  }
+  .btnGroup{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    @media screen and (max-width: 767px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 10px;
+      gap: 5px;
+    }
+    @media screen and (max-width: 374px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}
+
+/* Clear Filter button styling */
+.filterByBrand{
+  border: none;
+    background-color: #ff6d01;
+    padding: 14px 20px;
+    font-size: 14px;
+    color: #fff;
+    letter-spacing: 0.5px;
+    border-radius: 5px;
+    cursor: pointer;
 }
