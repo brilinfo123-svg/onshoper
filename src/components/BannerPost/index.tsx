@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import styles from "./banner.module.scss";
@@ -31,8 +31,10 @@ const bannerSlides = [
 ];
 
 const BannerPost = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
   const autoplayOptions = {
-    delay: 3000, // ⏱ Change to 5000 for 5 seconds
+    delay: 3000,
     stopOnInteraction: false,
     stopOnMouseEnter: false,
   };
@@ -47,22 +49,40 @@ const BannerPost = () => {
     [Autoplay(autoplayOptions)]
   );
 
- 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // simulate loading delay
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className={styles.bannerWrapper}>
-      <div className={styles.embla} ref={emblaRef}>
-        <div className={styles.embla__container}>
-          {bannerSlides.map((slide, index) => (
-            <div className={styles.embla__slide} key={index}>
-              <div className={styles.slideContent}>
-                <h2>{slide.title}</h2>
-                <p>{slide.description}</p>
-              </div>
+      {isLoading ? (
+        <div className={styles.skeletonContainer}>
+          {[...Array(1)].map((_, index) => (
+            <div className={styles.skeletonSlide} key={index}>
+              <div className={styles.skeletonTitle}></div>
+              <div className={styles.skeletonText}></div>
+              <div className={styles.skeletonText}></div>
             </div>
           ))}
         </div>
-      </div>
+      ) : (
+        <div className={styles.embla} ref={emblaRef}>
+          <div className={styles.embla__container}>
+            {bannerSlides.map((slide, index) => (
+              <div className={styles.embla__slide} key={index}>
+                <div className={styles.slideContent}>
+                  <h2>{slide.title}</h2>
+                  <p>{slide.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

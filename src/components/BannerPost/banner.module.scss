@@ -55,3 +55,48 @@
     font-size: 14px;
   }
 }
+.skeletonContainer {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  justify-content: center;
+  
+}
+
+.skeletonSlide {
+  width: 100%;
+  background: #eee;
+  border-radius: 12px;
+  padding: 20px 0 10px;
+  animation: loading 1.5s infinite;
+}
+
+.skeletonTitle {
+  width: 30%;
+  height: 24px;
+  background: #ccc;
+  margin:  0 auto;
+  margin-bottom: 12px;
+  border-radius: 4px;
+}
+
+.skeletonText {
+  width: 90%;
+  height: 16px;
+  background: #ddd;
+  border-radius: 4px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+@keyframes loading {
+  0% {
+    background-color: #f5f5f5;
+  }
+  50% {
+    background-color: #fdfdfd;
+  }
+  100% {
+    background-color: #f0f0f0;
+  }
+}

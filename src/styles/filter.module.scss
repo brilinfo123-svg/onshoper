@@ -276,8 +276,7 @@
   align-items: center;
   left: 0;
   @media screen and (max-width: 767px) {
-    left: -2px;
-    right: 0px;
+    position: initial;
   }
   img{
     width: 150px;
