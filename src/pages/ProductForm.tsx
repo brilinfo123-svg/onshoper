@@ -74,36 +74,157 @@ function AllCategoryRentalForm() {
     const newErrors: { [key: string]: string } = {};
   
     if (step === 1 && !selectedCategory) {
-      newErrors.selectedCategory = "Please select a category.";
+      newErrors.selectedCategory = "Please Select a Category.";
     }
   
     if (step === 2 && !selectedSubcategory) {
-      newErrors.selectedSubcategory = "Please select a subcategory.";
+      newErrors.selectedSubcategory = "Please Select a Subcategory.";
     }
   
     if (step === 3) {
+      const isVehicle = ["Scooters", "Motorcycles"].includes(selectedSubcategory);
+      const isCar = selectedSubcategory === "Cars";
+      const isCommercial = selectedCategory === "Commercial Vehicles";
+      const SpareParts = selectedSubcategory === "Spare Parts";
+      const isMotorcycle = selectedSubcategory === "Motorcycles";
+      const Scooters = selectedSubcategory === "Scooters";
+      const Bicycles = selectedSubcategory === "Bicycles";
+      const isJob = selectedCategory === "Jobs";
+      const isMobile = selectedSubcategory === "Mobile Phones";
+    
+      // SaleType (skip for Services, Jobs, Education)
       if (
-        !["Services"].includes(selectedCategory) &&
         !["Services", "Jobs", "Education & Learning"].includes(selectedCategory) &&
         !formData.SaleType
       ) {
-        newErrors.SaleType = "Please select Rent or Sale.";
+        newErrors.SaleType = "Please Select Rent or Sale.";
       }
+    
+      
+      if (SpareParts) {
+        if (!formData.SpareParts) {
+          newErrors.SpareParts = "Please Select The Parts-Type.";
+        }
+      }
+      if (Bicycles) {
+        if (!formData.BicyclesBrand) {
+          newErrors.BicyclesBrand = "Please Select Bicycles Brand.";
+        }
+      }
+      // Common fields
+      if (!formData.condition) {
+        newErrors.condition = "Please Select The Item's Condition.";
+      }
+    
       if (!formData.title || formData.title.trim() === "") {
-        newErrors.title = "Title is required.";
+        newErrors.title = "Title is Required.";
       }
-      if (!formData.description || formData.title.trim() === "") {
-        newErrors.description = "Description is required.";
+    
+      if (!formData.description || formData.description.trim() === "") {
+        newErrors.description = "Description Is Required.";
+      }
+    
+      // Vehicle-specific fields
+      if (isVehicle) {
+        if (!formData.fuel) {
+          newErrors.fuel = "Please Select a Fuel Type.";
+        }
+    
+        if (!formData.year) {
+          newErrors.year = "Please Select Year.";
+        }
+        if (!formData.OwnersNo) {
+          newErrors.OwnersNo = "Please Select Number Of Owners.";
+        }
+        if (!formData.KmDriven || Number(formData.KmDriven) <= 0) {
+          newErrors.KmDriven = "Please Enter Valid KM Driven.";
+        }
+    
+        // Brand/model per vehicle type
+       
+        if (isMotorcycle && !formData.model) {
+          newErrors.model = "Please Select Motorcycle Brand and Model.";
+        }
+        if (Scooters && !formData.model) {
+          newErrors.model = "Please Select Motorcycle Brand and Model.";
+        }
+      }
+     
+      if (isCommercial) {
+        if (isCommercial && !formData.commercialBrand) {
+          newErrors.commercialBrand = "Please Select Commercial Vehicle Brand and Model.";
+        }
+        if (!formData.year) {
+          newErrors.year = "Please Select Year.";
+        }
+        if (!formData.fuel) {
+          newErrors.fuel = "Please Select a Fuel Type.";
+        }
+        if (!formData.OwnersNo) {
+          newErrors.OwnersNo = "Please Select Number Of Owners.";
+        }
+        if (!formData.KmDriven || Number(formData.KmDriven) <= 0) {
+          newErrors.KmDriven = "Please Enter Valid KM Driven.";
+        }
+        if (!formData.transmission) {
+          newErrors.transmission = "Please Select Transmission Type.";
+        }
+      }
+      
+      if (isCar) {
+        // if (!formData.transmission) {
+          if (!formData.transmission) {
+            newErrors.transmission = "Please Select Transmission Type.";
+          }
+          if (!formData.carBrand) {
+            newErrors.carBrand = "Please Select Car Brand and Model.";
+          }
+          if (!formData.year) {
+            newErrors.year = "Please Select Year.";
+          }
+          if (!formData.fuel) {
+            newErrors.fuel = "Please Select a Fuel Type.";
+          }
+          if (!formData.OwnersNo) {
+            newErrors.OwnersNo = "Please Select Number Of Owners.";
+          }
+          if (!formData.KmDriven || Number(formData.KmDriven) <= 0) {
+            newErrors.KmDriven = "Please Enter Valid KM Driven.";
+          }
+      }
+    
+      // Jobs-specific fields
+      if (isJob) {
+        if (!formData.salaryPeriod) {
+          newErrors.salaryPeriod = "Please Select Salary Period.";
+        }
+        if (!formData.positionType) {
+          newErrors.positionType = "Please Select Position Type.";
+        }
+        if (!formData.salaryFrom) {
+          newErrors.salaryFrom = "Please Enter Salary From.";
+        }
+        if (!formData.salaryTo) {
+          newErrors.salaryTo = "Please Enter Salary To.";
+        }
+      }
+    
+      // Mobile-specific fields
+      if(isMobile){
+        if (isMobile && !formData.MobileModel) {
+          newErrors.MobileModel = "Please Select Mobile Brand and Model.";
+        }
       }
     }
-  
+    
     if (step === 4 && !formData.location?.state) {
-      newErrors.location = "Please select your location.";
+      newErrors.location = "Please Select Your Location.";
     }
   
     if (step === 5 && !formData.termsAccepted) {
       newErrors.termsAccepted = "You must accept the terms.";
     }
+    
   
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -966,6 +1087,7 @@ if (!formData.termsAccepted) {
                   <option value="Cooling Systems">Cooling Systems</option>
                   <option value="Other Spare Parts">Other Spare Parts</option>
                 </select>
+                {errors.SpareParts && <p className={styles.errorText}>{errors.SpareParts  }</p>}
               </div>
             </div>
           )}
@@ -1016,6 +1138,8 @@ if (!formData.termsAccepted) {
                     </select>
                   </div>
                 )}
+                {errors.commercialBrand && <p className={styles.errorText}>{errors.commercialBrand  }</p>}
+                <br/>
               </div>
               <div className={styles.formGroup}>
                 <label>Year</label>
@@ -1041,6 +1165,7 @@ if (!formData.termsAccepted) {
                   placeholder=""
                   inputMode="numeric"
                 />
+                {errors.year && <p className={styles.errorText}>{errors.year  }</p>}
               </div>
 
               <div className={styles.formGroup}>
@@ -1052,6 +1177,7 @@ if (!formData.termsAccepted) {
                   <option value="Electric">Electric</option>
                   <option value="CNG">CNG</option>
                 </select>
+                {errors.fuel && <p className={styles.errorText}>{errors.fuel}</p>}
               </div>
               <div className={styles.formGroup}>
                 <label>Transmission</label>
@@ -1060,6 +1186,8 @@ if (!formData.termsAccepted) {
                   <option value="Manual">Manual</option>
                   <option value="Automatic">Automatic</option>
                 </select>
+                {errors.transmission && <p className={styles.errorText}>{errors.transmission}</p>}
+                
               </div>
 
               <div className={styles.formGroup}>
@@ -1071,15 +1199,21 @@ if (!formData.termsAccepted) {
                   <option value="3">3rd Owner</option>
                   <option value="4+">4th or more</option>
                 </select>
+                {errors.OwnersNo && <p className={styles.errorText}>{errors.OwnersNo}</p>}
               </div>
               <div className={styles.formGroup}>
                 <label>KM Driven</label>
                 <input type="number" name="KmDriven" value={formData.KmDriven || ""} onChange={handleChange} placeholder=".."/>
+                {errors.KmDriven && <p className={styles.errorText}>{errors.KmDriven}</p>}
               </div>
             </>
+            
           )}
           {/* End Commercial Vehicles */}
-
+          {/* {errors.fuel && <p className={styles.error}>{errors.fuel}</p>} */}
+                {/* {errors.transmission && <p className={styles.error}>{errors.transmission}</p>} */}
+                {/* {errors.OwnersNo && <p className={styles.error}>{errors.OwnersNo}</p>}
+                {errors.KmDriven && <p className={styles.error}>{errors.KmDriven}</p>} */}
           {/* Jobs */}
           {selectedCategory === "Jobs" && (
             <>
@@ -1094,6 +1228,7 @@ if (!formData.termsAccepted) {
                     <option value="Monthly">Monthly</option>
                     <option value="Yearly">Yearly</option>
                   </select>
+                  {errors.salaryPeriod && <p className={styles.errorText}>{errors.salaryPeriod}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Position Type</label>
@@ -1104,6 +1239,7 @@ if (!formData.termsAccepted) {
                     <option value="Contract">Contract</option>
                     <option value="Temporary">Temporary</option>
                   </select>
+                  {errors.positionType && <p className={styles.errorText}>{errors.positionType}</p>}
                 </div>
               </div>
 
@@ -1118,6 +1254,7 @@ if (!formData.termsAccepted) {
                       })
                     }
                   />
+                  {errors.salaryFrom && <p className={styles.errorText}>{errors.salaryFrom}</p>}
                 </div>
 
                 <div className={styles.formGroup}>
@@ -1130,6 +1267,7 @@ if (!formData.termsAccepted) {
                       })
                     }
                   />
+                  {errors.salaryTo && <p className={styles.errorText}>{errors.salaryTo}</p>}
                 </div>
               </div>
 
@@ -1208,6 +1346,8 @@ if (!formData.termsAccepted) {
                   </select>
                 </div>
               )}
+              {errors.MobileModel && <p className={styles.errorText}>{errors.MobileModel}</p>}
+              <br/>
             </div>
           )}
 
@@ -1656,7 +1796,10 @@ if (!formData.termsAccepted) {
                     </select>
                   </div>
                 )}
+                {errors.carBrand && <p className={styles.errorText}>{errors.carBrand}</p>}
+                <br/>
               </div>
+              
               <div className={styles.formGroup}>
                 <label>Year</label>
                 <input type="number" name="year" value={formData.year || ""} onChange={(e) => {
@@ -1681,6 +1824,7 @@ if (!formData.termsAccepted) {
                   placeholder=""
                   inputMode="numeric"
                 />
+                {errors.year && <p className={styles.errorText}>{errors.year  }</p>}
               </div>
 
               <div className={styles.formGroup}>
@@ -1692,6 +1836,7 @@ if (!formData.termsAccepted) {
                   <option value="Electric">Electric</option>
                   <option value="CNG">CNG</option>
                 </select>
+                {errors.fuel && <p className={styles.errorText}>{errors.fuel}</p>}
               </div>
               <div className={styles.formGroup}>
                 <label>Transmission</label>
@@ -1700,6 +1845,7 @@ if (!formData.termsAccepted) {
                   <option value="Manual">Manual</option>
                   <option value="Automatic">Automatic</option>
                 </select>
+                {errors.transmission && <p className={styles.errorText}>{errors.transmission}</p>}
               </div>
 
               <div className={styles.formGroup}>
@@ -1711,10 +1857,12 @@ if (!formData.termsAccepted) {
                   <option value="3">3rd Owner</option>
                   <option value="4+">4th or more</option>
                 </select>
+                {errors.OwnersNo && <p className={styles.errorText}>{errors.OwnersNo}</p>}
               </div>
               <div className={styles.formGroup}>
                 <label>KM Driven</label>
                 <input type="number" name="KmDriven" value={formData.KmDriven || ""} onChange={handleChange} placeholder=".."/>
+                {errors.KmDriven && <p className={styles.errorText}>{errors.KmDriven}</p>}
               </div>
             </>
           )}
@@ -1724,7 +1872,7 @@ if (!formData.termsAccepted) {
             <>
               <div className={styles.FormChildGroup}>
                 <div className={styles.formGroup}>
-                  <label>Bike Brand</label>
+                  <label>Vehicle Brand</label>
                   <select name="brand" value={formData.brand}
                     onChange={(e) => {
                       setFormData((prev) => ({
@@ -1742,7 +1890,7 @@ if (!formData.termsAccepted) {
                 </div>
                 {formData.brand && (
                   <div className={styles.formGroup}>
-                    <label>Bike Model</label>
+                    <label>Vehicle Model</label>
                     <select name="model" value={formData.model} onChange={handleChange}>
                       <option value="">Select Model</option>
                       {bikeBrands[formData.brand].map((model) => (
@@ -1751,22 +1899,24 @@ if (!formData.termsAccepted) {
                     </select>
                   </div>
                 )}
+                {errors.model && <p className={styles.errorText}>{errors.model}</p>}
+                <br/>
               </div>
-
+              
               <div className={styles.formGroup}>
                 <label>Fuel Type</label>
                 <select name="fuel" value={formData.fuel || ""} onChange={handleChange}>
                   <option value="">Select Fuel Type</option>
-                  <option value="Petrol">Petrol</option>
-                  <option value="Diesel">Diesel</option>
+                  <option value="Petrol">Petrol</option>=
                   <option value="Electric">Electric</option>
-                  <option value="CNG">CNG</option>
                 </select>
+                {errors.fuel && <p className={styles.errorText}>{errors.fuel}</p>}
               </div>
 
               <div className={styles.formGroup}>
                 <label>KM Driven</label>
                 <input type="number" name="KmDriven" value={formData.KmDriven || ""} onChange={handleChange} placeholder=".."/>
+                {errors.KmDriven && <p className={styles.errorText}>{errors.KmDriven}</p>}
               </div>
               <div className={styles.formGroup}>
                 <label>Number of Owners</label>
@@ -1777,6 +1927,7 @@ if (!formData.termsAccepted) {
                   <option value="3">3rd Owner</option>
                   <option value="4+">4th or more</option>
                 </select>
+                {errors.OwnersNo && <p className={styles.errorText}>{errors.OwnersNo}</p>}
               </div>
 
               <div className={styles.formGroup}>
@@ -1803,6 +1954,7 @@ if (!formData.termsAccepted) {
                   placeholder=""
                   inputMode="numeric"
                 />
+                {errors.year && <p className={styles.errorText}>{errors.year  }</p>}
               </div>
 
             </>
@@ -1839,6 +1991,7 @@ if (!formData.termsAccepted) {
                   <option value="Ninety One">Ninety One</option>
                   <option value="Schnell">Schnell</option>
                 </select>
+                {errors.BicyclesBrand && <p className={styles.errorText}>{errors.BicyclesBrand}</p>}
               </div>
             </>
           )}
@@ -1853,6 +2006,7 @@ if (!formData.termsAccepted) {
                 <label><input type="radio" name="condition" value="Good" checked={formData.condition === "Good"} onChange={handleChange} />Good</label>
                 <label><input type="radio" name="condition" value="Fair" checked={formData.condition === "Fair"} onChange={handleChange} />Fair</label>
               </div>
+              {errors.condition && <p className={styles.errorText}>{errors.condition}</p>}
             </div>
           )}
           {!["House & Apartments", "Cars", "Motorcycles", "Land & Plots", "PG & Guest House", "Shops & Offices", "Commercial Properties"].includes(selectedSubcategory) && (

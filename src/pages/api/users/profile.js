@@ -20,8 +20,8 @@ export default async function handler(req, res) {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const { name, email, mobile, photo } = user;
-      return res.status(200).json({ name, email, mobile, photo });
+      const { name, mobile, photo } = user;
+      return res.status(200).json({ name, mobile, photo });
     } catch (error) {
       console.error("GET /profile error:", error);
       return res.status(500).json({ error: "Failed to fetch profile" });
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
   }
 
   if (method === "POST") {
-    const { contact, name, email, mobile, photo } = req.body;
+    const { contact, name, mobile, photo } = req.body;
 
     if (!contact || typeof contact !== "string") {
       return res.status(400).json({ error: "Missing or invalid contact" });
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     try {
       const updateResult = await User.updateOne(
         { contact },
-        { $set: { name, email, mobile, photo } },
+        { $set: { name, mobile, photo } },
         { upsert: true }
       );
 

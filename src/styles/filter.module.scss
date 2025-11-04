@@ -162,6 +162,10 @@
         display: block;
         padding: 10px 20px;
       }
+      @media screen and (max-width: 374px) {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
     }
     @media screen and (max-width: 767px) {
       padding: 10px;
@@ -375,4 +379,8 @@
     letter-spacing: 0.5px;
     border-radius: 5px;
     cursor: pointer;
+    @media screen and (max-width: 374px) {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
 }

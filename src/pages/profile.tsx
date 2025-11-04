@@ -384,11 +384,6 @@ const PropertyDetailPage: React.FC = () => {
     },
   ];
 
-  const businessName = shopData?.shop?.businessName;
-  const GstNumber = shopData?.shop?.gstNumber;
-  const currentAddress = shopData?.shop?.currentAddress;
-  const currentLocation = shopData?.shop?.currentLocation;
-
   return (
     <div className="container">
      <Head>

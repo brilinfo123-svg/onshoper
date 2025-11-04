@@ -165,6 +165,7 @@ const ProductDetails = () => {
     "Furniture",
     "Electronics & Appliances",
     "Real Estate",
+    "Books & Sports",
   ];
 
 

@@ -14,7 +14,6 @@ export default function ProfileForm() {
   const [updatingProfile, setUpdatingProfile] = useState(false);
 
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [photo, setPhoto] = useState(""); // Final photo path
   const [previewPhoto, setPreviewPhoto] = useState(""); // Preview before upload
@@ -29,7 +28,6 @@ export default function ProfileForm() {
 
       const data = await res.json();
       setName(data.name || "");
-      setEmail(data.email || "");
       setMobile(data.mobile || "");
       setPhoto(data.photo || "");
       setPreviewPhoto(""); // Clear preview after loading actual photo
@@ -107,7 +105,6 @@ export default function ProfileForm() {
         body: JSON.stringify({
           contact: session.user.contact,
           name,
-          email,
           mobile,
           photo: photoPath,
         }),
@@ -179,11 +176,6 @@ export default function ProfileForm() {
       <div className={styles.formGroup}>
         <label>Name</label>
         <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
-      </div>
-
-      <div className={styles.formGroup}>
-        <label>Email</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
       </div>
 
       <div className={styles.formGroup}>

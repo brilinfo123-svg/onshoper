@@ -52,7 +52,7 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
     "Search Cars...",
     "Search Motorcycles...",
     "Search Electronics...",
-    "Search Fashion & Clothing...",
+    "Search Fashion...",
     "Search Cameras...",
     "Search Laptops...",
     "Search Furniture...",
