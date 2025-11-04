@@ -1,6 +1,6 @@
 "use client";
 import React, { ReactNode } from "react";
-import styles from '@/components/Modal/Index.module.scss'
+import styles from "./Index.module.scss";
 
 type ModalProps = {
   isOpen: boolean;
