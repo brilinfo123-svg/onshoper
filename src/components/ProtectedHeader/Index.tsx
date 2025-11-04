@@ -69,7 +69,7 @@ const Header: React.FC = () => {
   
     setTimeout(() => {
       setFilterType(type);
-      setIsLoading(true);
+      setIsLoading(false);
   
       const target = document.querySelector("#products-section");
       if (target) {
