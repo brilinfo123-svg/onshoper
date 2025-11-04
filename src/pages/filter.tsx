@@ -82,48 +82,37 @@ const Filter: React.FC = () => {
 
   // Unique brands for Cars
 // 1. Normalize subcategories from URL (lowercase trim)
-const normalizedSubcategories = subcategoriesFromUrl.map((sub) =>
-  sub.toLowerCase().trim()
-);
+const normalizedSubcategories = selectedSubcategories.map((s) => s.toLowerCase());
+
+const filteredForBrandCounts = products.filter((p) => {
+  const matchesCity =
+    !city || city === "All Cities" || (p.location?.city || "").toLowerCase() === city.toLowerCase();
+
+  const matchesSubcategory =
+    selectedSubcategories.length === 0 ||
+    (p.subcategory && normalizedSubcategories.includes(p.subcategory.toLowerCase()));
+
+  return matchesCity && matchesSubcategory;
+});
 
 // 2. Unique brand extraction based on normalized subcategories
 
-const carBrandCounts = products
-  .filter(
-    (p) =>
-      p.category === "Car" &&
-      p.subcategory &&
-      normalizedSubcategories.includes(p.subcategory.toLowerCase()) &&
-      typeof p.carBrand === "string"
-  )
+const carBrandCounts = filteredForBrandCounts
+  .filter((p) => p.category === "Car" && typeof p.carBrand === "string")
   .reduce<Record<string, number>>((acc, p) => {
     acc[p.carBrand] = (acc[p.carBrand] || 0) + 1;
     return acc;
   }, {});
 
-// Vehicle brands with counts
-const vehicleBrandCounts = products
-  .filter(
-    (p) =>
-      p.category === "Vehicles" &&
-      p.subcategory &&
-      normalizedSubcategories.includes(p.subcategory.toLowerCase()) &&
-      typeof p.brand === "string"
-  )
+const vehicleBrandCounts = filteredForBrandCounts
+  .filter((p) => p.category === "Vehicles" && typeof p.brand === "string")
   .reduce<Record<string, number>>((acc, p) => {
     acc[p.brand] = (acc[p.brand] || 0) + 1;
     return acc;
   }, {});
 
-// Mobile brands with counts
-const mobileBrandCounts = products
-  .filter(
-    (p) =>
-      p.category === "Mobiles" &&
-      p.subcategory &&
-      normalizedSubcategories.includes(p.subcategory.toLowerCase()) &&
-      typeof p.MobileBrand === "string"
-  )
+const mobileBrandCounts = filteredForBrandCounts
+  .filter((p) => p.category === "Mobiles" && typeof p.MobileBrand === "string")
   .reduce<Record<string, number>>((acc, p) => {
     acc[p.MobileBrand] = (acc[p.MobileBrand] || 0) + 1;
     return acc;
@@ -408,7 +397,7 @@ const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
 
         <div className={styles.buttons}>
           <div className={styles.priceFilter}>
-            <button className={styles.openFilterBtn} onClick={() => setShowFilter(true)}><span className="icon-filter" />Filter</button>
+            <button className={styles.openFilterBtn} onClick={() => setShowFilter(true)}><span className="icon-sliders" />Filter By Price</button>
             <div className={styles.priceInput}>
               <label htmlFor="minPrice" className="icon-rupee">From</label>
               <input id="minPrice" type="number" placeholder="Min Price" value={minPrice} onChange={(e) =>
@@ -437,7 +426,7 @@ const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
             <>
             <div className={styles.btnWrapper}>
               {Object.keys(carBrandCounts).length > 0 && (
-                <div>
+                <div className={styles.brandWrap}>
                   <h4>Car Brands</h4>
                   <div className={styles.btnGroup}>
                   {Object.entries(carBrandCounts).map(([brand, count]) => (
@@ -461,8 +450,9 @@ const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
               )}
 
               {Object.keys(vehicleBrandCounts).length > 0 && (
-                <div>
-                  <h4>Vehicle Brands</h4>
+                <div className={styles.brandWrap}>
+                  <h4>Bikes Brands</h4>
+                  <div className={styles.btnGroup}>
                   {Object.entries(vehicleBrandCounts).map(([brand, count]) => (
                     <button
                       key={brand}
@@ -475,11 +465,12 @@ const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
                       {brand} ({count})
                     </button>
                   ))}
+                  </div>
                 </div>
               )}
 
               {Object.keys(mobileBrandCounts).length > 0 && (
-                <div>
+                <div className={styles.brandWrap}>
                   <h4>Mobile Brands</h4>
                   <div className={styles.btnGroup}>
                   {Object.entries(mobileBrandCounts).map(([brand, count]) => (
@@ -504,17 +495,23 @@ const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
                   </div>
                 </div>
               )}
+
+               {/* ✅ No Brands Message */}
+                {Object.keys(carBrandCounts).length === 0 &&
+                Object.keys(vehicleBrandCounts).length === 0 &&
+                Object.keys(mobileBrandCounts).length === 0 && (
+                  <p className={styles.noBrands}>No brands available.</p>
+                )}
               {/* Add a clear filter button */}
               {selectedFilterBrand && (
-                  <div style={{ marginTop: "10px" }}>
+                  <div className={styles.clearBrands}>
                     <button
-                    className={styles.clearBrands}
                       onClick={() => {
                         setSelectedFilterBrand(null);
                         setIsModalOpen(false); // Close the modal after clearing
                       }}
                     >
-                      Clear Brand Filter
+                      Reset Filter
                     </button>
                   </div>
                 )}
