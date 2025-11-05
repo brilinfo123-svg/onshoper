@@ -329,7 +329,7 @@ const filteredProducts = useMemo(() => {
         </div>
       </div>
 
-      <Benefits />
+      {/* <Benefits /> */}
     </div>
   );
 }
