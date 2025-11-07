@@ -5,12 +5,12 @@ import styles from "./banner.module.scss";
 
 const bannerSlides = [
   {
-    title: "🚀 Over 10 Lakh+ Active Ads",
-    description: "Find everything from mobile phones to real estate in one place.",
-  },
-  {
     title: "🏠 Buy, Sell, Rent & Exchange",
     description: "Post your ad in seconds and connect with verified buyers or renters.",
+  },
+  {
+    title: "🚀 Start Fresh, Discover More",
+    description: "Explore a growing marketplace for everything from phones to properties — all in one place.",
   },
   {
     title: "📱 Mobile-Friendly Experience",
@@ -34,7 +34,7 @@ const BannerPost = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const autoplayOptions = {
-    delay: 3000,
+    delay: 5000,
     stopOnInteraction: false,
     stopOnMouseEnter: false,
   };

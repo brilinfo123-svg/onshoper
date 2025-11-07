@@ -15,6 +15,8 @@ export default function LoginPage() {
   const [message, setMessage] = useState("");
   const [timer, setTimer] = useState(0);
   const [canResend, setCanResend] = useState(false);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -55,29 +57,34 @@ export default function LoginPage() {
   const sendOtp = async () => {
     setError("");
     setMessage("");
-    if (!contact) return setError(`Please enter your ${loginType}`);
-
+    setIsSendingOtp(true);
+  
+    if (!contact) {
+      setError(`Please enter your ${loginType}`);
+      setIsSendingOtp(false);
+      return;
+    }
+  
     const res = await fetch("/api/Verification/send-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ contact }),
     });
-
+  
     const data = await res.json();
-
+  
     if (data.success) {
       setOtpSent(true);
       setMessage("OTP sent successfully");
       setCanResend(false);
       await fetchOtpExpiry();
-
-      if (data.otp) {
-        alert(`Your OTP is: ${data.otp}`);
-      }
     } else {
       setError("Failed to send OTP");
     }
+  
+    setIsSendingOtp(false);
   };
+  
 
   const verifyOtp = async () => {
     setError("");
@@ -181,9 +188,14 @@ export default function LoginPage() {
             maxLength={loginType === "mobile" ? 10 : undefined}
           />
 
-          <button className={styles.button} onClick={sendOtp}>
-            Send OTP
+          <button className={styles.button} onClick={sendOtp} disabled={isSendingOtp}>
+            {isSendingOtp ? (
+              <span className={styles.loaderOTP}>Sending...</span>
+            ) : (
+              "Send OTP"
+            )}
           </button>
+
           <button className={styles.backButton} onClick={handleBack}>
             ← Back
           </button>

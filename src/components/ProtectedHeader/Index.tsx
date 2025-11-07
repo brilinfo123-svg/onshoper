@@ -342,7 +342,7 @@ const Header: React.FC = () => {
             <button className={Style.closeButton} onClick={closeSidebar}>&times;</button>
             <ul>
               <li><Link href="/profile" className="icon-user-circle" onClick={closeSidebar}>My Account</Link></li>
-              <li><Link href="/favorites" className="icon-shop" onClick={closeSidebar}>My Favorites</Link></li>
+              {/* <li><Link href="/favorites" className="icon-shop" onClick={closeSidebar}>My Favorites</Link></li> */}
               <li><a className="icon-off" href="javascript:void(0)" onClick={handleLogout}>Logout</a></li>
             </ul>
           </div>
