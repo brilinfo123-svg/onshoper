@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import ProductPost from "@/components/ProductPost/Index";
-import FeatureButton from "@/components/FeaturedButton/Index";
 import Tabs from "@/components/Tabs/Index";
 import UpdateDetail from "@/components/UpdateDetail/Index";
 
@@ -148,8 +147,6 @@ const PropertyDetailPage: React.FC = () => {
     }
   };
   
-  
-
   useEffect(() => {
     const fetchWishlist = async () => {
       if (!session?.user?.contact) return;
@@ -344,40 +341,6 @@ const PropertyDetailPage: React.FC = () => {
         {loading && <Loader message="Deleting, please wait..." />}
       </div>,
     },
-    // {
-    //   label: <span className="icon-heart">Wishlist</span>,
-    //   content: (
-    //     <div className={styles.paymentMethod}>
-    //       <h3>Favorite</h3>
-    //       <div className={styles.productGrid}>
-    //         {wishlistProducts.map((product) => (
-    //           <ProductPost
-    //             key={product._id}
-    //             _id={product._id}
-    //             title={product.title}
-    //             description={""}
-    //             category={product.category}
-    //             subCategory={product.subcategory}
-    //             price={Number(product.price)}
-    //             priceWeek={product.priceWeek !== undefined ? Number(product.priceWeek) : undefined}
-    //             priceMonth={product.priceMonth !== undefined ? Number(product.priceMonth) : undefined}
-    //             SalePrice={product.SalePrice}
-    //             coverImage={product.coverImage || product.images?.[0] || "/images/img2.jpg"}
-    //             images={product.images || []}
-    //             location={{
-    //               city: product.location?.city || "",
-    //               area: product.location?.area || "", 
-    //               state: product.location?.state || ""
-    //             }}
-    //             createdAt={product.createdAt}
-    //             isFeatured={product.featured || false}
-    //             shopOwnerID={product.shopOwnerID}
-    //           />
-    //         ))}
-    //       </div>
-    //     </div>
-    //   ),
-    // },
     {
       label: <span className="icon-user">Update Profile</span>,
       content: <UpdateDetail />,
@@ -416,19 +379,6 @@ const PropertyDetailPage: React.FC = () => {
       ) : (
         <h1 className={styles.subscriptionTitle}>🚫 No Active Subscription Plan</h1>
       )}
-
-        {/* <h1>🔔 Your Subscription Is About to Expire!</h1>
-        {shopData?.shopOwner?.paidUntil && (
-          <div className={styles.countdownTimer}>
-            {timeLeft.expired ? (
-              <span className={`${styles.timerText} ${styles.expired}`}>Expired</span>
-            ) : (
-              <span className={`${styles.timerText} ${styles.active}`}>
-                ⏳ {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s : left
-              </span>
-            )}
-          </div>
-        )} */}
       </div>
 
       <div className={styles.mainContent}>
@@ -447,15 +397,6 @@ const PropertyDetailPage: React.FC = () => {
                   alt="userProfile"
                 />
                 <h3>{shopData?.user?.name || "User"}</h3>
-                {/* <StarRating rating={4} /> */}
-                {/* <div className={styles.subscribers}>
-                  <p>
-                    <span className="icon-group"></span>Subscribers: <span>25</span>
-                  </p>
-                  <p>
-                    <span className="icon-eye"></span>views: <span>295</span>
-                  </p>
-                </div> */}
               </div>
               <div className={styles.personalDetails}>
                 <p>
