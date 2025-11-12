@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 import Swal from "sweetalert2";
 import Head from "next/head";
+import Script from "next/script";
 
 interface ShopData {
   email: string;
@@ -151,6 +152,7 @@ function Package() {
         <meta property="og:image" content="/images/og-subscription.jpg" />
         <meta property="og:url" content="https://onshoper.com/subscription" />
         <meta name="twitter:card" content="summary_large_image" />
+        <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload"/>
       </Head>
     <div className={styles.mainWrapr}>
       <div className={styles.packageContainer}>

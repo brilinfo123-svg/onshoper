@@ -1,4 +1,4 @@
-import { IncomingForm } from "formidable";
+import { IncomingForm } from "multer";
 import { promises as fs } from "fs";
 import path from "path";
 import { NextApiRequest, NextApiResponse } from "next";

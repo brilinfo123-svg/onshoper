@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import connectToDatabase from "@/lib/mongodb";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import mongoose, { Model } from "mongoose";
 
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import styles from '@/styles/PaymentPage.module.scss'; // ✅ SCSS import
+import Script from 'next/script';
 
 interface ShopData {
   user: any;
@@ -79,6 +80,7 @@ export default function DummyPaymentPage() {
 
   return (
     <div className={styles.paymentContainer}>
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload"/>
       <h1 className={styles.heading}>Unlock Unlimited Product Uploads</h1>
       <p className={styles.category}>Category: <strong>{category}</strong></p>
       <p className={styles.price}>Pay ₹{amount} to remove the 2-product limit.</p>

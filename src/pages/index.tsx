@@ -212,7 +212,7 @@ const filteredProducts = useMemo(() => {
   return (
     <div className="main">
       <Head />
-      {/* <IntroAnimation /> */}
+      <IntroAnimation />
       {/* <Banner bannerClass={styles.MobileSearch} contentClass={styles.contentWrap} /> */}
       <div className="container">
         <ProductMobile 
