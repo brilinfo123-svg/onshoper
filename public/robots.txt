@@ -1,0 +1,13 @@
+# Allow all search engines to crawl public pages
+User-agent: *
+Allow: /
+
+# Block sensitive or non-SEO routes
+Disallow: /admin/
+Disallow: /api/
+Disallow: /profile/
+Disallow: /login/
+Disallow: /signup/
+
+# Point to your sitemap for better indexing
+Sitemap: https://onshoper.com/sitemap.xml

@@ -39,6 +39,18 @@
           &:hover {
             color: #ffffff;
           }
+          &::before{
+            margin: 0;
+          }
+        }
+        :global(.icon-location){
+          display: flex;
+          gap: 5px;
+        }
+        :global(.icon-mail){
+          display: flex;
+          gap: 8px;
+          align-items: center;
         }
       }
     }

@@ -9,7 +9,6 @@ const sendSms = async (phone, message) => {
   if (!accountSid || !authToken || !fromNumber) {
     throw new Error("Twilio environment variables are missing");
   }
-console.log('jnsfkb')
   const client = require("twilio")(accountSid, authToken);
 
   await client.messages

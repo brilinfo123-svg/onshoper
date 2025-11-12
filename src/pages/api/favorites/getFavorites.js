@@ -1,38 +1,40 @@
-// pages/api/favorites/getFavorites.js
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]';
-import Product from "../../../models/Favorites";
-import dbConnect from "../../../lib/mongodb";
+// src/pages/api/auth/[...nextauth].js
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
+// 👇 Export authOptions separately
+export const authOptions = {
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        contact: { label: "Contact", type: "text" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.contact) return null;
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
-  }
+        // DB lookup ya custom logic yaha add kar sakte ho
+        return { id: credentials.contact, contact: credentials.contact };
+      },
+    }),
+  ],
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.JWT_SECRET,
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user = token.user;
+      return session;
+    },
+  },
+};
 
-  try {
-    const session = await getServerSession(req, res, authOptions);
-    
-    if (!session || !session.user) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-
-    await dbConnect();
-
-    const { productIds } = req.body;
-
-    if (!productIds || !Array.isArray(productIds)) {
-      return res.status(400).json({ message: 'Invalid product IDs' });
-    }
-
-    // Fetch products that are in the favorites list
-    const favorites = await Product.find({
-      _id: { $in: productIds }
-    }).select('title coverImage images price');
-
-    res.status(200).json({ favorites });
-  } catch (error) {
-    console.error('Error fetching favorites:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-}
+// 👇 Default export uses authOptions
+export default NextAuth(authOptions);

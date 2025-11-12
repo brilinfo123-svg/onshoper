@@ -3,7 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['res.cloudinary.com'], // ✅ Add this line for Cloudinary support
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com", // Cloudinary support
+      },
+    ],
   },
   async headers() {
     return [
@@ -50,9 +55,7 @@ const nextConfig: NextConfig = {
 
     return config;
   },
-  experimental: {
-    serverComponentsExternalPackages: ['mongoose', 'mongodb'],
-  },
+  serverExternalPackages: ["mongoose", "mongodb"],
 };
 
 export default nextConfig;

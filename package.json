@@ -1,5 +1,5 @@
 {
-  "name": "offline",
+  "name": "onshoper",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -48,6 +48,7 @@
     "slick-carousel": "^1.8.1",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
+    "speakeasy": "^2.0.0",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "streamifier": "^0.1.1",

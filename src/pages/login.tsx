@@ -141,6 +141,8 @@ export default function LoginPage() {
   };
   
   return (
+
+    <div className={styles.loginWrapper}>
     <div className={styles.container}>
       <h2 className={styles.heading}>Login</h2>
 
@@ -232,6 +234,7 @@ export default function LoginPage() {
 
       {error && <p className={`${styles.message} ${styles.error}`}>{error}</p>}
       {message && <p className={`${styles.message} ${styles.success}`}>{message}</p>}
+    </div>
     </div>
   );
 }

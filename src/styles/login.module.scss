@@ -1,14 +1,23 @@
 .container {
   max-width: 400px;
-  margin: 5rem auto;
+  margin: 0 auto;
   padding: 2rem 2.5rem;
   background: #fff;
   box-shadow: 0 15px 30px rgba(0,0,0,0.07);
   border-radius: 12px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
+  width: 100%;
+  box-shadow: 20px 21px 50px -26px black
 }
 
+.loginWrapper{
+  background: linear-gradient(135deg, #ffe0e9, #fff5e1);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .heading {
   font-size: 2rem;
   margin-bottom: 2rem;

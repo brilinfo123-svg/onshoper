@@ -1,0 +1,44 @@
+.sitemap {
+    padding: 40px;
+    background: #f9f9f9;
+    min-height: 100vh;
+  
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+  }
+  
+  .sitemapList {
+    list-style: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 0 auto;
+  
+    li {
+      margin: 10px 0;
+  
+      a {
+        text-decoration: none;
+        color: #0070f3;
+        font-weight: 500;
+        transition: color 0.3s ease;
+  
+        &:hover {
+          color: #0051a3;
+        }
+      }
+  
+      ul {
+        margin-left: 20px;
+        list-style: disc;
+  
+        li {
+          margin: 5px 0;
+        }
+      }
+    }
+  }
+  
