@@ -6,6 +6,7 @@ export default function Document() {
       <Head />
       <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       <meta name="google-site-verification" content="6XOdt6iyzuee-IXJ6Axq600RFXyh-mKqGObQvYgr2qE" />
+      <meta name="facebook-domain-verification" content="5rpwhxj3a87kpora90zzvsxj147g1l" />
       <body>
         <Main />
         <NextScript />
