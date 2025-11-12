@@ -37,7 +37,8 @@ const Footer = () => {
       <h4>Quick Links</h4>
       <ul>
         <li><a href="/ProductForm">Post Your Product</a></li>
-        <li><a href="/profile">My Account</a></li>
+        <li><a href="/terms-of-service">Terms & Conditions</a></li>
+        <li><a href="/privacy-policy">Privacy Policy</a></li>
       </ul>
     </div>
 
@@ -57,7 +58,7 @@ const Footer = () => {
   </div>
 
   <div className={styles.footerBottom}>
-    <p>&copy; {new Date().getFullYear()} Brilinfo. All Rights Reserved.</p>
+    <p>&copy; {new Date().getFullYear()} Onshoper. All Rights Reserved.</p>
   </div>
 </footer>
 

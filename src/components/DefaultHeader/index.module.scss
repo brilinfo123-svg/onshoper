@@ -1033,8 +1033,8 @@
 .favoritesSidebar {
   position: fixed;
   top: 0;
-  right: -400px;
-  width: 400px;
+  right: -520;
+  width: 520px;
   height: 100vh;
   background: white;
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
@@ -1251,42 +1251,6 @@
     opacity: 1;
   }
 }
-
-// Responsive styles
-// @media (max-width: 768px) {
-//   .favoritesSidebar {
-//     width: 100%;
-//     right: -100%;
-//   }
-
-//   .favoritesGrid {
-//     grid-template-columns: 1fr;
-//     padding: 16px;
-//     gap: 12px;
-//   }
-
-//   .favoriteProductCard :global {
-//     .image {
-//       height: 140px;
-//     }
-
-//     .content {
-//       padding: 12px;
-//     }
-
-//     h2 {
-//       font-size: 14px;
-//     }
-
-//     .prices {
-//       font-size: 12px;
-//     }
-
-//     .PriceNumber {
-//       font-size: 14px;
-//     }
-//   }
-// }
 
 .noFavorites {
   display: flex;

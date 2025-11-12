@@ -17,6 +17,8 @@ import Layout from "@/components/Layout/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import Head from "next/head";
 import RelatedProducts from "@/components/RelatedProducts/Index";
+import { useFavorites } from "@/contexts/FavoriteContext";
+import { toast } from "react-toastify";
 
 // import { WheelGesturesPlugin } from 'emb';
 
@@ -67,15 +69,15 @@ const ProductDetails = () => {
   const isDesckTop = useMediaQuery("(min-width: 992px)");
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedState, setSelectedState] = useState("");
+  const { addFavorite, removeFavorite, isFavorite } = useFavorites();
+  const [favorite, setFavorite] = useState(false);
+  const [loading, setLoading] = useState(false);
   // Google Maps configuration
 
 
   const SallerName = shopData?.user?.name;
   const SallerMobile = shopData?.user?.contact;
   const shopOwnerID = shopData?.user?.contact;
-
-
-  console.log("session:", session);
 
   const [isHomeDeliveryAvailable, setIsHomeDeliveryAvailable] = useState(true);
 
@@ -307,6 +309,78 @@ if (fullLocation === "All Cities") {
   }, [showImageModal, scrollNext, scrollPrev, closeImageModal]);
 
 
+    // Check if product is already favorite
+    useEffect(() => {
+      if (!product?._id || !session?.user?.contact) return;
+    
+      const checkFavorite = async () => {
+        const res = await fetch("/api/favorites/isFavourite", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: session.user.contact,
+            productId: product._id,
+          }),
+        });
+    
+        const data = await res.json();
+        if (res.ok && data.isFavourite) {
+          setFavorite(true);
+          if (!isFavorite(product._id)) {
+            addFavorite(product._id);
+          }
+        }
+      };
+    
+      checkFavorite();
+    }, [product?._id, session, isFavorite, addFavorite]);
+    
+    
+  
+    // Toggle favorite
+    const toggleFavorite = async () => {
+      if (!session?.user?.contact) {
+        toast.error("Please login first!");
+        router.push("/login");
+        return;
+      }
+    
+      setLoading(true);
+    
+      try {
+        const res = await fetch("/api/favorites/fetchWishlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: session.user.contact,
+            productId: product._id,
+            shopOwnerID: product.shopOwnerID,
+            isFavorited: !favorite,
+          }),
+        });
+    
+        const data = await res.json();
+    
+        if (res.ok && data.success) {
+          if (!favorite) {
+            addFavorite(product._id);
+          } else {
+            removeFavorite(product._id);
+          }
+          setFavorite(!favorite);
+          toast.success(!favorite ? "Added to wishlist" : "Removed from wishlist");
+        } else {
+          toast.error("Something went wrong");
+        }
+      } catch (error) {
+        toast.error("Failed to update favorite");
+      }
+    
+      setLoading(false);
+    };
+    
+    
+
   if (!product) return <ProductDetailsSkeleton />;
 
   const sliderSettings = {
@@ -319,31 +393,6 @@ if (fullLocation === "All Cities") {
     className: styles.slider,
   };
 
-  // const tabs = [
-  //   {
-  //     label: <span className="icon-picture">My Portfolio</span>, content:
-  //       <>
-  //         ``
-  //       </>
-  //   },
-  //   {
-  //     label: <span className="icon-cog">My Services</span>, content:
-  //       <div className={styles.personalInfo}>
-  //         dced
-  //         <div>
-  //         </div>
-  //       </div>
-  //   },
-  //   {
-  //     label: <span className="icon-wallet">Payments Method</span>, content:
-  //       <div className={styles.paymentMethod}>
-  //         <h3>Payments Method</h3>
-
-  //       </div>
-  //   },
-  // ];
-  // console.log("Product:", product);
-
   return (
     <div className="container">
       <Head>
@@ -353,36 +402,17 @@ if (fullLocation === "All Cities") {
           content={`Find ${product.title} for ${product.SaleType || "Rent/Sale"} on OnShoper. ${product.description.slice(0, 150)}...`}
         />
       </Head>
-      {/* {shopData ? (
-        <div>
-          <h2>Shop Details:</h2>
-          <p>Name: {shopData?.shop?.fullName || "Not Provided"}</p>
-          <p>Email: {shopData?.shop?.email}</p>
-          <p>Address: {shopData?.shop?.address || "N/A"}</p>
-
-          <h2>Registration Details:</h2>
-          <p>Registration ID: {shopData?.registration?.id}</p>
-          <p>Registered At: {shopData?.registration?.createdAt}</p>
-          <p>User Name: {shopData?.registration?.fullName}</p>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )} */}
-      {/* <div className={styles.header}>
-          <h1>
-            <span className={`${styles.iconShop} icon-shop`}></span>
-            businessName
-          </h1>
-          <div className={styles.breadcrumbs}>
-            <h4>
-              <span>GST NO:</span>
-            </h4>
-          </div>
-        </div> */}
+      
       {/* Main Content */}
       <div className={styles.mainContent}>
         {/* Left Column */}
         <div className={styles.leftColumn}>
+        <div className={styles.productImages}>
+        <div className={`${styles.favoriteIcon} ${loading ? styles.disabled : ""}`} onClick={toggleFavorite}>
+        <div className={favorite ? styles.active : ""}>
+          <span className="icon-heart"></span>
+        </div>
+      </div>
           {product.images?.length > 1 ? (
             <Slider {...sliderSettings}>
               {product.images.map((img: string, index: number) => (
@@ -485,32 +515,7 @@ if (fullLocation === "All Cities") {
             </div>
           )}
 
-
-
-
-          {/* <Tabs tabs={tabs} /> */}
-          {/* <OffersSectionProfile /> */}
-          {/* <div className={styles.details}>
-            <h1>{product.title}</h1>
-            <p><strong>Description:</strong> {product.description}</p>
-            <p><strong>Category:</strong> {product.category}</p>
-            {product.subCategory && <p><strong>Sub-category:</strong> {product.subCategory}</p>}
-            {product.location && <p><strong>Location:</strong> {product.location}</p>}
-
-            <div className={styles.pricing}>
-              <p><strong>Price/Day:</strong> ₹{product.price}</p>
-              {product.priceWeek && <p><strong>Price/Week:</strong> ₹{product.priceWeek}</p>}
-              {product.priceMonth && <p><strong>Price/Month:</strong> ₹{product.priceMonth}</p>}
-            </div>
-          </div>
-
-          {product.rentalTermsFile && (
-            <div className={styles.termFile}>
-              <h3>Rental Terms & Conditions</h3>
-              <Link href={product.rentalTermsFile} target="_blank" rel="noopener noreferrer">View / Download Terms PDF</Link>
-            </div>
-          )} */}
-
+        </div>
 
           <div className={styles.details}>
             {/* Header */}

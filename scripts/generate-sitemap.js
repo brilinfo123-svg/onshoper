@@ -22,6 +22,8 @@ async function generateSitemap() {
       { loc: "https://onshoper.com/ProductForm", changefreq: "weekly", priority: 0.8 },
       { loc: "https://onshoper.com/subscription", changefreq: "monthly", priority: 0.7 },
       { loc: "https://onshoper.com/filter", changefreq: "daily", priority: 0.9 },
+      { loc: "https://onshoper.com/privacy-policy", changefreq: "yearly", priority: 0.6 },
+      { loc: "https://onshoper.com/terms-of-service", changefreq: "yearly", priority: 0.6 },
     ];
 
     // Dynamic product URLs from DB

@@ -58,7 +58,8 @@ const BannerPost = () => {
   }, []);
 
   return (
-    <div className={styles.bannerWrapper}>
+    <div className="container">
+      <div className={styles.bannerWrapper}>
       {isLoading ? (
         <div className={styles.skeletonContainer}>
           {[...Array(1)].map((_, index) => (
@@ -83,6 +84,7 @@ const BannerPost = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };

@@ -132,9 +132,6 @@ function Package() {
         setLoading(false);
       };
       
-      
-
-
   return (
     <>
     <Head>
