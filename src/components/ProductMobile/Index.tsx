@@ -35,6 +35,21 @@ const ProductMobile = ({
   const [viewMode, setViewMode] = useState<"carousel" | "sidebar">("carousel");
   const [isLoading, setIsLoading] = useState(true);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [hideIcons, setHideIcons] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsSticky(true);   // ✅ scroll down → add sticky class
+      } else {
+        setIsSticky(false);  // ✅ scroll top → remove sticky class
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     loop: false,
@@ -226,6 +241,22 @@ const ProductMobile = ({
     });
   };
 
+ 
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) { // ✅ threshold adjust karo
+        setHideIcons(true);
+      } else {
+        setHideIcons(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  
+
   const getCategoryIcon = (categoryName: string): string => {
     return categoryIcons[categoryName] || categoryIcons["Default"];
   };
@@ -297,27 +328,14 @@ const ProductMobile = ({
       {viewMode === "carousel" && (
         <div className={styles.carouselContainer}>
           <div className={styles.carouselWithControls}>
-            <button 
-              className={`${styles.carouselControl} ${styles.leftArrow} ${"icon-left-open-big"}`} 
-              onClick={scrollPrev}
-            ></button>
-
-            <div className={styles.embla}>
+            <button className={`${styles.carouselControl} ${styles.leftArrow} ${"icon-left-open-big"}`} onClick={scrollPrev}></button>
+            <div className={`${styles.embla} ${isSticky ? styles.isSticky : ""}`}>
               <div className={styles.embla__viewport} ref={emblaRef}>
                 <div className={styles.embla__container}>
                   {filteredCategories.map((category) => (
-                    <div
-                      key={category.id}
-                      className={styles.embla__slide}
-                      onClick={() => handleCategoryClick(category.id)}
-                    >
-                      <div className={styles.carouselIcon}>
-                        <Image
-                          src={getCategoryIcon(category.name)}
-                          alt={category.name}
-                          width={30}
-                          height={30}
-                        />
+                    <div key={category.id} className={styles.embla__slide} onClick={() => handleCategoryClick(category.id)}>
+                       <div className={`${styles.carouselIcon} ${hideIcons ? styles.fadeOut : styles.fadeIn}`}>
+                        <Image src={getCategoryIcon(category.name)} alt={category.name} width={30} height={30}/>
                       </div>
                       <span className={styles.carouselName}>{category.name}</span>
                     </div>
@@ -326,11 +344,7 @@ const ProductMobile = ({
               </div>
             </div>
 
-            <button 
-              className={`${styles.carouselControl} ${styles.rightArrow} ${"icon-right-open-big"}`} 
-              onClick={scrollNext}
-              disabled={!emblaApi || !emblaApi.canScrollNext()}
-            ></button>
+            <button className={`${styles.carouselControl} ${styles.rightArrow} ${"icon-right-open-big"}`} onClick={scrollNext} disabled={!emblaApi || !emblaApi.canScrollNext()}></button>
           </div>
         </div>
       )}
@@ -347,18 +361,9 @@ const ProductMobile = ({
         {/* Search bar */}
         <div className={styles.searchContainer}>
           <span className={`${styles.searchIcon} ${"icon-search-1"}`}></span>
-          <input
-            type="text"
-            placeholder="Search categories..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className={styles.searchInput}
-          />
+          <input type="text" placeholder="Search categories..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className={styles.searchInput}/>
           {searchTerm && (
-            <button
-              className={`${styles.clearSearch} ${"icon-cancel-squared"}`}
-              onClick={() => setSearchTerm("")}
-            >
+            <button className={`${styles.clearSearch} ${"icon-cancel-squared"}`} onClick={() => setSearchTerm("")}>
               {/* <Image src="/icons/close.png" alt="Clear" width={14} height={14} /> */}
             </button>
           )}
@@ -370,18 +375,9 @@ const ProductMobile = ({
             filteredCategories.map((category) => (
               <div key={category.id} className={styles.categoryItem}>
                 {/* Category header */}
-                <div
-                  className={`${styles.categoryHeader} ${openCategory === category.id ? styles.active : ''}`}
-                  onClick={() => handleCategoryClick(category.id)}
-                >
+                <div className={`${styles.categoryHeader} ${openCategory === category.id ? styles.active : ''}`} onClick={() => handleCategoryClick(category.id)}>
                   <div className={styles.categoryInfo}>
-                    <Image
-                      src={getCategoryIcon(category.name)}
-                      alt={category.name}
-                      width={28}
-                      height={28}
-                      className={styles.categoryIcon}
-                    />
+                    <Image src={getCategoryIcon(category.name)} alt={category.name} width={28} height={28} className={styles.categoryIcon}/>
                     <span className={styles.categoryName}>{category.name}</span>
                   </div>
 
@@ -393,18 +389,8 @@ const ProductMobile = ({
                 {/* Subcategory list with animation */}
                 <div className={styles.subcategoriesContainer} style={{ maxHeight: openCategory === category.id ? `${category.subcategories.length * 50}px` : "0px" }}>
                   {category.subcategories.map((subcategory) => (
-                    <div
-                      key={subcategory}
-                      className={`${styles.subcategoryItem} ${selectedSubcategories.includes(subcategory) ? styles.selected : ''}`}
-                      onClick={() => handleSubcategorySelect(subcategory)}
-                    >
-                      <Image
-                        src={getSubcategoryIcon(subcategory)}
-                        alt={subcategory}
-                        width={20}
-                        height={20}
-                        className={styles.subcategoryIcon}
-                      />
+                    <div key={subcategory} className={`${styles.subcategoryItem} ${selectedSubcategories.includes(subcategory) ? styles.selected : ''}`} onClick={() => handleSubcategorySelect(subcategory)}>
+                      <Image src={getSubcategoryIcon(subcategory)} alt={subcategory} width={20} height={20} className={styles.subcategoryIcon}/>
                       <span className={styles.subcategoryName}>{subcategory}</span>
                     </div>
                   ))}
@@ -433,14 +419,7 @@ const ProductMobile = ({
                   </button>
                 </span>
               ))}
-              <button
-                className={styles.clearAllButton}
-                onClick={() => {
-                  selectedSubcategories.forEach(sub => onSubcategoryChange(sub));
-                }}
-              >
-                Clear All
-              </button>
+              <button className={styles.clearAllButton} onClick={() => {selectedSubcategories.forEach(sub => onSubcategoryChange(sub));}}>Clear All</button>
             </div>
           </div>
         )}

@@ -109,17 +109,28 @@
   justify-content: center;
   margin-bottom: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: max-width 0.5s ease, max-height 0.5s ease, transform 0.5s ease;
+  overflow: hidden; // important for smooth collapse
+  max-width: 90px;
+  max-height: 90px; // ✅ add height collapse
+
   @media screen and (min-width: 992px) and (max-width: 1439px){
     width: 75px;
     height: 75px;
+    max-width: 75px;
+    max-height: 75px;
   }
   @media (max-width: 768px) {
     width: 55px;
     height: 55px;         
+    max-width: 55px;
+    max-height: 55px;
   }
-  img{
+
+  img {
     width: 40px;
     height: 40px;
+    transition: opacity 0.5s ease;
     @media screen and (min-width: 992px) and (max-width: 1439px){
       width: 35px;
       height: 35px;
@@ -128,6 +139,25 @@
       width: 35px;
       height: 35px;
     }
+  }
+}
+
+.fadeIn {
+  max-width: 90px;
+  max-height: 90px;
+  transform: translateY(0);
+  img {
+    opacity: 1;
+  }
+}
+
+.fadeOut {
+  max-width: 0;
+  max-height: 0;   // ✅ collapse height also
+  transform: translateY(-10px);
+  pointer-events: none;
+  img {
+    opacity: 0;
   }
 }
 
@@ -142,7 +172,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   @media (max-width: 768px) {
-    font-size: 10px;
+    font-size: 11px;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -510,9 +540,7 @@
   flex: 1;
   background: #f0f8ff;
   border-radius: 8px;
-  @media screen and (max-width: 767px) {
-    min-height: 95px;
-  }
+  transition: all 0.3s ease;
 }
 
 .embla__viewport {
@@ -523,7 +551,32 @@
     padding: 15px 10px;
   }
 }
-
+.isSticky {
+  position: fixed;   // ✅ fix on top
+  top: 80px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); // ✅ Flipkart-style shadow
+  background-color: #fff8dc;
+  @media screen and (min-width: 992px) and (max-width: 1439px){
+    top: 75px;
+  }
+  @media screen and (min-width: 768px) and (max-width: 991px) {
+    top: 70px;
+  }
+  @media screen and (max-width: 767px) {
+    top: 50px;
+  }
+  .embla__viewport{
+    @media screen and (min-width: 1440px){
+      padding: 10px 10px 16px;
+    }
+    @media screen and (min-width: 992px) and (max-width: 1439px){
+    padding: 10px 10px 12px;
+    }
+  }
+}
 .embla__container {
   display: flex;
   user-select: none;

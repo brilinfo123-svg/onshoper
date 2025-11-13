@@ -40,7 +40,7 @@ const Header: React.FC = () => {
   const { filterType, setFilterType } = useFilter();
   // Don't show notifications if we're on chat page
   const [fullPageMessage, setFullPageMessage] = useState<string | null>(null);
-
+  const [isSticky, setIsSticky] = useState(false);
 
   const totalNotifications = isOnChatPage ? 0 : getTotalNotifications();
 
@@ -79,7 +79,18 @@ const Header: React.FC = () => {
   };
   
   
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsSticky(true);   // ✅ scroll down → add sticky class
+      } else {
+        setIsSticky(false);  // ✅ scroll top → remove sticky class
+      }
+    };
 
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   
   useEffect(() => {
     // Check if device is mobile
@@ -223,7 +234,7 @@ const Header: React.FC = () => {
   // Skeleton Loading Component
   const HeaderSkeleton = () => (
     <header className={Style.header}>
-      <div className={Style.headerWrapper}>
+      <div className={`${Style.headerWrapper}`}>
         {/* Logo Skeleton */}
         <div className={Style.logoSkeleton}>
           <div className={Style.skeletonLogo}></div>
@@ -302,7 +313,7 @@ const Header: React.FC = () => {
         <span className="icon-shop"></span> You can find the nearest store in your area
       </h4> */}
 
-      <div className={Style.headerWrapper}>
+      <div className={`${Style.headerWrapper} ${isSticky ? Style.isSticky : ""}`}>
         {/* Logo Section */}
         {!isMobile && 
         <div className={Style.logoSection}>

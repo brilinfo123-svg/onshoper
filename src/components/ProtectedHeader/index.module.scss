@@ -138,6 +138,7 @@
     justify-content: space-between;
     padding: 10px 30px;
     border-bottom: 1px solid #ddd;
+    transition: all 0.3s ease;
 
     @media screen and (max-width: 991.99px) {
       padding: 10px 15px;
@@ -229,6 +230,15 @@
         }
       }
     }
+  }
+  .isSticky {
+    position: fixed;   // ✅ fix on top
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); // ✅ Flipkart-style shadow
+    background-color: #ff6d01;
   }
   .logo{
     display: flex;
@@ -1486,4 +1496,6 @@
     left: 74px;
   }
 }
+
+
 
