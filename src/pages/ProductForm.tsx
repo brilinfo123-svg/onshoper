@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "@/styles/ProductForm.module.scss";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import PickupLocationSearch from "@/components/PickupLocationSearch/Index";
 import { withProtectedPage } from "@/components/withProtectedPage";
 import Link from "next/link";
 import IndiaAddressForm from "@/components/India/Index";

@@ -1014,19 +1014,7 @@ if (fullLocation === "All Cities") {
 
 
           <div className={styles.sellerInfo}>
-            <div className={`${styles.name} icon-location-alt`}>Address</div>
-            <div className={styles.address}>
-              <p>
-                {product?.location?.city && product?.location?.area
-                  ? `${product.location.city} > ${product.location.area}`
-                  : product?.location?.city
-                  ? product.location.city
-                  : product?.location?.state
-                  ? product.location.state
-                  : "Location not available"}
-              </p>
-            </div>
-            <div className={styles.reportSection}>
+          <div className={styles.reportSection}>
                 <div className={styles.reportHeader}>
                   <p>
                     <b>Ad ID:</b> {product?._id || "Gurmeet Kour"}
@@ -1037,6 +1025,26 @@ if (fullLocation === "All Cities") {
                   <button className={styles.reportBtn} onClick={() => openReportModal(product?._id)}>Report this Ad</button>
                 </div>
               </div>
+          <div className={styles.addressSection}>
+              
+              <i className="icon-location"></i>
+              <div className={styles.addressBody}>
+              <div className={styles.addressHeader}>
+                <span>Address</span>
+              </div>
+                <p>
+                  {product?.location?.city && product?.location?.area
+                    ? `${product.location.city} › ${product.location.area}`
+                    : product?.location?.city
+                    ? product.location.city
+                    : product?.location?.state
+                    ? product.location.state
+                    : "Location not available"}
+                </p>
+              </div>
+            </div>
+
+            
           </div>
 
           {/* Terms */}

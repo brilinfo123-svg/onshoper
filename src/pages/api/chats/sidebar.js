@@ -51,7 +51,7 @@ export default async function handler(req, res) {
       
       chatMap[otherUserId].messages.push(msg);
     }
-
+   
     // Chat list banayein with proper IDs
     const chats = Object.values(chatMap).map(chat => ({
       id: chat.otherUserId,
