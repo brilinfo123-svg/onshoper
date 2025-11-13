@@ -75,6 +75,7 @@ export default function LoginPage() {
   
     if (data.success) {
       setOtpSent(true);
+      alert(`Your OTP is: ${data.otp}`);
       setMessage("OTP sent successfully");
       setCanResend(false);
       await fetchOtpExpiry();
