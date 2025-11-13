@@ -18,7 +18,10 @@ const Header: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
   const { data: session } = useSession();
   const { filterType, setFilterType } = useFilter();
+  const [isSticky, setIsSticky] = useState(false);
 
+
+  
   const handleProtectedRedirect = (path: string) => {
     if (session?.user) {
       router.push(path);
@@ -69,6 +72,19 @@ const Header: React.FC = () => {
     };
   }, []);
 
+    useEffect(() => {
+      const handleScroll = () => {
+        if (window.scrollY > 50) {
+          setIsSticky(true);   // ✅ scroll down → add sticky class
+        } else {
+          setIsSticky(false);  // ✅ scroll top → remove sticky class
+        }
+      };
+  
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+    
   const handleCityChange = (city: string, isManual: boolean = false) => {
     localStorage.setItem("selectedCity", city);
     if (isManual) {
@@ -128,7 +144,7 @@ const Header: React.FC = () => {
         </div>
       )}
 
-      <div className={Style.headerWrapper}>
+    <div className={`${Style.headerWrapper} ${isSticky ? Style.isSticky : ""}`}>
         {!isMobile && (
           <div className={Style.logoSection}>
             <Link href="/">
