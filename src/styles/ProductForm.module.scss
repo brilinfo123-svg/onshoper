@@ -80,18 +80,42 @@
         background: #fff;
       }
     }
-
+    select {
+      min-height: 40px;
+      line-height: 1.5;
+    }
     input[type="radio"] {
-      width: 18px;
-      height: 18px;
-      margin-right: 8px;
-      transition: box-shadow 0.3s ease;
-
+      appearance: none;        // remove native style
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 1px solid #555;
+      border-radius: 50%;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+      margin: 0 5px 0px;
+      padding: 0;
+    
+      // Hover effect
+      &:hover {
+        border-color: #007bff;   // red border on hover
+        box-shadow: 0 0 6px #007bff;
+      }
+    
+      // Checked state
+      &:checked {
+        border-color: #007bff;
+        background: radial-gradient(circle at center, #007bff 40%, transparent 41%);
+      }
+    
+      // Focus ring
       &:focus {
-        outline: none;
-        box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.3);
+        box-shadow: 0 0 0 3px #007bff21;
       }
     }
+    
     .subText{
       font-size: 12px;
       color: #404040;
@@ -432,6 +456,9 @@
     @media screen and (max-width: 992px) {
       gap: 10px;
     }
+    @media screen and (max-width: 767px) {
+      padding: 10px;
+    }
     label {
       display: flex;
       align-items: center;
@@ -514,7 +541,7 @@
     input[type="radio"] {
       margin-top: 5px;
       transform: scale(1.5);
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     &:hover {

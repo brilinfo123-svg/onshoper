@@ -75,3 +75,33 @@ section{
   }
 }
 
+.custom-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: "Segoe UI", sans-serif;
+  background-size: 14px;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px;
+  &:focus {
+    outline: none;
+  }
+}
+
+.custom-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: "Segoe UI", sans-serif;
+  resize: vertical;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+
+  &:focus {
+    outline: none;
+  }
+}

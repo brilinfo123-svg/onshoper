@@ -141,11 +141,11 @@
     transition: all 0.3s ease;
 
     @media screen and (max-width: 991.99px) {
-      padding: 10px 15px;
+      padding: 5px;
       gap: 0px;
     }
     @media screen and (max-width: 767px) {
-      padding: 5px 5px;
+      padding: 3px;
     }
     .showinDeskTop {
       font-size: 20px;
@@ -610,6 +610,11 @@
     margin: 0 6px;
   }
 }
+@media (max-width: 374px) {
+  .skeletonLogo {
+  width: 50px;
+  }
+}
 
 // components/ProtectedHeader/index.module.scss
 
@@ -1008,6 +1013,12 @@
   padding: 24px;
   text-align: center;
   color: #666;
+  :global(.icon-heart-empty){
+    &::before{
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+  }
 }
 
 // Responsive styles

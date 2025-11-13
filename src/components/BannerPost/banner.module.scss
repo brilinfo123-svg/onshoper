@@ -1,13 +1,13 @@
 .bannerWrapper {
   background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
   padding: 10px 10px;
+  @media (max-width: 767px) {
+    padding: 5px;
+  }
 }
 
 .embla {
   overflow: hidden;
-  @media (max-width: 767px) {
-    padding: 0 10px;
-  }
 }
 
 .embla__container {
@@ -28,6 +28,7 @@
   transition: transform 0.3s ease;
   @media (max-width: 767px) {
     padding: 20px;
+    border-radius: 5px;
   }
 }
 
@@ -44,7 +45,7 @@
   margin-bottom: 12px;
   color: #333;
   @media (max-width: 767px) {
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 

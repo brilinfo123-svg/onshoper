@@ -3,7 +3,9 @@
   color: #ffffff;
   padding: 40px 20px;
   font-family: 'Segoe UI', sans-serif;
-
+  @media screen and (max-width: 767px) {
+    margin-bottom: 60px;
+  }
   .footerContent {
     display: flex;
     flex-wrap: wrap;

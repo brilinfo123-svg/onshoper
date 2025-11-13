@@ -19,7 +19,7 @@ import Head from "next/head";
 import RelatedProducts from "@/components/RelatedProducts/Index";
 import { useFavorites } from "@/contexts/FavoriteContext";
 import { toast } from "react-toastify";
-
+import Swal from "sweetalert2";
 // import { WheelGesturesPlugin } from 'emb';
 
 
@@ -179,7 +179,64 @@ const ProductDetails = () => {
   //   }
   // }, [shop?.homeDelivery]);
 
-
+  const openReportModal = (productId) => {
+    Swal.fire({
+      title: "Report this post",
+      html: `
+        <select id="reportReason" class="custom-select">
+          <option value="">Select reason</option>
+          <option value="fraud">Fraud</option>
+          <option value="offensive">Offensive content</option>
+          <option value="duplicate">Duplicate ad</option>
+          <option value="other">Other</option>
+        </select>
+        <textarea id="reportComment" class="custom-textarea" placeholder="Add a comment (optional)"></textarea>
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: "Submit",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#ff4d4d",
+      cancelButtonColor: "#999",
+      preConfirm: async () => {
+        const reasonEl = document.getElementById("reportReason") as HTMLSelectElement | null;
+        const commentEl = document.getElementById("reportComment") as HTMLTextAreaElement | null;
+      
+        const reason = reasonEl?.value || "";
+        const comment = commentEl?.value || "";
+      
+        console.log("Report payload:", { productId, reason, comment }); // ✅ Debug log
+      
+        if (!reason) {
+          Swal.showValidationMessage("Please select a reason");
+          return false;
+        }
+      
+        try {
+          const res = await fetch("/api/report", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ productId, reason, comment }),
+          });
+          const data = await res.json();
+          if (!data.success) {
+            throw new Error("Failed to submit report");
+          }
+          return data;
+        } catch (err) {
+          Swal.showValidationMessage(`Error: ${err.message}`);
+        }
+      }
+       
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("✅ Report submitted!", "Thank you for helping us keep the platform safe.", "success");
+      }
+    });
+  };
+  
+  
+  
   // When reading from localStorage:
 useEffect(() => {
   const fullLocation = localStorage.getItem("selectedCity") || "";
@@ -639,7 +696,7 @@ if (fullLocation === "All Cities") {
                 <div className={styles.labelCol}>
                   <ul className={styles.infoList}>
                     {!(
-                      ["Education & Learning", "Pets & Pet Care", "Tools & Equipment", "Jobs", "Events & Entertainment", "Services", "Books, Sports & Hobbies", "Fashion", "Furniture", "Electronics & Appliances", "Real Estate"].includes(product?.category) ||
+                      ["Education & Learning", "Pets & Pet Care", "Tools & Equipment", "Jobs", "Events & Entertainment", "Services", "Books & Sports", "Fashion", "Furniture", "Electronics & Appliances", "Real Estate"].includes(product?.category) ||
                       ["Tablets", "Spare Parts"].includes(product?.subcategory)
                     ) && (
                         <li><strong className="icon-tag-1"> Brand:</strong> {product?.commercialBrand || product?.brand || product?.BicyclesBrand || product?.MobileBrand || product?.MobileModel || product?.TabsType || product?.carBrand || "..."}</li>
@@ -969,9 +1026,17 @@ if (fullLocation === "All Cities") {
                   : "Location not available"}
               </p>
             </div>
-            <div className={styles.shopID}>
-              <p><b>ID</b>: {product?._id || "Gurmeet Kour"}</p>
-            </div>
+            <div className={styles.reportSection}>
+                <div className={styles.reportHeader}>
+                  <p>
+                    <b>Ad ID:</b> {product?._id || "Gurmeet Kour"}
+                  </p>
+                </div>
+
+                <div className={styles.reportAction}>
+                  <button className={styles.reportBtn} onClick={() => openReportModal(product?._id)}>Report this Ad</button>
+                </div>
+              </div>
           </div>
 
           {/* Terms */}

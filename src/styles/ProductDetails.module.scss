@@ -345,29 +345,62 @@
       margin-bottom: 15px;
     }
 
-    .shopID {
+    .reportSection {
       margin-top: 20px;
       background-color: #fff;
       border: 1px solid #ddd;
+      border-radius: 8px;
       padding: 15px 18px;
-
-      p {
-        text-align: center;
-
-        @media screen and (max-width: 767px) {
-          font-size: 12px;
-        }
-
-        b {
-          font-size: 15px;
-
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .reportHeader {
+        p {
+          text-align: center;
+          font-size: 14px;
+          color: #555;
+          margin: 0;
+    
+          b {
+            font-size: 14px;
+            color: #333;
+          }
+    
           @media screen and (max-width: 767px) {
-            font-size: 13px;
+            font-size: 12px;
+    
+            b {
+              font-size: 13px;
+            }
           }
         }
       }
+    
+      .reportAction {
+        .reportBtn {
+          background: #ddd;
+          color: #000;
+          border: none;
+          padding: 8px 9px;
+          border-radius: 5px;
+          font-size: 11px;
+          font-weight: 400;
+          cursor: pointer;
+          text-transform: uppercase;
+          border-radius: 0;
+        }
+    
+        .reportNote {
+          display: block;
+          margin-top: 8px;
+          font-size: 12px;
+          color: #777;
+        }
+      }
     }
-
+    
+  
     .contact {
       margin-top: 15px;
       display: grid;
