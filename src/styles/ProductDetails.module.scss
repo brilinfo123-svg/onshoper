@@ -15,6 +15,9 @@
   gap: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
+  @media screen and (min-width: 768px) and (max-width: 1440px){
+    gap: 10px;
+  }
   @media screen and (max-width: 767px) {
     display: block;
   }
@@ -356,6 +359,11 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+       @media screen and (min-width: 768px) and (max-width: 1440px){
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
       @media screen and (max-width: 374px) {
         padding: 15px 12px;
       }
@@ -365,7 +373,14 @@
           font-size: 14px;
           color: #555;
           margin: 0;
-    
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
+          max-width: 23ch;
+          @media screen and (min-width: 768px) and (max-width: 1440px){
+            max-width: 22ch;
+          }
           b {
             font-size: 14px;
             color: #333;
@@ -393,6 +408,9 @@
           cursor: pointer;
           text-transform: uppercase;
           border-radius: 0;
+          @media screen and (min-width: 768px) and (max-width: 1440px){
+            padding: 6px 10px;
+          }
         }
     
         .reportNote {
@@ -492,6 +510,9 @@
   .deliveryCard {
     h2 {
       font-size: 18px;
+      @media screen and (min-width: 768px) and (max-width: 1440px){
+        font-size: 16px;
+      }
     }
 
     p {
@@ -538,7 +559,9 @@
       border-radius: 8px;
       margin-bottom: 15px;
       text-align: center;
-
+      @media screen and (min-width: 768px) and (max-width: 1440px){
+        padding: 20px 10px;
+      }
       h2 {
         color: #000;
 
@@ -613,16 +636,25 @@
       padding: 5px;
       border-radius: 0;
     }
+    @media screen and (min-width: 768px) and (max-width: 1440px){
+     padding: 10px;
+    }
 
     .focusedata {
       text-align: center;
       background-color: #ffffff;
       padding: 30px 20px;
       border: 1px solid #ddd;
-
+      @media screen and (min-width: 768px) and (max-width: 1440px){
+        padding: 10px;
+      }
       img {
         object-fit: cover;
         border-radius: 50px;
+        @media screen and (min-width: 768px) and (max-width: 1440px){
+          width: 70px;
+          height: 70px;
+        }
         @media screen and (max-width: 767px) {
           width: 70px;
           height: 70px;
@@ -650,6 +682,9 @@
         background-color: #f0f8ff;
         padding: 10px;
         border-radius: 50px;
+        @media screen and (min-width: 768px) and (max-width: 1440px){
+          padding: 5px;
+        }
         .contactButtons {
           display: flex;
           gap: 16px;
@@ -661,7 +696,9 @@
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
           backdrop-filter: blur(10px);
           border: 1px solid rgba(255, 255, 255, 0.2);
-          
+          @media screen and (min-width: 768px) and (max-width: 1440px){
+            padding: 5px 0px;
+          }
           button {
             width: 50px;
             height: 50px;
@@ -675,7 +712,10 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            
+            @media screen and (min-width: 768px) and (max-width: 1440px){
+              width: 40px;
+              height: 40px;
+            }
         
             
             &:hover {
@@ -726,12 +766,17 @@
             gap: 12px;
             padding: 10px;
             border-radius: 40px;
-            
+            @media screen and (min-width: 768px) and (max-width: 1440px){
+              padding: 5px;
+            }
             button {
               width: 45px;
               height: 45px;
               font-size: 18px;
-              
+              @media screen and (min-width: 768px) and (max-width: 1440px){
+                width: 35px;
+                height: 35px;
+              }
               &:hover::after {
                 bottom: -25px;
                 font-size: 11px;
@@ -861,7 +906,6 @@
       background-color: #fff;
       padding: 15px 18px;
       border: 1px solid #ddd;
-      margin-bottom: 10px;
       text-align: left;
 
       @media screen and (max-width: 767px) {
@@ -1009,6 +1053,9 @@
   grid-template-columns: 1fr 1fr;
   margin-bottom: 1.5rem;
   gap: 40px;
+  @media screen and (min-width: 768px) and (max-width: 1199px){
+    display: block;
+  }
   @media screen and (max-width: 767px) {
    display: block;
   }
@@ -1035,6 +1082,9 @@
         grid-template-columns: 1fr 1fr;
         align-items: center;
         color: #161421;
+        @media screen and (min-width: 768px) and (max-width: 1440px){
+          font-size: 14px;
+        }
         @media screen and (max-width: 767px) {
           font-size: 14px;
         }
@@ -1047,6 +1097,9 @@
             font-size: 14px;
             display: flex;
             align-items: center;
+            @media screen and (min-width: 768px) and (max-width: 1440px){
+              font-size: 12px;
+            }
             @media screen and (max-width: 767px) {
               font-size: 12px;
             }          
@@ -1169,6 +1222,11 @@
     font-size: 1.2rem;
     color: #444;
     margin-bottom: 30px;
+    @media screen and (min-width: 768px) and (max-width: 1440px){
+      font-size: 18px;
+      line-height: 28px;
+      margin-bottom: 10px;
+    }
     @media screen and (max-width: 767px) {
       font-size: 16px;
       margin-bottom: 20px;

@@ -87,8 +87,8 @@
     input[type="radio"] {
       appearance: none;        // remove native style
       -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
+      width: 15px;
+      height: 15px;
       border: 1px solid #555;
       border-radius: 50%;
       outline: none;
@@ -540,7 +540,7 @@
 
     input[type="radio"] {
       margin-top: 5px;
-      transform: scale(1.5);
+      transform: scale(1.2);
       margin-bottom: 10px;
     }
 

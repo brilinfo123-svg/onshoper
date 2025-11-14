@@ -17,13 +17,21 @@
 
   .footerSection {
     flex: 1 1 250px;
-
+    @media screen and (min-width: 768px) and (max-width: 991px){
+      flex: 1;
+    }
     h4 {
       font-size: 18px;
       margin-bottom: 15px;
       color: #ffffff;
       border-bottom: 1px solid #ffffff;
       padding-bottom: 5px;
+      @media screen and (max-width: 767px){
+        font-size: 16px;;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #a3a3a3;
+      }
     }
 
     ul {
@@ -32,12 +40,21 @@
 
       li {
         margin-bottom: 10px;
-
+        @media screen and (max-width: 767px){
+          margin-bottom: 2px;
+        }
         a {
           color: #d1d1d1;
           text-decoration: none;
           transition: color 0.3s ease;
-
+          font-weight: 300;
+          @media screen and (min-width: 768px) and (max-width: 991px){
+            font-size: 14px;
+          }
+          @media screen and (max-width: 767px){
+            font-size: 14px;
+            line-height: 22px;
+          }
           &:hover {
             color: #ffffff;
           }

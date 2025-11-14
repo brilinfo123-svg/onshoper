@@ -1,9 +1,7 @@
-import { IncomingForm } from "multer";
+import formidable, { IncomingForm } from "formidable";
 import { promises as fs } from "fs";
-import path from "path";
 import { NextApiRequest, NextApiResponse } from "next";
 import { MongoClient } from "mongodb";
-import ShopOwner from "@/models/ShopOwner";
 import categoryRules from "@/config/categoryRules";
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
