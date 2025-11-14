@@ -2244,7 +2244,7 @@ if (!formData.termsAccepted) {
               <li>We reserve the right to remove listings violating our policies.</li>
               <li>By submitting this ad, you agree to the processing of your data according to our Privacy Policy.</li>
             </ul>
-            <button onClick={() => setShowTerms(false)} className={styles.closeBtn}>Close</button>
+            <button onClick={() => setShowTerms(false)} className={styles.closeBtn}><span className="icon-cancel"></span></button>
           </div>
         </div>
       )}

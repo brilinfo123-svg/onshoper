@@ -429,25 +429,27 @@
   }
   
   .modalContent ul {
-    padding-left: 15px;
-    list-style-type: disc;
+    padding-left: 18px;
+    list-style-type: auto;
+    @media (max-width: 767px) {
+      padding-left: 14px;
+    }
   }
   
   .modalContent li {
     font-size: 0.95rem;
     color: #444;
     margin-bottom: 0.5rem;
-
+    font-weight: 300;
     @media (max-width: 767px) {
       font-size: 12px;
       color: #000;
-      font-weight: 300;
       line-height: 18px;
     }
   }
   
   .closeBtn {
-    background-color: #535353;
+    background-color: #FF5722;
     color: white;
     border: none;
     padding: 8px 14px;
@@ -456,10 +458,13 @@
     border-radius: 5px;
     float: right;
     position: absolute;
-    top: 0;
-    right: 20px;
+    top: -10px;
+    right: 10px;
     @media (max-width: 767px) {
-      padding: 8px 8px;
+      padding: 5px;
+    }
+    span{
+      color: #fff;
     }
   }
   .BtnFlex{
