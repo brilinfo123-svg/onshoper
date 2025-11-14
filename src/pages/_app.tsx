@@ -18,8 +18,11 @@ import "@/styles/fontello/css/fontello.css";
 import "react-toastify/dist/ReactToastify.css";
 import type { AppProps } from "next/app";
 import MobileBottomNav from "@/components/MobileBottomNav/Index";
+import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const isAdminPage = router.pathname.startsWith("/admin");
   return (
     <SessionProvider session={pageProps.session}>
     <NotificationProvider>
@@ -29,12 +32,12 @@ export default function App({ Component, pageProps }: AppProps) {
             <FilterProvider> {/* 👈 Wrap your app here */}
               <ToastContainer position="top-right" autoClose={3000} />
               <AutoUnfeaturePoller />
-              <HeaderComponent />
+              {!isAdminPage && <HeaderComponent />}
               <main>
                 <Component {...pageProps} />
               </main>
-              <Footer />
-              <MobileBottomNav />
+              {!isAdminPage && <Footer />}
+              {!isAdminPage && <MobileBottomNav />}
             </FilterProvider>
           </CityFilterProvider>
         </ChatProvider>
