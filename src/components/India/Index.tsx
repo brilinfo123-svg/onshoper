@@ -312,7 +312,7 @@ const IndiaAddressForm = ({ onLocationSelect, isProductForm = false, formData, s
   }, [isAnimating, currentStep, areas, cities]);
 
   return (
-    <div className={styles.container} ref={formContainerRef}>
+    <div ref={formContainerRef}>
       {!isProductForm && <h2 className={styles.title}>Indian Address Form</h2>}
       
       {currentStep > 1 && (

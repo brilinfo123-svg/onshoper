@@ -27,7 +27,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   @media (max-width: 767px) {
-    padding: 20px;
+    padding: 10px 10px;
     border-radius: 5px;
   }
 }
@@ -45,7 +45,8 @@
   margin-bottom: 12px;
   color: #333;
   @media (max-width: 767px) {
-    font-size: 18px;
+    font-size: 16px;
+    margin-bottom: 7px;
   }
 }
 
@@ -53,7 +54,10 @@
   font-size: 1.1rem;
   color: #666;
   @media (max-width: 767px) {
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: 300;
+    color: #000;
+    line-height: 15px;
   }
 }
 .skeletonContainer {

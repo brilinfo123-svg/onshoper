@@ -2213,7 +2213,7 @@ if (!formData.termsAccepted) {
             )}
             <div className={styles.BtnFlex}>
               <label className={styles.checkboxLabel}>
-                <input type="checkbox" checked={formData.termsAccepted} onChange={(e) => setFormData((prev) => ({ ...prev, termsAccepted: e.target.checked }))} required />I agree to the <button type="button" className={styles.linkButton} onClick={() => setShowTerms(true)}>Terms and Conditions</button>
+                <input type="checkbox" checked={formData.termsAccepted} onChange={(e) => setFormData((prev) => ({ ...prev, termsAccepted: e.target.checked }))} required />I agree to<button type="button" className={styles.linkButton} onClick={() => setShowTerms(true)}>Terms & Conditions</button>
               </label>
               <button type="button" className={styles.backButton} onClick={() => goToStep(4, true)}>← Back</button>
             </div>
