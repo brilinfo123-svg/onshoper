@@ -8,12 +8,18 @@ export default function Home() {
   const router = useRouter();
 
   // ✅ Protect admin page
-  useEffect(() => {
-    const isAdmin = localStorage.getItem("isAdmin");
-    if (!isAdmin) {
-      router.push("/admin/login"); // redirect if not logged in
-    }
-  }, [router]);
+  const handleLogout = async () => {
+    await fetch("/api/admin/logout", { method: "POST" }); // ✅ call logout API
+  
+    Swal.fire({
+      title: "Logged Out",
+      text: "You have been logged out successfully.",
+      icon: "success",
+    }).then(() => {
+      router.push("/admin/login"); // ✅ redirect
+    });
+  };
+  
 
   const handleViewProduct = (id: string) => {
     router.push(`/product/${id}`); // navigate to product page
@@ -30,17 +36,6 @@ export default function Home() {
     }
   }, [activeTab]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("isAdmin"); // ❌ remove admin flag
-    Swal.fire({
-      title: "Logged Out",
-      text: "You have been logged out successfully.",
-      icon: "success",
-      confirmButtonColor: "#ff6d01",
-    }).then(() => {
-      router.push("/admin/login"); // redirect to login page
-    });
-  };
 
   const handleDeleteProduct = async (id: string) => {
     Swal.fire({

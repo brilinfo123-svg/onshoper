@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import styles from "@/styles/login.module.scss";
 import Swal from "sweetalert2";
 
 export default function LoginPage() {
+  const { data: session, status } = useSession();
   const [loginType, setLoginType] = useState<"mobile" | "email" | "">("");
   const [contact, setContact] = useState("");
   const [otp, setOtp] = useState("");
@@ -19,6 +20,10 @@ export default function LoginPage() {
 
   const router = useRouter();
 
+  // ✅ Redirect if already logged in
+
+
+  // ✅ Countdown effect (always declared, no conditional return)
   useEffect(() => {
     let countdown: NodeJS.Timeout;
     if (otpSent && timer > 0) {
@@ -58,21 +63,21 @@ export default function LoginPage() {
     setError("");
     setMessage("");
     setIsSendingOtp(true);
-  
+
     if (!contact) {
       setError(`Please enter your ${loginType}`);
       setIsSendingOtp(false);
       return;
     }
-  
+
     const res = await fetch("/api/Verification/send-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ contact }),
     });
-  
+
     const data = await res.json();
-  
+
     if (data.success) {
       setOtpSent(true);
       alert(`Your OTP is: ${data.otp}`);
@@ -82,10 +87,9 @@ export default function LoginPage() {
     } else {
       setError("Failed to send OTP");
     }
-  
+
     setIsSendingOtp(false);
   };
-  
 
   const verifyOtp = async () => {
     setError("");
@@ -110,12 +114,16 @@ export default function LoginPage() {
         Swal.fire({
           icon: "success",
           title: "Login Successful",
-          text: "Redirecting to Product Form...",
-          timer: 2000,
-          showConfirmButton: false,
+          text: "Click OK to go to Product Form",
+          confirmButtonText: "OK",   // ✅ Show OK button
+          allowOutsideClick: false,  // prevent closing by clicking outside
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push("/ProductForm"); // ✅ Redirect only after OK click
+          }
         });
 
-        setTimeout(() => router.push("/"), 2000);
+        setTimeout(() => router.push("/ProductForm"), 2000);
       } else {
         setError("Login failed");
       }
@@ -140,102 +148,107 @@ export default function LoginPage() {
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
-  
+
+  // ✅ Conditional rendering only in JSX
   return (
-
     <div className={styles.loginWrapper}>
-    <div className={styles.container}>
-      <h2 className={styles.heading}>Login</h2>
+      {status === "loading" ? (
+        <p>Loading...</p>
+      ) : status === "authenticated" ? (
+        <p>Redirecting...</p>
+      ) : (
+        <div className={styles.container}>
+          <h2 className={styles.heading}>Login</h2>
 
-      {!loginType && (
-        <div className={styles.options}>
-          <button
-            onClick={() => setLoginType("mobile")}
-            className={`${styles.mobileButton} ${styles.optionButton} icon-mobile`}
-          >
-            Login with Mobile
-          </button>
-          OR
-          <button
-            onClick={() => setLoginType("email")}
-            className={`${styles.emailButton} ${styles.optionButton} icon-mail`}
-          >
-            Login with Email
-          </button>
-        </div>
-      )}
+          {!loginType && (
+            <div className={styles.options}>
+              <button
+                onClick={() => setLoginType("mobile")}
+                className={`${styles.mobileButton} ${styles.optionButton} icon-mobile`}
+              >
+                Login with Mobile
+              </button>
+              OR
+              <button
+                onClick={() => setLoginType("email")}
+                className={`${styles.emailButton} ${styles.optionButton} icon-mail`}
+              >
+                Login with Email
+              </button>
+            </div>
+          )}
 
-      {loginType && !otpSent && (
-        <div className={styles.inputGroup}>
-          <label>{loginType === "mobile" ? "Mobile Number" : "Email Address"}</label>
-          <input
-            type={loginType === "mobile" ? "tel" : "email"}
-            placeholder={loginType === "mobile" ? "Enter mobile number" : "Enter email address"}
-            value={contact}
-            onChange={(e) => {
-              const value = e.target.value;
-              if (loginType === "mobile") {
-                if (/^\d*$/.test(value)) {
-                  setContact(value);
-                  if (value.length > 0 && value.length !== 10) {
-                    setError("Mobile number must be 10 digits");
+          {loginType && !otpSent && (
+            <div className={styles.inputGroup}>
+              <label>{loginType === "mobile" ? "Mobile Number" : "Email Address"}</label>
+              <input
+                type={loginType === "mobile" ? "tel" : "email"}
+                placeholder={loginType === "mobile" ? "Enter mobile number" : "Enter email address"}
+                value={contact}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (loginType === "mobile") {
+                    if (/^\d*$/.test(value)) {
+                      setContact(value);
+                      if (value.length > 0 && value.length !== 10) {
+                        setError("Mobile number must be 10 digits");
+                      } else {
+                        setError("");
+                      }
+                    }
                   } else {
+                    setContact(value);
                     setError("");
                   }
-                }
-              } else {
-                setContact(value);
-                setError("");
-              }
-            }}
-            maxLength={loginType === "mobile" ? 10 : undefined}
-          />
+                }}
+                maxLength={loginType === "mobile" ? 10 : undefined}
+              />
 
-          <button className={styles.button} onClick={sendOtp} disabled={isSendingOtp}>
-            {isSendingOtp ? (
-              <span className={styles.loaderOTP}>Sending...</span>
-            ) : (
-              "Send OTP"
-            )}
-          </button>
+              <button className={styles.button} onClick={sendOtp} disabled={isSendingOtp}>
+                {isSendingOtp ? (
+                  <span className={styles.loaderOTP}>Sending...</span>
+                ) : (
+                  "Send OTP"
+                )}
+              </button>
 
-          <button className={styles.backButton} onClick={handleBack}>
-            ← Back
-          </button>
-        </div>
-      )}
-
-      {otpSent && (
-        <div className={styles.inputGroup}>
-          <label>Enter OTP</label>
-          <input
-            type="text"
-            placeholder="6-digit OTP"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            maxLength={6}
-          />
-          <button className={styles.button} onClick={verifyOtp}>
-            Verify OTP & Login
-          </button>
-          <button className={styles.backButton} onClick={handleBack}>
-            ← Back
-          </button>
-
-          {!canResend ? (
-           <p className={styles.timerText}>Resend available in {formatCountdown(timer)}</p>
-
-          ) : (
-            <button className={styles.resendButton} onClick={sendOtp}>
-              Resend OTP
-            </button>
+              <button className={styles.backButton} onClick={handleBack}>
+                ← Back
+              </button>
+            </div>
           )}
+
+          {otpSent && (
+            <div className={styles.inputGroup}>
+              <label>Enter OTP</label>
+              <input
+                type="text"
+                placeholder="6-digit OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                maxLength={6}
+              />
+              <button className={styles.button} onClick={verifyOtp}>
+                Verify OTP & Login
+              </button>
+              <button className={styles.backButton} onClick={handleBack}>
+                ← Back
+              </button>
+
+              {!canResend ? (
+                <p className={styles.timerText}>Resend available in {formatCountdown(timer)}</p>
+              ) : (
+                <button className={styles.resendButton} onClick={sendOtp}>
+                  Resend OTP
+                </button>
+              )}
+            </div>
+          )}
+
+          {error && <p className={`${styles.message} ${styles.error}`}>{error}</p>}
+          {message && <p className={`${styles.message} ${styles.success}`}>{message}</p>}
         </div>
       )}
-
-      {error && <p className={`${styles.message} ${styles.error}`}>{error}</p>}
-      {message && <p className={`${styles.message} ${styles.success}`}>{message}</p>}
-    </div>
     </div>
   );
 }

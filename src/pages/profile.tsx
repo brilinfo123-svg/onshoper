@@ -226,18 +226,41 @@ const PropertyDetailPage: React.FC = () => {
     }
   }, [session]);
   
+  useEffect(() => {
+    if (!shopOwnerID) return;
   
+    const fetchShopOwner = async () => {
+      try {
+        const res = await fetch(`/api/shopOwner/getById?shopOwnerID=${shopOwnerID}`);
+        const data = await res.json();
+        if (res.ok && data.success) {
+          setShopData((prev) => ({
+            ...prev,
+            shopOwner: data.shopOwner, // ✅ merge shopOwner collection data
+          }));
+          console.log("ShopOwner full data:", data.shopOwner); // 👈 log full object
+        } else {
+          console.error("Failed to fetch shopOwner:", data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching shopOwner:", error);
+      }
+      
+    };
+  
+    fetchShopOwner();
+  }, [shopOwnerID]);
+
 
   useEffect(() => {
-    const paidUntil = shopData?.shopOwner?.paidUntil
-      ? new Date(shopData.shopOwner.paidUntil)
-      : null;
+    if (!shopData?.shopOwner?.createdAt || !shopData?.shopOwner?.paidUntil) return;
   
-    if (!paidUntil) return;
+    const startDate = new Date(shopData.shopOwner.createdAt);
+    const endDate = new Date(shopData.shopOwner.paidUntil);
   
     const updateCountdown = () => {
       const now = new Date();
-      const timeDiff = paidUntil.getTime() - now.getTime();
+      const timeDiff = endDate.getTime() - now.getTime();
   
       if (timeDiff <= 0) {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, expired: true });
@@ -257,9 +280,13 @@ const PropertyDetailPage: React.FC = () => {
     updateCountdown();
   
     return () => clearInterval(timer);
-  }, [shopData?.shopOwner?.paidUntil]);
+  }, [shopData?.shopOwner?.createdAt, shopData?.shopOwner?.paidUntil]);
+  
+  console.log(shopData);
 
-  console.log("shopData Aakash:", shopData?.user);
+  // console.log("shopData Aakash:", shopData);
+  // console.log("shopOwnerID:", shopOwnerID);
+
   // console.log("session", session);
 
   const tabs = [
@@ -358,28 +385,37 @@ const PropertyDetailPage: React.FC = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charSet="UTF-8" />
       </Head>
-
+    
       <div className={styles.header}>
-
-      {shopData?.shopOwner?.paidUntil ? (
+  {loading ? (
+    <h1 className={styles.subscriptionTitle}>⏳ Loading subscription data...</h1>
+  ) : shopData?.shopOwner ? (
     <>
-      <h1 className={styles.subscriptionTitle}>🔔 Your Subscription Is About to Expire!</h1>
-          {shopData?.shopOwner?.paidUntil && (
-            <div className={styles.countdownTimer}>
-              {timeLeft.expired ? (
-                <span className={`${styles.timerText} ${styles.expired}`}>Expired</span>
-              ) : (
-                <span className={`${styles.timerText} ${styles.active}`}>
-                  ⏳ {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s left
-                </span>
-              )}
-            </div>
-          )}
-        </>
-      ) : (
-        <h1 className={styles.subscriptionTitle}>🚫 No Active Subscription Plan</h1>
-      )}
+      <h1 className={styles.subscriptionTitle}>
+        🔔 Your Subscription Is About to Expire!
+      </h1>
+
+      <div className={styles.countdownTimer}>
+        {timeLeft.expired ? (
+          <span className={`${styles.timerText} ${styles.expired}`}>
+            ⏳ Subscription expired!
+          </span>
+        ) : (
+          <span className={`${styles.timerText} ${styles.active}`}>
+            ⏳ {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s left
+          </span>
+        )}
       </div>
+    </>
+  ) : (
+    <h1 className={styles.subscriptionTitle}>
+      🚫 No Active Subscription Plan
+    </h1>
+  )}
+</div>
+
+
+
 
       <div className={styles.mainContent}>
         <div className={styles.leftColumn}>

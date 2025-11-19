@@ -11,22 +11,22 @@ import Head from "next/head";
 import Loader from "@/components/loader/Index";
 
 const categories = {
-  Vehicles: ["Motorcycles", "Scooters", "Bicycles", "Spare Parts"],
-  Car: ["Cars", "Spare Parts"],
-  "Commercial Vehicles": ["Tractors", "E-Rickshaws", "Tippers", "Tankers", "Pickups", "Delivery Vans", "Mini Trucks", "Passenger Buses", "School Buses", "Tempo Travellers", "Auto Rickshaws", "Commercial SUVs", "Refrigerated Vans", "Construction Vehicles"],
+  Vehicles: ["Motorcycles", "Scooters", "Bicycles", "Other Vehicles"],
+  Car: ["Cars", "Spare Parts",],
+  "Commercial Vehicles": ["Tractors", "E-Rickshaws", "Pickups", "Delivery Vans", "Mini Trucks", "Passenger Buses", "Auto Rickshaws", "Construction Vehicles","Other Commercial Vehicles"],
   "Electronics & Appliances": ["TV & Video", "Computers & Laptops", "Home Appliances", "ACs & Coolers", "Kitchen Appliances", "Cameras & Accessories", "Gaming Consoles", "Smart Home Devices", "Power Banks & Chargers", "Projectors",
     "Monitors & Accessories", "Printers & Scanners", "Water Purifiers", "Heaters & Geysers", "Audio & Music Systems", "Washing Machines", "Other Electronics",],
   Furniture: ["Beds & Wardrobes", "Sofas & Dining", "Tables & Chairs", "Home Decor & Garden", "Mattresses", "Office Furniture", "Other Household Items"],
-  Fashion: ["Men’s Clothing", "Women’s Clothing", "Kids", "Footwear", "Eyewear", "Ethnic Wear"],
-  "Books & Sports": ["Books", "Gym & Fitness", "Musical Instruments", "Sports Equipment", "Collectibles", "Board Games", "Toys"],
-  "Real Estate": ["House & Apartments", "Commercial Properties", "PG & Guest House", "Shops & Offices", "Land & Plots"],
-  Services: ["Home Services", "Repair", "Event Services", "Packers & Movers", "Health & Wellness", "Tutors & Classes", "Photography", "Legal & Documentation"],
-  Jobs: ["Part-time", "Full-time", "Internships", "Work from Home", "Freelancers", "Driver Jobs", "Delivery Jobs", "Office Jobs"],
+  Fashion: ["Men’s Clothing", "Women’s Clothing", "Kids", "Footwear", "Eyewear", "Ethnic Wear", "Other Fashion"],
+  "Books & Sports": ["Books", "Gym & Fitness", "Musical Instruments", "Sports Equipment", "Board Games", "Toys", "Other Books & Sports"],
+  "Real Estate": ["House & Apartments", "Commercial Properties", "PG & Guest House", "Shops & Offices", "Land & Plots", "Other Properties"],
+  Services: ["Home Services", "Repair", "Event Services", "Packers & Movers", "Health & Wellness", "Tutors & Classes", "Photography", "Legal & Documentation", "Other Services"],
+  Jobs: ["Part-time", "Full-time", "Internships", "Work from Home", "Freelancers", "Driver Jobs", "Delivery Jobs", "Office Jobs", "Other Jobs"],
   "Pets & Pet Care": ["Dogs", "Cats", "Birds", "Fish & Aquariums", "Pet Accessories", "Pet Care Services", "Other Pets"],
-  "Tools & Equipment": ["Power Tools", "Construction Tools", "Cleaning Tools", "Farming Tools", "Medical Equipment"],
+  "Tools & Equipment": ["Power Tools", "Construction Tools", "Cleaning Tools", "Farming Tools", "Medical Equipment", "Other Tools"],
   "Education & Learning": ["Tuition", "Competitive Exam Material", "Skill Courses", "Coaching Classes"],
-  "Events & Entertainment": ["Party Supplies", "Costumes", "DJ & Sound Systems", "Lighting Equipment", "Stage Setup"],
-  Mobiles: ["Mobile Phones", "Tablets", "Accessories"],
+  "Events & Entertainment": ["Party Supplies", "Costumes", "DJ & Sound Systems", "Lighting Equipment", "Stage Setup", "Other Events"],
+  Mobiles: ["Mobile Phones", "Tablets", "Accessories", "Other Device"],
 };
 
 declare global {
@@ -90,7 +90,14 @@ function AllCategoryRentalForm() {
       const Bicycles = selectedSubcategory === "Bicycles";
       const isJob = selectedCategory === "Jobs";
       const isMobile = selectedSubcategory === "Mobile Phones";
-    
+      const skipConditionCategories = [
+        "Education & Learning",
+        "Services",
+        "Jobs",
+        "Pets & Pet Care",
+        "Events & Entertainment"
+      ];
+
       // SaleType (skip for Services, Jobs, Education)
       if (
         !["Services", "Jobs", "Education & Learning"].includes(selectedCategory) &&
@@ -111,10 +118,11 @@ function AllCategoryRentalForm() {
         }
       }
       // Common fields
-      if (!formData.condition) {
-        newErrors.condition = "Please Select The Item's Condition.";
+      if (!skipConditionCategories.includes(selectedCategory)) {
+        if (!formData.condition) {
+          newErrors.condition = "Please Select The Item's Condition.";
+        }
       }
-    
       if (!formData.title || formData.title.trim() === "") {
         newErrors.title = "Title is Required.";
       }
@@ -942,21 +950,26 @@ if (!formData.termsAccepted) {
         method: "POST",
         body: payload,
       });
-  
+    
       if (res.status === 403) {
         const data = await res.json();
         Swal.fire({
           title: "Limit Reached",
           text: data.message,
           icon: "warning",
-          confirmButtonText: "Upgrade Now",
-        }).then(() => {
-          window.location.href = data.redirectUrl || "/payment";
+          showCancelButton: true,              // ✅ show cancel button
+          confirmButtonText: "Upgrade Now",    // ✅ upgrade button
+          cancelButtonText: "Cancel",          // ✅ cancel button text
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = data.redirectUrl || "/payment";
+          }
+          // if cancelled → do nothing, just close alert
         });
         setLoading(false);
         return;
       }
-  
+    
       const result = await res.json();
       if (result.success) {
         Swal.fire({
@@ -986,6 +999,7 @@ if (!formData.termsAccepted) {
     } finally {
       setLoading(false);
     }
+    
   };
 
   const handleLocationSelect = (locationData) => {

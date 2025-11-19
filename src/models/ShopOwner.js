@@ -5,25 +5,30 @@ const shopOwnerSchema = new mongoose.Schema({
 
   hasPaid: { type: Boolean, default: false },
 
-  paidUntil: { type: Date, default: null }, // Optional: for subscription expiry
+  // Global expiry (optional, if you want overall subscription expiry)
+  paidUntil: { type: Date, default: null },
 
   paymentMethod: { type: String, default: "" }, // e.g. "Razorpay", "Stripe", "UPI"
 
   planType: { type: String, default: "Free" }, // e.g. "Free", "Basic", "Premium"
-  paidCategories: { type: [String], default: [] }, // ✅ New field
+
+  // Categories for which user has paid
+  paidCategories: { type: [String], default: [] },
+
+  // Payment history with validity per category
   paymentHistory: [
     {
-      category: String,
-      amount: Number,
-      date: Date,
-      transactionId: String,
-      method: String,
+      category: { type: String, required: true },
+      amount: { type: Number, required: true },
+      createdAt: { type: Date, default: Date.now }, // when payment was made
+      expiryAt: { type: Date, required: true },     // 2 months validity
+      transactionId: { type: String, required: true },
+      method: { type: String, required: true },
     }
   ],
 
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now }, // shopOwner account creation
 });
-
 
 const ShopOwner = mongoose.models.ShopOwner || mongoose.model("ShopOwner", shopOwnerSchema);
 

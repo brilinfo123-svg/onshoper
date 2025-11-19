@@ -303,63 +303,87 @@ export default async function handler(
 
     try {
       await client.connect();
-      const db = client.db("test");
-      const productsCollection = db.collection("products");
-      const shopOwnersCollection = db.collection("shopowners");
-    
-      const shopOwnerID = document.shopOwnerID;
-      const category = fields.category?.toString();
-      const rules = categoryRules[category];
+  const db = client.db("test");
+  const productsCollection = db.collection("products");
+  const shopOwnersCollection = db.collection("shopowners");
 
-      if (!category || !rules) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid or missing category"
-        });
-      }
+  const shopOwnerID = document.shopOwnerID;
+  const category = fields.category?.toString();
+  const rules = categoryRules[category];
 
-      // ✅ Fetch shop owner record
-      const existingShopOwner = await shopOwnersCollection.findOne({ shopOwnerID });
+  if (!category || !rules) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid or missing category"
+    });
+  }
 
-      // ✅ Count unpaid products in this category
-      const unpaidCount = await productsCollection.countDocuments({
-        shopOwnerID,
-        category,
-        isPaid: false
+  // ✅ Fetch shop owner record
+  const existingShopOwner = await shopOwnersCollection.findOne({ shopOwnerID });
+
+  // ✅ Count unpaid products in this category
+  const unpaidCount = await productsCollection.countDocuments({
+    shopOwnerID,
+    category,
+    isPaid: false
+  });
+  
+  // ✅ First product free for all categories
+  if (unpaidCount === 0) {
+    const expiryDate = new Date();
+    expiryDate.setMonth(expiryDate.getMonth() + 2);
+  
+    document.isPaid = false; // free product
+    document.expiresAt = expiryDate;
+  
+  } else {
+    // ✅ Check if user has paid for this category
+    const payment = existingShopOwner?.paymentHistory?.find(p => p.category === category);
+    const hasPaidForCategory = existingShopOwner?.paidCategories?.includes(category);
+  
+    // 🔍 Case 1: User has NOT paid yet → block with "Free product limit reached"
+    if (!hasPaidForCategory) {
+      return res.status(403).json({
+        success: false,
+        message: "You have reached the limit of your free product.\n upgrade your plan to continue posting.",
+        redirectUrl: `/subscription?category=${encodeURIComponent(category)}`
       });
-
-      // ✅ Check if user has paid for this category
-      const hasPaidForCategory = existingShopOwner?.paidCategories?.includes(category);
-
-      // ✅ Enforce category-specific limit
-      if (unpaidCount >= rules.freeLimit && !hasPaidForCategory) {
-        return res.status(403).json({
-          success: false,
-          message: `Product limit reached for category "${category}". Please pay ₹${rules.pricePerExtra} to post more.`,
-          redirectUrl: `/subscription?category=${encodeURIComponent(category)}`
-        });
-      }
-
-      // ✅ Mark product as paid if category is unlocked
-      const isPaid = hasPaidForCategory === true;
-      document.isPaid = isPaid;
-
-      if (isPaid) {
-        const expiryDate = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000); // 2 months
-        document.feature = true;
-        document.featuredUntil = expiryDate;
-        document.expiresAt = expiryDate;
-      }
-    
-      // Insert new product
-      const result = await productsCollection.insertOne(document);
-    
-      return res.status(200).json({ success: true, insertedId: result.insertedId });
+    }
+  
+    // 🔍 Case 2: User has paid but subscription expired
+    if (!payment || payment.expiryAt <= new Date()) {
+      return res.status(403).json({
+        success: false,
+        message: `Limit Reached. Your subscription for category "${category}" has expired. Please renew to post products.`,
+        redirectUrl: `/subscription?category=${encodeURIComponent(category)}`
+      });
+    }
+  
+    // ✅ Enforce category-specific limit
+    if (unpaidCount >= rules.freeLimit && !hasPaidForCategory) {
+      return res.status(403).json({
+        success: false,
+        message: `Product limit reached for category "${category}". Please pay ₹${rules.pricePerExtra} to post more.`,
+        redirectUrl: `/subscription?category=${encodeURIComponent(category)}`
+      });
+    }
+  
+    // ✅ Mark product as paid if category is unlocked
+    document.isPaid = true;
+    document.feature = true;
+    document.featuredUntil = payment.expiryAt;
+    document.expiresAt = payment.expiryAt;
+  }
+  
+  // ✅ Insert new product
+  const result = await productsCollection.insertOne(document);
+  return res.status(200).json({ success: true, insertedId: result.insertedId });
     } catch (error) {
       console.error("MongoDB Insert Error:", error);
       return res.status(500).json({ success: false, message: "MongoDB Insert Failed" });
     } finally {
       await client.close();
     }
+    
   });
 }

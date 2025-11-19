@@ -116,6 +116,26 @@ const ProductMobile = ({
     "Mobile Phones": "/icons/phone.png",
     "Tablets": "/icons/tablet.png",
     "Accessories": "/icons/adapter.png",
+    "Other Device": "/icons/sketch-book.png",
+
+    // Tools & Equipment
+    "Cleaning Tools": "/icons/housekeeping.png",
+    "Power Tools": "/icons/car-battery.png",
+    "Construction Tools": "/icons/helmet.png",
+    "Medical Equipment": "/icons/first-aid-kit.png",
+    "Farming Tools": "/icons/cultivator.png",
+    "Other Tools": "/icons/sketch-book.png",
+
+    // Services
+    "Legal & Documentation": "/icons/document.png",
+    "Photography": "/icons/camera.png",
+    "Tutors & Classes": "/icons/virtual-class.png",
+    "Health & Wellness": "/icons/healthcare.png",
+    "Packers & Movers": "/icons/box.png",
+    "Event Services": "/icons/catering.png",
+    "Home Services": "/icons/house-cleaning.png",
+    "Repair": "/icons/mechanic.png",
+    
 
     // Electronics subcategories
     "TV & Video": "/icons/television.png",
@@ -134,8 +154,7 @@ const ProductMobile = ({
     "Heaters & Geysers": "/icons/heater.png",
     "Audio & Music Systems": "/icons/headphones.png",
     "Washing Machines": "/icons/laundryMachine.png",
-    "Other Electronics": "/icons/electric-appliance.png",
-
+    "Other Electronics": "/icons/sketch-book.png",
 
      // Books & Sports
      "Gym & Fitness": "/icons/dumbbell.png",
@@ -143,8 +162,9 @@ const ProductMobile = ({
      "Musical Instruments": "/icons/guitar.png",
      "Sports Equipment": "/icons/sports.png",
      "Collectibles": "/icons/data-collection.png",
-     "Board Games": "/icons/dice.png",
-     "Toys": "icons/teddy-bear.png",
+     "Board Games": "/icons/chess-piece.png",
+     "Toys": "/icons/teddy-bear.png",
+     
 
 
     // Feshion subcategories
@@ -154,15 +174,59 @@ const ProductMobile = ({
     "Women’s Clothing": "/icons/fashion.png",
     "Men’s Clothing": "/icons/male-clothes.png",
     "Kids": "/icons/baby-clothing.png",
+
+    // Education & Learning
+    "Skill Courses": "/icons/academic.png",
+    "Competitive Exam Material": "/icons/medal.png",
+    "Tuition": "/icons/teacher.png",
+    "Coaching Classes": "/icons/conference.png",
+
+    // Commercial Vehicles
+    "Tractors": "/icons/fashion.png",
+    "Mini Trucks": "/icons/truck.png",
+    "Auto Rickshaws": "/icons/rickshaw.png",
+    "E-Rickshaws": "/icons/transport.png",
+    "Pickups": "/icons/pickup-car.png",
+    "Passenger Buses": "/icons/student.png",
+    "Construction Vehicles": "/icons/Tippers.png",
+    "Delivery Vans": "/icons/delivery-van.png",
+
+     // Jobs
+     "Office Jobs": "/icons/worker.png",
+     "Delivery Jobs": "/icons/delivery-man.png",
+     "Driver Jobs": "/icons/taxi-driver.png",
+     "Freelancers": "/icons/freelance-work.png",
+     "Work from Home": "/icons/work-from-home.png",
+     "Internships": "/icons/internship.png",
+     "Part-time": "/icons/part-time.png",
+     "Full-time": "/icons/full-time-job.png",
+     "Other Jobs": "/icons/sketch-book.png",
     
 
-    // Furniture subcategories
+    // Furniture
     "Sofas & Dining": "/icons/sofa.png",
     "Beds & Wardrobes": "/icons/bed.png",
     "Tables & Chairs": "/icons/chair.png",
     "Home Decor & Garden": "/icons/shelf.png",
+    "Mattresses": "/icons/mat.png",
     "Office Furniture": "/icons/workspace.png",
-    "Other Household Items": "/icons/electric-appliance.png",
+    "Other Household Items": "/icons/sketch-book.png",
+
+    // Pets & Pet Care
+    "Cats": "/icons/cat.png",
+    "Dogs": "/icons/dog.png",
+    "Birds": "/icons/love-birds.png",
+    "Fish & Aquariums": "/icons/clown-fish.png",
+    "Pet Care Services": "/icons/pet-care.png",
+    "Other Pets": "/icons/sketch-book.png",
+
+    // Others
+     "Other Books & Sports": "/icons/sketch-book.png",
+     "Other Events": "/icons/sketch-book.png",
+     "Other Services": "/icons/sketch-book.png",
+     "Other Properties": "/icons/sketch-book.png",
+     "Other Fashion": "/icons/sketch-book.png",
+     "Other Commercial Vehicles": "/icons/sketch-book.png",
 
     // Default subcategory icon
     "Default": "/icons/subcategory.png"
