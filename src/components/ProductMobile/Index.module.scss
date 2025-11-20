@@ -226,6 +226,9 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 767px) {
+    width: 90%;
+  }
 }
 
 .sidebar.visible {
@@ -371,6 +374,10 @@
 .subcategoriesContainer {
   overflow: hidden;
   transition: max-height 0.3s ease;
+  @media screen and (max-width: 767px) {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .subcategoryItem {
@@ -381,7 +388,15 @@
   cursor: pointer;
   transition: background 0.2s ease;
   @media screen and (max-width: 767px) {
-    padding: 0.75rem 1rem 10px 3rem;
+    padding: 15px 10px;
+    text-align: center;
+    display: block;
+  }
+  img{
+    @media screen and (max-width: 767px) {
+      width: 35px;
+      height: 35px;
+    }
   }
 }
 
@@ -401,7 +416,10 @@
 .subcategoryName {
   font-size: 0.95rem;
   @media screen and (max-width: 767px) {
-    font-size: 14px;
+    font-size: 10px;
+    display: block;
+    color: #495057;
+    margin-top: 5px;
   }
 }
 

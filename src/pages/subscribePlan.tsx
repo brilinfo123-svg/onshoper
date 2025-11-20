@@ -29,7 +29,7 @@ export default function SubscriptionPage() {
     const [countdowns, setCountdowns] = useState<Record<string, string>>({});
     const router = useRouter();
 
-    console.log("Aakash", session);
+    
     const shopOwnerID = "691b43b2d46ea7262b270b4c"; // use real ID
 
     // Fetch shopOwner
@@ -131,7 +131,7 @@ export default function SubscriptionPage() {
         });
     };
 
-
+    console.log("Aakash", session, shopData);
 
     return (
             <div className={styles.wrapper}>
