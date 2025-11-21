@@ -55,6 +55,7 @@ interface ProductCardProps {
   salaryTo?: number; 
   salaryPeriod?: string;
   positionType?: string;
+  className?: string;
 }
 
 const ProductCard = ({
@@ -85,6 +86,7 @@ const ProductCard = ({
   salaryTo,
   salaryPeriod,
   positionType,
+  className,
 }: ProductCardProps) => {
   const { data: session } = useSession();
   const { addFavorite, removeFavorite, isFavorite } = useFavorites(); // Use the context
@@ -171,7 +173,7 @@ const ProductCard = ({
 
   if (showOnlyWishlistItems && !favorite) return null;
   return (
-    <div className={`${styles.card} ${filter.card}`}>
+    <div className={`${styles.card} ${filter.card} ${className || ""}`}>
       <Link href={`/product/${_id}`} className={styles.button}>
         <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} priority />
 

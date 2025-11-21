@@ -139,10 +139,10 @@ export default function SubscriptionPage() {
           <div className={styles.countdownTable}>
             <div className={styles.sectionHeader}>
               <h2 className={styles.title}>
-                <span className="icon-calendar"></span> Category Validity
+               Subscription Status
               </h2>
               <p className={styles.description}>
-                Track your subscription categories, expiry dates, and remaining time.  
+                Track your subscription categories, expiry dates, and remaining time.
                 Renew easily to keep posting products without interruption.
               </p>
             </div>
@@ -161,11 +161,12 @@ export default function SubscriptionPage() {
               <tbody>
                 {shopData.shopOwner.paymentHistory?.map((payment) => (
                   <tr key={payment.category}>
-                    <td>{payment.category}</td>
-                    <td>₹{payment.amount}</td>
-                    <td>{new Date(payment.createdAt).toLocaleDateString()}</td>
-                    <td>{new Date(payment.expiryAt).toLocaleDateString()}</td>
+                    <td data-label="Category">{payment.category}</td>
+                    <td data-label="Amount">₹{payment.amount}</td>
+                    <td data-label="Created At">{new Date(payment.createdAt).toLocaleDateString()}</td>
+                    <td data-label="Expiry At">{new Date(payment.expiryAt).toLocaleDateString()}</td>
                     <td
+                      data-label="Time Left"
                       className={
                         countdowns[payment.category] === "Expired"
                           ? styles.expired
@@ -174,7 +175,7 @@ export default function SubscriptionPage() {
                     >
                       {countdowns[payment.category] || "Loading..."}
                     </td>
-                    <td>
+                    <td data-label="Action">
                       <button
                         className={styles.renewBtn}
                         onClick={() => handleRenew(payment)}
@@ -185,6 +186,7 @@ export default function SubscriptionPage() {
                   </tr>
                 ))}
               </tbody>
+
             </table>
           </div>
         )}

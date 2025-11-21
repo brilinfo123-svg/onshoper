@@ -63,20 +63,20 @@ const PropertyDetailPage: React.FC = () => {
       confirmButtonText: "Yes, delete it",
       cancelButtonText: "Cancel",
     });
-  
+
     if (!confirm.isConfirmed) return;
-  
+
     setLoading(true); // ✅ Start loader
-  
+
     try {
       const res = await fetch("/api/account/delete", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ contact: session.user.contact }),
       });
-  
+
       const result = await res.json();
-  
+
       if (result.success) {
         Swal.fire({
           title: "Deleted!",
@@ -96,7 +96,7 @@ const PropertyDetailPage: React.FC = () => {
       setLoading(false); // ✅ Stop loader
     }
   };
-  
+
 
   const handleDelete = async (productId: string) => {
     const confirm = await Swal.fire({
@@ -107,19 +107,19 @@ const PropertyDetailPage: React.FC = () => {
       confirmButtonText: "Yes, delete it",
       cancelButtonText: "Cancel",
     });
-  
+
     if (!confirm.isConfirmed) return;
-  
+
     setLoading(true); // ✅ Start loader
-  
+
     try {
       const res = await fetch(`/api/products/deleteProduct?id=${productId}`, {
         method: "DELETE",
       });
-  
+
       if (res.ok) {
         setProducts((prev) => prev.filter((p: any) => p._id !== productId));
-  
+
         Swal.fire({
           title: "Deleted!",
           text: "Your ad has been successfully removed.",
@@ -146,7 +146,7 @@ const PropertyDetailPage: React.FC = () => {
       setLoading(false); // ✅ Stop loader
     }
   };
-  
+
   useEffect(() => {
     const fetchWishlist = async () => {
       if (!session?.user?.contact) return;
@@ -225,63 +225,7 @@ const PropertyDetailPage: React.FC = () => {
       fetchShopData();
     }
   }, [session]);
-  
-  useEffect(() => {
-    if (!shopOwnerID) return;
-  
-    const fetchShopOwner = async () => {
-      try {
-        const res = await fetch(`/api/shopOwner/getById?shopOwnerID=${shopOwnerID}`);
-        const data = await res.json();
-        if (res.ok && data.success) {
-          setShopData((prev) => ({
-            ...prev,
-            shopOwner: data.shopOwner, // ✅ merge shopOwner collection data
-          }));
-          console.log("ShopOwner full data:", data.shopOwner); // 👈 log full object
-        } else {
-          console.error("Failed to fetch shopOwner:", data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching shopOwner:", error);
-      }
-      
-    };
-  
-    fetchShopOwner();
-  }, [shopOwnerID]);
 
-
-  useEffect(() => {
-    if (!shopData?.shopOwner?.createdAt || !shopData?.shopOwner?.paidUntil) return;
-  
-    const startDate = new Date(shopData.shopOwner.createdAt);
-    const endDate = new Date(shopData.shopOwner.paidUntil);
-  
-    const updateCountdown = () => {
-      const now = new Date();
-      const timeDiff = endDate.getTime() - now.getTime();
-  
-      if (timeDiff <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, expired: true });
-        return;
-      }
-  
-      const totalSeconds = Math.floor(timeDiff / 1000);
-      const days = Math.floor(totalSeconds / (3600 * 24));
-      const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-  
-      setTimeLeft({ days, hours, minutes, seconds, expired: false });
-    };
-  
-    const timer = setInterval(updateCountdown, 1000);
-    updateCountdown();
-  
-    return () => clearInterval(timer);
-  }, [shopData?.shopOwner?.createdAt, shopData?.shopOwner?.paidUntil]);
-  
   console.log(shopData);
 
   // console.log("shopData Aakash:", shopData);
@@ -293,7 +237,7 @@ const PropertyDetailPage: React.FC = () => {
     {
       label: <span className="icon-picture">My Ads</span>,
       content: <div className={styles.myAdss}>
-        
+
         <div className={styles.makeProductFutured}>
           <h2>My Products</h2>
           <p>Listed Ads: <strong>{products.length}</strong></p>
@@ -307,53 +251,58 @@ const PropertyDetailPage: React.FC = () => {
           </div>
         ) : products.length === 0 ? (
           <div className={styles.notFoundShops}>
-              <Image
-                src="/icons/not-found.png"
-                alt="not-found"
-                width={200} // ✅ set your desired width
-                height={200} // ✅ set your desired height
-                priority // optional: load immediately
-              />
-              <p>No products Listed At</p>
+            <Image
+              src="/icons/not-found.png"
+              alt="not-found"
+              width={200} // ✅ set your desired width
+              height={200} // ✅ set your desired height
+              priority // optional: load immediately
+            />
+            <p>No products Listed At</p>
 
-              <Link href="/ProductForm" className={`${styles.sellAdd} ${"icon-shop"}`}> List Your Add</Link>
+            <Link href="/ProductForm" className={`${styles.sellAdd} ${"icon-shop"}`}> List Your Add</Link>
           </div>
         ) : (
           <>
-            <div className={styles.productGrid}>
-              {products.slice(0, visibleCount).map((product: any) => (
-                <ProductPost
-                  key={product._id}
-                  _id={product._id}
-                  title={product.title}
-                  description={""}
-                  category={product.category}
-                  subCategory={product.subcategory}
-                  price={Number(product.price)}
-                  SalePrice={product.SalePrice}
-                  priceWeek={
-                    product.priceWeek !== undefined
-                      ? Number(product.priceWeek)
-                      : undefined
-                  }
-                  priceMonth={
-                    product.priceMonth !== undefined
-                      ? Number(product.priceMonth)
-                      : undefined
-                  }
-                  coverImage={
-                    product.coverImage || product.images?.[0] || "/images/img2.jpg"
-                  }
-                  images={product.images || []}
-                  
-                  createdAt={product.createdAt}
-                  isFeatured={product.feature || false}
-                  onDelete={handleDelete}
-                  onUpdate={(id) => console.log("Update product", id)}
-                  shopOwnerID={product.shopOwnerID}
-                />
-              ))}
+            <div className={styles.productGridWrapper}>
+              {/* 👆 Wrapper for products + upgrade button */}
+
+              {/* ✅ Show Upgrade button only once at the top if any product is expired */}
+              {products.some((p: any) => p.status === "expired") && (
+                <div className={styles.upgradeTopWrapper}>
+                  <Link href="/subscribePlan" className={styles.upgradeButton}>
+                    Upgrade
+                  </Link>
+                </div>
+              )}
+
+              <div className={styles.productGrid}>
+                {products.slice(0, visibleCount).map((product: any) => (
+                  <ProductPost
+                    key={product._id}
+                    _id={product._id}
+                    title={product.title}
+                    description={""}
+                    category={product.category}
+                    subCategory={product.subcategory}
+                    price={Number(product.price)}
+                    SalePrice={product.SalePrice}
+                    priceWeek={product.priceWeek !== undefined ? Number(product.priceWeek) : undefined}
+                    priceMonth={product.priceMonth !== undefined ? Number(product.priceMonth) : undefined}
+                    coverImage={product.coverImage || product.images?.[0] || "/images/img2.jpg"}
+                    images={product.images || []}
+                    createdAt={product.createdAt}
+                    isFeatured={product.feature || false}
+                    onDelete={handleDelete}
+                    onUpdate={(id) => console.log("Update product", id)}
+                    shopOwnerID={product.shopOwnerID}
+                    // 👇 optional: you can style expired products differently
+                    className={product.status === "expired" ? styles.disabledProduct : ""}
+                  />
+                ))}
+              </div>
             </div>
+
 
             {/* Show View More if more than 4 */}
             {visibleCount < products.length && (
@@ -376,7 +325,7 @@ const PropertyDetailPage: React.FC = () => {
 
   return (
     <div className="container">
-     <Head>
+      <Head>
         <title>My Profile – OnShoper</title>
         <meta
           name="description"
@@ -385,8 +334,8 @@ const PropertyDetailPage: React.FC = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charSet="UTF-8" />
       </Head>
-    
-      <div className={styles.header}>
+
+      {/* <div className={styles.header}>
   {loading ? (
     <h1 className={styles.subscriptionTitle}>⏳ Loading subscription data...</h1>
   ) : shopData?.shopOwner ? (
@@ -412,7 +361,7 @@ const PropertyDetailPage: React.FC = () => {
       🚫 No Active Subscription Plan
     </h1>
   )}
-</div>
+</div> */}
 
 
 

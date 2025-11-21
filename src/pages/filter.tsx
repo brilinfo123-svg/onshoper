@@ -12,6 +12,7 @@ import { useFilter } from "@/contexts/FilterContext";
 import Modal from "@/components/Modal/Index";
 
 interface Product {
+  status: string;
   brand: string;
   carBrand: any;
   year: number;
@@ -81,47 +82,47 @@ const Filter: React.FC = () => {
 
 
   // Unique brands for Cars
-// 1. Normalize subcategories from URL (lowercase trim)
-const normalizedSubcategories = selectedSubcategories.map((s) => s.toLowerCase());
+  // 1. Normalize subcategories from URL (lowercase trim)
+  const normalizedSubcategories = selectedSubcategories.map((s) => s.toLowerCase());
 
-const filteredForBrandCounts = products.filter((p) => {
-  const matchesCity =
-    !city || city === "All Cities" || (p.location?.city || "").toLowerCase() === city.toLowerCase();
+  const filteredForBrandCounts = products.filter((p) => {
+    const matchesCity =
+      !city || city === "All Cities" || (p.location?.city || "").toLowerCase() === city.toLowerCase();
 
-  const matchesSubcategory =
-    selectedSubcategories.length === 0 ||
-    (p.subcategory && normalizedSubcategories.includes(p.subcategory.toLowerCase()));
+    const matchesSubcategory =
+      selectedSubcategories.length === 0 ||
+      (p.subcategory && normalizedSubcategories.includes(p.subcategory.toLowerCase()));
 
-  return matchesCity && matchesSubcategory;
-});
+    return matchesCity && matchesSubcategory;
+  });
 
-// 2. Unique brand extraction based on normalized subcategories
+  // 2. Unique brand extraction based on normalized subcategories
 
-const carBrandCounts = filteredForBrandCounts
-  .filter((p) => p.category === "Car" && typeof p.carBrand === "string")
-  .reduce<Record<string, number>>((acc, p) => {
-    acc[p.carBrand] = (acc[p.carBrand] || 0) + 1;
-    return acc;
-  }, {});
+  const carBrandCounts = filteredForBrandCounts
+    .filter((p) => p.category === "Car" && typeof p.carBrand === "string")
+    .reduce<Record<string, number>>((acc, p) => {
+      acc[p.carBrand] = (acc[p.carBrand] || 0) + 1;
+      return acc;
+    }, {});
 
-const vehicleBrandCounts = filteredForBrandCounts
-  .filter((p) => p.category === "Vehicles" && typeof p.brand === "string")
-  .reduce<Record<string, number>>((acc, p) => {
-    acc[p.brand] = (acc[p.brand] || 0) + 1;
-    return acc;
-  }, {});
+  const vehicleBrandCounts = filteredForBrandCounts
+    .filter((p) => p.category === "Vehicles" && typeof p.brand === "string")
+    .reduce<Record<string, number>>((acc, p) => {
+      acc[p.brand] = (acc[p.brand] || 0) + 1;
+      return acc;
+    }, {});
 
-const mobileBrandCounts = filteredForBrandCounts
-  .filter((p) => p.category === "Mobiles" && typeof p.MobileBrand === "string")
-  .reduce<Record<string, number>>((acc, p) => {
-    acc[p.MobileBrand] = (acc[p.MobileBrand] || 0) + 1;
-    return acc;
-  }, {});
+  const mobileBrandCounts = filteredForBrandCounts
+    .filter((p) => p.category === "Mobiles" && typeof p.MobileBrand === "string")
+    .reduce<Record<string, number>>((acc, p) => {
+      acc[p.MobileBrand] = (acc[p.MobileBrand] || 0) + 1;
+      return acc;
+    }, {});
 
-const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
-  category: string;
-  brand: string;
-} | null>(null);
+  const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
+    category: string;
+    brand: string;
+  } | null>(null);
 
   // Sync URL subcategories to state on mount or URL change
   useEffect(() => {
@@ -183,10 +184,10 @@ const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
       filtered = filtered.filter((p) => p.category === categorySlug);
     }
 
-     // Apply brand filter if selected
-     if (selectedFilterBrand) {
+    // Apply brand filter if selected
+    if (selectedFilterBrand) {
       const { category, brand } = selectedFilterBrand;
-  
+
       if (category === "Car") {
         filtered = filtered.filter(
           (p) => p.category === "Car" && p.carBrand === brand
@@ -255,7 +256,7 @@ const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
       filtered = filtered.filter((p) => {
         let priceToCheck = 0;
         const type = p.SaleType || p.type;
-    
+
         if (type === "Sale") {
           const rawSalePrice = p.SalePrice as string | number | undefined;
 
@@ -268,7 +269,7 @@ const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
           }
         } else if (type === "Rent") {
           const rentPrices: number[] = [];
-    
+
           const clean = (val: string | number | undefined): number => {
             if (typeof val === "string") {
               return parseFloat(val.replace(/[^\d.]/g, "")) || 0;
@@ -277,21 +278,21 @@ const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
             }
             return 0;
           };
-    
+
           rentPrices.push(clean(p.price));
           rentPrices.push(clean(p.priceWeek));
           rentPrices.push(clean(p.priceMonth));
-    
+
           const validPrices = rentPrices.filter((val) => val > 0);
           priceToCheck = validPrices.length ? Math.min(...validPrices) : 0;
         }
-    
+
         if (minPrice !== "" && priceToCheck < cleanPrice(minPrice)) return false;
         if (maxPrice !== "" && priceToCheck > cleanPrice(maxPrice)) return false;
         return true;
       });
     }
-    
+
 
     // ✅ Sale/Rent filter
     // ✅ Sale/Rent filter with fallback categories
@@ -339,191 +340,191 @@ const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
 
 
 
-  
+
 
   if (error) return <div>{error}</div>;
 
   return (
     <>
-    <Head>
-    <title>
-    {searchTerm
-      ? `Search results for "${searchTerm}" – OnShoper`
-      : subcategoriesFromUrl.length > 0
-      ? `Browse ${subcategoriesFromUrl.join(", ")} in ${city} – OnShoper`
-      : categorySlug
-      ? `Browse ${categorySlug} in ${city} – OnShoper`
-      : `Filtered Products – OnShoper`}
-  </title>
+      <Head>
+        <title>
+          {searchTerm
+            ? `Search results for "${searchTerm}" – OnShoper`
+            : subcategoriesFromUrl.length > 0
+              ? `Browse ${subcategoriesFromUrl.join(", ")} in ${city} – OnShoper`
+              : categorySlug
+                ? `Browse ${categorySlug} in ${city} – OnShoper`
+                : `Filtered Products – OnShoper`}
+        </title>
 
-  <meta
-    name="description"
-    content={
-      searchTerm
-        ? `Find listings matching "${searchTerm}" across categories on OnShoper.`
-        : subcategoriesFromUrl.length > 0
-        ? `Explore ${subcategoriesFromUrl.join(", ")} available in ${city} for sale or rent on OnShoper.`
-        : categorySlug
-        ? `Explore ${categorySlug} available in ${city} for sale or rent on OnShoper.`
-        : `Discover filtered products and services tailored to your preferences on OnShoper.`
-    }
-  />
-
-  {/* Optional: Social Sharing */}
-  <meta property="og:title" content="Filtered Results – OnShoper" />
-  <meta
-    property="og:description"
-    content="Find products for sale or rent by category, city, and price range on OnShoper."
-  />
-  <meta property="og:image" content="/images/og-filter.jpg" />
-  <meta property="og:url" content={`https://onshoper.com/filter?category=${categorySlug}&city=${city}`} />
-  <meta name="twitter:card" content="summary_large_image" />
-</Head>
-
-    <div className="main">
-      <div className="container" id="products-section" ref={productsRef}>
-        <FilterControls isVisible={showFilter} minPrice={minPrice}
-          maxPrice={maxPrice}
-          filterType={filterType}
-          setMinPrice={setMinPrice}
-          setMaxPrice={setMaxPrice}
-          // setFilterType={setFilterType}
-          onApplyFilters={() => {
-            // setVisibleCount(displayCount);
-            setShowFilter(false);
-          }}
-          onClose={() => setShowFilter(false)}
+        <meta
+          name="description"
+          content={
+            searchTerm
+              ? `Find listings matching "${searchTerm}" across categories on OnShoper.`
+              : subcategoriesFromUrl.length > 0
+                ? `Explore ${subcategoriesFromUrl.join(", ")} available in ${city} for sale or rent on OnShoper.`
+                : categorySlug
+                  ? `Explore ${categorySlug} available in ${city} for sale or rent on OnShoper.`
+                  : `Discover filtered products and services tailored to your preferences on OnShoper.`
+          }
         />
 
-        <div className={styles.buttons}>
-          <div className={styles.priceFilter}>
-            <button className={styles.openFilterBtn} onClick={() => setShowFilter(true)}><span className="icon-sliders" />Filter By Price</button>
-            <div className={styles.priceInput}>
-              <label htmlFor="minPrice" className="icon-rupee">From</label>
-              <input id="minPrice" type="number" placeholder="Min Price" value={minPrice} onChange={(e) =>
+        {/* Optional: Social Sharing */}
+        <meta property="og:title" content="Filtered Results – OnShoper" />
+        <meta
+          property="og:description"
+          content="Find products for sale or rent by category, city, and price range on OnShoper."
+        />
+        <meta property="og:image" content="/images/og-filter.jpg" />
+        <meta property="og:url" content={`https://onshoper.com/filter?category=${categorySlug}&city=${city}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
+
+      <div className="main">
+        <div className="container" id="products-section" ref={productsRef}>
+          <FilterControls isVisible={showFilter} minPrice={minPrice}
+            maxPrice={maxPrice}
+            filterType={filterType}
+            setMinPrice={setMinPrice}
+            setMaxPrice={setMaxPrice}
+            // setFilterType={setFilterType}
+            onApplyFilters={() => {
+              // setVisibleCount(displayCount);
+              setShowFilter(false);
+            }}
+            onClose={() => setShowFilter(false)}
+          />
+
+          <div className={styles.buttons}>
+            <div className={styles.priceFilter}>
+              <button className={styles.openFilterBtn} onClick={() => setShowFilter(true)}><span className="icon-sliders" />Filter By Price</button>
+              <div className={styles.priceInput}>
+                <label htmlFor="minPrice" className="icon-rupee">From</label>
+                <input id="minPrice" type="number" placeholder="Min Price" value={minPrice} onChange={(e) =>
                   setMinPrice(e.target.value ? cleanPrice(e.target.value) : "")
                 }
-              />
+                />
+              </div>
+              <div className={styles.priceInput}>
+                <label htmlFor="maxPrice" className="icon-rupee">To</label>
+                <input
+                  id="maxPrice"
+                  type="number"
+                  placeholder="Max Price"
+                  value={maxPrice}
+                  onChange={(e) =>
+                    setMaxPrice(e.target.value ? cleanPrice(e.target.value) : "")
+                  }
+                />
+              </div>
             </div>
-            <div className={styles.priceInput}>
-              <label htmlFor="maxPrice" className="icon-rupee">To</label>
-              <input
-                id="maxPrice"
-                type="number"
-                placeholder="Max Price"
-                value={maxPrice}
-                onChange={(e) =>
-                  setMaxPrice(e.target.value ? cleanPrice(e.target.value) : "")
-                }
-              />
+            <div>
+              <button className={styles.filterByBrand} onClick={() => setIsModalOpen(true)}>Filter By Brands</button>
+
+              <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+
+                <>
+                  <div className={styles.btnWrapper}>
+                    {Object.keys(carBrandCounts).length > 0 && (
+                      <div className={styles.brandWrap}>
+                        <h4>Car Brands</h4>
+                        <div className={styles.btnGroup}>
+                          {Object.entries(carBrandCounts).map(([brand, count]) => (
+                            <button
+                              key={brand}
+                              onClick={() => {
+                                setSelectedFilterBrand({ category: "Car", brand });
+                                setIsModalOpen(false);
+                              }}
+                              className={
+                                selectedFilterBrand?.category === "Car" && selectedFilterBrand?.brand === brand
+                                  ? styles.activeButton
+                                  : ""
+                              }
+                            >
+                              {brand} ({count})
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {Object.keys(vehicleBrandCounts).length > 0 && (
+                      <div className={styles.brandWrap}>
+                        <h4>Bikes Brands</h4>
+                        <div className={styles.btnGroup}>
+                          {Object.entries(vehicleBrandCounts).map(([brand, count]) => (
+                            <button
+                              key={brand}
+                              onClick={() => {
+                                setSelectedFilterBrand({ category: "Vehicles", brand });
+                                setIsModalOpen(false);
+                              }}
+
+                            >
+                              {brand} ({count})
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {Object.keys(mobileBrandCounts).length > 0 && (
+                      <div className={styles.brandWrap}>
+                        <h4>Mobile Brands</h4>
+                        <div className={styles.btnGroup}>
+                          {Object.entries(mobileBrandCounts).map(([brand, count]) => (
+                            <button
+                              key={brand}
+                              onClick={() => {
+                                setSelectedFilterBrand({ category: "Mobiles", brand });
+                                setIsModalOpen(false);
+                              }}
+                              style={{
+                                backgroundColor:
+                                  selectedFilterBrand?.category === "Mobiles" && selectedFilterBrand?.brand === brand
+                                    ? "blue"
+                                    : "",
+                                color: "black",
+                                cursor: "pointer",
+                              }}
+                            >
+                              {brand} ({count})
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* ✅ No Brands Message */}
+                    {Object.keys(carBrandCounts).length === 0 &&
+                      Object.keys(vehicleBrandCounts).length === 0 &&
+                      Object.keys(mobileBrandCounts).length === 0 && (
+                        <p className={styles.noBrands}>No brands available.</p>
+                      )}
+                    {/* Add a clear filter button */}
+                    {selectedFilterBrand && (
+                      <div className={styles.clearBrands}>
+                        <button
+                          onClick={() => {
+                            setSelectedFilterBrand(null);
+                            setIsModalOpen(false); // Close the modal after clearing
+                          }}
+                        >
+                          Reset Filter
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </>
+              </Modal>
             </div>
+
           </div>
-          <div>
-      <button className={styles.filterByBrand} onClick={() => setIsModalOpen(true)}>Filter By Brands</button>
-
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-
-            <>
-            <div className={styles.btnWrapper}>
-              {Object.keys(carBrandCounts).length > 0 && (
-                <div className={styles.brandWrap}>
-                  <h4>Car Brands</h4>
-                  <div className={styles.btnGroup}>
-                  {Object.entries(carBrandCounts).map(([brand, count]) => (
-                    <button
-                      key={brand}
-                      onClick={() => {
-                        setSelectedFilterBrand({ category: "Car", brand });
-                        setIsModalOpen(false);
-                      }}
-                      className={
-                        selectedFilterBrand?.category === "Car" && selectedFilterBrand?.brand === brand
-                          ? styles.activeButton
-                          : ""
-                      }
-                    >
-                      {brand} ({count})
-                    </button>
-                  ))}
-                  </div>
-                </div>
-              )}
-
-              {Object.keys(vehicleBrandCounts).length > 0 && (
-                <div className={styles.brandWrap}>
-                  <h4>Bikes Brands</h4>
-                  <div className={styles.btnGroup}>
-                  {Object.entries(vehicleBrandCounts).map(([brand, count]) => (
-                    <button
-                      key={brand}
-                      onClick={() => {
-                        setSelectedFilterBrand({ category: "Vehicles", brand });
-                        setIsModalOpen(false);
-                      }}
-                      
-                    >
-                      {brand} ({count})
-                    </button>
-                  ))}
-                  </div>
-                </div>
-              )}
-
-              {Object.keys(mobileBrandCounts).length > 0 && (
-                <div className={styles.brandWrap}>
-                  <h4>Mobile Brands</h4>
-                  <div className={styles.btnGroup}>
-                  {Object.entries(mobileBrandCounts).map(([brand, count]) => (
-                    <button
-                      key={brand}
-                      onClick={() => {
-                        setSelectedFilterBrand({ category: "Mobiles", brand });
-                        setIsModalOpen(false);
-                      }}
-                      style={{
-                        backgroundColor:
-                          selectedFilterBrand?.category === "Mobiles" && selectedFilterBrand?.brand === brand
-                            ? "blue"
-                            : "",
-                        color: "black",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {brand} ({count})
-                    </button>
-                  ))}
-                  </div>
-                </div>
-              )}
-
-               {/* ✅ No Brands Message */}
-                {Object.keys(carBrandCounts).length === 0 &&
-                Object.keys(vehicleBrandCounts).length === 0 &&
-                Object.keys(mobileBrandCounts).length === 0 && (
-                  <p className={styles.noBrands}>No brands available.</p>
-                )}
-              {/* Add a clear filter button */}
-              {selectedFilterBrand && (
-                  <div className={styles.clearBrands}>
-                    <button
-                      onClick={() => {
-                        setSelectedFilterBrand(null);
-                        setIsModalOpen(false); // Close the modal after clearing
-                      }}
-                    >
-                      Reset Filter
-                    </button>
-                  </div>
-                )}
-            </div>   
-            </>
-      </Modal>
-    </div>
-         
-        </div>
-        <div className={styles.rowFlex}>
-          {/* Sidebar Filter */}
-          {/* {productsLoading ? (
+          <div className={styles.rowFlex}>
+            {/* Sidebar Filter */}
+            {/* {productsLoading ? (
             <div className={styles.sidebarSkeleton}>
               <SkeletonCard />
             </div>
@@ -537,65 +538,66 @@ const [selectedFilterBrand, setSelectedFilterBrand] = useState<{
             />
           )} */}
 
-          {/* Products Grid */}
-          <div className={styles.productGrid}>
-            {productsLoading ? (
-              Array.from({ length: 8 }).map((_, index) => <SkeletonCard key={index} />)
-            ) : filteredProducts.length === 0 ? (
-              <div className={styles.notFoundShops}>
-                <Image
-                  src="/icons/not-found.png"
-                  alt="not-found"
-                  width={200} // ✅ set your desired width
-                  height={200} // ✅ set your desired height
-                  priority // optional: load immediately
-                />
-                <p>No products found for the selected categories</p>
-              </div>
-            ) : (
-              filteredProducts
-                .sort((a, b) => (b.feature ? 1 : 0) - (a.feature ? 1 : 0))
-                
-                .map((product) => (
-                  <ProductPost
-                    key={product._id}
-                    _id={product._id}
-                    title={product.title}
-                    description={""}
-                    category={product.category}
-                    subCategory={product.subcategory}
-                    price={Number(product.price)}
-                    priceWeek={product.priceWeek ? Number(product.priceWeek) : undefined}
-                    priceMonth={product.priceMonth ? Number(product.priceMonth) : undefined}
-                    SalePrice={product?.SalePrice}
-                    coverImage={
-                      product.coverImage || product.images?.[0] || "/images/img2.jpg"
-                    }
-                    images={product.images || []}
-                    location={{
-                      city: product.location?.city || "",
-                      area: product.location?.area || "",
-                      state: product.location?.state || "",
-                    }}
-                    createdAt={product.createdAt}
-                    isFeatured={product.feature || false}
-                    shopOwnerID={product.shopOwnerID}
-                    mobileBrand={product.MobileBrand}
-                    mobileModel={product.MobileModel}
-                    salaryFrom={product.salaryFrom}
-                    salaryTo={product.salaryTo}
-                    year={product.year}
-                    KmDriven={product.KmDriven}
-                    salaryPeriod={product.salaryPeriod}
-                    positionType={product.positionType}
+            {/* Products Grid */}
+            <div className={styles.productGrid}>
+              {productsLoading ? (
+                Array.from({ length: 8 }).map((_, index) => <SkeletonCard key={index} />)
+              ) : filteredProducts.length === 0 ? (
+                <div className={styles.notFoundShops}>
+                  <Image
+                    src="/icons/not-found.png"
+                    alt="not-found"
+                    width={200}
+                    height={200}
+                    priority
                   />
+                  <p>No products found for the selected categories</p>
+                </div>
+              ) : (
+                filteredProducts
+                  // 👇 Only show products with status === "active"
+                  .filter((product) => product.status === "active")
+                  .sort((a, b) => (b.feature ? 1 : 0) - (a.feature ? 1 : 0))
+                  .map((product) => (
+                    <ProductPost
+                      key={product._id}
+                      _id={product._id}
+                      title={product.title}
+                      description={""}
+                      category={product.category}
+                      subCategory={product.subcategory}
+                      price={Number(product.price)}
+                      priceWeek={product.priceWeek ? Number(product.priceWeek) : undefined}
+                      priceMonth={product.priceMonth ? Number(product.priceMonth) : undefined}
+                      SalePrice={product?.SalePrice}
+                      coverImage={
+                        product.coverImage || product.images?.[0] || "/images/img2.jpg"
+                      }
+                      images={product.images || []}
+                      location={{
+                        city: product.location?.city || "",
+                        area: product.location?.area || "",
+                        state: product.location?.state || "",
+                      }}
+                      createdAt={product.createdAt}
+                      isFeatured={product.feature || false}
+                      shopOwnerID={product.shopOwnerID}
+                      mobileBrand={product.MobileBrand}
+                      mobileModel={product.MobileModel}
+                      salaryFrom={product.salaryFrom}
+                      salaryTo={product.salaryTo}
+                      year={product.year}
+                      KmDriven={product.KmDriven}
+                      salaryPeriod={product.salaryPeriod}
+                      positionType={product.positionType}
+                    />
+                  ))
+              )}
+            </div>
 
-                ))
-            )}
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 };

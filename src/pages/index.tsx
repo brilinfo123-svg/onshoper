@@ -74,11 +74,11 @@ export default function Home() {
   const { filterType } = useFilter();
   const productsRef = useRef<HTMLDivElement>(null);
   const [visibleCount, setVisibleCount] = useState(10);
-  
 
 
-const [products, setProducts] = useState<any[]>([]);
-const [selectedCity, setSelectedCity] = useState<string>("All Cities");
+
+  const [products, setProducts] = useState<any[]>([]);
+  const [selectedCity, setSelectedCity] = useState<string>("All Cities");
   const { data: session } = useSession();
   const [shopData, setShopData] = useState<ShopData | null>(null);
 
@@ -108,9 +108,9 @@ const [selectedCity, setSelectedCity] = useState<string>("All Cities");
   // City filter function
   const filterProductsByCity = (products: Product[], city: string): Product[] => {
     if (city === "All Cities") return products;
-    
+
     // Multiple fields mein search karo
-    return products.filter(product => 
+    return products.filter(product =>
       product.location && (
         (product.location.city && product.location.city.toLowerCase().includes(city.toLowerCase())) ||
         (product.location.area && product.location.area.toLowerCase().includes(city.toLowerCase())) ||
@@ -142,55 +142,55 @@ const [selectedCity, setSelectedCity] = useState<string>("All Cities");
     const saleTotal = products.filter((p) => (p.SaleType || p.type) === "Sale").length;
     const rentTotal = products.filter((p) => (p.SaleType || p.type) === "Rent").length;
     const allTotal = products.length;
-    
+
     return { saleTotal, rentTotal, allTotal };
   }, [products]);
 
-// Filter products based on selected criteria
-// Filter products based on selected criteria
-// Filter products based on selected criteria
-const filteredProducts = useMemo(() => {
-  const rentFallbackCategories = ["Services", "Jobs", "Education & Learning"]; // Optional: add more if needed
+  // Filter products based on selected criteria
+  // Filter products based on selected criteria
+  // Filter products based on selected criteria
+  const filteredProducts = useMemo(() => {
+    const rentFallbackCategories = ["Services", "Jobs", "Education & Learning"]; // Optional: add more if needed
 
-  let filtered = products.filter((product) => {
-    const saleType = product.SaleType || product.type;
+    let filtered = products.filter((product) => {
+      const saleType = product.SaleType || product.type;
 
-    // ✅ Show all Rent products
-    if (filterType === "Rent") {
-      const isRentType = saleType === "Rent";
-      const isFallbackCategory = rentFallbackCategories.includes(product.category);
-      if (!isRentType && !isFallbackCategory) return false;
-    }
+      // ✅ Show all Rent products
+      if (filterType === "Rent") {
+        const isRentType = saleType === "Rent";
+        const isFallbackCategory = rentFallbackCategories.includes(product.category);
+        if (!isRentType && !isFallbackCategory) return false;
+      }
 
-    // ✅ Show only Sale products
-    if (filterType === "Sale" && saleType !== "Sale") {
-      return false;
-    }
+      // ✅ Show only Sale products
+      if (filterType === "Sale" && saleType !== "Sale") {
+        return false;
+      }
 
-    // ✅ Category filter (if user manually selects)
-    if (
-      selectedCategories.length > 0 &&
-      !selectedCategories.includes(product.category)
-    ) {
-      return false;
-    }
+      // ✅ Category filter (if user manually selects)
+      if (
+        selectedCategories.length > 0 &&
+        !selectedCategories.includes(product.category)
+      ) {
+        return false;
+      }
 
-    // ✅ Subcategory filter
-    if (
-      selectedSubcategories.length > 0 &&
-      !selectedSubcategories.includes(product.subcategory || "")
-    ) {
-      return false;
-    }
+      // ✅ Subcategory filter
+      if (
+        selectedSubcategories.length > 0 &&
+        !selectedSubcategories.includes(product.subcategory || "")
+      ) {
+        return false;
+      }
 
-    return true;
-  });
+      return true;
+    });
 
-  // ✅ City filter
-  filtered = filterProductsByCity(filtered, selectedCity);
+    // ✅ City filter
+    filtered = filterProductsByCity(filtered, selectedCity);
 
-  return filtered;
-}, [products, filterType, selectedCategories, selectedSubcategories, selectedCity]);
+    return filtered;
+  }, [products, filterType, selectedCategories, selectedSubcategories, selectedCity]);
 
 
 
@@ -203,11 +203,11 @@ const filteredProducts = useMemo(() => {
     setSelectedCity(city);
     setVisibleCount(displayCount); // Reset visible count when city changes
   };
-  
+
   useEffect(() => {
     fetch('/api/cleanup/expiredProducts', { method: 'PATCH' });
   }, []);
-  
+
 
 
   return (
@@ -216,7 +216,7 @@ const filteredProducts = useMemo(() => {
       <IntroAnimation />
       {/* <Banner bannerClass={styles.MobileSearch} contentClass={styles.contentWrap} /> */}
       <div className="container">
-        <ProductMobile 
+        <ProductMobile
           products={products}
           selectedCategories={selectedCategories}
           onCategoryChange={(id) =>
@@ -229,14 +229,14 @@ const filteredProducts = useMemo(() => {
             setSelectedSubcategories((prev) =>
               prev.includes(sub) ? prev.filter((s) => s !== sub) : [...prev, sub]
             )
-          } 
+          }
         />
       </div>
       <BannerPost />
-      
+
       {/* Yahan FilterLocation component add kiya hai */}
       {/* <FilterLocation onCityChange={handleCityChange} /> */}
-      
+
       <div className="container">
         <div className={styles.rowFlex} id="products-section" ref={productsRef}>
           {/* Sidebar Filter */}
@@ -270,7 +270,7 @@ const filteredProducts = useMemo(() => {
                 <h3>Showing products in: {selectedCity}</h3>
               </div>
             )} */}
-            
+
             {/* Products Grid */}
             <div className={styles.productGrid}>
               {productsLoading ? (
@@ -281,6 +281,7 @@ const filteredProducts = useMemo(() => {
                 </div>
               ) : (
                 filteredProducts
+                  .filter((product) => product.status === "active") // 👈 only active products
                   .sort((a, b) => (b.feature ? 1 : 0) - (a.feature ? 1 : 0))
                   .slice(0, visibleCount)
                   .map((product) => (
@@ -299,7 +300,7 @@ const filteredProducts = useMemo(() => {
                       images={product.images || []}
                       location={{
                         city: product.location?.city || "",
-                        area: product.location?.area || "", 
+                        area: product.location?.area || "",
                         state: product.location?.state || ""
                       }}
                       createdAt={product.createdAt}
@@ -317,6 +318,7 @@ const filteredProducts = useMemo(() => {
                   ))
               )}
             </div>
+
 
             {/* View More Button */}
             <div className={styles.btnAlign}>

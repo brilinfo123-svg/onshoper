@@ -66,8 +66,8 @@ export default async function handler(req, res) {
 
   // ✅ Update all products in this category for this shopOwner to new expiry
   await Product.updateMany(
-    contact ? { contact, category } : { shopOwnerID, category },
-    { $set: { expiresAt: newExpiry } }
+    contact ? { ownerEmail: contact, category } : { shopOwnerID, category },
+    { $set: { expiresAt: newExpiry, status: "active" } }
   );
 
   await shopOwner.save();

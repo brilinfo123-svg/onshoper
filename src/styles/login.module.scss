@@ -8,7 +8,10 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
   width: 100%;
-  box-shadow: 20px 21px 50px -26px black
+  box-shadow: 20px 21px 50px -26px black;
+  @media screen and (max-width: 767px) {
+    box-shadow: 0px 20px 40px -30px black;
+  }
 }
 
 .loginWrapper{
@@ -17,6 +20,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  @media screen and (min-width: 768px) and (max-width: 1199px){
+    height: auto;
+    padding: 80px 20px;
+  }
+  @media screen and (max-width: 767px) {
+    height: auto;
+    padding: 80px 20px;
+  }
 }
 .heading {
   font-size: 2rem;

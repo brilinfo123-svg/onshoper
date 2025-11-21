@@ -18,12 +18,9 @@ export default function LoginPage() {
   const [canResend, setCanResend] = useState(false);
   const [isSendingOtp, setIsSendingOtp] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
   const router = useRouter();
 
   // ✅ Redirect if already logged in
-
-
   // ✅ Countdown effect (always declared, no conditional return)
   useEffect(() => {
     let countdown: NodeJS.Timeout;
@@ -75,27 +72,22 @@ export default function LoginPage() {
       }, 1000);
     }
   };
-  
 
   const sendOtp = async () => {
     setError("");
     setMessage("");
     setIsSendingOtp(true);
-
     if (!contact) {
       setError(`Please enter your ${loginType}`);
       setIsSendingOtp(false);
       return;
     }
-
     const res = await fetch("/api/Verification/send-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ contact }),
     });
-
     const data = await res.json();
-
     if (data.success) {
       setOtpSent(true);
       // alert(`Your OTP is: ${data.otp}`);
@@ -113,7 +105,6 @@ export default function LoginPage() {
     setError("");
     setMessage("");
     if (otp.length !== 6) return setError("Enter valid 6-digit OTP");
-
     const res = await fetch("/api/Verification/verify-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -121,7 +112,6 @@ export default function LoginPage() {
     });
 
     const data = await res.json();
-
     if (data.user) {
       const result = await signIn("credentials", {
         redirect: false,
@@ -140,7 +130,6 @@ export default function LoginPage() {
             router.push("/ProductForm"); // ✅ Redirect only after OK click
           }
         });
-
         setTimeout(() => router.push("/ProductForm"), 2000);
       } else {
         setError("Login failed");
@@ -177,33 +166,20 @@ export default function LoginPage() {
       ) : (
         <div className={styles.container}>
           <h2 className={styles.heading}>Login</h2>
-
           {!loginType && (
             <div className={styles.options}>
-              <button
-                onClick={() => setLoginType("mobile")}
-                className={`${styles.mobileButton} ${styles.optionButton} icon-mobile`}
-              >
-                Login with Mobile
-              </button>
-              OR
-              <button
+              <button onClick={() => setLoginType("mobile")} className={`${styles.mobileButton} ${styles.optionButton} icon-mobile`}>Login with Mobile</button>OR<button
                 onClick={() => setLoginType("email")}
-                className={`${styles.emailButton} ${styles.optionButton} icon-mail`}
-              >
-                Login with Email
-              </button>
+                className={`${styles.emailButton} ${styles.optionButton} icon-mail`}>Login with Email</button>
             </div>
           )}
 
           {loginType && !otpSent && (
             <div className={styles.inputGroup}>
               <label>{loginType === "mobile" ? "Mobile Number" : "Email Address"}</label>
-              <input
-                type={loginType === "mobile" ? "tel" : "email"}
+              <input type={loginType === "mobile" ? "tel" : "email"}
                 placeholder={loginType === "mobile" ? "Enter mobile number" : "Enter email address"}
-                value={contact}
-                onChange={(e) => {
+                value={contact} onChange={(e) => {
                   const value = e.target.value;
                   if (loginType === "mobile") {
                     if (/^\d*$/.test(value)) {
@@ -219,46 +195,25 @@ export default function LoginPage() {
                     setError("");
                   }
                 }}
-                maxLength={loginType === "mobile" ? 10 : undefined}
-              />
-
+                maxLength={loginType === "mobile" ? 10 : undefined}/>
               <button className={styles.button} onClick={sendOtp} disabled={isSendingOtp}>
-                {isSendingOtp ? (
-                  <span className={styles.loaderOTP}>Sending...</span>
-                ) : (
-                  "Send OTP"
-                )}
+                {isSendingOtp ? (<span className={styles.loaderOTP}>Sending...</span>
+                ) : ("Send OTP")}
               </button>
-
-              <button className={styles.backButton} onClick={handleBack}>
-                ← Back
-              </button>
+              <button className={styles.backButton} onClick={handleBack}>← Back</button>
             </div>
           )}
 
           {otpSent && (
             <div className={styles.inputGroup}>
               <label>Enter OTP</label>
-              <input
-                type="text"
-                placeholder="6-digit OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                maxLength={6}
-              />
-              <button className={styles.button} onClick={verifyOtp}>
-                Verify OTP & Login
-              </button>
-              <button className={styles.backButton} onClick={handleBack}>
-                ← Back
-              </button>
-
+              <input type="text" placeholder="6-digit OTP" value={otp} onChange={(e) => setOtp(e.target.value)} maxLength={6}/>
+              <button className={styles.button} onClick={verifyOtp}>Verify OTP & Login</button>
+              <button className={styles.backButton} onClick={handleBack}>← Back</button>
               {!canResend ? (
                 <p className={styles.timerText}>Resend available in {formatCountdown(timer)}</p>
               ) : (
-                <button className={styles.resendButton} onClick={sendOtp}>
-                  Resend OTP
-                </button>
+                <button className={styles.resendButton} onClick={sendOtp}>Resend OTP</button>
               )}
             </div>
           )}

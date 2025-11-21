@@ -215,7 +215,7 @@
   button {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 5px;
     padding: 12px 16px;
     font-size: 15px;
     font-weight: 500;
@@ -228,10 +228,29 @@
     transition: background-color 0.2s ease;
     width: 100%;
     border-bottom: 1px solid #ddd;
+    :global(.icon-star){
+      color: #FFC107;
+      position: relative;
+      top: -2px;
+      &::before{
+      font-size: 23px !important;
+      }
+    }
     span{
       font-size: 18px;
+      width: 22px;
+      &::before{
+        margin: 0;
+        font-size: 18px;
+      }
     }
-
+    :global(.icon-user-circle){
+      color: #0070f3;
+    }
+    :global(.icon-off){
+      color: #ff4757;
+    }
+    
     &:hover {
       background-color: #f7f7f7;
     }
