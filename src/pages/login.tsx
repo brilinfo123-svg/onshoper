@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
 import styles from "@/styles/login.module.scss";
@@ -17,6 +17,7 @@ export default function LoginPage() {
   const [timer, setTimer] = useState(0);
   const [canResend, setCanResend] = useState(false);
   const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const router = useRouter();
 
@@ -47,17 +48,34 @@ export default function LoginPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ contact }),
     });
-
+  
     const data = await res.json();
-
+  
     if (data.expiresAt) {
       const expiryTime = new Date(data.expiresAt).getTime();
       const now = Date.now();
       const secondsLeft = Math.max(Math.floor((expiryTime - now) / 1000), 0);
+  
       setTimer(secondsLeft);
       setCanResend(secondsLeft === 0);
+  
+      // Clear old interval
+      if (intervalRef.current) clearInterval(intervalRef.current);
+  
+      // Start new interval
+      intervalRef.current = setInterval(() => {
+        setTimer((prev) => {
+          if (prev <= 1) {
+            clearInterval(intervalRef.current!);
+            setCanResend(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
     }
   };
+  
 
   const sendOtp = async () => {
     setError("");
@@ -80,7 +98,7 @@ export default function LoginPage() {
 
     if (data.success) {
       setOtpSent(true);
-      alert(`Your OTP is: ${data.otp}`);
+      // alert(`Your OTP is: ${data.otp}`);
       setMessage("OTP sent successfully");
       setCanResend(false);
       await fetchOtpExpiry();

@@ -1,11 +1,8 @@
 import dbConnect from "../../../lib/mongodb";
 import Otp from "@/models/Otp";
 
-// ❌ Twilio SMS skip for now
-// const sendSms = async (phone, message) => { ... }
-
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).end();
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   await dbConnect();
 
@@ -15,24 +12,204 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Contact required" });
   }
 
-  // ✅ Static OTP for testing
-  const otp = "123456";
-  const expiresAt = new Date(Date.now() + 2 * 60 * 1000); // 2 minutes
+  // ✅ Normalize contact number (remove +, spaces, non-digits, ensure starts with 91)
+  let normalizedContact = contact.toString().trim().replace(/\D/g, "");
+  if (!normalizedContact.startsWith("91")) {
+    normalizedContact = "91" + normalizedContact;
+  }
 
+  // ✅ Generate OTP
+  const otp = Math.floor(100000 + Math.random() * 900000).toString(); // random 6-digit
+  const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+
+  // ✅ Save OTP in DB
   await Otp.findOneAndUpdate(
-    { contact },
+    { contact: normalizedContact },
     { otp, expiresAt },
     { upsert: true, new: true, setDefaultsOnInsert: true }
   );
 
-  // ❌ Skip Twilio SMS for now
-  // await sendSms(contact, otp);
+  // ✅ Send OTP via AiSensy WhatsApp API
+  try {
+    const payload = {
+      apiKey: process.env.AISENSY_API_KEY,
+      campaignName: "verify_code",        // 👈 your live campaign name
+      destination: normalizedContact,     // 👈 must be 91XXXXXXXXXX format
+      userName: "Send_Verification",      // 👈 template name
+      templateParams: [otp],              // 👈 OTP inject
+      source: "new-landing-page form",    // 👈 source identifier
+      media: {},
+      buttons: [
+        {
+          type: "button",
+          sub_type: "url",
+          index: 0,
+          parameters: [
+            {
+              type: "text",
+              text: "TESTCODE20"          // 👈 optional button param
+            }
+          ]
+        }
+      ],
+      carouselCards: [],
+      location: {},
+      attributes: {},
+      paramsFallbackValue: {
+        FirstName: "user"                 // 👈 fallback param
+      }
+    };
 
-  console.log(`Static OTP for ${contact} is ${otp}`);
+    console.log("Sending OTP payload:", payload);
 
-  // ✅ Return OTP in response (frontend can alert it)
+    const response = await fetch("https://backend.aisensy.com/campaign/t1/api/v2", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.AISENSY_API_KEY}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    console.log("AiSensy response:", data);
+
+    if (data.message && data.message.includes("Invalid")) {
+      return res.status(400).json({ success: false, error: data.message });
+    }
+  } catch (error) {
+    console.error("AiSensy error:", error);
+    return res.status(500).json({ success: false, error: "Failed to send OTP via AiSensy" });
+  }
+
+  // ✅ Return OTP in response (for testing/debugging)
   res.status(200).json({ success: true, otp });
 }
+
+
+
+
+
+// import dbConnect from "../../../lib/mongodb";
+// import Otp from "@/models/Otp";
+
+// export default async function handler(req, res) {
+//   if (req.method !== "POST") return res.status(405).end();
+
+//   await dbConnect();
+
+//   const { contact } = req.body;
+
+//   if (!contact) {
+//     return res.status(400).json({ error: "Contact required" });
+//   }
+
+//   // ✅ Normalize contact number (remove +, spaces, ensure starts with 91)
+//   let normalizedContact = contact.toString().trim().replace(/\D/g, "");
+//   if (!normalizedContact.startsWith("91")) {
+//     normalizedContact = "91" + normalizedContact;
+//   }
+
+//   // ✅ Generate OTP
+//   const otp = Math.floor(100000 + Math.random() * 900000).toString(); // random 6-digit
+//   const expiresAt = new Date(Date.now() + 2 * 60 * 1000); // 2 minutes
+
+//   await Otp.findOneAndUpdate(
+//     { contact: normalizedContact },
+//     { otp, expiresAt },
+//     { upsert: true, new: true, setDefaultsOnInsert: true }
+//   );
+
+//   // ✅ Send OTP via AiSensy WhatsApp API
+//   try {
+//     const response = await fetch("https://backend.aisensy.com/campaign/t1/api/v2", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": `Bearer ${process.env.AISENSY_API_KEY}`, // 👈 store API key in .env
+//       },
+//       body: JSON.stringify({
+//         apiKey: process.env.AISENSY_API_KEY,
+//         campaignName: "verify_code",        // 👈 your live campaign
+//         destination: normalizedContact,     // 👈 91XXXXXXXXXX format
+//         userName: "Send_Verification",      // 👈 template name
+//         templateParams: [otp],              // 👈 OTP inject
+//         source: "new-landing-page form",    // 👈 source identifier
+//         media: {},
+//         buttons: [
+//           {
+//             type: "button",
+//             sub_type: "url",
+//             index: 0,
+//             parameters: [
+//               {
+//                 type: "text",
+//                 text: "TESTCODE20"          // 👈 optional button param
+//               }
+//             ]
+//           }
+//         ],
+//         carouselCards: [],
+//         location: {},
+//         attributes: {},
+//         paramsFallbackValue: {
+//           FirstName: "user"                 // 👈 fallback param
+//         }
+//       }),
+//     });
+
+//     const data = await response.json();
+//     console.log("AiSensy response:", data);
+//   } catch (error) {
+//     console.error("AiSensy error:", error);
+//   }
+
+//   res.status(200).json({ success: true, otp });
+// }
+
+
+
+
+
+
+
+
+
+// import dbConnect from "../../../lib/mongodb";
+// import Otp from "@/models/Otp";
+
+// // ❌ Twilio SMS skip for now
+// // const sendSms = async (phone, message) => { ... }
+
+// export default async function handler(req, res) {
+//   if (req.method !== "POST") return res.status(405).end();
+
+//   await dbConnect();
+
+//   const { contact } = req.body;
+
+//   if (!contact) {
+//     return res.status(400).json({ error: "Contact required" });
+//   }
+
+//   // ✅ Static OTP for testing
+//   const otp = "123456";
+//   const expiresAt = new Date(Date.now() + 2 * 60 * 1000); // 2 minutes
+
+//   await Otp.findOneAndUpdate(
+//     { contact },
+//     { otp, expiresAt },
+//     { upsert: true, new: true, setDefaultsOnInsert: true }
+//   );
+
+//   // ❌ Skip Twilio SMS for now
+//   // await sendSms(contact, otp);
+
+//   console.log(`Static OTP for ${contact} is ${otp}`);
+
+//   // ✅ Return OTP in response (frontend can alert it)
+//   res.status(200).json({ success: true, otp });
+// }
 
 
 

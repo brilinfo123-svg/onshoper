@@ -205,8 +205,9 @@ const filteredProducts = useMemo(() => {
   };
   
   useEffect(() => {
-    fetch('/api/cleanup/expiredProducts', { method: 'DELETE' });
+    fetch('/api/cleanup/expiredProducts', { method: 'PATCH' });
   }, []);
+  
 
 
   return (

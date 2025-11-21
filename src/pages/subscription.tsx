@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-
 import styles from "@/styles/package.module.scss";
 import { withProtectedPage } from "@/components/withProtectedPage";
 import { useSession } from "next-auth/react";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import Head from "next/head";
 import Script from "next/script";
@@ -18,6 +17,7 @@ interface ShopData {
   registration: any;
   shop: any;
 }
+
 const categoryPrices: Record<string, number> = {
   Car: 500,
   Mobiles: 250,
@@ -39,85 +39,101 @@ const categoryPrices: Record<string, number> = {
 function Package() {
   const { data: session } = useSession();
   const router = useRouter();
-    const [shopData, setShopData] = useState<ShopData | null>(null);
-    const [loading, setLoading] = useState(false);
+  const [shopData, setShopData] = useState<ShopData | null>(null);
+  const [loading, setLoading] = useState(false);
 
-   
-  
-    const shopOwnerID = shopData?.user?._id;
-    const rawCategory = router.query.category?.toString() || "Car";
-    const category = decodeURIComponent(rawCategory).trim();
-    const amount = categoryPrices[category] || 99;
-    console.log("shopOwnerID", shopData);
-      useEffect(() => {
-        if (session?.user?.contact) {
-          const fetchShopData = async () => {
-            try {
-              const response = await fetch(`/api/profile?userEmail=${session.user.contact}`);
-              if (response.ok) {
-                const data: ShopData = await response.json();
-                setShopData(data);
-              }
-            } catch (error) {
-              console.error("Error fetching shop data:", error);
-            }
-          };
-    
-          fetchShopData();
+  // ✅ Extract both _id and contact
+  const shopOwnerID = shopData?.user?._id;
+  const contactNumber = shopData?.user?.contact || session?.user?.contact;
+
+  console.log("ContactNumber:", contactNumber);
+
+  const rawCategory = router.query.category?.toString() || "Car";
+  const category = decodeURIComponent(rawCategory).trim();
+  const amount = categoryPrices[category] || 99;
+
+  // ✅ Fetch shop data by contact
+  useEffect(() => {
+    if (session?.user?.contact) {
+      const fetchShopData = async () => {
+        try {
+          const response = await fetch(`/api/profile?userEmail=${session.user.contact}`);
+          if (response.ok) {
+            const data: ShopData = await response.json();
+            setShopData(data);
+          }
+        } catch (error) {
+          console.error("Error fetching shop data:", error);
         }
-      }, [session]);
-    
-      const handleDummyPayment = async () => {
-        if (!shopOwnerID) {
-          Swal.fire({
-            title: "Missing Info",
-            text: "Shop owner ID not found. Please log in again.",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-          return;
-        }
-      
-        setLoading(true);
-      
-        // still call your backend to create order
-        const res = await fetch("/api/payment/createOrder", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ amount, category }),
-        });
-      
-        const { order } = await res.json();
-      
-        // instead of Razorpay SDK, directly confirm with dummy data
-        await fetch("/api/payment/confirm", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            shopOwnerID,
-            transactionId: "DUMMY_TXN_" + Date.now(), // 👈 fake transaction ID
-            method: "Dummy",                          // 👈 fake method
-            amount,
-            category,
-          }),
-        });
-      
-        Swal.fire({
-          title: "Payment Successful (Dummy)",
-          html: `
-            <p>Dummy payment successful for category <strong>${category}</strong>.</p>
-            <p>You can now post <strong>unlimited featured ads</strong> for 2 months in this category.</p>
-          `,
-          icon: "success",
-          confirmButtonText: "Start Posting",
-        }).then(() => {
-          router.push("/ProductForm");
-        });
-      
-        setLoading(false);
       };
-      
-      
+
+      fetchShopData();
+    }
+  }, [session]);
+
+  // ✅ Dummy payment handler
+  const handleDummyPayment = async () => {
+    if (!shopOwnerID || !contactNumber) {
+      Swal.fire({
+        title: "Missing Info",
+        text: "Shop owner ID or contact not found. Please log in again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    // Create order
+    const res = await fetch("/api/payment/createOrder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount, category }),
+    });
+
+    const { order } = await res.json();
+
+    // Confirm dummy payment with both _id and contact
+    await fetch("/api/payment/confirm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        shopOwnerID,             // 👈 MongoDB _id
+        contact: contactNumber,  // 👈 phone number
+        transactionId: "DUMMY_TXN_" + Date.now(),
+        method: "Dummy",
+        amount,
+        category,
+      }),
+    });
+
+    const newExpiryDate = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000); // 2 months validity
+    await fetch("/api/products/renew", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        productId: shopOwnerID,   // 👈 ya specific productId if you want per product
+        newExpiryDate,
+      }),
+    });
+    
+    Swal.fire({
+      title: "Payment Successful (Dummy)",
+      html: `
+        <p>Dummy payment successful for category <strong>${category}</strong>.</p>
+        <p>You can now post <strong>unlimited featured ads</strong> for 2 months in this category.</p>
+      `,
+      icon: "success",
+      confirmButtonText: "Start Posting",
+    }).then(() => {
+      router.push("/ProductForm");
+    });
+
+    setLoading(false);
+  };
+
+
   return (
     <>
     <Head>

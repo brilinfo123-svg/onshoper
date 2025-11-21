@@ -133,6 +133,7 @@ const ProductSchema = new mongoose.Schema(
     mealsIncluded: { type: String },
     pgSubtype: { type: String },
     expiresAt: { type: Date, default: null },
+    status: { type: String, enum: ["active", "expired"], default: "active" },
   },
   { timestamps: true }
 );

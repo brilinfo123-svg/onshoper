@@ -146,6 +146,7 @@ export default async function handler(
       feature: fields.feature?.toString().toLowerCase() === "true",
       rentalTermsFile,
       createdAt: new Date(),
+      status: "active"
     };
 
     // ✅ Add category-specific fields
@@ -303,77 +304,87 @@ export default async function handler(
 
     try {
       await client.connect();
-  const db = client.db("test");
-  const productsCollection = db.collection("products");
-  const shopOwnersCollection = db.collection("shopowners");
-
-  const shopOwnerID = document.shopOwnerID;
-  const category = fields.category?.toString();
-  const rules = categoryRules[category];
-
-  if (!category || !rules) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid or missing category"
-    });
-  }
-
-  // ✅ Fetch shop owner record
-  const existingShopOwner = await shopOwnersCollection.findOne({ shopOwnerID });
-
-  // ✅ Count unpaid products in this category
-  const unpaidCount = await productsCollection.countDocuments({
-    shopOwnerID,
-    category,
-    isPaid: false
-  });
-  
-  // ✅ First product free for all categories
-  if (unpaidCount === 0) {
-    const expiryDate = new Date();
-    expiryDate.setMonth(expiryDate.getMonth() + 2);
-  
-    document.isPaid = false; // free product
-    document.expiresAt = expiryDate;
-  
-  } else {
-    // ✅ Check if user has paid for this category
-    const payment = existingShopOwner?.paymentHistory?.find(p => p.category === category);
-    const hasPaidForCategory = existingShopOwner?.paidCategories?.includes(category);
-  
-    // 🔍 Case 1: User has NOT paid yet → block with "Free product limit reached"
-    if (!hasPaidForCategory) {
-      return res.status(403).json({
-        success: false,
-        message: "You have reached the limit of your free product.\n upgrade your plan to continue posting.",
-        redirectUrl: `/subscription?category=${encodeURIComponent(category)}`
+      const db = client.db("test");
+      const productsCollection = db.collection("products");
+      const shopOwnersCollection = db.collection("shopowners");
+    
+      // 👇 Extract both shopOwnerID and contact (ownerEmail)
+      const shopOwnerID = document.shopOwnerID;
+      const contact = document.ownerEmail; // 👈 this is your contact number
+      const category = fields.category?.toString();
+      const rules = categoryRules[category];
+    
+      if (!category || !rules) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid or missing category"
+        });
+      }
+    
+      // ✅ Fetch shop owner record by contact (preferred) or shopOwnerID
+      const existingShopOwner = await shopOwnersCollection.findOne(
+        contact ? { contact } : { shopOwnerID }
+      );
+    
+      // ✅ Count unpaid products in this category by contact
+      const unpaidCount = await productsCollection.countDocuments({
+        $or: [
+          { shopOwnerID }, 
+          { ownerEmail: contact }
+        ],
+        category,
+        isPaid: false
       });
-    }
-  
-    // 🔍 Case 2: User has paid but subscription expired
-    if (!payment || payment.expiryAt <= new Date()) {
-      return res.status(403).json({
-        success: false,
-        message: `Limit Reached. Your subscription for category "${category}" has expired. Please renew to post products.`,
-        redirectUrl: `/subscription?category=${encodeURIComponent(category)}`
-      });
-    }
-  
-    // ✅ Enforce category-specific limit
-    if (unpaidCount >= rules.freeLimit && !hasPaidForCategory) {
-      return res.status(403).json({
-        success: false,
-        message: `Product limit reached for category "${category}". Please pay ₹${rules.pricePerExtra} to post more.`,
-        redirectUrl: `/subscription?category=${encodeURIComponent(category)}`
-      });
-    }
-  
-    // ✅ Mark product as paid if category is unlocked
-    document.isPaid = true;
-    document.feature = true;
-    document.featuredUntil = payment.expiryAt;
-    document.expiresAt = payment.expiryAt;
-  }
+    
+      // ✅ First product free for all categories
+      if (unpaidCount === 0) {
+        const expiryDate = new Date();
+        expiryDate.setMonth(expiryDate.getMonth() + 2);
+    
+        document.isPaid = false; // free product
+        document.expiresAt = expiryDate;
+      } else {
+        // ✅ Check if user has paid for this category
+        const payment = existingShopOwner?.paymentHistory?.find(p => p.category === category);
+        const hasPaidForCategory = existingShopOwner?.paidCategories?.includes(category);
+    
+        // 🔍 Case 1: User has NOT paid yet → block
+        if (!hasPaidForCategory) {
+          return res.status(403).json({
+            success: false,
+            message: "You have reached the limit of your free product.\nUpgrade your plan to continue posting.",
+            redirectUrl: `/subscription?category=${encodeURIComponent(category)}`
+          });
+        }
+    
+        // 🔍 Case 2: User has paid but subscription expired
+        if (!payment || payment.expiryAt <= new Date()) {
+          return res.status(403).json({
+            success: false,
+            message: `Limit Reached. Your subscription for category "${category}" has expired. Please renew to post products.`,
+            redirectUrl: `/subscription?category=${encodeURIComponent(category)}`
+          });
+        }
+    
+        // ✅ Enforce category-specific limit
+        if (unpaidCount >= rules.freeLimit && !hasPaidForCategory) {
+          return res.status(403).json({
+            success: false,
+            message: `Product limit reached for category "${category}". Please pay ₹${rules.pricePerExtra} to post more.`,
+            redirectUrl: `/subscription?category=${encodeURIComponent(category)}`
+          });
+        }
+    
+        // ✅ Mark product as paid if category is unlocked
+        document.isPaid = true;
+        document.feature = true;
+        document.featuredUntil = payment.expiryAt;
+        document.expiresAt = payment.expiryAt;
+      }
+    
+      // ✅ Always store both shopOwnerID and contact in product
+      document.shopOwnerID = shopOwnerID;
+      document.ownerEmail = contact;
   
   // ✅ Insert new product
   const result = await productsCollection.insertOne(document);
