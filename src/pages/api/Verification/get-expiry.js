@@ -8,16 +8,20 @@ export default async function handler(req, res) {
 
   await dbConnect();
 
-  const { contact } = req.body;
-  if (!contact) {
-    return res.status(400).json({ error: "Contact required" });
+  const { contact, loginType } = req.body;
+  if (!contact || !loginType) {
+    return res.status(400).json({ error: "Contact and loginType required" });
   }
 
-  // ✅ Normalize exactly like send-otp / verify-otp
-  let normalizedContact = contact.toString().trim().replace(/\D/g, "");
-  if (!normalizedContact.startsWith("91")) {
-    normalizedContact = "91" + normalizedContact;
+  // ✅ Normalize only for mobile
+  let normalizedContact = contact;
+  if (loginType === "mobile") {
+    normalizedContact = contact.toString().trim().replace(/\D/g, "");
+    if (!normalizedContact.startsWith("91")) {
+      normalizedContact = "91" + normalizedContact;
+    }
   }
+  // ✅ For email, keep contact as-is
 
   const record = await Otp.findOne({ contact: normalizedContact });
   if (!record) {
@@ -27,12 +31,13 @@ export default async function handler(req, res) {
   const serverNow = Date.now();
   const expiresMs = record.expiresAt.getTime();
   const remainingMs = Math.max(0, expiresMs - serverNow);
-  const isExpired = remainingMs === 0;
+  const remainingSeconds = Math.floor(remainingMs / 1000);
+  const isExpired = remainingSeconds === 0;
 
   return res.status(200).json({
-    expiresAt: record.expiresAt.toISOString(), // for reference
-    serverNow,                                 // helps client sync
-    remainingMs,                               // use this for countdown
+    expiresAt: record.expiresAt.toISOString(), // expiry timestamp
+    serverNow,                                 // server time for sync
+    remainingSeconds,                          // 👈 direct countdown value
     isExpired,
   });
 }

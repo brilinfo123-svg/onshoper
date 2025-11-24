@@ -551,12 +551,19 @@ const Filter: React.FC = () => {
                     height={200}
                     priority
                   />
-                  <p>No products found for the selected categories</p>
+                  {filterType === "Rent" ? (
+                    <p>No Rented Products Available</p>
+                  ) : filterType === "Sale" ? (
+                    <p>No sale products available</p>
+                  ) : selectedCategories.length > 0 ? (
+                    <p>No products found in {selectedCategories.join(", ")}</p>
+                  ) : (
+                    <p>No products found</p>
+                  )}
                 </div>
               ) : (
                 filteredProducts
-                  // 👇 Only show products with status === "active"
-                  .filter((product) => product.status === "active")
+                  .filter((product) => product.status === "active") // 👈 keep if you only want active
                   .sort((a, b) => (b.feature ? 1 : 0) - (a.feature ? 1 : 0))
                   .map((product) => (
                     <ProductPost
@@ -594,6 +601,7 @@ const Filter: React.FC = () => {
                   ))
               )}
             </div>
+
 
           </div>
         </div>

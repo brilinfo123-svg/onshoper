@@ -9,17 +9,21 @@ export default async function handler(req, res) {
 
   await dbConnect();
 
-  const { contact, otp } = req.body;
+  const { contact, otp, loginType } = req.body;
 
-  if (!contact || !otp) {
-    return res.status(400).json({ error: "Missing contact or OTP" });
+  if (!contact || !otp || !loginType) {
+    return res.status(400).json({ error: "Missing contact, OTP or loginType" });
   }
 
-  // ✅ Normalize contact same as send-otp
-  let normalizedContact = contact.toString().trim().replace(/\D/g, "");
-  if (!normalizedContact.startsWith("91")) {
-    normalizedContact = "91" + normalizedContact;
+  // ✅ Normalize only for mobile
+  let normalizedContact = contact;
+  if (loginType === "mobile") {
+    normalizedContact = contact.toString().trim().replace(/\D/g, "");
+    if (!normalizedContact.startsWith("91")) {
+      normalizedContact = "91" + normalizedContact;
+    }
   }
+  // ✅ For email, keep contact as-is
 
   // ✅ Find OTP record
   const record = await Otp.findOne({ contact: normalizedContact });

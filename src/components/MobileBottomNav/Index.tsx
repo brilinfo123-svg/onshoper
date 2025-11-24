@@ -7,6 +7,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useNotifications } from "@/contexts/NotificationContext";
 import styles from "./index.module.scss";
 import ChatSidebar from "../ChatSidebar/Index";
+import Image from "next/image";
 
 const MobileBottomNav = () => {
   const router = useRouter();
@@ -64,58 +65,83 @@ const MobileBottomNav = () => {
   }, []);
 
   // Navigation items
-  const navItems = [
-    {
-      name: 'Chat',
-      path: '/chat',
-
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-        </svg>
-      ),
-      onClick: () => {
-        setAccountOpen(false);
-        setNotificationsOpen(false);
-        if (session?.user) {
-          setIsChatOpen(true);
-        } else {
-          router.push("/login");
-        }
-      },
-      showBadge: true
-    },
-    {
-      name: 'Sale/Rent',
-      path: '/ProductForm',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22" />
-        </svg>
-      ),
-      onClick: () => {
-        setAccountOpen(false);
-        setNotificationsOpen(false);
-        if (session?.user) {
-          router.push('/ProductForm');
-        } else {
-          router.push('/login');
-        }
+ // Navigation items
+const navItems = [
+  {
+    name: 'Home',
+    path: '/',
+    icon: (
+      <Image
+          src="/icons/homeIcone.png"   // 👈 apna image file public/icons/post-ad.png me rakho
+          alt="Post Ad"
+          width={33}
+          height={33}
+        />
+    ),
+    onClick: () => {
+      setAccountOpen(false);
+      setNotificationsOpen(false);
+      router.push('/');
+    }
+  },
+  {
+    name: 'Chat',
+    path: '/chat',
+    icon: (
+      <Image
+      src="/icons/chatIcone.png"   // 👈 apna image file public/icons/post-ad.png me rakho
+      alt="Post Ad"
+      width={27}
+      height={27}
+    />
+    ),
+    onClick: () => {
+      setAccountOpen(false);
+      setNotificationsOpen(false);
+      if (session?.user) {
+        setIsChatOpen(true);
+      } else {
+        router.push("/login");
       }
     },
-    {
-      name: 'Account',
-      path: session ? '/profile' : '/auth/signin',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-      ),
-      onClick: toggleAccount
+    showBadge: true
+  },
+  {
+    name: 'Sale/Rent',
+    path: '/ProductForm',
+    icon: (
+      <Image
+          src="/icons/plusIcone.png"   // 👈 apna image file public/icons/post-ad.png me rakho
+          alt="Post Ad"
+          width={30}
+          height={30}
+        />
+    ),
+    onClick: () => {
+      setAccountOpen(false);
+      setNotificationsOpen(false);
+      if (session?.user) {
+        router.push('/ProductForm');
+      } else {
+        router.push('/login');
+      }
     }
-  ];
+  },
+  {
+    name: 'Account',
+    path: session ? '/profile' : '/auth/signin',
+    icon: (
+      <Image
+        src="/icons/userIcone.png"   // 👈 apna image file public/icons/post-ad.png me rakho
+        alt="Post Ad"
+        width={30}
+        height={30}
+      />
+    ),
+    onClick: toggleAccount
+  }
+];
+
 
   return (
     <>

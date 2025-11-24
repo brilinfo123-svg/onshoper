@@ -20,8 +20,12 @@ export default function LoginPage() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
 
-  // ✅ Redirect if already logged in
-  // ✅ Countdown effect (always declared, no conditional return)
+  // ✅ Email validation helper
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  // ✅ Countdown effect
   useEffect(() => {
     let countdown: NodeJS.Timeout;
     if (otpSent && timer > 0) {
@@ -43,23 +47,21 @@ export default function LoginPage() {
     const res = await fetch("/api/Verification/get-expiry", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contact }),
+      body: JSON.stringify({ contact, loginType }),
     });
-  
+
     const data = await res.json();
-  
+
     if (data.expiresAt) {
       const expiryTime = new Date(data.expiresAt).getTime();
       const now = Date.now();
       const secondsLeft = Math.max(Math.floor((expiryTime - now) / 1000), 0);
-  
+
       setTimer(secondsLeft);
       setCanResend(secondsLeft === 0);
-  
-      // Clear old interval
+
       if (intervalRef.current) clearInterval(intervalRef.current);
-  
-      // Start new interval
+
       intervalRef.current = setInterval(() => {
         setTimer((prev) => {
           if (prev <= 1) {
@@ -77,38 +79,60 @@ export default function LoginPage() {
     setError("");
     setMessage("");
     setIsSendingOtp(true);
+  
     if (!contact) {
       setError(`Please enter your ${loginType}`);
       setIsSendingOtp(false);
       return;
     }
-    const res = await fetch("/api/Verification/send-otp", {
+  
+    // ✅ Validate before sending
+    if (loginType === "mobile" && contact.length !== 10) {
+      setError("Mobile number must be 10 digits");
+      setIsSendingOtp(false);
+      return;
+    }
+    if (loginType === "email" && !validateEmail(contact)) {
+      setError("Enter a valid email address");
+      setIsSendingOtp(false);
+      return;
+    }
+  
+    // ✅ Decide API endpoint based on loginType
+    const endpoint =
+      loginType === "email"
+        ? "/api/Verification/send-email-otp"
+        : "/api/Verification/send-otp";
+  
+    const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contact }),
+      body: JSON.stringify({ contact, loginType }),
     });
+  
     const data = await res.json();
     if (data.success) {
       setOtpSent(true);
-      // alert(`Your OTP is: ${data.otp}`);
       setMessage("OTP sent successfully");
       setCanResend(false);
       await fetchOtpExpiry();
     } else {
       setError("Failed to send OTP");
     }
-
+  
     setIsSendingOtp(false);
   };
+  
 
   const verifyOtp = async () => {
     setError("");
     setMessage("");
     if (otp.length !== 6) return setError("Enter valid 6-digit OTP");
+
     const res = await fetch("/api/Verification/verify-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contact, otp }),
+      body: JSON.stringify({ contact, otp, loginType }),
     });
 
     const data = await res.json();
@@ -123,14 +147,13 @@ export default function LoginPage() {
           icon: "success",
           title: "Login Successful",
           text: "Click OK to go to Product Form",
-          confirmButtonText: "OK",   // ✅ Show OK button
-          allowOutsideClick: false,  // prevent closing by clicking outside
+          confirmButtonText: "OK",
+          allowOutsideClick: false,
         }).then((result) => {
           if (result.isConfirmed) {
-            router.push("/ProductForm"); // ✅ Redirect only after OK click
+            router.push("/ProductForm");
           }
         });
-        setTimeout(() => router.push("/ProductForm"), 2000);
       } else {
         setError("Login failed");
       }
@@ -156,7 +179,6 @@ export default function LoginPage() {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // ✅ Conditional rendering only in JSX
   return (
     <div className={styles.loginWrapper}>
       {status === "loading" ? (
@@ -168,18 +190,36 @@ export default function LoginPage() {
           <h2 className={styles.heading}>Login</h2>
           {!loginType && (
             <div className={styles.options}>
-              <button onClick={() => setLoginType("mobile")} className={`${styles.mobileButton} ${styles.optionButton} icon-mobile`}>Login with Mobile</button>OR<button
+              <button
+                onClick={() => setLoginType("mobile")}
+                className={`${styles.mobileButton} ${styles.optionButton} icon-mobile`}
+              >
+                Login with Mobile
+              </button>
+              OR
+              <button
                 onClick={() => setLoginType("email")}
-                className={`${styles.emailButton} ${styles.optionButton} icon-mail`}>Login with Email</button>
+                className={`${styles.emailButton} ${styles.optionButton} icon-mail`}
+              >
+                Login with Email
+              </button>
             </div>
           )}
 
           {loginType && !otpSent && (
             <div className={styles.inputGroup}>
-              <label>{loginType === "mobile" ? "Mobile Number" : "Email Address"}</label>
-              <input type={loginType === "mobile" ? "tel" : "email"}
-                placeholder={loginType === "mobile" ? "Enter mobile number" : "Enter email address"}
-                value={contact} onChange={(e) => {
+              <label>
+                {loginType === "mobile" ? "Mobile Number" : "Email Address"}
+              </label>
+              <input
+                type={loginType === "mobile" ? "tel" : "email"}
+                placeholder={
+                  loginType === "mobile"
+                    ? "Enter mobile number"
+                    : "Enter email address"
+                }
+                value={contact}
+                onChange={(e) => {
                   const value = e.target.value;
                   if (loginType === "mobile") {
                     if (/^\d*$/.test(value)) {
@@ -192,34 +232,66 @@ export default function LoginPage() {
                     }
                   } else {
                     setContact(value);
-                    setError("");
+                    if (value.length > 0 && !validateEmail(value)) {
+                      setError("Enter a valid email address");
+                    } else {
+                      setError("");
+                    }
                   }
                 }}
-                maxLength={loginType === "mobile" ? 10 : undefined}/>
-              <button className={styles.button} onClick={sendOtp} disabled={isSendingOtp}>
-                {isSendingOtp ? (<span className={styles.loaderOTP}>Sending...</span>
-                ) : ("Send OTP")}
+                maxLength={loginType === "mobile" ? 10 : undefined}
+              />
+              <button
+                className={styles.button}
+                onClick={sendOtp}
+                disabled={isSendingOtp}
+              >
+                {isSendingOtp ? (
+                  <span className={styles.loaderOTP}>Sending...</span>
+                ) : (
+                  "Send OTP"
+                )}
               </button>
-              <button className={styles.backButton} onClick={handleBack}>← Back</button>
+              <button className={styles.backButton} onClick={handleBack}>
+                ← Back
+              </button>
             </div>
           )}
 
           {otpSent && (
             <div className={styles.inputGroup}>
               <label>Enter OTP</label>
-              <input type="text" placeholder="6-digit OTP" value={otp} onChange={(e) => setOtp(e.target.value)} maxLength={6}/>
-              <button className={styles.button} onClick={verifyOtp}>Verify OTP & Login</button>
-              <button className={styles.backButton} onClick={handleBack}>← Back</button>
+              <input
+                type="text"
+                placeholder="6-digit OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                maxLength={6}
+              />
+              <button className={styles.button} onClick={verifyOtp}>
+                Verify OTP & Login
+              </button>
+              <button className={styles.backButton} onClick={handleBack}>
+                ← Back
+              </button>
               {!canResend ? (
-                <p className={styles.timerText}>Resend available in {formatCountdown(timer)}</p>
+                <p className={styles.timerText}>
+                  Resend available in {formatCountdown(timer)}
+                </p>
               ) : (
-                <button className={styles.resendButton} onClick={sendOtp}>Resend OTP</button>
+                <button className={styles.resendButton} onClick={sendOtp}>
+                  Resend OTP
+                </button>
               )}
             </div>
           )}
 
-          {error && <p className={`${styles.message} ${styles.error}`}>{error}</p>}
-          {message && <p className={`${styles.message} ${styles.success}`}>{message}</p>}
+          {error && (
+            <p className={`${styles.message} ${styles.error}`}>{error}</p>
+          )}
+          {message && (
+            <p className={`${styles.message} ${styles.success}`}>{message}</p>
+          )}
         </div>
       )}
     </div>

@@ -448,6 +448,7 @@ const Header: React.FC = () => {
         <ul className={Style.rightMenus}>
         {!isMobile && <li><Link href="/ProductForm" className={`${Style.sellAdd} ${"icon-shop"}`} onClick={closeSidebar}>Sell/Rent</Link></li>}
           <li className={Style.notificationItem}>
+          {!isMobile && 
           <div className={`${Style.Notification} icon-bell`} onClick={() => setIsChatOpen(true)} role="button" tabIndex={0}>
             {totalNotifications > 0 && (
               <span className={Style.notificationBadge}>
@@ -455,6 +456,7 @@ const Header: React.FC = () => {
               </span>
             )}
           </div>
+          }     
           </li>
 
           <li className={Style.favoriteItem}>
