@@ -273,51 +273,52 @@ export default function Home() {
 
             {/* Products Grid */}
             <div className={styles.productGrid}>
-              {productsLoading ? (
-                Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
-              ) : filteredProducts.length === 0 ? (
-                <div className={styles.notFoundShops}>
-                  <p>No products found for the selected filter</p>
-                </div>
-              ) : (
-                filteredProducts
-                  .filter((product) => product.status === "active") // 👈 only active products
-                  .sort((a, b) => (b.feature ? 1 : 0) - (a.feature ? 1 : 0))
-                  .slice(0, visibleCount)
-                  .map((product) => (
-                    <ProductPost
-                      key={product._id}
-                      _id={product._id}
-                      title={product.title}
-                      description={""}
-                      category={product.category}
-                      subCategory={product.subcategory}
-                      price={Number(product.price)}
-                      priceWeek={product.priceWeek ? Number(product.priceWeek) : undefined}
-                      priceMonth={product.priceMonth ? Number(product.priceMonth) : undefined}
-                      SalePrice={product.SalePrice}
-                      coverImage={product.coverImage || product.images?.[0] || "/images/img2.jpg"}
-                      images={product.images || []}
-                      location={{
-                        city: product.location?.city || "",
-                        area: product.location?.area || "",
-                        state: product.location?.state || ""
-                      }}
-                      createdAt={product.createdAt}
-                      isFeatured={product.feature || false}
-                      shopOwnerID={product.shopOwnerID}
-                      year={product.year}
-                      KmDriven={product.KmDriven}
-                      mobileBrand={product.MobileBrand}
-                      mobileModel={product.MobileModel}
-                      salaryFrom={product.salaryFrom}
-                      salaryTo={product.salaryTo}
-                      salaryPeriod={product.salaryPeriod}
-                      positionType={product.positionType}
-                    />
-                  ))
-              )}
-            </div>
+  {productsLoading ? (
+    Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
+  ) : filteredProducts.length === 0 ? (
+    <div className={styles.notFoundShops}>
+      <p>No products found for the selected filter</p>
+    </div>
+  ) : (
+    filteredProducts
+      // 👇 status filter removed
+      .sort((a, b) => (b.feature ? 1 : 0) - (a.feature ? 1 : 0))
+      .slice(0, visibleCount)
+      .map((product) => (
+        <ProductPost
+          key={product._id}
+          _id={product._id}
+          title={product.title}
+          description={""}
+          category={product.category}
+          subCategory={product.subcategory}
+          price={Number(product.price)}
+          priceWeek={product.priceWeek ? Number(product.priceWeek) : undefined}
+          priceMonth={product.priceMonth ? Number(product.priceMonth) : undefined}
+          SalePrice={product.SalePrice}
+          coverImage={product.coverImage || product.images?.[0] || "/images/img2.jpg"}
+          images={product.images || []}
+          location={{
+            city: product.location?.city || "",
+            area: product.location?.area || "",
+            state: product.location?.state || ""
+          }}
+          createdAt={product.createdAt}
+          isFeatured={product.feature || false}
+          shopOwnerID={product.shopOwnerID}
+          year={product.year}
+          KmDriven={product.KmDriven}
+          mobileBrand={product.MobileBrand}
+          mobileModel={product.MobileModel}
+          salaryFrom={product.salaryFrom}
+          salaryTo={product.salaryTo}
+          salaryPeriod={product.salaryPeriod}
+          positionType={product.positionType}
+        />
+      ))
+  )}
+</div>
+
 
 
             {/* View More Button */}
