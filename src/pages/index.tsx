@@ -296,7 +296,7 @@ export default function Home() {
                       priceWeek={product.priceWeek ? Number(product.priceWeek) : undefined}
                       priceMonth={product.priceMonth ? Number(product.priceMonth) : undefined}
                       SalePrice={product.SalePrice}
-                      coverImage={product.coverImage || product.images?.[0] || "/images/img2.jpg"}
+                      coverImage={product.coverImage || product.images?.[0] || "/images/DefoultLogo.jpg"}
                       images={product.images || []}
                       location={{
                         city: product.location?.city || "",

@@ -289,7 +289,7 @@ const PropertyDetailPage: React.FC = () => {
                     SalePrice={product.SalePrice}
                     priceWeek={product.priceWeek !== undefined ? Number(product.priceWeek) : undefined}
                     priceMonth={product.priceMonth !== undefined ? Number(product.priceMonth) : undefined}
-                    coverImage={product.coverImage || product.images?.[0] || "/images/img2.jpg"}
+                    coverImage={product.coverImage || product.images?.[0] || "/images/DefoultLogo.jpg"}
                     images={product.images || []}
                     createdAt={product.createdAt}
                     isFeatured={product.feature || false}

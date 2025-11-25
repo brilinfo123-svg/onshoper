@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import styles from "../styles/subscriptionPlain.module.scss";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
+import Modal from "@/components/Modal/Index";
 
 interface ShopOwner {
   createdAt: string | number | Date;
@@ -28,10 +29,50 @@ export default function SubscriptionPage() {
   const [shopData, setShopData] = useState<{ shopOwner?: ShopOwner }>({});
   const [countdowns, setCountdowns] = useState<Record<string, string>>({});
   const router = useRouter();
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [categories, setCategories] = useState<string[]>([]);
 
+
+  const categoriesWithIcone = [
+    { name: "Real Estate", icon: "/icons/residential.png" },
+    { name: "Services", icon: "/icons/customer-service.png" },
+    { name: "Commercial Vehicles", icon: "/icons/truck.png" },
+    { name: "Vehicles", icon: "/icons/motor-sports.png" },
+    { name: "Mobiles", icon: "/icons/mobile-app.png" },
+    { name: "Events & Entertainment", icon: "/icons/banner.png" },
+    { name: "Education & Learning", icon: "/icons/light-bulb.png" },
+    { name: "Tools & Equipment", icon: "/icons/settings.png" },
+    { name: "Pets & Pet Care", icon: "/icons/pets.png" },
+    { name: "Jobs", icon: "/icons/businessman.png" },
+    { name: "Books & Sports", icon: "/icons/referee.png" },
+    { name: "Fashion", icon: "/icons/dress.png" },
+    { name: "Furniture", icon: "/icons/furnitures.png" },
+    { name: "Electronics & Appliances", icon: "/icons/device.png" },
+    { name: "Car", icon: "/icons/car.png" },
+    { name: "Spare Parts", icon: "/icons/adapter.png" },
+    { name: "Default", icon: "/icons/sketch-book.png" }
+  ];
+
+
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/categories"); // 👈 your API endpoint
+        const data = await res.json();
+        if (res.ok && data.success) {
+          setCategories(data.categories); // e.g. ["Electronics & Appliances", "Fashion", ...]
+        }
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+        // fallback if API fails
+        setCategories(["Electronics & Appliances", "Fashion", "Real Estate", "Vehicles", "Services"]);
+      }
+    };
+    fetchCategories();
+  }, []);
   // ✅ Get contact from session
   const contact = session?.user?.contact;
-  console.log("Session:", session);
 
   // ✅ Fetch shopOwner by contact
   useEffect(() => {
@@ -134,12 +175,23 @@ export default function SubscriptionPage() {
         {shopOwnerLoading ? (
           <p className={styles.loading}>Loading subscription...</p>
         ) : !shopData?.shopOwner ? (
-          <p className={styles.error}>No ShopOwner data found</p>
+          <div className={styles.infoBox}>
+            <div>
+              <h4 className={styles.infoTitle}>No Active Subscriptions Found</h4>
+              {/* <button
+                className={styles.subscribeBtn}
+                onClick={() => setShowCategoryModal(true)}
+              >
+                🔓 Unlock Categories
+              </button> */}
+            </div>
+          </div>
+
         ) : (
           <div className={styles.countdownTable}>
             <div className={styles.sectionHeader}>
               <h2 className={styles.title}>
-               Subscription Status
+                Subscription Status
               </h2>
               <p className={styles.description}>
                 Track your subscription categories, expiry dates, and remaining time.
@@ -191,6 +243,34 @@ export default function SubscriptionPage() {
           </div>
         )}
       </div>
+      <Modal isOpen={showCategoryModal} onClose={() => setShowCategoryModal(false)}>
+        <h3>Select a Category</h3>
+        <p>Choose a category to subscribe and start listing products for sale or rent.</p>
+
+        <Modal isOpen={showCategoryModal} onClose={() => setShowCategoryModal(false)}>
+          <h3>Select a Category</h3>
+          <p>Choose a category to subscribe and start listing products for sale or rent.</p>
+
+          <div className={styles.categoryList}>
+            {categoriesWithIcone.map((cat) => (
+              <button
+                key={cat.name}
+                className={styles.categoryOption}
+                onClick={() => {
+                  setShowCategoryModal(false);
+                  router.push(`/subscription?category=${cat.name}`);
+                }}
+              >
+                <img src={cat.icon} alt={cat.name} className={styles.categoryIcon} />
+                <span className={styles.categoryLabel}>{cat.name}</span>
+              </button>
+            ))}
+          </div>
+
+        </Modal>
+
+      </Modal>
+
     </div>
   );
 }

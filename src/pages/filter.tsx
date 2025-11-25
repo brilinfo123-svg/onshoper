@@ -578,7 +578,7 @@ const Filter: React.FC = () => {
                       priceMonth={product.priceMonth ? Number(product.priceMonth) : undefined}
                       SalePrice={product?.SalePrice}
                       coverImage={
-                        product.coverImage || product.images?.[0] || "/images/img2.jpg"
+                        product.coverImage || product.images?.[0] || "/images/DefoultLogo.jpg"
                       }
                       images={product.images || []}
                       location={{

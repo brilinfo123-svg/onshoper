@@ -119,7 +119,7 @@ const WatchFilter: React.FC<Props> = ({ products, productsLoading, displayCount 
                   priceWeek={product.priceWeek !== undefined ? Number(product.priceWeek) : undefined}
                   priceMonth={product.priceMonth !== undefined ? Number(product.priceMonth) : undefined}
                   SalePrice={product.SalePrice}
-                  coverImage={product.coverImage || product.images?.[0] || "/images/img2.jpg"}
+                  coverImage={product.coverImage || product.images?.[0] || "/images/DefoultLogo.jpg"}
                   images={product.images || []}
                   location={{
                     city: product.location || "",

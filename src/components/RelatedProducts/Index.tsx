@@ -114,7 +114,7 @@ const RelatedProducts: React.FC<Props> = ({
                 coverImage={
                   product.coverImage ||
                   product.images?.[0] ||
-                  "/images/img2.jpg"
+                  "/images/DefoultLogo.jpg"
                 }
                 images={product.images || []}
                 location={{
