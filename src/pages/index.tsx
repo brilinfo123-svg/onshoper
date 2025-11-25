@@ -334,26 +334,26 @@ export default function Home() {
 
       {/* <Benefits /> */}
       <button
-  onClick={() => {
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-        const res = await fetch("/api/get-nearest-area", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ lat: latitude, lng: longitude }),
-        });
-        const data = await res.json();
-        alert(`Nearest area: ${data.area}, ${data.city}, ${data.state} 
-          (lat: ${data.lat}, lng: ${data.lng})`);
-      },
-      (error) => {
-        alert("Unable to fetch location");
-        console.error(error);
-      }
-    );
-  }}
->
+        onClick={() => {
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const { latitude, longitude } = position.coords;
+              const res = await fetch("/api/get-nearest-area", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ lat: latitude, lng: longitude }),
+              });
+              const data = await res.json();
+              alert(`Nearest area: ${data.area}, ${data.city}, ${data.state} 
+                (lat: ${data.lat}, lng: ${data.lng})`);
+            },
+            (error) => {
+              console.error("Geolocation error:", error);
+              alert(`Location error: ${error.message}`);
+            }
+          );    
+      }}
+    >
   Live Location
 </button>
 

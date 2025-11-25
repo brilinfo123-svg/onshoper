@@ -1,14 +1,21 @@
 import indianAreas from "@/indiaArea/indian-areas.json";
 
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
+// 👇 Add this at the top of your file
+function getDistance(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
 
+export default async function handler(req, res) {
   const { lat, lng } = req.body;
-  if (!lat || !lng) {
-    return res.status(400).json({ error: "Missing lat/lng" });
-  }
 
   let nearestArea = null;
   let nearestCity = null;
@@ -17,16 +24,13 @@ export default async function handler(req, res) {
   let nearestLng = null;
   let minDistance = Infinity;
 
-  // Loop through all states → cities → areas
   for (const state of Object.keys(indianAreas)) {
     const cities = indianAreas[state];
     for (const city of Object.keys(cities)) {
       const areas = cities[city];
       for (const area of Object.keys(areas)) {
         const { lat: aLat, lng: aLng } = areas[area];
-        const distance = Math.sqrt(
-          Math.pow(lat - aLat, 2) + Math.pow(lng - aLng, 2)
-        );
+        const distance = getDistance(lat, lng, aLat, aLng); // 👈 Use here
         if (distance < minDistance) {
           minDistance = distance;
           nearestArea = area;
@@ -37,10 +41,6 @@ export default async function handler(req, res) {
         }
       }
     }
-  }
-
-  if (!nearestArea) {
-    return res.status(404).json({ error: "No nearby area found" });
   }
 
   return res.status(200).json({
