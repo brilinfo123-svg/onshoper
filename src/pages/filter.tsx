@@ -420,106 +420,121 @@ const Filter: React.FC = () => {
               </div>
             </div>
             <div>
-              <button className={styles.filterByBrand} onClick={() => setIsModalOpen(true)}>Filter By Brands</button>
+  {/* Show button only if at least one category has brands */}
+  {(Object.keys(carBrandCounts).length > 0 ||
+    Object.keys(vehicleBrandCounts).length > 0 ||
+    Object.keys(mobileBrandCounts).length > 0) && (
+    <button
+      className={styles.filterByBrand}
+      onClick={() => setIsModalOpen(true)}
+    >
+      Filter By Brands
+    </button>
+  )}
 
-              <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-
-                <>
-                  <div className={styles.btnWrapper}>
-                    {Object.keys(carBrandCounts).length > 0 && (
-                      <div className={styles.brandWrap}>
-                        <h4>Car Brands</h4>
-                        <div className={styles.btnGroup}>
-                          {Object.entries(carBrandCounts).map(([brand, count]) => (
-                            <button
-                              key={brand}
-                              onClick={() => {
-                                setSelectedFilterBrand({ category: "Car", brand });
-                                setIsModalOpen(false);
-                              }}
-                              className={
-                                selectedFilterBrand?.category === "Car" && selectedFilterBrand?.brand === brand
-                                  ? styles.activeButton
-                                  : ""
-                              }
-                            >
-                              {brand} ({count})
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {Object.keys(vehicleBrandCounts).length > 0 && (
-                      <div className={styles.brandWrap}>
-                        <h4>Bikes Brands</h4>
-                        <div className={styles.btnGroup}>
-                          {Object.entries(vehicleBrandCounts).map(([brand, count]) => (
-                            <button
-                              key={brand}
-                              onClick={() => {
-                                setSelectedFilterBrand({ category: "Vehicles", brand });
-                                setIsModalOpen(false);
-                              }}
-
-                            >
-                              {brand} ({count})
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {Object.keys(mobileBrandCounts).length > 0 && (
-                      <div className={styles.brandWrap}>
-                        <h4>Mobile Brands</h4>
-                        <div className={styles.btnGroup}>
-                          {Object.entries(mobileBrandCounts).map(([brand, count]) => (
-                            <button
-                              key={brand}
-                              onClick={() => {
-                                setSelectedFilterBrand({ category: "Mobiles", brand });
-                                setIsModalOpen(false);
-                              }}
-                              style={{
-                                backgroundColor:
-                                  selectedFilterBrand?.category === "Mobiles" && selectedFilterBrand?.brand === brand
-                                    ? "blue"
-                                    : "",
-                                color: "black",
-                                cursor: "pointer",
-                              }}
-                            >
-                              {brand} ({count})
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* ✅ No Brands Message */}
-                    {Object.keys(carBrandCounts).length === 0 &&
-                      Object.keys(vehicleBrandCounts).length === 0 &&
-                      Object.keys(mobileBrandCounts).length === 0 && (
-                        <p className={styles.noBrands}>No brands available.</p>
-                      )}
-                    {/* Add a clear filter button */}
-                    {selectedFilterBrand && (
-                      <div className={styles.clearBrands}>
-                        <button
-                          onClick={() => {
-                            setSelectedFilterBrand(null);
-                            setIsModalOpen(false); // Close the modal after clearing
-                          }}
-                        >
-                          Reset Filter
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </>
-              </Modal>
+  <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+    <>
+      <div className={styles.btnWrapper}>
+        {/* Car Brands */}
+        {Object.keys(carBrandCounts).length > 0 && (
+          <div className={styles.brandWrap}>
+            <h4>Car Brands</h4>
+            <div className={styles.btnGroup}>
+              {Object.entries(carBrandCounts).map(([brand, count]) => (
+                <button
+                  key={brand}
+                  onClick={() => {
+                    setSelectedFilterBrand({ category: "Car", brand });
+                    setIsModalOpen(false);
+                  }}
+                  className={
+                    selectedFilterBrand?.category === "Car" &&
+                    selectedFilterBrand?.brand === brand
+                      ? styles.activeButton
+                      : ""
+                  }
+                >
+                  {brand} ({count})
+                </button>
+              ))}
             </div>
+          </div>
+        )}
+
+        {/* Bike Brands */}
+        {Object.keys(vehicleBrandCounts).length > 0 && (
+          <div className={styles.brandWrap}>
+            <h4>Bikes Brands</h4>
+            <div className={styles.btnGroup}>
+              {Object.entries(vehicleBrandCounts).map(([brand, count]) => (
+                <button
+                  key={brand}
+                  onClick={() => {
+                    setSelectedFilterBrand({ category: "Vehicles", brand });
+                    setIsModalOpen(false);
+                  }}
+                >
+                  {brand} ({count})
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Brands */}
+        {Object.keys(mobileBrandCounts).length > 0 && (
+          <div className={styles.brandWrap}>
+            <h4>Mobile Brands</h4>
+            <div className={styles.btnGroup}>
+              {Object.entries(mobileBrandCounts).map(([brand, count]) => (
+                <button
+                  key={brand}
+                  onClick={() => {
+                    setSelectedFilterBrand({ category: "Mobiles", brand });
+                    setIsModalOpen(false);
+                  }}
+                  style={{
+                    backgroundColor:
+                      selectedFilterBrand?.category === "Mobiles" &&
+                      selectedFilterBrand?.brand === brand
+                        ? "blue"
+                        : "",
+                    color: "black",
+                    cursor: "pointer",
+                  }}
+                >
+                  {brand} ({count})
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* No Brands Message */}
+        {Object.keys(carBrandCounts).length === 0 &&
+          Object.keys(vehicleBrandCounts).length === 0 &&
+          Object.keys(mobileBrandCounts).length === 0 && (
+            <p className={styles.noBrands}>No brands available.</p>
+          )}
+
+        {/* Reset Filter */}
+        {selectedFilterBrand && (
+          <div className={styles.clearBrands}>
+            <button
+              onClick={() => {
+                setSelectedFilterBrand(null);
+                setIsModalOpen(false);
+              }}
+            >
+              Reset Filter
+            </button>
+          </div>
+        )}
+      </div>
+    </>
+  </Modal>
+</div>
+
 
           </div>
           <div className={styles.rowFlex}>
