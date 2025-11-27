@@ -82,6 +82,12 @@ function AllCategoryRentalForm() {
   
     if (step === 3) {
       const isVehicle = ["Scooters", "Motorcycles"].includes(selectedSubcategory);
+      const RealEstate = selectedSubcategory === "House & Apartments";
+      const CommercialProperties = selectedSubcategory === "Commercial Properties";
+      const ShopsOffices = selectedSubcategory === "Shops & Offices";
+      const GuestHouse = selectedSubcategory === "PG & Guest House";
+      
+      const LandPlots = selectedSubcategory === "Land & Plots";
       const isCar = selectedSubcategory === "Cars";
       const isCommercial = selectedCategory === "Commercial Vehicles";
       const SpareParts = selectedSubcategory === "Spare Parts";
@@ -90,13 +96,114 @@ function AllCategoryRentalForm() {
       const Bicycles = selectedSubcategory === "Bicycles";
       const isJob = selectedCategory === "Jobs";
       const isMobile = selectedSubcategory === "Mobile Phones";
+      
       const skipConditionCategories = [
         "Education & Learning",
         "Services",
         "Jobs",
         "Pets & Pet Care",
-        "Events & Entertainment"
+        "Events & Entertainment",
+        "Real Estate"
       ];
+
+      
+      if (CommercialProperties) {
+        if (!formData.furnishing) {
+          newErrors.furnishing = "Please Select furnishing.";
+        }
+        if (!formData.CommercialSubtype) {
+          newErrors.CommercialSubtype = "Please Select apartmentType.";
+        }
+        if (!formData.listedBy) {
+          newErrors.listedBy = "Please Select listedBy.";
+        }
+        if (!formData.carParking) {
+          newErrors.carParking = "Please add car Parking.";
+        }
+        if (!formData.maintenance) {
+          newErrors.maintenance = "Please add maintenance.";
+        }
+      }
+      if (ShopsOffices) {
+        if (!formData.furnishing) {
+          newErrors.furnishing = "Please Select furnishing.";
+        }
+        if (!formData.listedBy) {
+          newErrors.listedBy = "Please Select listedBy.";
+        }
+        if (!formData.carParking) {
+          newErrors.carParking = "Please add car Parking.";
+        }
+        if (!formData.maintenance) {
+          newErrors.maintenance = "Please add maintenance.";
+        }
+      }
+      if (LandPlots) {
+        if (!formData.listedBy) {
+          newErrors.listedBy = "Please Select listedBy.";
+        }
+      }
+
+      
+
+      if (GuestHouse) {
+        if (!formData.mealsIncluded) {
+          newErrors.mealsIncluded = "Please Select meals Included or Not.";
+        }
+    
+        if (!formData.pgSubtype) {
+          newErrors.pgSubtype = "Please Select Type.";
+        }
+        if (!formData.furnishing) {
+          newErrors.furnishing = "Please Select apartmentType.";
+        }
+        if (!formData.listedBy) {
+          newErrors.listedBy = "Please Select listedBy.";
+        }
+        if (!formData.bhk) {
+          newErrors.bhk = "Please Select bhk.";
+        }
+        if (!formData.bachelorsAllowed) {
+          newErrors.bachelorsAllowed = "Please Select listedBy.";
+        }
+        if (!formData.carParking) {
+          newErrors.carParking = "Please Select bhk.";
+        }
+      }
+
+      if (RealEstate) {
+        if (!formData.bathrooms) {
+          newErrors.bathrooms = "Please Select a Bathrooms.";
+        }
+    
+        if (!formData.furnishing) {
+          newErrors.furnishing = "Please Select furnishing.";
+        }
+        if (!formData.apartmentType) {
+          newErrors.apartmentType = "Please Select apartmentType.";
+        }
+        if (!formData.listedBy) {
+          newErrors.listedBy = "Please Select listedBy.";
+        }
+        if (!formData.bhk) {
+          newErrors.bhk = "Please Select bhk.";
+        }
+        if (!formData.maintenance) {
+          newErrors.maintenance = "Please add maintenance.";
+        }
+        if (!formData.bachelorsAllowed) {
+          newErrors.bachelorsAllowed = "Please Select bachelors Allowed or Not.";
+        }
+        if (!formData.totalFloors) {
+          newErrors.totalFloors = "Please Select total Floors.";
+        }
+        if (!formData.floorNo) {
+          newErrors.floorNo = "Please Select floor No.";
+        }
+        if (!formData.carParking) {
+          newErrors.carParking = "Please add car Parking.";
+        }
+      }
 
       // SaleType (skip for Services, Jobs, Education)
       if (
@@ -132,6 +239,8 @@ function AllCategoryRentalForm() {
       }
     
       // Vehicle-specific fields
+      
+     
       if (isVehicle) {
         if (!formData.fuel) {
           newErrors.fuel = "Please Select a Fuel Type.";
@@ -1379,6 +1488,7 @@ if (!formData.termsAccepted) {
                     <option value="Showroom">Showroom</option>
                     <option value="Warehouse">Warehouse</option>
                   </select>
+                  {errors.CommercialSubtype && <p className={styles.errorText}>{errors.CommercialSubtype}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Furnishings</label>
@@ -1388,6 +1498,7 @@ if (!formData.termsAccepted) {
                     <option value="Semi-Furnished">Semi-Furnished</option>
                     <option value="Fully-Furnished">Fully-Furnished</option>
                   </select>
+                  {errors.furnishing && <p className={styles.errorText}>{errors.furnishing}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Construction Status</label>
@@ -1407,6 +1518,7 @@ if (!formData.termsAccepted) {
                     <option value="Dealer">Dealer</option>
                     <option value="Builder">Builder</option>
                   </select>
+                  {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Car Parking</label>
@@ -1419,6 +1531,7 @@ if (!formData.termsAccepted) {
                     <option value="3">3</option>
                     <option value="4+">4+</option>
                   </select>
+                  {errors.carParking && <p className={styles.errorText}>{errors.carParking}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Super Built-up Area (sqft)</label>
@@ -1432,6 +1545,7 @@ if (!formData.termsAccepted) {
                 <div className={styles.formGroup}>
                   <label>Maintenance (Monthly)</label>
                   <input type="number" name="maintenance" value={formData.maintenance || ""} onChange={handleChange} placeholder="₹/month"/>
+                  {errors.maintenance && <p className={styles.errorText}>{errors.maintenance}</p>}
                 </div>
               </div>
               <div className={styles.formGroup}>
@@ -1451,6 +1565,7 @@ if (!formData.termsAccepted) {
                     <option value="Semi-Furnished">Semi-Furnished</option>
                     <option value="Fully-Furnished">Fully-Furnished</option>
                   </select>
+                  {errors.furnishing && <p className={styles.errorText}>{errors.furnishing}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Construction Status</label>
@@ -1470,6 +1585,7 @@ if (!formData.termsAccepted) {
                     <option value="Dealer">Dealer</option>
                     <option value="Builder">Builder</option>
                   </select>
+                  {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Car Parking</label>
@@ -1482,6 +1598,7 @@ if (!formData.termsAccepted) {
                     <option value="3">3</option>
                     <option value="4+">4+</option>
                   </select>
+                  {errors.carParking && <p className={styles.errorText}>{errors.carParking}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Super Built-up Area (sqft)</label>
@@ -1495,6 +1612,7 @@ if (!formData.termsAccepted) {
                 <div className={styles.formGroup}>
                   <label>Maintenance (Monthly)</label>
                   <input type="number" name="maintenance" value={formData.maintenance || ""} onChange={handleChange} placeholder="₹/month"/>
+                  {errors.maintenance && <p className={styles.errorText}>{errors.maintenance}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Project Name</label>
@@ -1514,6 +1632,7 @@ if (!formData.termsAccepted) {
                   <label><input type="radio" name="mealsIncluded" value="Yes" checked={formData.mealsIncluded === "Yes"} onChange={handleChange} />Yes</label>
                   <label><input type="radio" name="mealsIncluded" value="No" checked={formData.mealsIncluded === "No"} onChange={handleChange} />No</label>
                 </div>
+                {errors.mealsIncluded && <p className={styles.errorText}>{errors.mealsIncluded}</p>}
               </div>
 
               <div className={styles.formGroup}>
@@ -1524,6 +1643,7 @@ if (!formData.termsAccepted) {
                   <option value="Guest House">Guest House</option>
                   <option value="Roommate">Roommate</option>
                 </select>
+                {errors.pgSubtype && <p className={styles.errorText}>{errors.pgSubtype}</p>}
               </div>
               <div className={styles.FormCol2}>
                 <div className={styles.formGroup}>
@@ -1534,6 +1654,7 @@ if (!formData.termsAccepted) {
                     <option value="Dealer">Dealer</option>
                     <option value="Builder">Builder</option>
                   </select>
+                  {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Furnishings</label>
@@ -1543,6 +1664,7 @@ if (!formData.termsAccepted) {
                     <option value="Semi-Furnished">Semi-Furnished</option>
                     <option value="Fully-Furnished">Fully-Furnished</option>
                   </select>
+                  {errors.furnishing && <p className={styles.errorText}>{errors.furnishing}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Bachelors Allowed</label>
@@ -1551,6 +1673,7 @@ if (!formData.termsAccepted) {
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                   </select>
+                  {errors.bachelorsAllowed && <p className={styles.errorText}>{errors.bachelorsAllowed}</p>}
                 </div>
                 <div className={styles.formGroup}>
                   <label>Car Parking</label>
@@ -1563,6 +1686,7 @@ if (!formData.termsAccepted) {
                     <option value="3">3</option>
                     <option value="4+">4+</option>
                   </select>
+                  {errors.carParking && <p className={styles.errorText}>{errors.carParking}</p>}
                 </div>
               </div>
             </>
@@ -1583,6 +1707,7 @@ if (!formData.termsAccepted) {
                     <option value="Dealer">Dealer</option>
                     <option value="Builder">Builder</option>
                   </select>
+                  {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
                 </div>
 
                 <div className={styles.formGroup}>
@@ -1633,6 +1758,7 @@ if (!formData.termsAccepted) {
                     <option value="Farm House">Farm House</option>
                     <option value="House & Villas">House & Villas</option>
                   </select>
+                  {errors.apartmentType && <p className={styles.errorText}>{errors.apartmentType}</p>}
                 </div>
 
                 <div className={styles.formGroup}>
@@ -1645,11 +1771,13 @@ if (!formData.termsAccepted) {
                     <option value="4 BHK">4 BHK</option>
                     <option value="5+ BHK">5+ BHK</option>
                   </select>
+                  {errors.bhk && <p className={styles.errorText}>{errors.bhk}</p>}
                 </div>
 
                 <div className={styles.formGroup}>
                   <label>Bathrooms</label>
                   <input type="number" name="bathrooms" value={formData.bathrooms || ""} onChange={handleChange} placeholder="Enter number of bathrooms"/>
+                  {errors.bathrooms && <p className={styles.errorText}>{errors.bathrooms}</p>}
                 </div>
 
                 <div className={styles.formGroup}>
@@ -1660,6 +1788,7 @@ if (!formData.termsAccepted) {
                     <option value="Semi-Furnished">Semi-Furnished</option>
                     <option value="Fully-Furnished">Fully-Furnished</option>
                   </select>
+                  {errors.furnishing && <p className={styles.errorText}>{errors.furnishing}</p>}
                 </div>
 
                 <div className={styles.formGroup}>
@@ -1670,6 +1799,7 @@ if (!formData.termsAccepted) {
                     <option value="Dealer">Dealer</option>
                     <option value="Builder">Builder</option>
                   </select>
+                  {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
                 </div>
 
                 <div className={styles.formGroup}>
@@ -1690,11 +1820,13 @@ if (!formData.termsAccepted) {
                       <option value="Yes">Yes</option>
                       <option value="No">No</option>
                     </select>
+                    {errors.bachelorsAllowed && <p className={styles.errorText}>{errors.bachelorsAllowed}</p>}
                   </div>
                 )}
                 <div className={styles.formGroup}>
                   <label>Maintenance (Monthly)</label>
                   <input type="number" name="maintenance" value={formData.maintenance || ""} onChange={handleChange} placeholder="₹/month"/>
+                  {errors.maintenance && <p className={styles.errorText}>{errors.maintenance}</p>}
                 </div>
 
                 <div className={styles.formGroup}>
@@ -1707,6 +1839,7 @@ if (!formData.termsAccepted) {
                     <option value="3">3</option>
                     <option value="4+">4+</option>
                   </select>
+                  {errors.totalFloors && <p className={styles.errorText}>{errors.totalFloors}</p>}
                 </div>
 
 
@@ -1721,8 +1854,9 @@ if (!formData.termsAccepted) {
                     <option value="3">3</option>
                     <option value="4+">4+</option>
                   </select>
+                  {errors.floorNo && <p className={styles.errorText}>{errors.floorNo}</p>}
                 </div>
-
+                
 
 
                 <div className={styles.formGroup}>
@@ -1736,6 +1870,7 @@ if (!formData.termsAccepted) {
                     <option value="3">3</option>
                     <option value="4+">4+</option>
                   </select>
+                  {errors.carParking && <p className={styles.errorText}>{errors.carParking}</p>}
                 </div>
 
                 <div className={styles.formGroup}>
@@ -1769,6 +1904,20 @@ if (!formData.termsAccepted) {
             </>
           )}
 
+          {selectedSubcategory === "Other Properties" && (
+            <>
+                <div className={styles.formGroup}>
+                  <label>Listed By</label>
+                  <select name="listedBy" value={formData.listedBy || ""} onChange={handleChange}>
+                    <option value="">Select</option>
+                    <option value="Owner">Owner</option>
+                    <option value="Dealer">Dealer</option>
+                    <option value="Builder">Builder</option>
+                  </select>
+                  {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
+                </div>
+            </>
+          )}
           {/* End Apartment */}
 
           {/* Start Cars */}
@@ -2010,7 +2159,7 @@ if (!formData.termsAccepted) {
           )}
           {/* End {/* Start Bicycles */}
 
-          {!["House & Apartments", "Land & Plots", "PG & Guest House", "Shops & Offices", "Commercial Properties"].includes(selectedSubcategory) && (
+          {!["House & Apartments", "Land & Plots", "PG & Guest House", "Shops & Offices", "Commercial Properties", "Other Properties"].includes(selectedSubcategory) && (
             !["Services", "Jobs", "Pets & Pet Care", "Education & Learning", "Events & Entertainment"].includes(selectedCategory) &&
             <div className={styles.formGroup}>
               <label>Condition</label>
@@ -2022,7 +2171,7 @@ if (!formData.termsAccepted) {
               {errors.condition && <p className={styles.errorText}>{errors.condition}</p>}
             </div>
           )}
-          {!["House & Apartments", "Cars", "Motorcycles", "Land & Plots", "PG & Guest House", "Shops & Offices", "Commercial Properties"].includes(selectedSubcategory) && (
+          {!["House & Apartments", "Cars", "Motorcycles", "Land & Plots", "PG & Guest House", "Shops & Offices", "Commercial Properties", "Other Properties"].includes(selectedSubcategory) && (
             !["Services", "Jobs", "Education & Learning", "Commercial Vehicles", "Events & Entertainment"].includes(selectedCategory) &&
             <div className={styles.formGroup}>
                 <label>Will you deliver to the customer's doorstep?</label>
@@ -2055,7 +2204,7 @@ if (!formData.termsAccepted) {
           <div className={styles.formGroup}>
             <label>Description</label>
             <div style={{ position: "relative" }}>
-              <textarea name="description" rows={4} value={formData.description} onChange={handleChange} style={{ paddingRight: "40px" }} />
+              <textarea name="description" rows={6} value={formData.description} onChange={handleChange} style={{ paddingRight: "40px" }} />
               <button type="button" onClick={toggleListening} style={{
                 position: "absolute", right: "8px", top: "8px", background: listening ? "#f00" : "#ddd",
                 color: "#fff", border: "none", borderRadius: "50%", width: "30px", height: "30px", cursor: "pointer",
@@ -2064,9 +2213,6 @@ if (!formData.termsAccepted) {
             </div>
             <span className={styles.subText}>{errors.description && <p className={styles.errorText}>{errors.description}</p>} Describe your product and key features, or tap the mic to speak.</span>
           </div>
-
-
-
           
           <div className={styles.fileManageWrap}>
             <div className={styles.formGroup}>

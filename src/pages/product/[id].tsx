@@ -838,7 +838,14 @@ if (fullLocation === "All Cities") {
                   {/* Description */}
                   <section className={styles.DescriptionCard}>
                     <h2>Description</h2>
-                    <p>{product.description}</p>
+                    <p>
+                      {product.description.split("\n").map((line, index) => (
+                        <span key={index}>
+                          {line}
+                          <br />
+                        </span>
+                      ))}
+                    </p>
                   </section>
                 </div>
 

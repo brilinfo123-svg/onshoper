@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   await connectToDatabase();
 
   const now = new Date();
-  const oneMinute = 1 * 60 * 1000; // ✅ 1 minute in ms (for testing)
+  const twoMonths = 60 * 24 * 60 * 60 * 1000; // ✅ 60 days in ms
 
   // 🔍 Find shopOwner by contact (preferred) or shopOwnerID
   let shopOwner = await ShopOwner.findOne(contact ? { contact } : { shopOwnerID });
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       shopOwnerID,
       contact,
       hasPaid: true,
-      paidUntil: new Date(now.getTime() + oneMinute),
+      paidUntil: new Date(now.getTime() + twoMonths),
       paidCategories: [],
       paymentHistory: [],
     });
@@ -32,16 +32,16 @@ export default async function handler(req, res) {
 
   // ✅ Always set global flags
   shopOwner.hasPaid = true;
-  shopOwner.paidUntil = new Date(now.getTime() + oneMinute);
+  shopOwner.paidUntil = new Date(now.getTime() + twoMonths);
 
   const existingPayment = shopOwner.paymentHistory.find((p) => p.category === category);
 
   let newExpiry;
   if (existingPayment) {
     if (existingPayment.expiryAt > now) {
-      newExpiry = new Date(existingPayment.expiryAt.getTime() + oneMinute);
+      newExpiry = new Date(existingPayment.expiryAt.getTime() + twoMonths);
     } else {
-      newExpiry = new Date(now.getTime() + oneMinute);
+      newExpiry = new Date(now.getTime() + twoMonths);
     }
 
     existingPayment.expiryAt = newExpiry;
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
     existingPayment.amount = amount;
     existingPayment.createdAt = now;
   } else {
-    newExpiry = new Date(now.getTime() + oneMinute);
+    newExpiry = new Date(now.getTime() + twoMonths);
 
     shopOwner.paidCategories.push(category);
     shopOwner.paymentHistory.push({
@@ -74,7 +74,7 @@ export default async function handler(req, res) {
 
   return res.status(200).json({
     success: true,
-    message: `Payment recorded for category ${category} (+${oneMinute / 1000} seconds)`, // 👈 dynamic message
+    message: `Payment recorded for category ${category} (+${twoMonths / 1000} seconds)`, // 👈 dynamic message
     expiryAt: shopOwner.paidUntil,
   });
 }
