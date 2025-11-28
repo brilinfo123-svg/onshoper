@@ -10,9 +10,7 @@ const Footer = () => {
       <h4>Contact Us</h4>
       <ul>
         <li>
-          <a href="mailto:brilinfo123@gmail.com" className="icon-mail">
-            brilinfo123@gmail.com
-          </a>
+          <a href="mailto:brilinfo123@gmail.com" className="icon-mail">onshoper390@gmail.com</a>
         </li>
         <li>
           <a href="tel:+917652800205" className="icon-phone">
@@ -37,8 +35,9 @@ const Footer = () => {
       <h4>Quick Links</h4>
       <ul>
         <li><a href="/ProductForm">Post Your Product</a></li>
-        <li><a href="/terms-of-service">Terms & Conditions</a></li>
+        <li><a href="/terms-and-conditions">Terms and Conditions</a></li>
         <li><a href="/privacy-policy">Privacy Policy</a></li>
+        <li><a href="/shipping-policy">Shipping Policy</a></li>
       </ul>
     </div>
 
