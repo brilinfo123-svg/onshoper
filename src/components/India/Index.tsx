@@ -388,7 +388,7 @@ const IndiaAddressForm = ({ onLocationSelect, isProductForm = false, formData, s
                   });
                 }}
               >
-                Clear
+                <span className='icon-cancel-1'></span>
               </button>
             )}
           </div>
@@ -455,7 +455,7 @@ const IndiaAddressForm = ({ onLocationSelect, isProductForm = false, formData, s
                     });
                   }}
                 >
-                  ×
+                  <span className='icon-cancel-1'></span>
                 </button>
               )}
             </div>

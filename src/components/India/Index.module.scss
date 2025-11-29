@@ -8,11 +8,19 @@
       top: 0;
       right: 0;
       bottom: 0;
-      padding: 0 10px;
+      padding: 0 5px;
       border: 1px solid #eb7575;
       background-color: #eb7575;
       cursor: pointer;
       color: #fff;
+      border-radius: 5px;
+      span{
+        color: #fff;
+        font-size: 18px;
+        &::before{
+          margin: 0 3px;
+        }
+      }
     }
 }
 .title {
