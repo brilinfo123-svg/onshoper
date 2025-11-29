@@ -393,7 +393,8 @@ const ProductMobile = ({
         <div className={styles.carouselContainer}>
           <div className={styles.carouselWithControls}>
             <button className={`${styles.carouselControl} ${styles.leftArrow} ${"icon-left-open-big"}`} onClick={scrollPrev}></button>
-            <div className={`${styles.embla} ${isSticky ? styles.isSticky : ""}`}>
+            <div className={`${styles.embla}`}>
+            {/* <div className={`${styles.embla} ${isSticky ? styles.isSticky : ""}`}> */}
               <div className={styles.embla__viewport} ref={emblaRef}>
                 <div className={styles.embla__container}>
                   {filteredCategories.map((category) => (

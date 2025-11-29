@@ -17,6 +17,8 @@ import Layout from "@/components/Layout/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import Head from "next/head";
 import RelatedProducts from "@/components/RelatedProducts/Index";
+import ShareButtons from "@/components/ShareButtons/Index";
+
 import { useFavorites } from "@/contexts/FavoriteContext";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
@@ -469,6 +471,8 @@ if (fullLocation === "All Cities") {
         <div className={favorite ? styles.active : ""}>
           <span className="icon-heart"></span>
         </div>
+        
+
       </div>
           {product.images?.length > 1 ? (
             <Slider {...sliderSettings}>
@@ -573,13 +577,14 @@ if (fullLocation === "All Cities") {
           )}
 
         </div>
-
+        
           <div className={styles.details}>
             {/* Header */}
             <div className={styles.header}>
               <span className={styles.category}>
                 {product.category} → {product.subcategory}
               </span>
+              <ShareButtons shortId={product._id}  />
             </div>
 
             {/* Vehicle Info */}

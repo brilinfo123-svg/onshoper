@@ -613,12 +613,6 @@
       "src": "mfglabs"
     },
     {
-      "uid": "51fb22f9ff9d7f60c95ef31e4c59502d",
-      "css": "comment",
-      "code": 62636,
-      "src": "mfglabs"
-    },
-    {
       "uid": "9d3e9faf68fd4e12def853f0d4e1173b",
       "css": "whatsapp",
       "code": 62002,
@@ -641,6 +635,66 @@
       "css": "phone-2",
       "code": 59463,
       "src": "entypo"
+    },
+    {
+      "uid": "c8585e1e5b0467f28b70bce765d5840c",
+      "css": "docs",
+      "code": 61637,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "51fb22f9ff9d7f60c95ef31e4c59502d",
+      "css": "comment",
+      "code": 62636,
+      "src": "mfglabs"
+    },
+    {
+      "uid": "3c961c1a8d874815856fc6637dc5a13c",
+      "css": "file-image",
+      "code": 61893,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "891d861cffd152a6474f01e77716d44e",
+      "css": "bicycle",
+      "code": 61958,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "25fc99a30fecc4021fdcae5fff5ba9ac",
+      "css": "eye-1",
+      "code": 59464,
+      "src": "entypo"
+    },
+    {
+      "uid": "d090355c31f497b61d676416c1fd39fb",
+      "css": "twitter-1",
+      "code": 62217,
+      "src": "entypo"
+    },
+    {
+      "uid": "7132e1233bc16cd1b6efe7e29d3613a5",
+      "css": "linkedin",
+      "code": 62232,
+      "src": "entypo"
+    },
+    {
+      "uid": "91bac16b22827347e9ee20477f0b44d2",
+      "css": "mail-1",
+      "code": 59465,
+      "src": "linecons"
+    },
+    {
+      "uid": "a1be363d4de9be39857893d4134f6215",
+      "css": "picture-1",
+      "code": 59466,
+      "src": "elusive"
+    },
+    {
+      "uid": "e1c372b8d386329b38dff5cd1ec46513",
+      "css": "star-1",
+      "code": 59467,
+      "src": "elusive"
     },
     {
       "uid": "cdf5653d9402b837b52729d7d96e291e",

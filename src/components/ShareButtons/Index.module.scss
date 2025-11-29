@@ -1,0 +1,74 @@
+.shareContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.shareBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+/* Dropdown Wrapper */
+.dropdown {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  width: 140px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
+  padding: 4px 0;
+  z-index: 20;
+
+  li {
+    padding: 3px 6px;
+    list-style: none;
+    a,
+    button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      outline: none;
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 6px;
+    }
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+/* Colors for each item */
+.whatsapp a {
+  background: #25D366;
+}
+
+.facebook a {
+  background: #1877F2;
+}
+
+.twitter a {
+  background: #1DA1F2;
+}
+
+.instagram a {
+  background: #E1306C;
+}
+
+.messenger a {
+  background: #0084FF;
+}
+
+.copy button {
+  background: #444;
+  color: #fff;
+}
