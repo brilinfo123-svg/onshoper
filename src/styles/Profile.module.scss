@@ -808,6 +808,16 @@ tr:nth-child(odd) {
     box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.4);
   }
   }
+  h2{
+    @media screen and (max-width: 767px) {
+      font-size: 20px;
+    }
+  }
+  p{
+    @media screen and (max-width: 767px) {
+      font-size: 14px;
+    }
+  }
 }
 .viewMoreWrapper{
   text-align: center;

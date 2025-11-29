@@ -19,11 +19,7 @@ const MobileBottomNav = () => {
   const accountRef = useRef<HTMLDivElement | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-
-  // Check if we're currently on a chat page
   const isOnChatPage = router.pathname.startsWith('/chat');
-
-  // Don't show notifications if we're on chat page
   const totalNotifications = isOnChatPage ? 0 : getTotalNotifications();
 
   const handleLogout = () => {
@@ -64,84 +60,86 @@ const MobileBottomNav = () => {
     };
   }, []);
 
-  // Navigation items
- // Navigation items
-const navItems = [
-  {
-    name: 'Home',
-    path: '/',
-    icon: (
-      <Image
-          src="/icons/homeIcone.png"   // 👈 apna image file public/icons/post-ad.png me rakho
-          alt="Post Ad"
-          width={33}
-          height={33}
-        />
-    ),
-    onClick: () => {
-      setAccountOpen(false);
-      setNotificationsOpen(false);
-      router.push('/');
-    }
-  },
-  {
-    name: 'Chat',
-    path: '/chat',
-    icon: (
-      <Image
-      src="/icons/chatIcone.png"   // 👈 apna image file public/icons/post-ad.png me rakho
-      alt="Post Ad"
-      width={27}
-      height={27}
-    />
-    ),
-    onClick: () => {
-      setAccountOpen(false);
-      setNotificationsOpen(false);
-      if (session?.user) {
-        setIsChatOpen(true);
-      } else {
-        router.push("/login");
+  // ✅ UPDATED navItems WITH "My Ads"
+  const navItems = [
+    {
+      name: 'Home',
+      path: '/',
+      icon: (
+        <Image src="/icons/homeIcone.png" alt="Home" width={33} height={33} />
+      ),
+      onClick: () => {
+        setAccountOpen(false);
+        setNotificationsOpen(false);
+        router.push('/');
       }
     },
-    showBadge: true
-  },
-  {
-    name: 'Sale/Rent',
-    path: '/ProductForm',
-    icon: (
-      <Image
-          src="/icons/plusIcone.png"   // 👈 apna image file public/icons/post-ad.png me rakho
-          alt="Post Ad"
+    {
+      name: 'Chat',
+      path: '/chat',
+      icon: (
+        <Image src="/icons/chatIcone.png" alt="Chat" width={27} height={27} />
+      ),
+      onClick: () => {
+        setAccountOpen(false);
+        setNotificationsOpen(false);
+        if (session?.user) {
+          setIsChatOpen(true);
+        } else {
+          router.push("/login");
+        }
+      },
+      showBadge: true
+    },
+    {
+      name: 'Post Ads',
+      path: '/ProductForm',
+      icon: (
+        <Image src="/icons/plusIcone.png" alt="Post Ad" width={30} height={30} />
+      ),
+      onClick: () => {
+        setAccountOpen(false);
+        setNotificationsOpen(false);
+        if (session?.user) {
+          router.push('/ProductForm');
+        } else {
+          router.push('/login');
+        }
+      }
+    },
+
+    // ⭐⭐⭐ NEW BUTTON — MY ADS ⭐⭐⭐
+    {
+      name: 'My Ads',
+      path: '/profile',
+      icon: (
+        <Image src="/icons/catalog-alt.svg" alt="My Ads" width={25} height={25} />
+      ),
+      onClick: () => {
+        setAccountOpen(false);
+        setNotificationsOpen(false);
+        if (session?.user) {
+          router.push('/my-ads');
+        } else {
+          router.push('/login');
+        }
+      }
+    },
+
+    {
+      name: 'Account',
+      path: session ? '/profile' : '/auth/signin',
+      icon: (
+        <Image
+          src="/icons/userIcone.png"
+          alt="Account"
           width={30}
           height={30}
         />
-    ),
-    onClick: () => {
-      setAccountOpen(false);
-      setNotificationsOpen(false);
-      if (session?.user) {
-        router.push('/ProductForm');
-      } else {
-        router.push('/login');
-      }
+      ),
+      onClick: toggleAccount
     }
-  },
-  {
-    name: 'Account',
-    path: session ? '/profile' : '/auth/signin',
-    icon: (
-      <Image
-        src="/icons/userIcone.png"   // 👈 apna image file public/icons/post-ad.png me rakho
-        alt="Post Ad"
-        width={30}
-        height={30}
-      />
-    ),
-    onClick: toggleAccount
-  }
-];
-
+  ];
 
   return (
     <>
@@ -184,7 +182,6 @@ const navItems = [
         ))}
       </div>
 
-
       {/* Account Dropdown */}
       {isAccountOpen && (
         <div ref={accountRef} className={styles.dropdown}>
@@ -199,11 +196,7 @@ const navItems = [
                   <span className={"icon-user-circle"} ></span>
                   My Account
                 </Link>
-                
-                {/* <Link href="/favorites" onClick={() => setAccountOpen(false)}>
-                  <span className={styles.dropdownIcon}>❤️</span>
-                  My Favorites
-                </Link> */}
+
                 <button onClick={handleLogout}>
                   <span className={"icon-off"}></span>
                   Logout
@@ -214,11 +207,11 @@ const navItems = [
                 <span className={styles.dropdownIcon}>🔑</span>
                 Sign In to Continue
               </Link>
-
             )}
           </div>
         </div>
       )}
+
       <ChatSidebar
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
