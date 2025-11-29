@@ -684,3 +684,65 @@
   background-color: #e0f0ff;
   border-color: #0070f3;
 }
+.listContainer {
+  max-height: 500px;   /* Fixed height */
+  overflow-y: auto;    /* Scrollable */
+  margin-top: 10px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 0;
+}
+
+.listBox {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f1f1;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.listItem:hover {
+  background: #f9fafb;
+  transform: scale(1.01);
+}
+
+.icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  margin-right: 14px;
+}
+
+.title {
+  flex: 1;
+  font-size: 15px;
+  color: #222;
+  font-weight: 500;
+}
+
+.arrow {
+  font-size: 20px;
+  color: #999;
+  font-weight: bold;
+}
+
+.backButton {
+  margin-top: 15px;
+  padding: 8px 18px;
+  background: #eee;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.backButton:hover {
+  background: #ddd;
+}

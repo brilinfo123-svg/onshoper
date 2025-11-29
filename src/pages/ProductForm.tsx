@@ -9,11 +9,12 @@ import IndiaAddressForm from "@/components/India/Index";
 import Swal from "sweetalert2";
 import Head from "next/head";
 import Loader from "@/components/loader/Index";
+import Image from "next/image";
 
 const categories = {
   Vehicles: ["Motorcycles", "Scooters", "Bicycles", "Other Vehicles"],
   Car: ["Cars", "Spare Parts",],
-  "Commercial Vehicles": ["Tractors", "E-Rickshaws", "Pickups", "Delivery Vans", "Mini Trucks", "Passenger Buses", "Auto Rickshaws", "Construction Vehicles","Other Commercial Vehicles"],
+  "Commercial Vehicles": ["Tractors", "E-Rickshaws", "Pickups", "Delivery Vans", "Mini Trucks", "Passenger Buses", "Auto Rickshaws", "Construction Vehicles", "Other Commercial Vehicles"],
   "Electronics & Appliances": ["TV & Video", "Computers & Laptops", "Home Appliances", "ACs & Coolers", "Kitchen Appliances", "Cameras & Accessories", "Gaming Consoles", "Smart Home Devices", "Power Banks & Chargers", "Projectors",
     "Monitors & Accessories", "Printers & Scanners", "Water Purifiers", "Heaters & Geysers", "Audio & Music Systems", "Washing Machines", "Other Electronics",],
   Furniture: ["Beds & Wardrobes", "Sofas & Dining", "Tables & Chairs", "Home Decor & Garden", "Mattresses", "Office Furniture", "Other Household Items"],
@@ -71,22 +72,22 @@ function AllCategoryRentalForm() {
 
   const validateStep = (step: number) => {
     const newErrors: { [key: string]: string } = {};
-  
+
     if (step === 1 && !selectedCategory) {
       newErrors.selectedCategory = "Please Select a Category.";
     }
-  
+
     if (step === 2 && !selectedSubcategory) {
       newErrors.selectedSubcategory = "Please Select a Subcategory.";
     }
-  
+
     if (step === 3) {
       const isVehicle = ["Scooters", "Motorcycles"].includes(selectedSubcategory);
       const RealEstate = selectedSubcategory === "House & Apartments";
       const CommercialProperties = selectedSubcategory === "Commercial Properties";
       const ShopsOffices = selectedSubcategory === "Shops & Offices";
       const GuestHouse = selectedSubcategory === "PG & Guest House";
-      
+
       const LandPlots = selectedSubcategory === "Land & Plots";
       const isCar = selectedSubcategory === "Cars";
       const isCommercial = selectedCategory === "Commercial Vehicles";
@@ -96,7 +97,7 @@ function AllCategoryRentalForm() {
       const Bicycles = selectedSubcategory === "Bicycles";
       const isJob = selectedCategory === "Jobs";
       const isMobile = selectedSubcategory === "Mobile Phones";
-      
+
       const skipConditionCategories = [
         "Education & Learning",
         "Services",
@@ -106,7 +107,7 @@ function AllCategoryRentalForm() {
         "Real Estate"
       ];
 
-      
+
       if (CommercialProperties) {
         if (!formData.furnishing) {
           newErrors.furnishing = "Please Select furnishing.";
@@ -144,13 +145,13 @@ function AllCategoryRentalForm() {
         }
       }
 
-      
+
 
       if (GuestHouse) {
         if (!formData.mealsIncluded) {
           newErrors.mealsIncluded = "Please Select meals Included or Not.";
         }
-    
+
         if (!formData.pgSubtype) {
           newErrors.pgSubtype = "Please Select Type.";
         }
@@ -175,7 +176,7 @@ function AllCategoryRentalForm() {
         if (!formData.bathrooms) {
           newErrors.bathrooms = "Please Select a Bathrooms.";
         }
-    
+
         if (!formData.furnishing) {
           newErrors.furnishing = "Please Select furnishing.";
         }
@@ -212,8 +213,8 @@ function AllCategoryRentalForm() {
       ) {
         newErrors.SaleType = "Please Select Rent or Sale.";
       }
-    
-      
+
+
       if (SpareParts) {
         if (!formData.SpareParts) {
           newErrors.SpareParts = "Please Select The Parts-Type.";
@@ -233,19 +234,19 @@ function AllCategoryRentalForm() {
       if (!formData.title || formData.title.trim() === "") {
         newErrors.title = "Title is Required.";
       }
-    
+
       if (!formData.description || formData.description.trim() === "") {
         newErrors.description = "Description Is Required.";
       }
-    
+
       // Vehicle-specific fields
-      
-     
+
+
       if (isVehicle) {
         if (!formData.fuel) {
           newErrors.fuel = "Please Select a Fuel Type.";
         }
-    
+
         if (!formData.year) {
           newErrors.year = "Please Select Year.";
         }
@@ -255,9 +256,9 @@ function AllCategoryRentalForm() {
         if (!formData.KmDriven || Number(formData.KmDriven) <= 0) {
           newErrors.KmDriven = "Please Enter Valid KM Driven.";
         }
-    
+
         // Brand/model per vehicle type
-       
+
         if (isMotorcycle && !formData.model) {
           newErrors.model = "Please Select Motorcycle Brand and Model.";
         }
@@ -265,7 +266,7 @@ function AllCategoryRentalForm() {
           newErrors.model = "Please Select Motorcycle Brand and Model.";
         }
       }
-     
+
       if (isCommercial) {
         if (isCommercial && !formData.commercialBrand) {
           newErrors.commercialBrand = "Please Select Commercial Vehicle Brand and Model.";
@@ -286,29 +287,29 @@ function AllCategoryRentalForm() {
           newErrors.transmission = "Please Select Transmission Type.";
         }
       }
-      
+
       if (isCar) {
         // if (!formData.transmission) {
-          if (!formData.transmission) {
-            newErrors.transmission = "Please Select Transmission Type.";
-          }
-          if (!formData.carBrand) {
-            newErrors.carBrand = "Please Select Car Brand and Model.";
-          }
-          if (!formData.year) {
-            newErrors.year = "Please Select Year.";
-          }
-          if (!formData.fuel) {
-            newErrors.fuel = "Please Select a Fuel Type.";
-          }
-          if (!formData.OwnersNo) {
-            newErrors.OwnersNo = "Please Select Number Of Owners.";
-          }
-          if (!formData.KmDriven || Number(formData.KmDriven) <= 0) {
-            newErrors.KmDriven = "Please Enter Valid KM Driven.";
-          }
+        if (!formData.transmission) {
+          newErrors.transmission = "Please Select Transmission Type.";
+        }
+        if (!formData.carBrand) {
+          newErrors.carBrand = "Please Select Car Brand and Model.";
+        }
+        if (!formData.year) {
+          newErrors.year = "Please Select Year.";
+        }
+        if (!formData.fuel) {
+          newErrors.fuel = "Please Select a Fuel Type.";
+        }
+        if (!formData.OwnersNo) {
+          newErrors.OwnersNo = "Please Select Number Of Owners.";
+        }
+        if (!formData.KmDriven || Number(formData.KmDriven) <= 0) {
+          newErrors.KmDriven = "Please Enter Valid KM Driven.";
+        }
       }
-    
+
       // Jobs-specific fields
       if (isJob) {
         if (!formData.salaryPeriod) {
@@ -324,24 +325,24 @@ function AllCategoryRentalForm() {
           newErrors.salaryTo = "Please Enter Salary To.";
         }
       }
-    
+
       // Mobile-specific fields
-      if(isMobile){
+      if (isMobile) {
         if (isMobile && !formData.MobileModel) {
           newErrors.MobileModel = "Please Select Mobile Brand and Model.";
         }
       }
     }
-    
+
     if (step === 4 && !formData.location?.state) {
       newErrors.location = "Please Select Your Location.";
     }
-  
+
     if (step === 5 && !formData.termsAccepted) {
       newErrors.termsAccepted = "You must accept the terms.";
     }
-    
-  
+
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -350,7 +351,7 @@ function AllCategoryRentalForm() {
     if (!skipValidation && !validateStep(step)) return;
     setStep(nextStep);
   };
-  
+
 
   useEffect(() => {
     fetch(`/api/getLocalShopById?id=${shopId}`)
@@ -391,7 +392,7 @@ function AllCategoryRentalForm() {
   const [pickupLat, setPickupLat] = useState(null);
   const [pickupLng, setPickupLng] = useState(null);
   const [pickupAddress, setPickupAddress] = useState('');
-  
+
   const handleLocationUpdate = (productId, lat, lng, address) => {
     console.log('Location updated:', { lat, lng, address });
   };
@@ -755,7 +756,7 @@ function AllCategoryRentalForm() {
     Nothing: ["Phone (1)", "Phone (2)"],
     Others: ["Other Model"],
   };
-  
+
 
   // Handler
   const handleFileChange = (
@@ -809,8 +810,8 @@ function AllCategoryRentalForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-     // Validate SaleType
-     const newErrors: { [key: string]: string } = {};
+    // Validate SaleType
+    const newErrors: { [key: string]: string } = {};
     // ✅ Skip SaleType & price validation for these categories
     const skipSaleTypeValidation = ["jobs", "services", "education & learning"].includes(selectedCategory?.toLowerCase() || "");
 
@@ -838,21 +839,21 @@ function AllCategoryRentalForm() {
       }
     }
 
-// ✅ Sale validations
-if (!skipSaleTypeValidation && formData.SaleType === "Sale" && !formData.SalePrice) {
-  newErrors.SalePrice = "Please enter sale price.";
-}
+    // ✅ Sale validations
+    if (!skipSaleTypeValidation && formData.SaleType === "Sale" && !formData.SalePrice) {
+      newErrors.SalePrice = "Please enter sale price.";
+    }
 
-// ✅ Terms
-if (!formData.termsAccepted) {
-  newErrors.termsAccepted = "You must accept the terms.";
-}
-     setErrors(newErrors);
-   
-     // ❌ Stop submission if errors exist
-     if (Object.keys(newErrors).length > 0) {
-       return;
-     }
+    // ✅ Terms
+    if (!formData.termsAccepted) {
+      newErrors.termsAccepted = "You must accept the terms.";
+    }
+    setErrors(newErrors);
+
+    // ❌ Stop submission if errors exist
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
 
     const payload = new FormData();
 
@@ -1059,7 +1060,7 @@ if (!formData.termsAccepted) {
         method: "POST",
         body: payload,
       });
-    
+
       if (res.status === 403) {
         const data = await res.json();
         Swal.fire({
@@ -1078,7 +1079,7 @@ if (!formData.termsAccepted) {
         setLoading(false);
         return;
       }
-    
+
       const result = await res.json();
       if (result.success) {
         Swal.fire({
@@ -1108,7 +1109,7 @@ if (!formData.termsAccepted) {
     } finally {
       setLoading(false);
     }
-    
+
   };
 
   const handleLocationSelect = (locationData) => {
@@ -1118,9 +1119,276 @@ if (!formData.termsAccepted) {
     }));
   };
 
+  const categoryIconFiles = [
+    "residential.png",
+    "customer-service.png",
+    "truck.png",
+    "motor-sports.png",
+    "mobile-app.png",
+    "banner.png",
+    "light-bulb.png",
+    "settings.png",
+    "pets.png",
+    "businessman.png",
+    "referee.png",
+    "dress.png",
+    "furnitures.png",
+    "device.png",
+    "car.png",
+    "spare-parts.svg",
+    "category.png"
+  ];
+  const subcategoryIconFiles = [
+    // Real Estate
+    "housing.png",
+    "store.png",
+    "maps-and-location.png",
+    "building.png",
+    "house.png",
+
+    // Vehicles
+    "car.png",
+    "motor-sports.png",
+    "wheel.png",
+    "scooter.png",
+    "bicycle.png",
+
+    // Mobiles
+    "phone.png",
+    "tablet.png",
+    "adapter.png",
+    "sketch-book.png",
+
+    // Tools & Equipment
+    "housekeeping.png",
+    "car-battery.png",
+    "helmet.png",
+    "first-aid-kit.png",
+    "cultivator.png",
+
+    // Services
+    "document.png",
+    "camera.png",
+    "virtual-class.png",
+    "healthcare.png",
+    "box.png",
+    "catering.png",
+    "house-cleaning.png",
+    "mechanic.png",
+
+    // Electronics
+    "television.png",
+    "computer.png",
+    "electric-appliance.png",
+    "outdoor-unit.png",
+    "kitchenCabinet.png",
+    "camera.png",
+    "gameController.png",
+    "domotics.png",
+    "powerBank.png",
+    "projector.png",
+    "dataAnalysis.png",
+    "printer.png",
+    "waterPurifier.png",
+    "heater.png",
+    "headphones.png",
+    "laundryMachine.png",
+
+    // Books & Sports
+    "dumbbell.png",
+    "stack-of-books.png",
+    "guitar.png",
+    "sports.png",
+    "data-collection.png",
+    "chess-piece.png",
+    "teddy-bear.png",
+
+    // Fashion
+    "sari.png",
+    "sunglasses.png",
+    "sneakers.png",
+    "fashion.png",
+    "male-clothes.png",
+    "baby-clothing.png",
+
+    // Education & Learning
+    "academic.png",
+    "medal.png",
+    "teacher.png",
+    "conference.png",
+
+    // Commercial Vehicles
+    "fashion.png",          // (Tractors – seems incorrect icon)
+    "truck.png",
+    "rickshaw.png",
+    "transport.png",
+    "pickup-car.png",
+    "student.png",
+    "Tippers.png",
+    "delivery-van.png",
+
+    // Jobs
+    "worker.png",
+    "delivery-man.png",
+    "taxi-driver.png",
+    "freelance-work.png",
+    "work-from-home.png",
+    "internship.png",
+    "part-time.png",
+    "full-time-job.png",
+
+    // Furniture
+    "sofa.png",
+    "bed.png",
+    "chair.png",
+    "shelf.png",
+    "mat.png",
+    "workspace.png",
+
+    // Pets
+    "cat.png",
+    "dog.png",
+    "love-birds.png",
+    "clown-fish.png",
+    "pet-care.png",
+
+    // Others
+    "sketch-book.png",
+
+    // Default
+    "subcategory.png"
+  ];
+  const categoryIcons: Record<string, string> = {
+    "Real Estate": "/icons/residential.png",
+    "Services": "/icons/customer-service.png",
+    "Commercial Vehicles": "/icons/truck.png",
+    "Vehicles": "/icons/motor-sports.png",
+    "Mobiles": "/icons/mobile-app.png",
+    "Events & Entertainment": "/icons/banner.png",
+    "Education & Learning": "/icons/light-bulb.png",
+    "Tools & Equipment": "/icons/settings.png",
+    "Pets & Pet Care": "/icons/pets.png",
+    "Jobs": "/icons/businessman.png",
+    "Books & Sports": "/icons/referee.png",
+    "Fashion": "/icons/dress.png",
+    "Furniture": "/icons/furnitures.png",
+    "Electronics & Appliances": "/icons/device.png",
+    "Car": "/icons/car.png",
+    "Spare Parts": "/icons/spare-parts.svg",
+    "Default": "/icons/category.png"
+  };
+  // ==== SUBCATEGORY ICONS ====
+  const subcategoryIcons: Record<string, string> = {
+    "House & Apartments": "/icons/housing.png",
+    "Shops & Offices": "/icons/store.png",
+    "Land & Plots": "/icons/maps-and-location.png",
+    "Commercial Properties": "/icons/building.png",
+    "PG & Guest House": "/icons/house.png",
+
+    "Cars": "/icons/car.png",
+    "Motorcycles": "/icons/motor-sports.png",
+    "Spare Parts": "/icons/wheel.png",
+    "Scooters": "/icons/scooter.png",
+    "Bicycles": "/icons/bicycle.png",
+
+    "Mobile Phones": "/icons/phone.png",
+    "Tablets": "/icons/tablet.png",
+    "Accessories": "/icons/adapter.png",
+    "Other Device": "/icons/sketch-book.png",
+
+    "Cleaning Tools": "/icons/housekeeping.png",
+    "Power Tools": "/icons/car-battery.png",
+    "Construction Tools": "/icons/helmet.png",
+    "Medical Equipment": "/icons/first-aid-kit.png",
+    "Farming Tools": "/icons/cultivator.png",
+    "Other Tools": "/icons/sketch-book.png",
+
+    "Legal & Documentation": "/icons/document.png",
+    "Photography": "/icons/camera.png",
+    "Tutors & Classes": "/icons/virtual-class.png",
+    "Health & Wellness": "/icons/healthcare.png",
+    "Packers & Movers": "/icons/box.png",
+    "Event Services": "/icons/catering.png",
+    "Home Services": "/icons/house-cleaning.png",
+    "Repair": "/icons/mechanic.png",
+
+    "TV & Video": "/icons/television.png",
+    "Computers & Laptops": "/icons/computer.png",
+    "Home Appliances": "/icons/electric-appliance.png",
+    "ACs & Coolers": "/icons/outdoor-unit.png",
+    "Kitchen Appliances": "/icons/kitchenCabinet.png",
+    "Cameras & Accessories": "/icons/camera.png",
+    "Gaming Consoles": "/icons/gameController.png",
+    "Smart Home Devices": "/icons/domotics.png",
+    "Power Banks & Chargers": "/icons/powerBank.png",
+    "Projectors": "/icons/projector.png",
+    "Monitors & Accessories": "/icons/dataAnalysis.png",
+    "Printers & Scanners": "/icons/printer.png",
+    "Water Purifiers": "/icons/waterPurifier.png",
+    "Heaters & Geysers": "/icons/heater.png",
+    "Audio & Music Systems": "/icons/headphones.png",
+    "Washing Machines": "/icons/laundryMachine.png",
+    "Other Electronics": "/icons/sketch-book.png",
+
+    "Gym & Fitness": "/icons/dumbbell.png",
+    "Books": "/icons/stack-of-books.png",
+    "Musical Instruments": "/icons/guitar.png",
+    "Sports Equipment": "/icons/sports.png",
+    "Collectibles": "/icons/data-collection.png",
+    "Board Games": "/icons/chess-piece.png",
+    "Toys": "/icons/teddy-bear.png",
+
+    "Ethnic Wear": "/icons/sari.png",
+    "Eyewear": "/icons/sunglasses.png",
+    "Footwear": "/icons/sneakers.png",
+    "Women’s Clothing": "/icons/fashion.png",
+    "Men’s Clothing": "/icons/male-clothes.png",
+    "Kids": "/icons/baby-clothing.png",
+
+    "Skill Courses": "/icons/academic.png",
+    "Competitive Exam Material": "/icons/medal.png",
+    "Tuition": "/icons/teacher.png",
+    "Coaching Classes": "/icons/conference.png",
+
+    "Tractors": "/icons/fashion.png",
+    "Mini Trucks": "/icons/truck.png",
+    "Auto Rickshaws": "/icons/rickshaw.png",
+    "E-Rickshaws": "/icons/transport.png",
+    "Pickups": "/icons/pickup-car.png",
+    "Passenger Buses": "/icons/student.png",
+    "Construction Vehicles": "/icons/Tippers.png",
+    "Delivery Vans": "/icons/delivery-van.png",
+
+    "Office Jobs": "/icons/worker.png",
+    "Delivery Jobs": "/icons/delivery-man.png",
+    "Driver Jobs": "/icons/taxi-driver.png",
+    "Freelancers": "/icons/freelance-work.png",
+    "Work from Home": "/icons/work-from-home.png",
+    "Internships": "/icons/internship.png",
+    "Part-time": "/icons/part-time.png",
+    "Full-time": "/icons/full-time-job.png",
+    "Other Jobs": "/icons/sketch-book.png",
+
+    "Sofas & Dining": "/icons/sofa.png",
+    "Beds & Wardrobes": "/icons/bed.png",
+    "Tables & Chairs": "/icons/chair.png",
+    "Home Decor & Garden": "/icons/shelf.png",
+    "Mattresses": "/icons/mat.png",
+    "Office Furniture": "/icons/workspace.png",
+    "Other Household Items": "/icons/sketch-book.png",
+
+    "Cats": "/icons/cat.png",
+    "Dogs": "/icons/dog.png",
+    "Birds": "/icons/love-birds.png",
+    "Fish & Aquariums": "/icons/clown-fish.png",
+    "Pet Care Services": "/icons/pet-care.png",
+    "Other Pets": "/icons/sketch-book.png",
+
+    "Default": "/icons/subcategory.png",
+  };
   return (
     <>
-    <Head>
+      <Head>
         <title>Post Your Product – OnShoper</title>
         <meta
           name="description"
@@ -1136,683 +1404,589 @@ if (!formData.termsAccepted) {
         <meta property="og:url" content="https://onshoper.com/product/create" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-    <form className={styles.formContainer} onSubmit={handleSubmit}>
-      <h2>Post Your: <span className={styles.SelectedItem}>{selectedCategory} {">"} {selectedSubcategory}</span></h2>
-
-      {step === 1 && (
-        <div className={styles.slideIn}>
-          <div className={styles.formGroup}>
-            <label>Category</label>
-            <select value={selectedCategory} onChange={(e) => { setSelectedCategory(e.target.value); setStep(2); }}>
-              <option value="">Select Category</option>
-              {Object.keys(categories).map((cat) => <option key={cat} value={cat}>{cat}</option>)}
-            </select>
-          </div>
-        </div>
-      )}
-
-      {step === 2 && (
-        <div className={styles.slideIn}>
-          <div className={styles.formGroup}>
-            <label>Subcategory</label>
-            <select value={selectedSubcategory} onChange={(e) => { setSelectedSubcategory(e.target.value); setStep(3); }}>
-              <option value="">Select Subcategory</option>
-              {categories[selectedCategory]?.map((sub) => <option key={sub} value={sub}>{sub}</option>)}
-            </select>
-          </div>
-          <center><button type="button" className={styles.backButton} onClick={() => goToStep(1, true)}>← Back</button></center>
-        </div>
-      )}
-
-      {step === 3 && (
-        <div className={styles.slideIn}>
-          {!["Services"].includes(selectedSubcategory) &&
-            !["Services", "Jobs", "Education & Learning"].includes(selectedCategory) && (
-              <>
-              <div className={styles.formGroup}>
-                <label>Type</label>
-                <div className={styles.SaleType}>
-                  <label> <input type="radio" name="SaleType" value="Rent" checked={formData.SaleType === "Rent"} onChange={handleChange} />Rent</label>
-                  <label><input type="radio" name="SaleType" value="Sale" checked={formData.SaleType === "Sale"} onChange={handleChange} />Sale</label>
-                </div>
-                {!["Jobs", "Services", "Education & Learning"].includes(selectedCategory) &&
-                  errors.SaleType && (
-                    <p className={styles.errorText}>{errors.SaleType}</p>
-                )}
-              </div>
-              </>
-            )}
-          
-          
-          {/* Start Parts-Type */}
-          {selectedSubcategory === "Spare Parts" && (
-            <div className={styles.FormChildGroup}>
-              <div className={styles.formGroup}>
-                <label>Spare Parts-Type</label>
-                <select name="SpareParts" value={formData.SpareParts}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      SpareParts: e.target.value,
-                    }))
-                  }
-                >
-                  <option value="">Select Type</option>
-                  <option value="Wheels & Tyres">Wheels & Tyres</option>
-                  <option value="Audio Accessories">Audio Accessories</option>
-                  <option value="Lighting & Electricals">Lighting & Electricals</option>
-                  <option value="Mirrors & Glasses">Mirrors & Glasses</option>
-                  <option value="Body Parts">Body Parts</option>
-                  <option value="Brakes & Suspension">Brakes & Suspension</option>
-                  <option value="Engine Components">Engine Components</option>
-                  <option value="Transmission Systems">Transmission Systems</option>
-                  <option value="Cooling Systems">Cooling Systems</option>
-                  <option value="Other Spare Parts">Other Spare Parts</option>
-                </select>
-                {errors.SpareParts && <p className={styles.errorText}>{errors.SpareParts  }</p>}
-              </div>
-            </div>
-          )}
-          {/* End Parts-Type */}
+      <form className={styles.formContainer} onSubmit={handleSubmit}>
+        <h2>Post Your: <span className={styles.SelectedItem}>{selectedCategory} {">"} {selectedSubcategory}</span></h2>
 
 
-          {/* Commercial Vehicles  */}
-          {selectedCategory === "Commercial Vehicles" && (
-            <>
-              <div className={styles.FormChildGroup}>
-                <div className={styles.formGroup}>
-                  <label>Commercial Vehicle Brand</label>
-                  <select name="commercialBrand" value={formData.commercialBrand}
-                    onChange={(e) => {
-                      setFormData((prev) => ({
-                        ...prev,
-                        commercialBrand: e.target.value,
-                        commercialModel: "", // reset model when brand changes
-                      }));
+        {step === 1 && (
+          <div className={styles.slideIn}>
+            <div className={styles.listContainer}>
+              <ul className={styles.listBox}>
+                {Object.keys(categories).map((cat) => (
+                  <li
+                    key={cat}
+                    className={styles.listItem}
+                    onClick={() => {
+                      setSelectedCategory(cat);
+                      setStep(2);
                     }}
                   >
-                    <option value="">Select Brand</option>
-                    {Object.keys(commercialVehicleBrands).map((brand) => (
-                      <option key={brand} value={brand}>
-                        {brand.replace("commercial", "")} {/* Show cleaner brand label */}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                    <Image
+                      src={categoryIcons[cat] || categoryIcons["Default"]}
+                      alt={cat}
+                      width={40}
+                      height={40}
+                      className={styles.icon}
+                    />
 
-                {formData.commercialBrand && (
+
+                    <span className={styles.title}>{cat}</span>
+
+
+                    <span className={styles.arrow}>›</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+
+
+        {step === 2 && (
+          <div className={styles.slideIn}>
+            <div className={styles.listContainer}>
+              <ul className={styles.listBox}>
+                {categories[selectedCategory]?.map((sub) => (
+                  <li
+                    key={sub}
+                    className={styles.listItem}
+                    onClick={() => {
+                      setSelectedSubcategory(sub);
+                      setStep(3);
+                    }}
+                  >
+                    <Image
+                      src={subcategoryIcons[sub] || subcategoryIcons["Default"]}
+                      alt={sub}
+                      width={40}
+                      height={40}
+                      className={styles.icon}
+                    />
+
+
+                    <span className={styles.title}>{sub}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+
+            <center>
+              <button
+                type="button"
+                className={styles.backButton}
+                onClick={() => goToStep(1, true)}
+              >
+                ← Back
+              </button>
+            </center>
+          </div>
+        )}
+
+
+
+        {step === 3 && (
+          <div className={styles.slideIn}>
+            {!["Services"].includes(selectedSubcategory) &&
+              !["Services", "Jobs", "Education & Learning"].includes(selectedCategory) && (
+                <>
                   <div className={styles.formGroup}>
-                    <label>Commercial Vehicle Model</label>
-                    <select name="commercialModel" value={formData.commercialModel}
-                      onChange={(e) =>
+                    <label>Type</label>
+                    <div className={styles.SaleType}>
+                      <label> <input type="radio" name="SaleType" value="Rent" checked={formData.SaleType === "Rent"} onChange={handleChange} />Rent</label>
+                      <label><input type="radio" name="SaleType" value="Sale" checked={formData.SaleType === "Sale"} onChange={handleChange} />Sale</label>
+                    </div>
+                    {!["Jobs", "Services", "Education & Learning"].includes(selectedCategory) &&
+                      errors.SaleType && (
+                        <p className={styles.errorText}>{errors.SaleType}</p>
+                      )}
+                  </div>
+                </>
+              )}
+
+
+            {/* Start Parts-Type */}
+            {selectedSubcategory === "Spare Parts" && (
+              <div className={styles.FormChildGroup}>
+                <div className={styles.formGroup}>
+                  <label>Spare Parts-Type</label>
+                  <select name="SpareParts" value={formData.SpareParts}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        SpareParts: e.target.value,
+                      }))
+                    }
+                  >
+                    <option value="">Select Type</option>
+                    <option value="Wheels & Tyres">Wheels & Tyres</option>
+                    <option value="Audio Accessories">Audio Accessories</option>
+                    <option value="Lighting & Electricals">Lighting & Electricals</option>
+                    <option value="Mirrors & Glasses">Mirrors & Glasses</option>
+                    <option value="Body Parts">Body Parts</option>
+                    <option value="Brakes & Suspension">Brakes & Suspension</option>
+                    <option value="Engine Components">Engine Components</option>
+                    <option value="Transmission Systems">Transmission Systems</option>
+                    <option value="Cooling Systems">Cooling Systems</option>
+                    <option value="Other Spare Parts">Other Spare Parts</option>
+                  </select>
+                  {errors.SpareParts && <p className={styles.errorText}>{errors.SpareParts}</p>}
+                </div>
+              </div>
+            )}
+            {/* End Parts-Type */}
+
+
+            {/* Commercial Vehicles  */}
+            {selectedCategory === "Commercial Vehicles" && (
+              <>
+                <div className={styles.FormChildGroup}>
+                  <div className={styles.formGroup}>
+                    <label>Commercial Vehicle Brand</label>
+                    <select name="commercialBrand" value={formData.commercialBrand}
+                      onChange={(e) => {
                         setFormData((prev) => ({
                           ...prev,
-                          commercialModel: e.target.value,
-                        }))
-                      }
+                          commercialBrand: e.target.value,
+                          commercialModel: "", // reset model when brand changes
+                        }));
+                      }}
                     >
-                      <option value="">Select Model</option>
-                      {commercialVehicleBrands[formData.commercialBrand].map((model) => (
-                        <option key={model} value={model}>
-                          {model.replace("commercial", "")} {/* Show cleaner model label */}
+                      <option value="">Select Brand</option>
+                      {Object.keys(commercialVehicleBrands).map((brand) => (
+                        <option key={brand} value={brand}>
+                          {brand.replace("commercial", "")} {/* Show cleaner brand label */}
                         </option>
                       ))}
                     </select>
                   </div>
-                )}
-                {errors.commercialBrand && <p className={styles.errorText}>{errors.commercialBrand  }</p>}
-                <br/>
-              </div>
-              <div className={styles.formGroup}>
-                <label>Year</label>
-                <input type="number" name="year" value={formData.year || ""} onChange={(e) => {
-                  const inputValue = e.target.value;
-                  if (inputValue === "") {
-                    handleChange(e);
-                    return;
-                  }
-                  const year = Number(inputValue);
-                  const currentYear = new Date().getFullYear();
 
-                  // Allow typing any 4-digit number but validate range
-                  if (inputValue.length <= 4) {
-                    if (year >= 1900 && year <= currentYear) {
+                  {formData.commercialBrand && (
+                    <div className={styles.formGroup}>
+                      <label>Commercial Vehicle Model</label>
+                      <select name="commercialModel" value={formData.commercialModel}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            commercialModel: e.target.value,
+                          }))
+                        }
+                      >
+                        <option value="">Select Model</option>
+                        {commercialVehicleBrands[formData.commercialBrand].map((model) => (
+                          <option key={model} value={model}>
+                            {model.replace("commercial", "")} {/* Show cleaner model label */}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                  {errors.commercialBrand && <p className={styles.errorText}>{errors.commercialBrand}</p>}
+                  <br />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Year</label>
+                  <input type="number" name="year" value={formData.year || ""} onChange={(e) => {
+                    const inputValue = e.target.value;
+                    if (inputValue === "") {
                       handleChange(e);
-                    } else {
-                      // Allow typing in progress even if it's not yet valid (like '2' or '202')
-                      handleChange(e);
+                      return;
                     }
-                  }
-                }}
-                  placeholder=""
-                  inputMode="numeric"
-                />
-                {errors.year && <p className={styles.errorText}>{errors.year  }</p>}
-              </div>
+                    const year = Number(inputValue);
+                    const currentYear = new Date().getFullYear();
 
-              <div className={styles.formGroup}>
-                <label>Fuel Type</label>
-                <select name="fuel" value={formData.fuel || ""} onChange={handleChange}>
-                  <option value="">Select Fuel Type</option>
-                  <option value="Petrol">Petrol</option>
-                  <option value="Diesel">Diesel</option>
-                  <option value="Electric">Electric</option>
-                  <option value="CNG">CNG</option>
-                </select>
-                {errors.fuel && <p className={styles.errorText}>{errors.fuel}</p>}
-              </div>
-              <div className={styles.formGroup}>
-                <label>Transmission</label>
-                <select name="transmission" value={formData.transmission || ""} onChange={handleChange}>
-                  <option value="">Select Transmission</option>
-                  <option value="Manual">Manual</option>
-                  <option value="Automatic">Automatic</option>
-                </select>
-                {errors.transmission && <p className={styles.errorText}>{errors.transmission}</p>}
-                
-              </div>
+                    // Allow typing any 4-digit number but validate range
+                    if (inputValue.length <= 4) {
+                      if (year >= 1900 && year <= currentYear) {
+                        handleChange(e);
+                      } else {
+                        // Allow typing in progress even if it's not yet valid (like '2' or '202')
+                        handleChange(e);
+                      }
+                    }
+                  }}
+                    placeholder=""
+                    inputMode="numeric"
+                  />
+                  {errors.year && <p className={styles.errorText}>{errors.year}</p>}
+                </div>
 
-              <div className={styles.formGroup}>
-                <label>Number of Owners</label>
-                <select name="OwnersNo" value={formData.OwnersNo || ""} onChange={handleChange}>
-                  <option value="">Select</option>
-                  <option value="1">1st Owner</option>
-                  <option value="2">2nd Owner</option>
-                  <option value="3">3rd Owner</option>
-                  <option value="4+">4th or more</option>
-                </select>
-                {errors.OwnersNo && <p className={styles.errorText}>{errors.OwnersNo}</p>}
-              </div>
-              <div className={styles.formGroup}>
-                <label>KM Driven</label>
-                <input type="number" name="KmDriven" value={formData.KmDriven || ""} onChange={handleChange} placeholder=".."/>
-                {errors.KmDriven && <p className={styles.errorText}>{errors.KmDriven}</p>}
-              </div>
-            </>
-            
-          )}
-          {/* End Commercial Vehicles */}
-          {/* {errors.fuel && <p className={styles.error}>{errors.fuel}</p>} */}
-                {/* {errors.transmission && <p className={styles.error}>{errors.transmission}</p>} */}
-                {/* {errors.OwnersNo && <p className={styles.error}>{errors.OwnersNo}</p>}
+                <div className={styles.formGroup}>
+                  <label>Fuel Type</label>
+                  <select name="fuel" value={formData.fuel || ""} onChange={handleChange}>
+                    <option value="">Select Fuel Type</option>
+                    <option value="Petrol">Petrol</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Electric">Electric</option>
+                    <option value="CNG">CNG</option>
+                  </select>
+                  {errors.fuel && <p className={styles.errorText}>{errors.fuel}</p>}
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Transmission</label>
+                  <select name="transmission" value={formData.transmission || ""} onChange={handleChange}>
+                    <option value="">Select Transmission</option>
+                    <option value="Manual">Manual</option>
+                    <option value="Automatic">Automatic</option>
+                  </select>
+                  {errors.transmission && <p className={styles.errorText}>{errors.transmission}</p>}
+
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Number of Owners</label>
+                  <select name="OwnersNo" value={formData.OwnersNo || ""} onChange={handleChange}>
+                    <option value="">Select</option>
+                    <option value="1">1st Owner</option>
+                    <option value="2">2nd Owner</option>
+                    <option value="3">3rd Owner</option>
+                    <option value="4+">4th or more</option>
+                  </select>
+                  {errors.OwnersNo && <p className={styles.errorText}>{errors.OwnersNo}</p>}
+                </div>
+                <div className={styles.formGroup}>
+                  <label>KM Driven</label>
+                  <input type="number" name="KmDriven" value={formData.KmDriven || ""} onChange={handleChange} placeholder=".." />
+                  {errors.KmDriven && <p className={styles.errorText}>{errors.KmDriven}</p>}
+                </div>
+              </>
+
+            )}
+            {/* End Commercial Vehicles */}
+            {/* {errors.fuel && <p className={styles.error}>{errors.fuel}</p>} */}
+            {/* {errors.transmission && <p className={styles.error}>{errors.transmission}</p>} */}
+            {/* {errors.OwnersNo && <p className={styles.error}>{errors.OwnersNo}</p>}
                 {errors.KmDriven && <p className={styles.error}>{errors.KmDriven}</p>} */}
-          {/* Jobs */}
-          {selectedCategory === "Jobs" && (
-            <>
-              <div className={styles.FormCol2}>
-                <div className={styles.formGroup}>
-                  <label>Salary Period</label>
-                  <select value={formData.salaryPeriod} onChange={(e) => setFormData({ ...formData, salaryPeriod: e.target.value })} >
-                    <option value="">Select Salary Period</option>
-                    <option value="Hourly">Hourly</option>
-                    <option value="Daily">Daily</option>
-                    <option value="Weekly">Weekly</option>
-                    <option value="Monthly">Monthly</option>
-                    <option value="Yearly">Yearly</option>
-                  </select>
-                  {errors.salaryPeriod && <p className={styles.errorText}>{errors.salaryPeriod}</p>}
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Position Type</label>
-                  <select value={formData.positionType} onChange={(e) => setFormData({ ...formData, positionType: e.target.value })}>
-                    <option value="">Select Position Type</option>
-                    <option value="Full Time">Full Time</option>
-                    <option value="Part Time">Part Time</option>
-                    <option value="Contract">Contract</option>
-                    <option value="Temporary">Temporary</option>
-                  </select>
-                  {errors.positionType && <p className={styles.errorText}>{errors.positionType}</p>}
-                </div>
-              </div>
-
-              <div className={styles.SalaryFromTo}>
-                <div className={styles.formGroup}>
-                  <label>Salary From</label>
-                  <input type="text" placeholder="Enter minimum salary" value={formatRupee(formData.salaryFrom)}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        salaryFrom: e.target.value.replace(/[^0-9]/g, ""),
-                      })
-                    }
-                  />
-                  {errors.salaryFrom && <p className={styles.errorText}>{errors.salaryFrom}</p>}
+            {/* Jobs */}
+            {selectedCategory === "Jobs" && (
+              <>
+                <div className={styles.FormCol2}>
+                  <div className={styles.formGroup}>
+                    <label>Salary Period</label>
+                    <select value={formData.salaryPeriod} onChange={(e) => setFormData({ ...formData, salaryPeriod: e.target.value })} >
+                      <option value="">Select Salary Period</option>
+                      <option value="Hourly">Hourly</option>
+                      <option value="Daily">Daily</option>
+                      <option value="Weekly">Weekly</option>
+                      <option value="Monthly">Monthly</option>
+                      <option value="Yearly">Yearly</option>
+                    </select>
+                    {errors.salaryPeriod && <p className={styles.errorText}>{errors.salaryPeriod}</p>}
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Position Type</label>
+                    <select value={formData.positionType} onChange={(e) => setFormData({ ...formData, positionType: e.target.value })}>
+                      <option value="">Select Position Type</option>
+                      <option value="Full Time">Full Time</option>
+                      <option value="Part Time">Part Time</option>
+                      <option value="Contract">Contract</option>
+                      <option value="Temporary">Temporary</option>
+                    </select>
+                    {errors.positionType && <p className={styles.errorText}>{errors.positionType}</p>}
+                  </div>
                 </div>
 
-                <div className={styles.formGroup}>
-                  <label>Salary To</label>
-                  <input type="text" placeholder="Enter maximum salary" value={formatRupee(formData.salaryTo)}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        salaryTo: e.target.value.replace(/[^0-9]/g, ""),
-                      })
-                    }
-                  />
-                  {errors.salaryTo && <p className={styles.errorText}>{errors.salaryTo}</p>}
+                <div className={styles.SalaryFromTo}>
+                  <div className={styles.formGroup}>
+                    <label>Salary From</label>
+                    <input type="text" placeholder="Enter minimum salary" value={formatRupee(formData.salaryFrom)}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          salaryFrom: e.target.value.replace(/[^0-9]/g, ""),
+                        })
+                      }
+                    />
+                    {errors.salaryFrom && <p className={styles.errorText}>{errors.salaryFrom}</p>}
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Salary To</label>
+                    <input type="text" placeholder="Enter maximum salary" value={formatRupee(formData.salaryTo)}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          salaryTo: e.target.value.replace(/[^0-9]/g, ""),
+                        })
+                      }
+                    />
+                    {errors.salaryTo && <p className={styles.errorText}>{errors.salaryTo}</p>}
+                  </div>
                 </div>
-              </div>
 
-            </>
-          )}
+              </>
+            )}
 
-          {/* End Jobs */}
+            {/* End Jobs */}
 
-          {/* Tablets */}
-          {selectedSubcategory === "Tablets" && (
-            <div className={styles.formGroup}>
-              <label>Type</label>
-              <select name="TabsType" value={formData.TabsType || ""}
-                onChange={handleChange}>
-                <option value="">Select Subtype</option>
-                <option value="Ipads">Ipads</option>
-                <option value="Samsung">Samsung</option>
-                <option value="Other Tablets">Other Tablets</option>
-              </select>
-            </div>
-          )}
-          {/* End Tablets */}
-
-          {/* Mobile Accessories */}
-          {selectedSubcategory === "Accessories" && (
-            <div className={styles.formGroup}>
-              <label>Accessories Type</label>
-              <select value={formData.AccessoriesType} onChange={(e) => setFormData({ ...formData, AccessoriesType: e.target.value })}>
-                <option value="">Select Type</option>
-                <option value="Ipads">Ipads</option>
-                <option value="Mobile">Mobile</option>
-              </select>
-            </div>
-
-          )}
-          {/* End Mobile Accessories */}
-
-          {/* Mobiles */}
-          {selectedSubcategory === "Mobile Phones" && (
-            <div className={styles.FormChildGroup}>
+            {/* Tablets */}
+            {selectedSubcategory === "Tablets" && (
               <div className={styles.formGroup}>
-                <label>Mobile Brand</label>
-                <select name="MobileBrand" value={formData.MobileBrand} onChange={(e) => {
+                <label>Type</label>
+                <select name="TabsType" value={formData.TabsType || ""}
+                  onChange={handleChange}>
+                  <option value="">Select Subtype</option>
+                  <option value="Ipads">Ipads</option>
+                  <option value="Samsung">Samsung</option>
+                  <option value="Other Tablets">Other Tablets</option>
+                </select>
+              </div>
+            )}
+            {/* End Tablets */}
+
+            {/* Mobile Accessories */}
+            {selectedSubcategory === "Accessories" && (
+              <div className={styles.formGroup}>
+                <label>Accessories Type</label>
+                <select value={formData.AccessoriesType} onChange={(e) => setFormData({ ...formData, AccessoriesType: e.target.value })}>
+                  <option value="">Select Type</option>
+                  <option value="Ipads">Ipads</option>
+                  <option value="Mobile">Mobile</option>
+                </select>
+              </div>
+
+            )}
+            {/* End Mobile Accessories */}
+
+            {/* Mobiles */}
+            {selectedSubcategory === "Mobile Phones" && (
+              <div className={styles.FormChildGroup}>
+                <div className={styles.formGroup}>
+                  <label>Mobile Brand</label>
+                  <select name="MobileBrand" value={formData.MobileBrand} onChange={(e) => {
                     setFormData((prev) => ({
                       ...prev,
                       MobileBrand: e.target.value,
                       MobileModel: "", // reset model when brand changes
                     }));
                   }}>
-                  <option value="">Select Brand</option>
-                  {Object.keys(mobileBrands).map((brand) => (
-                    <option key={brand} value={brand}>
-                      {brand}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {formData.MobileBrand && (
-                <div className={styles.formGroup}>
-                  <label>Mobile Model</label>
-                  <select name="MobileModel" value={formData.MobileModel || ""}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        MobileModel: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="">Select Model</option>
-                    {mobileBrands[formData.MobileBrand].map((model) => (
-                      <option key={model} value={model}>
-                        {model}
+                    <option value="">Select Brand</option>
+                    {Object.keys(mobileBrands).map((brand) => (
+                      <option key={brand} value={brand}>
+                        {brand}
                       </option>
                     ))}
                   </select>
                 </div>
-              )}
-              {errors.MobileModel && <p className={styles.errorText}>{errors.MobileModel}</p>}
-              <br/>
-            </div>
-          )}
 
-          {/* End Mobiles */}
+                {formData.MobileBrand && (
+                  <div className={styles.formGroup}>
+                    <label>Mobile Model</label>
+                    <select name="MobileModel" value={formData.MobileModel || ""}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          MobileModel: e.target.value,
+                        }))
+                      }
+                    >
+                      <option value="">Select Model</option>
+                      {mobileBrands[formData.MobileBrand].map((model) => (
+                        <option key={model} value={model}>
+                          {model}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                {errors.MobileModel && <p className={styles.errorText}>{errors.MobileModel}</p>}
+                <br />
+              </div>
+            )}
 
-          {selectedSubcategory === "Commercial Properties" && (
-            <>
-              <div className={styles.FormCol2}>
+            {/* End Mobiles */}
+
+            {selectedSubcategory === "Commercial Properties" && (
+              <>
+                <div className={styles.FormCol2}>
+                  <div className={styles.formGroup}>
+                    <label>Subtype</label>
+                    <select name="CommercialSubtype" value={formData.CommercialSubtype || ""}
+                      onChange={handleChange}>
+                      <option value="">Select Subtype</option>
+                      <option value="Office">Office</option>
+                      <option value="Shop">Shop</option>
+                      <option value="Showroom">Showroom</option>
+                      <option value="Warehouse">Warehouse</option>
+                    </select>
+                    {errors.CommercialSubtype && <p className={styles.errorText}>{errors.CommercialSubtype}</p>}
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Furnishings</label>
+                    <select name="furnishing" value={formData.furnishing || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="Unfurnished">Unfurnished</option>
+                      <option value="Semi-Furnished">Semi-Furnished</option>
+                      <option value="Fully-Furnished">Fully-Furnished</option>
+                    </select>
+                    {errors.furnishing && <p className={styles.errorText}>{errors.furnishing}</p>}
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Construction Status</label>
+                    <select name="ConstructionStatus" value={formData.ConstructionStatus || ""} onChange={handleChange}>
+                      <option value="">Select Status</option>
+                      <option value="New Launch">New Construction</option>
+                      <option value="Ready to Move">Ready to Move</option>
+                      <option value="Under Construction">Under Construction</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Listed By</label>
+                    <select name="listedBy" value={formData.listedBy || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="Owner">Owner</option>
+                      <option value="Dealer">Dealer</option>
+                      <option value="Builder">Builder</option>
+                    </select>
+                    {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Car Parking</label>
+                    <select name="carParking" value={formData.carParking || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="None">None</option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4+">4+</option>
+                    </select>
+                    {errors.carParking && <p className={styles.errorText}>{errors.carParking}</p>}
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Super Built-up Area (sqft)</label>
+                    <input type="number" name="superBuiltupArea" value={formData.superBuiltupArea || ""} onChange={handleChange} placeholder="e.g. 1200" />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Carpet Area (sqft)</label>
+                    <input type="number" name="carpetArea" value={formData.carpetArea || ""} onChange={handleChange} placeholder="e.g. 900" />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Maintenance (Monthly)</label>
+                    <input type="number" name="maintenance" value={formData.maintenance || ""} onChange={handleChange} placeholder="₹/month" />
+                    {errors.maintenance && <p className={styles.errorText}>{errors.maintenance}</p>}
+                  </div>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Project Name</label>
+                  <input type="text" name="projectName" value={formData.projectName || ""} onChange={handleChange} placeholder="Enter project/society name" />
+                </div>
+              </>
+            )}
+            {selectedSubcategory === "Shops & Offices" && (
+              <>
+                <div className={styles.FormCol2}>
+                  <div className={styles.formGroup}>
+                    <label>Furnishings</label>
+                    <select name="furnishing" value={formData.furnishing || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="Unfurnished">Unfurnished</option>
+                      <option value="Semi-Furnished">Semi-Furnished</option>
+                      <option value="Fully-Furnished">Fully-Furnished</option>
+                    </select>
+                    {errors.furnishing && <p className={styles.errorText}>{errors.furnishing}</p>}
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Construction Status</label>
+                    <select name="ConstructionStatus" value={formData.ConstructionStatus || ""} onChange={handleChange}>
+                      <option value="">Select Status</option>
+                      <option value="New Launch">New Construction</option>
+                      <option value="Ready to Move">Ready to Move</option>
+                      <option value="Under Construction">Under Construction</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Listed By</label>
+                    <select name="listedBy" value={formData.listedBy || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="Owner">Owner</option>
+                      <option value="Dealer">Dealer</option>
+                      <option value="Builder">Builder</option>
+                    </select>
+                    {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Car Parking</label>
+                    <select name="carParking" value={formData.carParking || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="None">None</option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4+">4+</option>
+                    </select>
+                    {errors.carParking && <p className={styles.errorText}>{errors.carParking}</p>}
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Super Built-up Area (sqft)</label>
+                    <input type="number" name="superBuiltupArea" value={formData.superBuiltupArea || ""} onChange={handleChange} placeholder="e.g. 1200" />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Carpet Area (sqft)</label>
+                    <input type="number" name="carpetArea" value={formData.carpetArea || ""} onChange={handleChange} placeholder="e.g. 900" />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Maintenance (Monthly)</label>
+                    <input type="number" name="maintenance" value={formData.maintenance || ""} onChange={handleChange} placeholder="₹/month" />
+                    {errors.maintenance && <p className={styles.errorText}>{errors.maintenance}</p>}
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Project Name</label>
+                    <input type="text" name="projectName" value={formData.projectName || ""} onChange={handleChange} placeholder="Enter project/society name" />
+                  </div>
+                </div>
+
+              </>
+            )}
+
+            {/* Start PG & Gust House */}
+            {selectedSubcategory === "PG & Guest House" && (
+              <>
+                <div className={styles.formGroup}>
+                  <label>Meals Included</label>
+                  <div className={styles.SaleType}>
+                    <label><input type="radio" name="mealsIncluded" value="Yes" checked={formData.mealsIncluded === "Yes"} onChange={handleChange} />Yes</label>
+                    <label><input type="radio" name="mealsIncluded" value="No" checked={formData.mealsIncluded === "No"} onChange={handleChange} />No</label>
+                  </div>
+                  {errors.mealsIncluded && <p className={styles.errorText}>{errors.mealsIncluded}</p>}
+                </div>
+
                 <div className={styles.formGroup}>
                   <label>Subtype</label>
-                  <select name="CommercialSubtype" value={formData.CommercialSubtype || ""}
-                    onChange={handleChange}>
+                  <select name="pgSubtype" value={formData.pgSubtype || ""} onChange={handleChange}>
                     <option value="">Select Subtype</option>
-                    <option value="Office">Office</option>
-                    <option value="Shop">Shop</option>
-                    <option value="Showroom">Showroom</option>
-                    <option value="Warehouse">Warehouse</option>
+                    <option value="PG">PG</option>
+                    <option value="Guest House">Guest House</option>
+                    <option value="Roommate">Roommate</option>
                   </select>
-                  {errors.CommercialSubtype && <p className={styles.errorText}>{errors.CommercialSubtype}</p>}
+                  {errors.pgSubtype && <p className={styles.errorText}>{errors.pgSubtype}</p>}
                 </div>
-                <div className={styles.formGroup}>
-                  <label>Furnishings</label>
-                  <select name="furnishing" value={formData.furnishing || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="Unfurnished">Unfurnished</option>
-                    <option value="Semi-Furnished">Semi-Furnished</option>
-                    <option value="Fully-Furnished">Fully-Furnished</option>
-                  </select>
-                  {errors.furnishing && <p className={styles.errorText}>{errors.furnishing}</p>}
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Construction Status</label>
-                  <select name="ConstructionStatus" value={formData.ConstructionStatus || ""} onChange={handleChange}>
-                    <option value="">Select Status</option>
-                    <option value="New Launch">New Construction</option>
-                    <option value="Ready to Move">Ready to Move</option>
-                    <option value="Under Construction">Under Construction</option>
-                  </select>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Listed By</label>
-                  <select name="listedBy" value={formData.listedBy || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="Owner">Owner</option>
-                    <option value="Dealer">Dealer</option>
-                    <option value="Builder">Builder</option>
-                  </select>
-                  {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Car Parking</label>
-                  <select name="carParking" value={formData.carParking || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="None">None</option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4+">4+</option>
-                  </select>
-                  {errors.carParking && <p className={styles.errorText}>{errors.carParking}</p>}
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Super Built-up Area (sqft)</label>
-                  <input type="number" name="superBuiltupArea" value={formData.superBuiltupArea || ""} onChange={handleChange} placeholder="e.g. 1200"/>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Carpet Area (sqft)</label>
-                  <input type="number" name="carpetArea" value={formData.carpetArea || ""} onChange={handleChange} placeholder="e.g. 900"/>
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Maintenance (Monthly)</label>
-                  <input type="number" name="maintenance" value={formData.maintenance || ""} onChange={handleChange} placeholder="₹/month"/>
-                  {errors.maintenance && <p className={styles.errorText}>{errors.maintenance}</p>}
-                </div>
-              </div>
-              <div className={styles.formGroup}>
-                <label>Project Name</label>
-                <input type="text" name="projectName" value={formData.projectName || ""} onChange={handleChange} placeholder="Enter project/society name"/>
-              </div>
-            </>
-          )}
-          {selectedSubcategory === "Shops & Offices" && (
-            <>
-              <div className={styles.FormCol2}>
-                <div className={styles.formGroup}>
-                  <label>Furnishings</label>
-                  <select name="furnishing" value={formData.furnishing || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="Unfurnished">Unfurnished</option>
-                    <option value="Semi-Furnished">Semi-Furnished</option>
-                    <option value="Fully-Furnished">Fully-Furnished</option>
-                  </select>
-                  {errors.furnishing && <p className={styles.errorText}>{errors.furnishing}</p>}
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Construction Status</label>
-                  <select name="ConstructionStatus" value={formData.ConstructionStatus || ""} onChange={handleChange}>
-                    <option value="">Select Status</option>
-                    <option value="New Launch">New Construction</option>
-                    <option value="Ready to Move">Ready to Move</option>
-                    <option value="Under Construction">Under Construction</option>
-                  </select>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Listed By</label>
-                  <select name="listedBy" value={formData.listedBy || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="Owner">Owner</option>
-                    <option value="Dealer">Dealer</option>
-                    <option value="Builder">Builder</option>
-                  </select>
-                  {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Car Parking</label>
-                  <select name="carParking" value={formData.carParking || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="None">None</option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4+">4+</option>
-                  </select>
-                  {errors.carParking && <p className={styles.errorText}>{errors.carParking}</p>}
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Super Built-up Area (sqft)</label>
-                  <input type="number" name="superBuiltupArea" value={formData.superBuiltupArea || ""} onChange={handleChange} placeholder="e.g. 1200"/>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Carpet Area (sqft)</label>
-                  <input type="number" name="carpetArea" value={formData.carpetArea || ""} onChange={handleChange} placeholder="e.g. 900"/>
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Maintenance (Monthly)</label>
-                  <input type="number" name="maintenance" value={formData.maintenance || ""} onChange={handleChange} placeholder="₹/month"/>
-                  {errors.maintenance && <p className={styles.errorText}>{errors.maintenance}</p>}
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Project Name</label>
-                  <input type="text" name="projectName" value={formData.projectName || ""} onChange={handleChange} placeholder="Enter project/society name"/>
-                </div>
-              </div>
-
-            </>
-          )}
-
-          {/* Start PG & Gust House */}
-          {selectedSubcategory === "PG & Guest House" && (
-            <>
-              <div className={styles.formGroup}>
-                <label>Meals Included</label>
-                <div className={styles.SaleType}>
-                  <label><input type="radio" name="mealsIncluded" value="Yes" checked={formData.mealsIncluded === "Yes"} onChange={handleChange} />Yes</label>
-                  <label><input type="radio" name="mealsIncluded" value="No" checked={formData.mealsIncluded === "No"} onChange={handleChange} />No</label>
-                </div>
-                {errors.mealsIncluded && <p className={styles.errorText}>{errors.mealsIncluded}</p>}
-              </div>
-
-              <div className={styles.formGroup}>
-                <label>Subtype</label>
-                <select name="pgSubtype" value={formData.pgSubtype || ""} onChange={handleChange}>
-                  <option value="">Select Subtype</option>
-                  <option value="PG">PG</option>
-                  <option value="Guest House">Guest House</option>
-                  <option value="Roommate">Roommate</option>
-                </select>
-                {errors.pgSubtype && <p className={styles.errorText}>{errors.pgSubtype}</p>}
-              </div>
-              <div className={styles.FormCol2}>
-                <div className={styles.formGroup}>
-                  <label>Listed By</label>
-                  <select name="listedBy" value={formData.listedBy || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="Owner">Owner</option>
-                    <option value="Dealer">Dealer</option>
-                    <option value="Builder">Builder</option>
-                  </select>
-                  {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Furnishings</label>
-                  <select name="furnishing" value={formData.furnishing || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="Unfurnished">Unfurnished</option>
-                    <option value="Semi-Furnished">Semi-Furnished</option>
-                    <option value="Fully-Furnished">Fully-Furnished</option>
-                  </select>
-                  {errors.furnishing && <p className={styles.errorText}>{errors.furnishing}</p>}
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Bachelors Allowed</label>
-                  <select name="bachelorsAllowed" value={formData.bachelorsAllowed || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </select>
-                  {errors.bachelorsAllowed && <p className={styles.errorText}>{errors.bachelorsAllowed}</p>}
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Car Parking</label>
-                  <select name="carParking" value={formData.carParking || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="None">None</option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4+">4+</option>
-                  </select>
-                  {errors.carParking && <p className={styles.errorText}>{errors.carParking}</p>}
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* End PG & Gust House */}
-
-
-          {/* Ploat and Lands */}
-          {selectedSubcategory === "Land & Plots" && (
-            <>
-              <div className={styles.FormCol2}>
-                <div className={styles.formGroup}>
-                  <label>Listed By</label>
-                  <select name="listedBy" value={formData.listedBy || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="Owner">Owner</option>
-                    <option value="Dealer">Dealer</option>
-                    <option value="Builder">Builder</option>
-                  </select>
-                  {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Plot Area (sqft)</label>
-                  <input type="number" name="landPlotArea" value={formData.landPlotArea || ""} onChange={handleChange} placeholder="e.g. 1200"/>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Length (ft)</label>
-                  <input type="number" name="landLength" value={formData.landLength || ""} onChange={handleChange} placeholder="e.g. 40"/>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Breadth (ft)</label>
-                  <input type="number" name="landBreadth" value={formData.landBreadth || ""} onChange={handleChange} placeholder="e.g. 30"/>
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Facing</label>
-                  <select name="facing" value={formData.facing || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="East">East</option>
-                    <option value="West">West</option>
-                    <option value="North">North</option>
-                    <option value="South">South</option>
-                  </select>
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Project Name</label>
-                  <input type="text" name="projectName" value={formData.projectName || ""} onChange={handleChange} placeholder="Enter project/society name"/>
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* End Ploats and Lands */}
-
-
-          {/* Apartment */}
-          {selectedSubcategory === "House & Apartments" && (
-            <>
-              <div className={styles.FormCol2}>
-                <div className={styles.formGroup}>
-                  <label>Type</label>
-                  <select name="apartmentType" value={formData.apartmentType || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="Apartment">Apartment</option>
-                    <option value="Builder Floor">Builder Floor</option>
-                    <option value="Farm House">Farm House</option>
-                    <option value="House & Villas">House & Villas</option>
-                  </select>
-                  {errors.apartmentType && <p className={styles.errorText}>{errors.apartmentType}</p>}
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>BHK</label>
-                  <select name="bhk" value={formData.bhk || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="1 BHK">1 BHK</option>
-                    <option value="2 BHK">2 BHK</option>
-                    <option value="3 BHK">3 BHK</option>
-                    <option value="4 BHK">4 BHK</option>
-                    <option value="5+ BHK">5+ BHK</option>
-                  </select>
-                  {errors.bhk && <p className={styles.errorText}>{errors.bhk}</p>}
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Bathrooms</label>
-                  <input type="number" name="bathrooms" value={formData.bathrooms || ""} onChange={handleChange} placeholder="Enter number of bathrooms"/>
-                  {errors.bathrooms && <p className={styles.errorText}>{errors.bathrooms}</p>}
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Furnishings</label>
-                  <select name="furnishing" value={formData.furnishing || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="Unfurnished">Unfurnished</option>
-                    <option value="Semi-Furnished">Semi-Furnished</option>
-                    <option value="Fully-Furnished">Fully-Furnished</option>
-                  </select>
-                  {errors.furnishing && <p className={styles.errorText}>{errors.furnishing}</p>}
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Listed By</label>
-                  <select name="listedBy" value={formData.listedBy || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="Owner">Owner</option>
-                    <option value="Dealer">Dealer</option>
-                    <option value="Builder">Builder</option>
-                  </select>
-                  {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Super Built-up Area (sqft)</label>
-                  <input type="number" name="superBuiltupArea" value={formData.superBuiltupArea || ""} onChange={handleChange} placeholder="e.g. 1200"/>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Carpet Area (sqft)</label>
-                  <input type="number" name="carpetArea" value={formData.carpetArea || ""} onChange={handleChange} placeholder="e.g. 900"/>
-                </div>
-
-                {formData.SaleType !== "Sale" && (
+                <div className={styles.FormCol2}>
+                  <div className={styles.formGroup}>
+                    <label>Listed By</label>
+                    <select name="listedBy" value={formData.listedBy || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="Owner">Owner</option>
+                      <option value="Dealer">Dealer</option>
+                      <option value="Builder">Builder</option>
+                    </select>
+                    {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Furnishings</label>
+                    <select name="furnishing" value={formData.furnishing || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="Unfurnished">Unfurnished</option>
+                      <option value="Semi-Furnished">Semi-Furnished</option>
+                      <option value="Fully-Furnished">Fully-Furnished</option>
+                    </select>
+                    {errors.furnishing && <p className={styles.errorText}>{errors.furnishing}</p>}
+                  </div>
                   <div className={styles.formGroup}>
                     <label>Bachelors Allowed</label>
                     <select name="bachelorsAllowed" value={formData.bachelorsAllowed || ""} onChange={handleChange}>
@@ -1822,90 +1996,237 @@ if (!formData.termsAccepted) {
                     </select>
                     {errors.bachelorsAllowed && <p className={styles.errorText}>{errors.bachelorsAllowed}</p>}
                   </div>
-                )}
-                <div className={styles.formGroup}>
-                  <label>Maintenance (Monthly)</label>
-                  <input type="number" name="maintenance" value={formData.maintenance || ""} onChange={handleChange} placeholder="₹/month"/>
-                  {errors.maintenance && <p className={styles.errorText}>{errors.maintenance}</p>}
+                  <div className={styles.formGroup}>
+                    <label>Car Parking</label>
+                    <select name="carParking" value={formData.carParking || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="None">None</option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4+">4+</option>
+                    </select>
+                    {errors.carParking && <p className={styles.errorText}>{errors.carParking}</p>}
+                  </div>
                 </div>
+              </>
+            )}
 
-                <div className={styles.formGroup}>
-                  <label>Total Floors</label>
-                  <select name="totalFloors" value={formData.totalFloors || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="None">None</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4+">4+</option>
-                  </select>
-                  {errors.totalFloors && <p className={styles.errorText}>{errors.totalFloors}</p>}
+            {/* End PG & Gust House */}
+
+
+            {/* Ploat and Lands */}
+            {selectedSubcategory === "Land & Plots" && (
+              <>
+                <div className={styles.FormCol2}>
+                  <div className={styles.formGroup}>
+                    <label>Listed By</label>
+                    <select name="listedBy" value={formData.listedBy || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="Owner">Owner</option>
+                      <option value="Dealer">Dealer</option>
+                      <option value="Builder">Builder</option>
+                    </select>
+                    {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Plot Area (sqft)</label>
+                    <input type="number" name="landPlotArea" value={formData.landPlotArea || ""} onChange={handleChange} placeholder="e.g. 1200" />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Length (ft)</label>
+                    <input type="number" name="landLength" value={formData.landLength || ""} onChange={handleChange} placeholder="e.g. 40" />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Breadth (ft)</label>
+                    <input type="number" name="landBreadth" value={formData.landBreadth || ""} onChange={handleChange} placeholder="e.g. 30" />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Facing</label>
+                    <select name="facing" value={formData.facing || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="East">East</option>
+                      <option value="West">West</option>
+                      <option value="North">North</option>
+                      <option value="South">South</option>
+                    </select>
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Project Name</label>
+                    <input type="text" name="projectName" value={formData.projectName || ""} onChange={handleChange} placeholder="Enter project/society name" />
+                  </div>
                 </div>
+              </>
+            )}
+
+            {/* End Ploats and Lands */}
+
+
+            {/* Apartment */}
+            {selectedSubcategory === "House & Apartments" && (
+              <>
+                <div className={styles.FormCol2}>
+                  <div className={styles.formGroup}>
+                    <label>Type</label>
+                    <select name="apartmentType" value={formData.apartmentType || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="Apartment">Apartment</option>
+                      <option value="Builder Floor">Builder Floor</option>
+                      <option value="Farm House">Farm House</option>
+                      <option value="House & Villas">House & Villas</option>
+                    </select>
+                    {errors.apartmentType && <p className={styles.errorText}>{errors.apartmentType}</p>}
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>BHK</label>
+                    <select name="bhk" value={formData.bhk || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="1 BHK">1 BHK</option>
+                      <option value="2 BHK">2 BHK</option>
+                      <option value="3 BHK">3 BHK</option>
+                      <option value="4 BHK">4 BHK</option>
+                      <option value="5+ BHK">5+ BHK</option>
+                    </select>
+                    {errors.bhk && <p className={styles.errorText}>{errors.bhk}</p>}
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Bathrooms</label>
+                    <input type="number" name="bathrooms" value={formData.bathrooms || ""} onChange={handleChange} placeholder="Enter number of bathrooms" />
+                    {errors.bathrooms && <p className={styles.errorText}>{errors.bathrooms}</p>}
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Furnishings</label>
+                    <select name="furnishing" value={formData.furnishing || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="Unfurnished">Unfurnished</option>
+                      <option value="Semi-Furnished">Semi-Furnished</option>
+                      <option value="Fully-Furnished">Fully-Furnished</option>
+                    </select>
+                    {errors.furnishing && <p className={styles.errorText}>{errors.furnishing}</p>}
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Listed By</label>
+                    <select name="listedBy" value={formData.listedBy || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="Owner">Owner</option>
+                      <option value="Dealer">Dealer</option>
+                      <option value="Builder">Builder</option>
+                    </select>
+                    {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Super Built-up Area (sqft)</label>
+                    <input type="number" name="superBuiltupArea" value={formData.superBuiltupArea || ""} onChange={handleChange} placeholder="e.g. 1200" />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Carpet Area (sqft)</label>
+                    <input type="number" name="carpetArea" value={formData.carpetArea || ""} onChange={handleChange} placeholder="e.g. 900" />
+                  </div>
+
+                  {formData.SaleType !== "Sale" && (
+                    <div className={styles.formGroup}>
+                      <label>Bachelors Allowed</label>
+                      <select name="bachelorsAllowed" value={formData.bachelorsAllowed || ""} onChange={handleChange}>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                      {errors.bachelorsAllowed && <p className={styles.errorText}>{errors.bachelorsAllowed}</p>}
+                    </div>
+                  )}
+                  <div className={styles.formGroup}>
+                    <label>Maintenance (Monthly)</label>
+                    <input type="number" name="maintenance" value={formData.maintenance || ""} onChange={handleChange} placeholder="₹/month" />
+                    {errors.maintenance && <p className={styles.errorText}>{errors.maintenance}</p>}
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Total Floors</label>
+                    <select name="totalFloors" value={formData.totalFloors || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="None">None</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4+">4+</option>
+                    </select>
+                    {errors.totalFloors && <p className={styles.errorText}>{errors.totalFloors}</p>}
+                  </div>
 
 
 
-                <div className={styles.formGroup}>
-                  <label>Floor No.</label>
-                  <select name="floorNo" value={formData.floorNo || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="None">None</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4+">4+</option>
-                  </select>
-                  {errors.floorNo && <p className={styles.errorText}>{errors.floorNo}</p>}
+                  <div className={styles.formGroup}>
+                    <label>Floor No.</label>
+                    <select name="floorNo" value={formData.floorNo || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="None">None</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4+">4+</option>
+                    </select>
+                    {errors.floorNo && <p className={styles.errorText}>{errors.floorNo}</p>}
+                  </div>
+
+
+
+                  <div className={styles.formGroup}>
+                    <label>Car Parking</label>
+                    <select name="carParking" value={formData.carParking || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="None">None</option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4+">4+</option>
+                    </select>
+                    {errors.carParking && <p className={styles.errorText}>{errors.carParking}</p>}
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Facing</label>
+                    <select name="facing" value={formData.facing || ""} onChange={handleChange}>
+                      <option value="">Select</option>
+                      <option value="East">East</option>
+                      <option value="West">West</option>
+                      <option value="North">North</option>
+                      <option value="South">South</option>
+                    </select>
+                  </div>
+
+
+                  <div className={styles.formGroup}>
+                    <label>Construction Status</label>
+                    <select name="ConstructionStatus" value={formData.ConstructionStatus || ""} onChange={handleChange}>
+                      <option value="">Select Status</option>
+                      <option value="New Launch">New Construction</option>
+                      <option value="Ready to Move">Ready to Move</option>
+                      <option value="Under Construction">Under Construction</option>
+                    </select>
+                  </div>
+
+
                 </div>
-                
-
-
                 <div className={styles.formGroup}>
-                  <label>Car Parking</label>
-                  <select name="carParking" value={formData.carParking || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="None">None</option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4+">4+</option>
-                  </select>
-                  {errors.carParking && <p className={styles.errorText}>{errors.carParking}</p>}
+                  <label>Project Name</label>
+                  <input type="text" name="projectName" value={formData.projectName || ""} onChange={handleChange} placeholder="Enter project/society name" />
                 </div>
+              </>
+            )}
 
-                <div className={styles.formGroup}>
-                  <label>Facing</label>
-                  <select name="facing" value={formData.facing || ""} onChange={handleChange}>
-                    <option value="">Select</option>
-                    <option value="East">East</option>
-                    <option value="West">West</option>
-                    <option value="North">North</option>
-                    <option value="South">South</option>
-                  </select>
-                </div>
-
-
-                <div className={styles.formGroup}>
-                  <label>Construction Status</label>
-                  <select name="ConstructionStatus" value={formData.ConstructionStatus || ""} onChange={handleChange}>
-                    <option value="">Select Status</option>
-                    <option value="New Launch">New Construction</option>
-                    <option value="Ready to Move">Ready to Move</option>
-                    <option value="Under Construction">Under Construction</option>
-                  </select>
-                </div>
-
-
-              </div>
-              <div className={styles.formGroup}>
-                <label>Project Name</label>
-                <input type="text" name="projectName" value={formData.projectName || ""} onChange={handleChange} placeholder="Enter project/society name"/>
-              </div>
-            </>
-          )}
-
-          {selectedSubcategory === "Other Properties" && (
-            <>
+            {selectedSubcategory === "Other Properties" && (
+              <>
                 <div className={styles.formGroup}>
                   <label>Listed By</label>
                   <select name="listedBy" value={formData.listedBy || ""} onChange={handleChange}>
@@ -1916,268 +2237,268 @@ if (!formData.termsAccepted) {
                   </select>
                   {errors.listedBy && <p className={styles.errorText}>{errors.listedBy}</p>}
                 </div>
-            </>
-          )}
-          {/* End Apartment */}
+              </>
+            )}
+            {/* End Apartment */}
 
-          {/* Start Cars */}
-          {["Cars"].includes(selectedSubcategory) && (
-            <>
-              <div className={styles.FormChildGroup}>
-                <div className={styles.formGroup}>
-                  <label>Car Brand</label>
-                  <select name="carBrand" value={formData.carBrand} onChange={(e) => {
-                    setFormData((prev) => ({
-                      ...prev,
-                      carBrand: e.target.value,
-                      carModel: "", // reset model when brand changes
-                    }));
-                  }}
-                  >
-                    <option value="">Select Brand</option>
-                    {Object.keys(carBrands).map((brand) => (
-                      <option key={brand} value={brand}>{brand}</option>
-                    ))}
-                  </select>
-                </div>
-
-                {formData.carBrand && (
+            {/* Start Cars */}
+            {["Cars"].includes(selectedSubcategory) && (
+              <>
+                <div className={styles.FormChildGroup}>
                   <div className={styles.formGroup}>
-                    <label>Car Model</label>
-                    <select name="carModel" value={formData.carModel} onChange={(e) =>
+                    <label>Car Brand</label>
+                    <select name="carBrand" value={formData.carBrand} onChange={(e) => {
                       setFormData((prev) => ({
                         ...prev,
-                        carModel: e.target.value,
-                      }))
-                    }
-                    >
-                      <option value="">Select Model</option>
-                      {carBrands[formData.carBrand].map((model) => (
-                        <option key={model} value={model}>{model}</option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-                {errors.carBrand && <p className={styles.errorText}>{errors.carBrand}</p>}
-                <br/>
-              </div>
-              
-              <div className={styles.formGroup}>
-                <label>Year</label>
-                <input type="number" name="year" value={formData.year || ""} onChange={(e) => {
-                  const inputValue = e.target.value;
-                  if (inputValue === "") {
-                    handleChange(e);
-                    return;
-                  }
-                  const year = Number(inputValue);
-                  const currentYear = new Date().getFullYear();
-
-                  // Allow typing any 4-digit number but validate range
-                  if (inputValue.length <= 4) {
-                    if (year >= 1900 && year <= currentYear) {
-                      handleChange(e);
-                    } else {
-                      // Allow typing in progress even if it's not yet valid (like '2' or '202')
-                      handleChange(e);
-                    }
-                  }
-                }}
-                  placeholder=""
-                  inputMode="numeric"
-                />
-                {errors.year && <p className={styles.errorText}>{errors.year  }</p>}
-              </div>
-
-              <div className={styles.formGroup}>
-                <label>Fuel Type</label>
-                <select name="fuel" value={formData.fuel || ""} onChange={handleChange}>
-                  <option value="">Select Fuel Type</option>
-                  <option value="Petrol">Petrol</option>
-                  <option value="Diesel">Diesel</option>
-                  <option value="Electric">Electric</option>
-                  <option value="CNG">CNG</option>
-                </select>
-                {errors.fuel && <p className={styles.errorText}>{errors.fuel}</p>}
-              </div>
-              <div className={styles.formGroup}>
-                <label>Transmission</label>
-                <select name="transmission" value={formData.transmission || ""} onChange={handleChange}>
-                  <option value="">Select Transmission</option>
-                  <option value="Manual">Manual</option>
-                  <option value="Automatic">Automatic</option>
-                </select>
-                {errors.transmission && <p className={styles.errorText}>{errors.transmission}</p>}
-              </div>
-
-              <div className={styles.formGroup}>
-                <label>Number of Owners</label>
-                <select name="OwnersNo" value={formData.OwnersNo || ""} onChange={handleChange}>
-                  <option value="">Select</option>
-                  <option value="1">1st Owner</option>
-                  <option value="2">2nd Owner</option>
-                  <option value="3">3rd Owner</option>
-                  <option value="4+">4th or more</option>
-                </select>
-                {errors.OwnersNo && <p className={styles.errorText}>{errors.OwnersNo}</p>}
-              </div>
-              <div className={styles.formGroup}>
-                <label>KM Driven</label>
-                <input type="number" name="KmDriven" value={formData.KmDriven || ""} onChange={handleChange} placeholder=".."/>
-                {errors.KmDriven && <p className={styles.errorText}>{errors.KmDriven}</p>}
-              </div>
-            </>
-          )}
-
-          {/* Start Bikes and Scooters */}
-          {["Motorcycles", "Scooters"].includes(selectedSubcategory) && (
-            <>
-              <div className={styles.FormChildGroup}>
-                <div className={styles.formGroup}>
-                  <label>Vehicle Brand</label>
-                  <select name="brand" value={formData.brand}
-                    onChange={(e) => {
-                      setFormData((prev) => ({
-                        ...prev,
-                        brand: e.target.value,
-                        model: "", // reset model when brand changes
+                        carBrand: e.target.value,
+                        carModel: "", // reset model when brand changes
                       }));
                     }}
-                  >
-                    <option value="">Select Brand</option>
-                    {Object.keys(bikeBrands).map((brand) => (
-                      <option key={brand} value={brand}>{brand}</option>
-                    ))}
-                  </select>
-                </div>
-                {formData.brand && (
-                  <div className={styles.formGroup}>
-                    <label>Vehicle Model</label>
-                    <select name="model" value={formData.model} onChange={handleChange}>
-                      <option value="">Select Model</option>
-                      {bikeBrands[formData.brand].map((model) => (
-                        <option key={model} value={model}>{model}</option>
+                    >
+                      <option value="">Select Brand</option>
+                      {Object.keys(carBrands).map((brand) => (
+                        <option key={brand} value={brand}>{brand}</option>
                       ))}
                     </select>
                   </div>
-                )}
-                {errors.model && <p className={styles.errorText}>{errors.model}</p>}
-                <br/>
-              </div>
-              
-              <div className={styles.formGroup}>
-                <label>Fuel Type</label>
-                <select name="fuel" value={formData.fuel || ""} onChange={handleChange}>
-                  <option value="">Select Fuel Type</option>
-                  <option value="Petrol">Petrol</option>=
-                  <option value="Electric">Electric</option>
-                </select>
-                {errors.fuel && <p className={styles.errorText}>{errors.fuel}</p>}
-              </div>
 
-              <div className={styles.formGroup}>
-                <label>KM Driven</label>
-                <input type="number" name="KmDriven" value={formData.KmDriven || ""} onChange={handleChange} placeholder=".."/>
-                {errors.KmDriven && <p className={styles.errorText}>{errors.KmDriven}</p>}
-              </div>
-              <div className={styles.formGroup}>
-                <label>Number of Owners</label>
-                <select name="OwnersNo" value={formData.OwnersNo || ""} onChange={handleChange}>
-                  <option value="">Select</option>
-                  <option value="1">1st Owner</option>
-                  <option value="2">2nd Owner</option>
-                  <option value="3">3rd Owner</option>
-                  <option value="4+">4th or more</option>
-                </select>
-                {errors.OwnersNo && <p className={styles.errorText}>{errors.OwnersNo}</p>}
-              </div>
+                  {formData.carBrand && (
+                    <div className={styles.formGroup}>
+                      <label>Car Model</label>
+                      <select name="carModel" value={formData.carModel} onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          carModel: e.target.value,
+                        }))
+                      }
+                      >
+                        <option value="">Select Model</option>
+                        {carBrands[formData.carBrand].map((model) => (
+                          <option key={model} value={model}>{model}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                  {errors.carBrand && <p className={styles.errorText}>{errors.carBrand}</p>}
+                  <br />
+                </div>
 
-              <div className={styles.formGroup}>
-                <label>Year</label>
-                <input type="number" name="year" value={formData.year || ""} onChange={(e) => {
-                  const inputValue = e.target.value;
-                  if (inputValue === "") {
-                    handleChange(e);
-                    return;
-                  }
-                  const year = Number(inputValue);
-                  const currentYear = new Date().getFullYear();
-
-                  // Allow typing any 4-digit number but validate range
-                  if (inputValue.length <= 4) {
-                    if (year >= 1900 && year <= currentYear) {
+                <div className={styles.formGroup}>
+                  <label>Year</label>
+                  <input type="number" name="year" value={formData.year || ""} onChange={(e) => {
+                    const inputValue = e.target.value;
+                    if (inputValue === "") {
                       handleChange(e);
-                    } else {
-                      // Allow typing in progress even if it's not yet valid (like '2' or '202')
-                      handleChange(e);
+                      return;
                     }
-                  }
-                }}
-                  placeholder=""
-                  inputMode="numeric"
-                />
-                {errors.year && <p className={styles.errorText}>{errors.year  }</p>}
-              </div>
+                    const year = Number(inputValue);
+                    const currentYear = new Date().getFullYear();
 
-            </>
-          )}
+                    // Allow typing any 4-digit number but validate range
+                    if (inputValue.length <= 4) {
+                      if (year >= 1900 && year <= currentYear) {
+                        handleChange(e);
+                      } else {
+                        // Allow typing in progress even if it's not yet valid (like '2' or '202')
+                        handleChange(e);
+                      }
+                    }
+                  }}
+                    placeholder=""
+                    inputMode="numeric"
+                  />
+                  {errors.year && <p className={styles.errorText}>{errors.year}</p>}
+                </div>
 
-          {/* Start Bicycles */}
-          {["Bicycles"].includes(selectedSubcategory) && (
-            <>
-              <div className={styles.formGroup}>
-                <label>Brand</label>
-                <select name="BicyclesBrand" value={formData.BicyclesBrand} onChange={(e) => {
+                <div className={styles.formGroup}>
+                  <label>Fuel Type</label>
+                  <select name="fuel" value={formData.fuel || ""} onChange={handleChange}>
+                    <option value="">Select Fuel Type</option>
+                    <option value="Petrol">Petrol</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Electric">Electric</option>
+                    <option value="CNG">CNG</option>
+                  </select>
+                  {errors.fuel && <p className={styles.errorText}>{errors.fuel}</p>}
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Transmission</label>
+                  <select name="transmission" value={formData.transmission || ""} onChange={handleChange}>
+                    <option value="">Select Transmission</option>
+                    <option value="Manual">Manual</option>
+                    <option value="Automatic">Automatic</option>
+                  </select>
+                  {errors.transmission && <p className={styles.errorText}>{errors.transmission}</p>}
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Number of Owners</label>
+                  <select name="OwnersNo" value={formData.OwnersNo || ""} onChange={handleChange}>
+                    <option value="">Select</option>
+                    <option value="1">1st Owner</option>
+                    <option value="2">2nd Owner</option>
+                    <option value="3">3rd Owner</option>
+                    <option value="4+">4th or more</option>
+                  </select>
+                  {errors.OwnersNo && <p className={styles.errorText}>{errors.OwnersNo}</p>}
+                </div>
+                <div className={styles.formGroup}>
+                  <label>KM Driven</label>
+                  <input type="number" name="KmDriven" value={formData.KmDriven || ""} onChange={handleChange} placeholder=".." />
+                  {errors.KmDriven && <p className={styles.errorText}>{errors.KmDriven}</p>}
+                </div>
+              </>
+            )}
+
+            {/* Start Bikes and Scooters */}
+            {["Motorcycles", "Scooters"].includes(selectedSubcategory) && (
+              <>
+                <div className={styles.FormChildGroup}>
+                  <div className={styles.formGroup}>
+                    <label>Vehicle Brand</label>
+                    <select name="brand" value={formData.brand}
+                      onChange={(e) => {
+                        setFormData((prev) => ({
+                          ...prev,
+                          brand: e.target.value,
+                          model: "", // reset model when brand changes
+                        }));
+                      }}
+                    >
+                      <option value="">Select Brand</option>
+                      {Object.keys(bikeBrands).map((brand) => (
+                        <option key={brand} value={brand}>{brand}</option>
+                      ))}
+                    </select>
+                  </div>
+                  {formData.brand && (
+                    <div className={styles.formGroup}>
+                      <label>Vehicle Model</label>
+                      <select name="model" value={formData.model} onChange={handleChange}>
+                        <option value="">Select Model</option>
+                        {bikeBrands[formData.brand].map((model) => (
+                          <option key={model} value={model}>{model}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                  {errors.model && <p className={styles.errorText}>{errors.model}</p>}
+                  <br />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Fuel Type</label>
+                  <select name="fuel" value={formData.fuel || ""} onChange={handleChange}>
+                    <option value="">Select Fuel Type</option>
+                    <option value="Petrol">Petrol</option>=
+                    <option value="Electric">Electric</option>
+                  </select>
+                  {errors.fuel && <p className={styles.errorText}>{errors.fuel}</p>}
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>KM Driven</label>
+                  <input type="number" name="KmDriven" value={formData.KmDriven || ""} onChange={handleChange} placeholder=".." />
+                  {errors.KmDriven && <p className={styles.errorText}>{errors.KmDriven}</p>}
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Number of Owners</label>
+                  <select name="OwnersNo" value={formData.OwnersNo || ""} onChange={handleChange}>
+                    <option value="">Select</option>
+                    <option value="1">1st Owner</option>
+                    <option value="2">2nd Owner</option>
+                    <option value="3">3rd Owner</option>
+                    <option value="4+">4th or more</option>
+                  </select>
+                  {errors.OwnersNo && <p className={styles.errorText}>{errors.OwnersNo}</p>}
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Year</label>
+                  <input type="number" name="year" value={formData.year || ""} onChange={(e) => {
+                    const inputValue = e.target.value;
+                    if (inputValue === "") {
+                      handleChange(e);
+                      return;
+                    }
+                    const year = Number(inputValue);
+                    const currentYear = new Date().getFullYear();
+
+                    // Allow typing any 4-digit number but validate range
+                    if (inputValue.length <= 4) {
+                      if (year >= 1900 && year <= currentYear) {
+                        handleChange(e);
+                      } else {
+                        // Allow typing in progress even if it's not yet valid (like '2' or '202')
+                        handleChange(e);
+                      }
+                    }
+                  }}
+                    placeholder=""
+                    inputMode="numeric"
+                  />
+                  {errors.year && <p className={styles.errorText}>{errors.year}</p>}
+                </div>
+
+              </>
+            )}
+
+            {/* Start Bicycles */}
+            {["Bicycles"].includes(selectedSubcategory) && (
+              <>
+                <div className={styles.formGroup}>
+                  <label>Brand</label>
+                  <select name="BicyclesBrand" value={formData.BicyclesBrand} onChange={(e) => {
                     setFormData((prev) => ({
                       ...prev,
                       BicyclesBrand: e.target.value,
                     }));
                   }}>
-                  <option value="">Select Brand</option>
-                  <option value="Hero">Hero</option>
-                  <option value="Hercules">Hercules</option>
-                  <option value="BSA">BSA</option>
-                  <option value="Avon">Avon</option>
-                  <option value="Firefox">Firefox</option>
-                  <option value="Btwin">Btwin</option>
-                  <option value="Montra">Montra</option>
-                  <option value="Mach City">Mach City</option>
-                  <option value="Giant">Giant</option>
-                  <option value="Trek">Trek</option>
-                  <option value="Scott">Scott</option>
-                  <option value="Cannondale">Cannondale</option>
-                  <option value="Polygon">Polygon</option>
-                  <option value="Specialized">Specialized</option>
-                  <option value="Merida">Merida</option>
-                  <option value="LA Sovereign">LA Sovereign</option>
-                  <option value="Ninety One">Ninety One</option>
-                  <option value="Schnell">Schnell</option>
-                </select>
-                {errors.BicyclesBrand && <p className={styles.errorText}>{errors.BicyclesBrand}</p>}
-              </div>
-            </>
-          )}
-          {/* End {/* Start Bicycles */}
+                    <option value="">Select Brand</option>
+                    <option value="Hero">Hero</option>
+                    <option value="Hercules">Hercules</option>
+                    <option value="BSA">BSA</option>
+                    <option value="Avon">Avon</option>
+                    <option value="Firefox">Firefox</option>
+                    <option value="Btwin">Btwin</option>
+                    <option value="Montra">Montra</option>
+                    <option value="Mach City">Mach City</option>
+                    <option value="Giant">Giant</option>
+                    <option value="Trek">Trek</option>
+                    <option value="Scott">Scott</option>
+                    <option value="Cannondale">Cannondale</option>
+                    <option value="Polygon">Polygon</option>
+                    <option value="Specialized">Specialized</option>
+                    <option value="Merida">Merida</option>
+                    <option value="LA Sovereign">LA Sovereign</option>
+                    <option value="Ninety One">Ninety One</option>
+                    <option value="Schnell">Schnell</option>
+                  </select>
+                  {errors.BicyclesBrand && <p className={styles.errorText}>{errors.BicyclesBrand}</p>}
+                </div>
+              </>
+            )}
+            {/* End {/* Start Bicycles */}
 
-          {!["House & Apartments", "Land & Plots", "PG & Guest House", "Shops & Offices", "Commercial Properties", "Other Properties"].includes(selectedSubcategory) && (
-            !["Services", "Jobs", "Pets & Pet Care", "Education & Learning", "Events & Entertainment"].includes(selectedCategory) &&
-            <div className={styles.formGroup}>
-              <label>Condition</label>
-              <div className={styles.radioGroup}>
-                <label><input type="radio" name="condition" value="New" checked={formData.condition === "New"} onChange={handleChange} />New</label>
-                <label><input type="radio" name="condition" value="Good" checked={formData.condition === "Good"} onChange={handleChange} />Good</label>
-                <label><input type="radio" name="condition" value="Fair" checked={formData.condition === "Fair"} onChange={handleChange} />Fair</label>
+            {!["House & Apartments", "Land & Plots", "PG & Guest House", "Shops & Offices", "Commercial Properties", "Other Properties"].includes(selectedSubcategory) && (
+              !["Services", "Jobs", "Pets & Pet Care", "Education & Learning", "Events & Entertainment"].includes(selectedCategory) &&
+              <div className={styles.formGroup}>
+                <label>Condition</label>
+                <div className={styles.radioGroup}>
+                  <label><input type="radio" name="condition" value="New" checked={formData.condition === "New"} onChange={handleChange} />New</label>
+                  <label><input type="radio" name="condition" value="Good" checked={formData.condition === "Good"} onChange={handleChange} />Good</label>
+                  <label><input type="radio" name="condition" value="Fair" checked={formData.condition === "Fair"} onChange={handleChange} />Fair</label>
+                </div>
+                {errors.condition && <p className={styles.errorText}>{errors.condition}</p>}
               </div>
-              {errors.condition && <p className={styles.errorText}>{errors.condition}</p>}
-            </div>
-          )}
-          {!["House & Apartments", "Cars", "Motorcycles", "Land & Plots", "PG & Guest House", "Shops & Offices", "Commercial Properties", "Other Properties"].includes(selectedSubcategory) && (
-            !["Services", "Jobs", "Education & Learning", "Commercial Vehicles", "Events & Entertainment"].includes(selectedCategory) &&
-            <div className={styles.formGroup}>
+            )}
+            {!["House & Apartments", "Cars", "Motorcycles", "Land & Plots", "PG & Guest House", "Shops & Offices", "Commercial Properties", "Other Properties"].includes(selectedSubcategory) && (
+              !["Services", "Jobs", "Education & Learning", "Commercial Vehicles", "Events & Entertainment"].includes(selectedCategory) &&
+              <div className={styles.formGroup}>
                 <label>Will you deliver to the customer's doorstep?</label>
                 <div className={styles.pickupOptions}>
-                  <label className={`${styles.radioCard} ${formData.pickupOption === "Owner Delivery" ? styles.selected : "" }`}>
-                    <input type="radio" name="pickupOption" value="Owner Delivery" checked={formData.pickupOption === "Owner Delivery"} onChange={handleChange}/>
+                  <label className={`${styles.radioCard} ${formData.pickupOption === "Owner Delivery" ? styles.selected : ""}`}>
+                    <input type="radio" name="pickupOption" value="Owner Delivery" checked={formData.pickupOption === "Owner Delivery"} onChange={handleChange} />
                     <div>
                       <strong>Yes, I’ll deliver</strong>
                       <p>Item will be delivered to the customer.</p>
@@ -2185,7 +2506,7 @@ if (!formData.termsAccepted) {
                   </label>
 
                   <label className={`${styles.radioCard} ${formData.pickupOption === "User Pickup" ? styles.selected : ""}`}>
-                    <input type="radio" name="pickupOption" value="User Pickup" checked={formData.pickupOption === "User Pickup"} onChange={handleChange}/>
+                    <input type="radio" name="pickupOption" value="User Pickup" checked={formData.pickupOption === "User Pickup"} onChange={handleChange} />
                     <div>
                       <strong>No, pickup only</strong>
                       <p>Customer must collect the item.</p>
@@ -2194,221 +2515,221 @@ if (!formData.termsAccepted) {
                 </div>
               </div>
 
-          )}
-          <div className={styles.formGroup}>
-            <label>Title</label>
-            <input type="text" name="title" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
-            <span className={styles.subText}>Make your title clear and specific so buyers can quickly know  about your product.</span>
-            {errors.title && <p className={styles.errorText}>{errors.title}</p>}
-          </div>
-          <div className={styles.formGroup}>
-            <label>Description</label>
-            <div style={{ position: "relative" }}>
-              <textarea name="description" rows={6} value={formData.description} onChange={handleChange} style={{ paddingRight: "40px" }} />
-              <button type="button" onClick={toggleListening} style={{
-                position: "absolute", right: "8px", top: "8px", background: listening ? "#f00" : "#ddd",
-                color: "#fff", border: "none", borderRadius: "50%", width: "30px", height: "30px", cursor: "pointer",
-              }} title={listening ? "Stop Recording" : "Start Recording"}>🎤
-              </button>
-            </div>
-            <span className={styles.subText}>{errors.description && <p className={styles.errorText}>{errors.description}</p>} Describe your product and key features, or tap the mic to speak.</span>
-          </div>
-          
-          <div className={styles.fileManageWrap}>
+            )}
             <div className={styles.formGroup}>
-            <div className={styles.fileUpload}>
-              <label htmlFor="file" className="icon-upload-cloud-outline">Cover Image</label>
-              <input type="file" accept="image/*" onChange={handleCoverImageChange} ref={coverImageInputRef} />
+              <label>Title</label>
+              <input type="text" name="title" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
+              <span className={styles.subText}>Make your title clear and specific so buyers can quickly know  about your product.</span>
+              {errors.title && <p className={styles.errorText}>{errors.title}</p>}
             </div>
-              {formData.coverImage && (
-                <div className={styles.imagePreviewBox}>
-                  <img src={URL.createObjectURL(formData.coverImage)} alt="Cover Preview" />
-                  <button type="button" className={styles.removeImage} onClick={handleRemoveCoverImage}>&times;</button>
-                </div>
-              )}
+            <div className={styles.formGroup}>
+              <label>Description</label>
+              <div style={{ position: "relative" }}>
+                <textarea name="description" rows={6} value={formData.description} onChange={handleChange} style={{ paddingRight: "40px" }} />
+                <button type="button" onClick={toggleListening} style={{
+                  position: "absolute", right: "8px", top: "8px", background: listening ? "#f00" : "#ddd",
+                  color: "#fff", border: "none", borderRadius: "50%", width: "30px", height: "30px", cursor: "pointer",
+                }} title={listening ? "Stop Recording" : "Start Recording"}>🎤
+                </button>
+              </div>
+              <span className={styles.subText}>{errors.description && <p className={styles.errorText}>{errors.description}</p>} Describe your product and key features, or tap the mic to speak.</span>
             </div>
 
-            <div className={styles.formGroup}>
-            <div className={styles.fileUpload}>
-              <label htmlFor="file" className="icon-upload-cloud-outline"> Product Images</label>
-              <input type="file" multiple accept="image/*" onChange={handleImageChange} ref={fileInputRef} />
-            </div>
-              <div className={`${styles.imagePreviewWrapper} ${styles.SpaceBox}`}>
-                {formData.images.map((img, idx) => (
-                  <div key={idx} className={`${styles.imagePreviewBox} ${styles.NewPreviewBox}`}>
-                    <img src={URL.createObjectURL(img)} alt={`Preview ${idx}`} />
-                    <button type="button" className={styles.removeImage} onClick={() => handleRemoveImage(idx)}>&times;</button>
+            <div className={styles.fileManageWrap}>
+              <div className={styles.formGroup}>
+                <div className={styles.fileUpload}>
+                  <label htmlFor="file" className="icon-upload-cloud-outline">Cover Image</label>
+                  <input type="file" accept="image/*" onChange={handleCoverImageChange} ref={coverImageInputRef} />
+                </div>
+                {formData.coverImage && (
+                  <div className={styles.imagePreviewBox}>
+                    <img src={URL.createObjectURL(formData.coverImage)} alt="Cover Preview" />
+                    <button type="button" className={styles.removeImage} onClick={handleRemoveCoverImage}>&times;</button>
                   </div>
-                ))}
+                )}
+              </div>
+
+              <div className={styles.formGroup}>
+                <div className={styles.fileUpload}>
+                  <label htmlFor="file" className="icon-upload-cloud-outline"> Product Images</label>
+                  <input type="file" multiple accept="image/*" onChange={handleImageChange} ref={fileInputRef} />
+                </div>
+                <div className={`${styles.imagePreviewWrapper} ${styles.SpaceBox}`}>
+                  {formData.images.map((img, idx) => (
+                    <div key={idx} className={`${styles.imagePreviewBox} ${styles.NewPreviewBox}`}>
+                      <img src={URL.createObjectURL(img)} alt={`Preview ${idx}`} />
+                      <button type="button" className={styles.removeImage} onClick={() => handleRemoveImage(idx)}>&times;</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Rental Terms File Upload */}
+
+            </div>
+            {!["Jobs", "Education & Learning"].includes(selectedCategory) && (
+              <>
+                {formData.SaleType !== "Sale" && (
+                  <div className={styles.formGroup}>
+                    <div className={styles.fileUpload}>
+                      <label htmlFor="rentalTermsFile" className="icon-upload-cloud-outline">Upload Terms (PDF/Image)</label>
+                      <input type="file" id="rentalTermsFile" name="rentalTermsFile" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => handleFileChange(e, "rentalTermsFile")} />
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
+            <div className={styles.socialLink}>
+              <div className={styles.formGroup}>
+                <label className="icon-instagram">
+                  <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={styles.socialVisitLink} title="Open Instagram">Instagram Link</Link>
+                </label>
+                <input type="url" name="instagram" placeholder="https://instagram.com/yourprofile" value={formData.instagram} onChange={handleChange} />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className="icon-facebook">
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.socialVisitLink} title="Open Facebook">Facebook Link</a>
+                </label>
+                <input type="url" name="facebook" placeholder="https://facebook.com/yourprofile" value={formData.facebook} onChange={handleChange} />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className="icon-twitter">
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className={styles.socialVisitLink} title="Open Twitter">Twitter Link</a>
+                </label>
+                <input type="url" name="twitter" placeholder="https://twitter.com/yourprofile" value={formData.twitter} onChange={handleChange} />
               </div>
             </div>
-            {/* Rental Terms File Upload */}
-          
-          </div>
-          {!["Jobs", "Education & Learning"].includes(selectedCategory) && (
-            <>
-              {formData.SaleType !== "Sale" && (
-                <div className={styles.formGroup}>
-                  <div className={styles.fileUpload}>
-                  <label htmlFor="rentalTermsFile" className="icon-upload-cloud-outline">Upload Terms (PDF/Image)</label>
-                  <input type="file" id="rentalTermsFile" name="rentalTermsFile" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => handleFileChange(e, "rentalTermsFile")} />
-                </div>
-                </div>
-              )}
-            </>
-          )}
-
-          <div className={styles.socialLink}>
-            <div className={styles.formGroup}>
-              <label className="icon-instagram">
-                <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={styles.socialVisitLink} title="Open Instagram">Instagram Link</Link>
-              </label>
-              <input type="url" name="instagram" placeholder="https://instagram.com/yourprofile" value={formData.instagram} onChange={handleChange} />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label className="icon-facebook">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.socialVisitLink} title="Open Facebook">Facebook Link</a>
-              </label>
-              <input type="url" name="facebook" placeholder="https://facebook.com/yourprofile" value={formData.facebook} onChange={handleChange} />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label className="icon-twitter">
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className={styles.socialVisitLink} title="Open Twitter">Twitter Link</a>
-              </label>
-              <input type="url" name="twitter" placeholder="https://twitter.com/yourprofile" value={formData.twitter} onChange={handleChange} />
+            <div className={styles.BtnFlex}>
+              <button type="button" className={styles.backButton} onClick={() => goToStep(2, true)}>← Back</button>
+              <button type="button" className={styles.backButton} onClick={() => goToStep(4)}>Next →</button>
             </div>
           </div>
-          <div className={styles.BtnFlex}>
-            <button type="button" className={styles.backButton} onClick={() => goToStep(2, true)}>← Back</button>
-            <button type="button" className={styles.backButton} onClick={() => goToStep(4)}>Next →</button>
-          </div>
-        </div>
-      )}
+        )}
 
-      {step === 4 && (
-        <div className={styles.formGroup}>
-        <IndiaAddressForm onLocationSelect={handleLocationSelect} isProductForm={true} formData={formData} setFormData={setFormData}/>
-        {errors.location && <p className={styles.errorText}>{errors.location}</p>}
-        {/* <label><span className="icon-map-pin"></span>Enter Your Location</label> */}
-        {/* <PickupLocationSearch
+        {step === 4 && (
+          <div className={styles.formGroup}>
+            <IndiaAddressForm onLocationSelect={handleLocationSelect} isProductForm={true} formData={formData} setFormData={setFormData} />
+            {errors.location && <p className={styles.errorText}>{errors.location}</p>}
+            {/* <label><span className="icon-map-pin"></span>Enter Your Location</label> */}
+            {/* <PickupLocationSearch
               setLat={(lat: any) => setFormData(prev => ({...prev, pickup: { ...prev.pickup, coordinates: { ...prev.pickup.coordinates, lat: lat}}}))}
               setLng={(lng: any) => setFormData(prev => ({...prev, pickup: { ...prev.pickup, coordinates: { ...prev.pickup.coordinates, lng: lng}}}))}
               setAddress={(address) => setFormData(prev => ({...prev, pickup: {...prev.pickup, address: address}}))}
               onLocationUpdate={handleLocationUpdate}/> */}
 
-        {/* {pickupAddress && (
+            {/* {pickupAddress && (
           <div className="selected-location">
             <p><strong>Selected Location:</strong> {pickupAddress}</p>
           </div>
         )} */}
 
-        <div className={styles.BtnFlex}>
-          <button type="button" className={styles.backButton} onClick={() => goToStep(3, true)}>← Back</button>
-          <button type="button" className={styles.backButton} onClick={() => goToStep(5)}>Next →</button>
-        </div>
-      </div>
-      )}
+            <div className={styles.BtnFlex}>
+              <button type="button" className={styles.backButton} onClick={() => goToStep(3, true)}>← Back</button>
+              <button type="button" className={styles.backButton} onClick={() => goToStep(5)}>Next →</button>
+            </div>
+          </div>
+        )}
 
-      {step === 5 && (
-      <>
-        <div className={styles.slideIn}>
-            {!["Jobs"].includes(selectedCategory) && (
-              <>
-                {formData.SaleType !== "Sale" && (
-                  <>
-                  <div className={styles.FormChildGroup}>
-                    <div className={styles.formGroup}>
-                      <label>Price Type</label>
-                      <select name="rentalType" value={formData.rentalType} onChange={handleChange} className={styles.selectInput}>
-                        <option value="">Select Rental Type</option>
-                        <option value="daily">Per Day</option>
-                        <option value="weekly">Per Week</option>
-                        <option value="monthly">Per Month</option>
-                      </select>
-                    </div>
-                    {formData.rentalType === "daily" && (
-                      <div className={styles.formGroup}>
-                        <label>Price Per Day (₹)</label>
-                        <input name="price" type="text" value={formatRupee(formData.price || "")} onChange={handlePriceChange} />
+        {step === 5 && (
+          <>
+            <div className={styles.slideIn}>
+              {!["Jobs"].includes(selectedCategory) && (
+                <>
+                  {formData.SaleType !== "Sale" && (
+                    <>
+                      <div className={styles.FormChildGroup}>
+                        <div className={styles.formGroup}>
+                          <label>Price Type</label>
+                          <select name="rentalType" value={formData.rentalType} onChange={handleChange} className={styles.selectInput}>
+                            <option value="">Select Rental Type</option>
+                            <option value="daily">Per Day</option>
+                            <option value="weekly">Per Week</option>
+                            <option value="monthly">Per Month</option>
+                          </select>
+                        </div>
+                        {formData.rentalType === "daily" && (
+                          <div className={styles.formGroup}>
+                            <label>Price Per Day (₹)</label>
+                            <input name="price" type="text" value={formatRupee(formData.price || "")} onChange={handlePriceChange} />
+                          </div>
+                        )}
+                        {formData.rentalType === "weekly" && (
+                          <div className={styles.formGroup}>
+                            <label>Price Per Week (₹)</label>
+                            <input name="priceWeek" type="text" value={formatRupee(formData.priceWeek || "")} onChange={handlePriceChange} />
+                          </div>
+                        )}
+                        {formData.rentalType === "monthly" && (
+                          <div className={styles.formGroup}>
+                            <label>Price Per Month (₹)</label>
+                            <input name="priceMonth" type="text" value={formatRupee(formData.priceMonth || "")} onChange={handlePriceChange} />
+                          </div>
+                        )}
                       </div>
-                    )}
-                    {formData.rentalType === "weekly" && (
-                      <div className={styles.formGroup}>
-                        <label>Price Per Week (₹)</label>
-                        <input name="priceWeek" type="text" value={formatRupee(formData.priceWeek || "")} onChange={handlePriceChange} />
-                      </div>
-                    )}
-                    {formData.rentalType === "monthly" && (
-                      <div className={styles.formGroup}>
-                        <label>Price Per Month (₹)</label>
-                        <input name="priceMonth" type="text" value={formatRupee(formData.priceMonth || "")} onChange={handlePriceChange} />
-                      </div>
-                    )}
-                  </div>
-                  {!["jobs", "services", "education & learning"].includes(selectedCategory) &&
-                    errors.rentalType && (
-                      <p className={styles.errorText}>{errors.rentalType}</p>
-                  )}
-
-                  </>
-                )}
-                {!["Education & Learning", "Services"].includes(selectedCategory) && (
-                  <>
-                    {formData.SaleType !== "Rent" && (
-                      <div className={styles.formGroup}>
-                        <label>Enter Price </label>
-                        <input type="text" name="formattedPrice" value={formData.SalePrice} onChange={handleFormattedPriceChange}/>
-                        {!["jobs", "services", "education & learning"].includes(selectedCategory) &&
-                          errors.SalePrice && (
-                            <p className={styles.errorText}>{errors.SalePrice}</p>
+                      {!["jobs", "services", "education & learning"].includes(selectedCategory) &&
+                        errors.rentalType && (
+                          <p className={styles.errorText}>{errors.rentalType}</p>
                         )}
 
-                      </div>
-                    )}
-                  </>
+                    </>
+                  )}
+                  {!["Education & Learning", "Services"].includes(selectedCategory) && (
+                    <>
+                      {formData.SaleType !== "Rent" && (
+                        <div className={styles.formGroup}>
+                          <label>Enter Price </label>
+                          <input type="text" name="formattedPrice" value={formData.SalePrice} onChange={handleFormattedPriceChange} />
+                          {!["jobs", "services", "education & learning"].includes(selectedCategory) &&
+                            errors.SalePrice && (
+                              <p className={styles.errorText}>{errors.SalePrice}</p>
+                            )}
+
+                        </div>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+              <div className={styles.BtnFlex}>
+                <label className={styles.checkboxLabel}>
+                  <input type="checkbox" checked={formData.termsAccepted} onChange={(e) => setFormData((prev) => ({ ...prev, termsAccepted: e.target.checked }))} required />I agree to<button type="button" className={styles.linkButton} onClick={() => setShowTerms(true)}>Terms & Conditions</button>
+                </label>
+                <button type="button" className={styles.backButton} onClick={() => goToStep(4, true)}>← Back</button>
+              </div>
+
+              <button type="submit" disabled={loading} className={styles.submitButton}>
+                {loading ? (
+                  <Loader message="please wait..." />
+                ) : (
+                  "Post Product"
                 )}
-              </>
-            )}
-            <div className={styles.BtnFlex}>
-              <label className={styles.checkboxLabel}>
-                <input type="checkbox" checked={formData.termsAccepted} onChange={(e) => setFormData((prev) => ({ ...prev, termsAccepted: e.target.checked }))} required />I agree to<button type="button" className={styles.linkButton} onClick={() => setShowTerms(true)}>Terms & Conditions</button>
-              </label>
-              <button type="button" className={styles.backButton} onClick={() => goToStep(4, true)}>← Back</button>
+              </button>
+              {/* <div className={styles.buttonGroup}><button type="submit" className={styles.submitButton}>Post Ad</button></div>    */}
             </div>
+          </>
+        )}
 
-            <button type="submit" disabled={loading} className={styles.submitButton}>
-            {loading ? (
-              <Loader message="please wait..." />
-            ) : (
-              "Post Product"
-            )}
-          </button>
-          {/* <div className={styles.buttonGroup}><button type="submit" className={styles.submitButton}>Post Ad</button></div>    */}
-        </div>
-      </>
-      )}
-
-      {showTerms && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <h3>Terms and Conditions</h3>
-            <ul>
-              <li>You must provide accurate and truthful information about the product.</li>
-              <li>You confirm that you are the rightful owner or authorized to rent this item.</li>
-              <li>Prohibited items (e.g. weapons, illegal goods) are not allowed.</li>
-              <li>Uploaded images can be displayed on our platform.</li>
-              <li>We are not responsible for any disputes or damages arising from the transaction.</li>
-              <li>You agree to comply with our content guidelines.</li>
-              <li>We reserve the right to remove listings violating our policies.</li>
-              <li>By submitting this ad, you agree to the processing of your data according to our Privacy Policy.</li>
-            </ul>
-            <button onClick={() => setShowTerms(false)} className={styles.closeBtn}><span className="icon-cancel"></span></button>
+        {showTerms && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
+              <h3>Terms and Conditions</h3>
+              <ul>
+                <li>You must provide accurate and truthful information about the product.</li>
+                <li>You confirm that you are the rightful owner or authorized to rent this item.</li>
+                <li>Prohibited items (e.g. weapons, illegal goods) are not allowed.</li>
+                <li>Uploaded images can be displayed on our platform.</li>
+                <li>We are not responsible for any disputes or damages arising from the transaction.</li>
+                <li>You agree to comply with our content guidelines.</li>
+                <li>We reserve the right to remove listings violating our policies.</li>
+                <li>By submitting this ad, you agree to the processing of your data according to our Privacy Policy.</li>
+              </ul>
+              <button onClick={() => setShowTerms(false)} className={styles.closeBtn}><span className="icon-cancel"></span></button>
+            </div>
           </div>
-        </div>
-      )}
-    </form>
+        )}
+      </form>
     </>
   );
 }
