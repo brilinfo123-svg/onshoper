@@ -584,7 +584,7 @@ if (fullLocation === "All Cities") {
               <span className={styles.category}>
                 {product.category} → {product.subcategory}
               </span>
-              <ShareButtons shortId={product._id}  />
+              <ShareButtons title={product._id} />
             </div>
 
             {/* Vehicle Info */}

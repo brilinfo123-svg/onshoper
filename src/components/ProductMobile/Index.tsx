@@ -399,7 +399,8 @@ const ProductMobile = ({
                 <div className={styles.embla__container}>
                   {filteredCategories.map((category) => (
                     <div key={category.id} className={styles.embla__slide} onClick={() => handleCategoryClick(category.id)}>
-                       <div className={`${styles.carouselIcon} ${hideIcons ? styles.fadeOut : styles.fadeIn}`}>
+                       <div className={`${styles.carouselIcon}`}>
+                       {/* <div className={`${styles.carouselIcon} ${hideIcons ? styles.fadeOut : styles.fadeIn}`}> */}
                         <Image src={getCategoryIcon(category.name)} alt={category.name} width={30} height={30}/>
                       </div>
                       <span className={styles.carouselName}>{category.name}</span>
