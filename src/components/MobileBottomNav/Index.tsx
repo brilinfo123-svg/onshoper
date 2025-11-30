@@ -95,7 +95,7 @@ const MobileBottomNav = () => {
       name: 'Post Ads',
       path: '/ProductForm',
       icon: (
-        <Image src="/icons/plusIcone.png" alt="Post Ad" width={30} height={30} />
+        <Image src="/icons/plusIcone.png" alt="Post Ad" width={35} height={35} />
       ),
       onClick: () => {
         setAccountOpen(false);
@@ -113,13 +113,13 @@ const MobileBottomNav = () => {
       name: 'My Ads',
       path: '/profile',
       icon: (
-        <Image src="/icons/catalog-alt.svg" alt="My Ads" width={25} height={25} />
+        <Image src="/icons/catalog-alt.svg" alt="My Ads" width={25} height={23} />
       ),
       onClick: () => {
         setAccountOpen(false);
         setNotificationsOpen(false);
         if (session?.user) {
-          router.push('/my-ads');
+          router.push('/profile');
         } else {
           router.push('/login');
         }
@@ -133,8 +133,8 @@ const MobileBottomNav = () => {
         <Image
           src="/icons/userIcone.png"
           alt="Account"
-          width={30}
-          height={30}
+          width={28}
+          height={28}
         />
       ),
       onClick: toggleAccount
