@@ -387,11 +387,14 @@
           }
     
           @media screen and (max-width: 767px) {
-            font-size: 12px;
+            font-size: 14px;
     
             b {
               font-size: 13px;
             }
+          }
+          @media screen and (max-width: 374px) {
+            font-size: 12px;
           }
         }
       }
@@ -461,7 +464,7 @@
           line-height: 1.5;
     
           @media screen and (max-width: 767px) {
-            font-size: 13px;
+            font-size: 14px;
           }
         }
       }

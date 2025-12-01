@@ -314,7 +314,7 @@ const PropertyDetailPage: React.FC = () => {
             )}
           </>
         )}
-        {loading && <Loader message="Deleting, please wait..." />}
+        {loading && <Loader message="please wait..." />}
       </div>,
     },
     {
