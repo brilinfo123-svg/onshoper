@@ -66,7 +66,7 @@ const MobileBottomNav = () => {
       name: 'Home',
       path: '/',
       icon: (
-        <Image src="/icons/homeIcone.png" alt="Home" width={33} height={33} />
+        <Image src="/icons/homeIcone.png" alt="Home" width={32} height={32} />
       ),
       onClick: () => {
         setAccountOpen(false);
@@ -133,8 +133,8 @@ const MobileBottomNav = () => {
         <Image
           src="/icons/userIcone.png"
           alt="Account"
-          width={28}
-          height={28}
+          width={27}
+          height={27}
         />
       ),
       onClick: toggleAccount
