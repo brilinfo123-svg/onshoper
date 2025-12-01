@@ -19,7 +19,7 @@ const MobileBottomNav = () => {
   const accountRef = useRef<HTMLDivElement | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  const isOnChatPage = router.pathname.startsWith('/chat');
+  const isOnChatPage = router.pathname.startsWith("/chat");
   const totalNotifications = isOnChatPage ? 0 : getTotalNotifications();
 
   const handleLogout = () => {
@@ -33,11 +33,11 @@ const MobileBottomNav = () => {
   };
 
   const toggleNotifications = () => {
-    if (router.pathname !== '/chat') {
+    if (router.pathname !== "/chat") {
       setNotificationsOpen((prev) => !prev);
       if (isAccountOpen) setAccountOpen(false);
     } else {
-      router.push('/chat');
+      router.push("/chat");
     }
   };
 
@@ -60,26 +60,22 @@ const MobileBottomNav = () => {
     };
   }, []);
 
-  // ✅ UPDATED navItems WITH "My Ads"
+  // ✅ navItems
   const navItems = [
     {
-      name: 'Home',
-      path: '/',
-      icon: (
-        <Image src="/icons/homeIcone.png" alt="Home" width={32} height={32} />
-      ),
+      name: "Home",
+      path: "/",
+      icon: <Image src="/icons/homeIcone.png" alt="Home" width={32} height={32} />,
       onClick: () => {
         setAccountOpen(false);
         setNotificationsOpen(false);
-        router.push('/');
-      }
+        router.push("/");
+      },
     },
     {
-      name: 'Chat',
-      path: '/chat',
-      icon: (
-        <Image src="/icons/chatIcone.png" alt="Chat" width={27} height={27} />
-      ),
+      name: "Chat",
+      path: "/chat",
+      icon: <Image src="/icons/chatIcone.png" alt="Chat" width={27} height={27} />,
       onClick: () => {
         setAccountOpen(false);
         setNotificationsOpen(false);
@@ -89,73 +85,74 @@ const MobileBottomNav = () => {
           router.push("/login");
         }
       },
-      showBadge: true
+      showBadge: true,
     },
     {
-      name: 'Post Ads',
-      path: '/ProductForm',
-      icon: (
-        <Image src="/icons/plusIcone.png" alt="Post Ad" width={35} height={35} />
-      ),
-      onClick: () => {
-        setAccountOpen(false);
-        setNotificationsOpen(false);
-        if (session?.user) {
-          router.push('/ProductForm');
-        } else {
-          router.push('/login');
-        }
-      }
-    },
-
-    // ⭐⭐⭐ NEW BUTTON — MY ADS ⭐⭐⭐
-    {
-      name: 'My Ads',
-      path: '/profile',
-      icon: (
-        <Image src="/icons/catalog-alt.svg" alt="My Ads" width={25} height={23} />
-      ),
-      onClick: () => {
-        setAccountOpen(false);
-        setNotificationsOpen(false);
-        if (session?.user) {
-          router.push('/profile');
-        } else {
-          router.push('/login');
-        }
-      }
-    },
-
-    {
-      name: 'Account',
-      path: session ? '/profile' : '/auth/signin',
+      name: "Post Ads",
+      path: "/ProductForm",
       icon: (
         <Image
-          src="/icons/userIcone.png"
-          alt="Account"
-          width={27}
-          height={27}
+          src="/icons/plusIcone.png"
+          alt="Post Ad"
+          width={35}
+          height={35}
+          className={styles.postAdIcon}
         />
       ),
-      onClick: toggleAccount
-    }
+      onClick: () => {
+        setAccountOpen(false);
+        setNotificationsOpen(false);
+        if (session?.user) {
+          router.push("/ProductForm");
+        } else {
+          router.push("/login");
+        }
+      },
+    },
+    {
+      name: "My Ads",
+      path: "/profile",
+      icon: <Image src="/icons/catalog-alt.svg" alt="My Ads" width={25} height={23} />,
+      onClick: () => {
+        setAccountOpen(false);
+        setNotificationsOpen(false);
+        if (session?.user) {
+          router.push("/profile");
+        } else {
+          router.push("/login");
+        }
+      },
+    },
+    {
+      name: "Account",
+      path: session ? "/profile" : "/auth/signin",
+      icon: <Image src="/icons/userIcone.png" alt="Account" width={27} height={27} />,
+      onClick: toggleAccount,
+    },
   ];
 
   return (
     <>
       <div className={styles.mobileBottomNav}>
         {navItems.map((item) => (
-          <div key={item.name} className={styles.navItemContainer}>
-            {item.name === 'Account' || item.name === 'Chat' ? (
+          <div
+            key={item.name}
+            className={`${styles.navItemContainer} ${
+              item.name === "Post Ads" ? styles.postAdsContainer : ""
+            }`}
+          >
+            {item.name === "Account" || item.name === "Chat" ? (
               <button
-                className={`${styles.navItem} ${router.pathname === item.path ? styles.active : ''}`}
+                className={`${styles.navItem} ${
+                  router.pathname === item.path ? styles.active : ""
+                }`}
                 onClick={item.onClick}
               >
                 <div className={styles.navIcon}>
                   {item.icon}
                   {item.showBadge && totalNotifications > 0 && (
                     <span className={styles.notificationBadge}>
-                      {totalNotifications > 99 ? '99+' : totalNotifications}
+                      {totalNotifications > 99 ? "99+" : totalNotifications}
                     </span>
                   )}
                 </div>
@@ -164,14 +161,16 @@ const MobileBottomNav = () => {
             ) : (
               <Link
                 href={item.path}
-                className={`${styles.navItem} ${router.pathname === item.path ? styles.active : ''}`}
+                className={`${styles.navItem} ${
+                  router.pathname === item.path ? styles.active : ""
+                }`}
                 onClick={item.onClick}
               >
                 <div className={styles.navIcon}>
                   {item.icon}
                   {item.showBadge && totalNotifications > 0 && (
                     <span className={styles.notificationBadge}>
-                      {totalNotifications > 99 ? '99+' : totalNotifications}
+                      {totalNotifications > 99 ? "99+" : totalNotifications}
                     </span>
                   )}
                 </div>
@@ -189,11 +188,11 @@ const MobileBottomNav = () => {
             {session ? (
               <>
                 <Link href="/subscribePlan">
-                  <span className={"icon-star"} ></span>
+                  <span className={"icon-star"}></span>
                   My Purchase
                 </Link>
                 <Link href="/profile" onClick={() => setAccountOpen(false)}>
-                  <span className={"icon-user-circle"} ></span>
+                  <span className={"icon-user-circle"}></span>
                   My Account
                 </Link>
 
@@ -212,10 +211,7 @@ const MobileBottomNav = () => {
         </div>
       )}
 
-      <ChatSidebar
-        isOpen={isChatOpen}
-        onClose={() => setIsChatOpen(false)}
-      />
+      <ChatSidebar isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </>
   );
 };
