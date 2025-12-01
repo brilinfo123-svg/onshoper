@@ -155,6 +155,12 @@ export default function SubscriptionPage() {
       icon: "info",
       confirmButtonText: "Go to Payment",
       showCancelButton: true,
+      customClass: {
+        popup: "swal-popup",
+        title: "swal-title",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         router.push({

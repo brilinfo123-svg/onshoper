@@ -110,3 +110,40 @@ section{
     outline: none;
   }
 }
+
+
+.swal-popup {
+  background: #f9f9f9; 
+  border-radius: 12px;
+  font-family: "Poppins", sans-serif;
+}
+
+.swal-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  /* color: #3399cc;    */
+}
+
+.swal-popup p {
+  font-size: 16px;
+  line-height: 1.4;
+  color: #444;
+  margin-top: 10px;
+  max-width: 410px;
+  margin: 0 auto;
+}
+
+/* .swal-confirm {
+  background: linear-gradient(90deg, #00acc1, #3399cc);
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 500;
+}
+
+.swal-cancel {
+  background: #eee;
+  color: #333;
+  border-radius: 8px;
+  padding: 8px 16px;
+} */

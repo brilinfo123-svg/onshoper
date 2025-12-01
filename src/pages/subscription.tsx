@@ -79,6 +79,12 @@ function Package() {
         text: "Shop owner ID or contact not found. Please log in again.",
         icon: "error",
         confirmButtonText: "OK",
+        customClass: {
+          popup: "swal-popup",
+          title: "swal-title",
+          confirmButton: "swal-confirm",
+          cancelButton: "swal-cancel",
+        },
       });
       return;
     }
@@ -126,6 +132,12 @@ function Package() {
       `,
       icon: "success",
       confirmButtonText: "Start Posting",
+      customClass: {
+        popup: "swal-popup",
+        title: "swal-title",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel",
+      },
     }).then(() => {
       router.push("/ProductForm");
     });
@@ -255,6 +267,13 @@ export default withProtectedPage(Package);
 //     const category = decodeURIComponent(rawCategory).trim();
 //     const amount = categoryPrices[category] || 99;
 
+//     useEffect(() => {
+//       const script = document.createElement("script");
+//       script.src = "https://checkout.razorpay.com/v1/checkout.js";
+//       script.async = true;
+//       document.body.appendChild(script);
+//     }, []);
+    
 //       useEffect(() => {
 //         if (session?.user?.contact) {
 //           const fetchShopData = async () => {
@@ -331,12 +350,28 @@ export default withProtectedPage(Package);
 //             contact: session?.user?.contact,
 //           },
 //           theme: { color: "#3399cc" },
+//           method: {
+//             upi: true,
+//             card: true,
+//             netbanking: true,
+//           },
 //         };
       
-//         const rzp = new window.Razorpay(options);
-//         rzp.open();
+//         // ✅ Check if Razorpay script is loaded
+//         if (typeof window !== "undefined" && (window as any).Razorpay) {
+//           const rzp = new (window as any).Razorpay(options);
+//           rzp.open();
+//         } else {
+//           Swal.fire({
+//             title: "Error",
+//             text: "Razorpay SDK not loaded yet. Please try again.",
+//             icon: "error",
+//           });
+//         }
+      
 //         setLoading(false);
 //       };
+      
       
 //   return (
 //     <>

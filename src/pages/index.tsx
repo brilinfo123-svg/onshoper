@@ -1,6 +1,5 @@
 "use client";
 
-import Benefits from "@/components/Benefits/Index";
 import Button from "@/components/Button/Index";
 import SkeletonCard from "@/components/SkeletonCard/Index";
 import ProductPost from "@/components/ProductPost/Index";

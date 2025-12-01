@@ -57,7 +57,7 @@ export default function ContactUs() {
       <div className={styles.card}>
         <h1 className={styles.title}>Contact Us</h1>
         <p className={styles.updated}>
-          Your queries are important to us — reach out with confidence
+          Your queries are important to us reach out with confidence
         </p>
 
         <div className={styles.grid}>

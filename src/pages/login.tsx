@@ -113,7 +113,12 @@ export default function LoginPage() {
     const data = await res.json();
     if (data.success) {
       setOtpSent(true);
-      setMessage("OTP sent successfully");
+      // ✅ Different messages for mobile vs email
+      if (loginType === "mobile") {
+        setMessage("✅ OTP sent on WhatsApp");
+      } else {
+        setMessage("✅ OTP sent to your email");
+      }
       setCanResend(false);
       await fetchOtpExpiry();
     } else {
@@ -122,6 +127,7 @@ export default function LoginPage() {
   
     setIsSendingOtp(false);
   };
+  
   
 
   const verifyOtp = async () => {

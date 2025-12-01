@@ -1405,7 +1405,7 @@ function AllCategoryRentalForm() {
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
-        <h2>Post Your: <span className={styles.SelectedItem}>{selectedCategory} {">"} {selectedSubcategory}</span></h2>
+        <h2>Post Ads: <span className={styles.SelectedItem}>{selectedCategory} {">"} {selectedSubcategory}</span></h2>
 
 
         {step === 1 && (
