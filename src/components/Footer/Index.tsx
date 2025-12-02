@@ -49,8 +49,7 @@ const Footer = () => {
         <li>
           <a href="https://www.google.com/maps?q=8-A,+Lakhnaur+Pind+Rd,+Industrial+Area,+Sector+75,+Sahibzada+Ajit+Singh+Nagar,+Punjab+140307" target="_blank"
             className="icon-location">
-            Lakhnaur Pind Rd, Industrial Area, Sector 75,  
-            Sahibzada Ajit Singh Nagar, Punjab 140307
+            D-258, GR Tower Industrial Area, Sector 75 S.A.S. Nagar (Mohali) Punjab – 160071 India
           </a>
         </li>
       </ul>
