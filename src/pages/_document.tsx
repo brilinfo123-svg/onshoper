@@ -8,20 +8,14 @@ export default function Document() {
         {/* Verification */}
         <meta 
           name="google-site-verification" 
-          content="6XOdt6iyzuee-IXJ6Axq600RFXyh-mKqGObQvYgr2qE" 
+          content="6XOdt6iyzuee-IXJ6Axq600RFXyh-mKqGObQvYgr2qE"
         />
         <meta 
           name="facebook-domain-verification" 
-          content="5rpwhxj3a87kpora90zzvsxj147g1l" 
+          content="5rpwhxj3a87kpora90zzvsxj147g1l"
         />
 
-        {/* Responsive Meta */}
-        <meta 
-          name="viewport" 
-          content="width=device-width, initial-scale=1, maximum-scale=1" 
-        />
-
-        {/* OneSignal Push Notification Setup */}
+        {/* OneSignal Push Notification Scripts */}
         <script
           src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
           defer
@@ -34,11 +28,16 @@ export default function Document() {
               OneSignalDeferred.push(async function(OneSignal) {
                 await OneSignal.init({
                   appId: "1b2aa8e0-16d9-46b8-8393-aee12c888950",
+                  safari_web_id: "web.onesignal.auto.26872e49-0741-4e76-94b8-10ddfedc5443",
+                  notifyButton: {
+                    enable: true,
+                  },
                 });
               });
             `,
           }}
         />
+
       </Head>
 
       <body>
