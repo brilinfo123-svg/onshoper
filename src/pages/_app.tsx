@@ -2,11 +2,11 @@
 import { useEffect } from "react";
 import { SessionProvider, useSession } from "next-auth/react";
 import DefaultHeader from "@/components/DefaultHeader/Index";
-import { NotificationProvider } from "../contexts/NotificationContext";
-import { FilterProvider } from "@/contexts/FilterContext";
+import { NotificationProvider } from '../contexts/NotificationContext';
+import { FilterProvider } from "@/contexts/FilterContext"; 
 import { CityFilterProvider } from "@/contexts/CityFilterContext";
-import { FavoriteProvider } from "../contexts/FavoriteContext";
-import { ChatProvider } from "@/contexts/ChatContext";
+import { FavoriteProvider } from '../contexts/FavoriteContext';
+import { ChatProvider } from '@/contexts/ChatContext';
 import ProtectedHeader from "@/components/ProtectedHeader/Index";
 import Footer from "@/components/Footer/Index";
 import { ToastContainer } from "react-toastify";
@@ -24,20 +24,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isAdminPage = router.pathname.startsWith("/admin");
 
-  // ✅ Initialize OneSignal for web push notifications
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.OneSignal) {
-      window.OneSignal.push(async function () {
-        await window.OneSignal.init({
-          appId: "e9e306bb-c8ab-4d1a-9723-5749d4300f2f", // 👈 updated App ID
-          allowLocalhostAsSecureOrigin: true, // enable localhost testing
-          notifyButton: {
-            enable: true, // show default bell icon
-          },
-        });
-      });
-    }
-  }, []);
 
   return (
     <SessionProvider session={pageProps.session}>
