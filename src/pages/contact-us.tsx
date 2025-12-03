@@ -65,10 +65,13 @@ export default function ContactUs() {
           <div className={styles.contactInfo}>
             <h2>Direct Contact</h2>
             <p>
-              You can reach us directly via phone or email, or use the form on
-              the right to send a message.
+              You can reach us directly via phone, email, or visit our office at the address below.
             </p>
             <ul className={styles.contactList}>
+                <li>
+                <span className="icon-user"></span>
+                <strong>Aakash Verma</strong>
+              </li>
               <li>
                 <span className="icon-phone"></span>
                 <strong>+91 7652800205</strong>
@@ -76,6 +79,12 @@ export default function ContactUs() {
               <li>
                 <span className="icon-mail-alt"></span>
                 <strong>onshoper390@gmail.com</strong>
+              </li>
+              <li>
+                <span className="icon-location"></span>
+                <strong>
+                  D-258, GR Tower Industrial Area, Sector 75 S.A.S. Nagar (Mohali) Punjab – 160071 India
+                </strong>
               </li>
             </ul>
           </div>
@@ -114,15 +123,14 @@ export default function ContactUs() {
               </div>
               <button type="submit" disabled={loading}>
                 {loading ? (
-                    <>
+                  <>
                     <span className={styles.loader}></span>
                     <span className={styles.sendingText}>Sending...</span>
-                    </>
+                  </>
                 ) : (
-                    "Send Message"
+                  "Send Message"
                 )}
-                </button>
-
+              </button>
             </form>
           </div>
         </div>
