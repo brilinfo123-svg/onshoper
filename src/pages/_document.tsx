@@ -27,8 +27,7 @@ export default function Document() {
               window.OneSignalDeferred = window.OneSignalDeferred || [];
               OneSignalDeferred.push(async function(OneSignal) {
                 await OneSignal.init({
-                  appId: "1b2aa8e0-16d9-46b8-8393-aee12c888950",
-                  safari_web_id: "web.onesignal.auto.26872e49-0741-4e76-94b8-10ddfedc5443",
+                  appId: "e9e306bb-c8ab-4d1a-9723-5749d4300f2f", // 👈 updated App ID
                   notifyButton: {
                     enable: true,
                   },

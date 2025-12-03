@@ -149,6 +149,7 @@ export default function LoginPage() {
       });
 
       if (result?.ok) {
+        window.OneSignal.push(["setExternalUserId", contact]);
         Swal.fire({
           icon: "success",
           title: "Login Successful",

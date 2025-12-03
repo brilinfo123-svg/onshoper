@@ -324,6 +324,15 @@ export default function ChatSidebar({ isOpen,
         if (socketRef.current && socketRef.current.connected) {
           socketRef.current.emit("sendMessage", savedMessage);
         }
+        await fetch("/api/sendNotification/send-notification", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            receiverId: selectedChat.otherUserId,   // 👈 OneSignal externalUserId of receiver
+            senderName: senderName,                 // 👈 sender name
+            message: newMessage.trim(),             // 👈 message content
+          }),
+        });
         console.log("Saved message before socket emit:", savedMessage);
         // Refresh chats to update last message
         fetchChats();
