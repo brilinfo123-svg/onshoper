@@ -5,17 +5,17 @@ export default function Document() {
     <Html lang="en">
       <Head>
 
-        {/* Verification */}
+        {/* Google & Facebook Verification */}
         <meta 
           name="google-site-verification" 
-          content="6XOdt6iyzuee-IXJ6Axq600RFXyh-mKqGObQvYgr2qE"
+          content="6XOdt6iyzuee-IXJ6Axq600RFXyh-mKqGObQvYgr2qE" 
         />
         <meta 
           name="facebook-domain-verification" 
-          content="5rpwhxj3a87kpora90zzvsxj147g1l"
+          content="5rpwhxj3a87kpora90zzvsxj147g1l" 
         />
 
-        {/* OneSignal Push Notification Scripts */}
+        {/* OneSignal SDK */}
         <script
           src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
           defer
@@ -27,10 +27,11 @@ export default function Document() {
               window.OneSignalDeferred = window.OneSignalDeferred || [];
               OneSignalDeferred.push(async function(OneSignal) {
                 await OneSignal.init({
-                  appId: "e9e306bb-c8ab-4d1a-9723-5749d4300f2f", // 👈 updated App ID
-                  notifyButton: {
-                    enable: true,
-                  },
+                  appId: "e9e306bb-c8ab-4d1a-9723-5749d4300f2f", // ✅ Your Live App ID
+                  notifyButton: { enable: true },
+                  serviceWorkerPath: '/OneSignalSDKWorker.js',
+                  serviceWorkerUpdaterPath: '/OneSignalSDKUpdaterWorker.js',
+                  allowLocalhostAsSecureOrigin: true // ✅ Optional for localhost testing
                 });
               });
             `,

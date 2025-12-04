@@ -1,4 +1,8 @@
-declare interface Window {
-    OneSignal: any;
+declare global {
+  interface Window {
+    OneSignalDeferred?: any[];
+    OneSignal?: any;
   }
-  
+}
+
+export {};

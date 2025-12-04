@@ -2,6 +2,26 @@ import React from "react";
 import styles from "../styles/PrivacyPolicy.module.scss"; // reuse same styles
 
 export default function UploadPolicy() {
+  const sendNotification = async () => {
+    try {
+      const res = await fetch("/api/sendNotification/send-notification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: "Hello! You have a new notification.",
+          receiverId: "USER_EXTERNAL_ID", // replace with actual user ID
+          url: "/some-page", // optional URL on click
+        }),
+      });
+  
+      const data = await res.json();
+      if (data.success) alert("Notification sent!");
+      else console.error(data.message);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  
   return (
     <div className={styles.wrapper}>
       <div className={styles.card}>
@@ -97,6 +117,8 @@ export default function UploadPolicy() {
           </ul>
         </section>
       </div>
+      <button onClick={sendNotification}>Send Notification</button>
+
     </div>
   );
 }
