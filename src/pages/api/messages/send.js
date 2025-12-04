@@ -18,14 +18,14 @@ export default async function handler(req, res) {
 
     const { receiverId, message, productId, productTitle, coverImage, otherUserName } = req.body;
 
-    if (!receiverId || !message || message.trim() === "") {
+    if (!receiverId || !message.trim()) {
       return res.status(400).json({ success: false, message: "Missing required fields" });
     }
 
-    // Save message in database
+    // Save Message
     const newMessage = new Message({
-      sender: session.user.id || session.user.email || session.user.contact,
-      senderName: session.user.name || session.user.email || "Unknown",
+      sender: session.user.id || session.user.email,
+      senderName: session.user.name || "Unknown",
       receiver: receiverId,
       message: message.trim(),
       productId: productId || null,
@@ -39,16 +39,18 @@ export default async function handler(req, res) {
 
     const savedMessage = await newMessage.save();
 
-    // Send OneSignal Push Notification
-    const ONE_SIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID; // Add your OneSignal App ID in .env
-    const ONE_SIGNAL_API_KEY = process.env.ONESIGNAL_API_KEY; // Add REST API Key in .env
+    // 🔥 Send Push Notification via OneSignal
+    const ONE_SIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID;
+    const ONE_SIGNAL_API_KEY = process.env.ONESIGNAL_API_KEY;
 
-    const notificationBody = {
+    const payload = {
       app_id: ONE_SIGNAL_APP_ID,
-      include_external_user_ids: [receiverId], // Make sure receiverId matches OneSignal External User ID
+      include_external_user_ids: [receiverId],
+
       headings: { en: `${newMessage.senderName} sent you a message` },
       contents: { en: message },
-      url: `/chat/${newMessage.sender}`, // optional: link to chat page
+
+      url: `https://onshoper.com/chat/${newMessage.sender}` // optional
     };
 
     await fetch("https://onesignal.com/api/v1/notifications", {
@@ -57,18 +59,20 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
         Authorization: `Basic ${ONE_SIGNAL_API_KEY}`,
       },
-      body: JSON.stringify(notificationBody),
+      body: JSON.stringify(payload),
     });
 
     res.status(201).json({
       success: true,
       sentMessage: savedMessage,
     });
+
   } catch (error) {
     console.error("Error sending message:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 }
+
 
 
 
