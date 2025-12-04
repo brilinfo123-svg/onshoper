@@ -69,6 +69,7 @@ export default function Home() {
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
   const [displayCount] = useState(10);
   // const [minPrice, setMinPrice] = useState<number | "">("");
+  const [maxPrice, setMaxPrice] = useState<number | "">("");
   const { filterType } = useFilter();
   const productsRef = useRef<HTMLDivElement>(null);
   const [visibleCount, setVisibleCount] = useState(10);
@@ -79,31 +80,6 @@ export default function Home() {
   const [selectedCity, setSelectedCity] = useState<string>("All Cities");
   const { data: session } = useSession();
   const [shopData, setShopData] = useState<ShopData | null>(null);
-
-  const loadMoreRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!loadMoreRef.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisibleCount((prev) => prev + 10);
-        }
-      },
-      {
-        threshold: 0.1,          // trigger earlier
-        rootMargin: "100px",     // preload before reaching bottom
-      }
-    );
-
-    observer.observe(loadMoreRef.current);
-
-    return () => {
-      if (loadMoreRef.current) observer.unobserve(loadMoreRef.current);
-    };
-  }, [products]);
-
 
   useEffect(() => {
     const savedCity = localStorage.getItem("selectedCity") || "All Cities";
@@ -237,6 +213,7 @@ export default function Home() {
     <div className="main">
       <Head />
       <IntroAnimation />
+      {/* <Banner bannerClass={styles.MobileSearch} contentClass={styles.contentWrap} /> */}
       <div className="container">
         <ProductMobile
           products={products}
@@ -255,64 +232,107 @@ export default function Home() {
         />
       </div>
       <BannerPost />
+
+      {/* Yahan FilterLocation component add kiya hai */}
+      {/* <FilterLocation onCityChange={handleCityChange} /> */}
+
       <div className="container">
         <div className={styles.rowFlex} id="products-section" ref={productsRef}>
+          {/* Sidebar Filter */}
+          {/* {productsLoading ? (
+            <div className={styles.sidebarSkeleton}>
+              <SkeletonCard />
+            </div>
+          ) : (
+            <Sidebar
+              products={products}
+              selectedCategories={selectedCategories}
+              onCategoryChange={(id) =>
+                setSelectedCategories((prev) =>
+                  prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
+                )
+              }
+              selectedSubcategories={selectedSubcategories}
+              onSubcategoryChange={(sub) =>
+                setSelectedSubcategories((prev) =>
+                  prev.includes(sub) ? prev.filter((s) => s !== sub) : [...prev, sub]
+                )
+              }
+            />
+          )} */}
 
+          {/* Products Section */}
           <div className={styles.productsSection}>
+            {/* Selected city display */}
+            {/* {selectedCity !== "All Cities" && (
+              <div className={styles.selectedCity}>
+                <h3>Showing products in: {selectedCity}</h3>
+              </div>
+            )} */}
+
+            {/* Products Grid */}
             {productsLoading ? (
-              <div className={styles.productGrid}>
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <SkeletonCard key={i} />
-                ))}
-              </div>
-            ) : filteredProducts.length === 0 ? (
-              // 👈 Now outside productGrid
-              <div className={styles.notFoundShops}>
-                <p>No products found for the selected filter</p>
-              </div>
-            ) : (
-              <div className={styles.productGrid}>
-                {filteredProducts
-                  // 👈 status filter removed
-                  .sort((a, b) => (b.feature ? 1 : 0) - (a.feature ? 1 : 0))
-                  .slice(0, visibleCount)
-                  .map((product) => (
-                    <ProductPost
-                      key={product._id}
-                      _id={product._id}
-                      title={product.title}
-                      description={""}
-                      category={product.category}
-                      subCategory={product.subcategory}
-                      price={Number(product.price)}
-                      priceWeek={product.priceWeek ? Number(product.priceWeek) : undefined}
-                      priceMonth={product.priceMonth ? Number(product.priceMonth) : undefined}
-                      SalePrice={product.SalePrice}
-                      coverImage={product.coverImage || product.images?.[0] || "/images/DefoultLogo.jpg"}
-                      images={product.images || []}
-                      location={{
-                        city: product.location?.city || "",
-                        area: product.location?.area || "",
-                        state: product.location?.state || ""
-                      }}
-                      createdAt={product.createdAt}
-                      isFeatured={product.feature || false}
-                      shopOwnerID={product.shopOwnerID}
-                      year={product.year}
-                      KmDriven={product.KmDriven}
-                      mobileBrand={product.MobileBrand}
-                      mobileModel={product.MobileModel}
-                      salaryFrom={product.salaryFrom}
-                      salaryTo={product.salaryTo}
-                      salaryPeriod={product.salaryPeriod}
-                      positionType={product.positionType}
-                    />
-                  ))}
-              </div>
+  <div className={styles.productGrid}>
+    {Array.from({ length: 8 }).map((_, i) => (
+      <SkeletonCard key={i} />
+    ))}
+  </div>
+) : filteredProducts.length === 0 ? (
+  // 👈 Now outside productGrid
+  <div className={styles.notFoundShops}>
+    <p>No products found for the selected filter</p>
+  </div>
+) : (
+  <div className={styles.productGrid}>
+    {filteredProducts
+      .filter((product) => product.status === "active") // only active products
+      .sort((a, b) => (b.feature ? 1 : 0) - (a.feature ? 1 : 0))
+      .slice(0, visibleCount)
+      .map((product) => (
+        <ProductPost
+          key={product._id}
+          _id={product._id}
+          title={product.title}
+          description={""}
+          category={product.category}
+          subCategory={product.subcategory}
+          price={Number(product.price)}
+          priceWeek={product.priceWeek ? Number(product.priceWeek) : undefined}
+          priceMonth={product.priceMonth ? Number(product.priceMonth) : undefined}
+          SalePrice={product.SalePrice}
+          coverImage={product.coverImage || product.images?.[0] || "/images/DefoultLogo.jpg"}
+          images={product.images || []}
+          location={{
+            city: product.location?.city || "",
+            area: product.location?.area || "",
+            state: product.location?.state || ""
+          }}
+          createdAt={product.createdAt}
+          isFeatured={product.feature || false}
+          shopOwnerID={product.shopOwnerID}
+          year={product.year}
+          KmDriven={product.KmDriven}
+          mobileBrand={product.MobileBrand}
+          mobileModel={product.MobileModel}
+          salaryFrom={product.salaryFrom}
+          salaryTo={product.salaryTo}
+          salaryPeriod={product.salaryPeriod}
+          positionType={product.positionType}
+        />
+      ))}
+  </div>
+)}
 
-            )}
-            <div ref={loadMoreRef} className={styles.loadMoreTrigger}></div>
 
+
+            {/* View More Button */}
+            <div className={styles.btnAlign}>
+              {!productsLoading && visibleCount < filteredProducts.length && (
+                <div className={styles.viewMoreWrapper}>
+                  <Button onClick={handleViewMore} children={"View More"} href={""} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

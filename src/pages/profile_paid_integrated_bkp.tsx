@@ -296,10 +296,11 @@ const PropertyDetailPage: React.FC = () => {
                     onDelete={handleDelete}
                     onUpdate={(id) => console.log("Update product", id)}
                     shopOwnerID={product.shopOwnerID}
+                    // 👇 optional: you can style expired products differently
+                    className={product.status === "expired" ? styles.disabledProduct : ""}
                   />
                 ))}
               </div>
-
             </div>
 
 

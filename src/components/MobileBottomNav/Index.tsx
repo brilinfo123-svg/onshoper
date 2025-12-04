@@ -187,10 +187,10 @@ const MobileBottomNav = () => {
           <div className={styles.dropdownContent}>
             {session ? (
               <>
-                <Link href="/subscribePlan">
+                {/* <Link href="/subscribePlan">
                   <span className={"icon-star"}></span>
                   My Purchase
-                </Link>
+                </Link> */}
                 <Link href="/profile" onClick={() => setAccountOpen(false)}>
                   <span className={"icon-user-circle"}></span>
                   My Account

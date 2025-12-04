@@ -5,30 +5,39 @@ import styles from "./banner.module.scss";
 
 const bannerSlides = [
   {
-    title: "🏠 Buy, Sell, Rent & Exchange",
-    description: "Post your ad in seconds and connect with verified buyers or renters.",
+    title: "🛒 Sell & Rent Old Accessories",
+    description: "List your pre-owned items in seconds and reach people looking to buy or rent.",
   },
   {
-    title: "🚀 Start Fresh, Discover More",
-    description: "Explore a growing marketplace for everything from phones to properties — all in one place.",
+    title: "✨ A New Marketplace Experience",
+    description: "Onshoper is fresh and growing — discover deals on electronics, fashion, furniture, and more.",
   },
   {
-    title: "📱 Mobile-Friendly Experience",
-    description: "Browse and post ads easily on any device, anytime.",
+    title: "📱 Easy to Use on Any Device",
+    description: "Post ads and browse listings seamlessly on mobile, tablet, or desktop.",
   },
   {
-    title: "🔍 Smart Search & Filters",
-    description: "Quickly find what you need with category-based filtering and location targeting.",
+    title: "🔎 Find What You Need Fast",
+    description: "Smart filters by category, price, and location help you connect with the right audience.",
   },
   {
-    title: "💼 Trusted by Professionals",
-    description: "Used by agents, dealers, and individuals across India.",
+    title: "🤝 Connect with Real People",
+    description: "Trusted platform for individuals, agents, and small businesses to buy, sell, or rent accessories.",
   },
   {
-    title: "🛡️ Safe & Secure Platform",
-    description: "Your data is protected and your listings are moderated for quality.",
+    title: "🛡️ Safe & Transparent Deals",
+    description: "We protect your data and moderate listings to keep the marketplace secure and fair.",
+  },
+  {
+    title: "🌱 Promote Reuse & Sustainability",
+    description: "Give old accessories a second life — save money and reduce waste while helping others.",
+  },
+  {
+    title: "🚀 Growing Community",
+    description: "Be part of a new marketplace that’s expanding every day with fresh listings and opportunities.",
   },
 ];
+
 
 const BannerPost = () => {
   const [isLoading, setIsLoading] = useState(true);

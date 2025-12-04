@@ -352,7 +352,7 @@ const Header: React.FC = () => {
           <div className={`${Style.sidebar} ${isSidebarOpen ? Style.sidebarOpen : ""}`}>
             <button className={Style.closeButton} onClick={closeSidebar}>&times;</button>
             <ul>
-              <li><Link href="/subscribePlan"><span className="icon-star"></span> My Purchase</Link></li>
+              {/* <li><Link href="/subscribePlan"><span className="icon-star"></span> My Purchase</Link></li> */}
               <li><Link href="/profile" onClick={closeSidebar}><span className="icon-user-circle"></span> My Account</Link></li>
               {/* <li><Link href="/favorites" className="icon-shop" onClick={closeSidebar}>My Favorites</Link></li> */}
               <li><a href="javascript:void(0)" onClick={handleLogout}><span className="icon-off"></span> Logout</a></li>

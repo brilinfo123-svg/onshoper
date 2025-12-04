@@ -159,7 +159,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
   left: 20px;
   right: 0;
   min-height: 300px;
@@ -399,5 +398,22 @@
   
   .productGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+.loadMoreTrigger {
+  height: 50px;
+  background: transparent;
+}
+.productGrid > * {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
