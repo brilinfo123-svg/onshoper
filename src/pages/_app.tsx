@@ -63,14 +63,24 @@ const OneSignalLoginWrapper = ({ children }) => {
   useEffect(() => {
     if (typeof window !== "undefined" && session?.user) {
       window.OneSignalDeferred = window.OneSignalDeferred || [];
-      window.OneSignalDeferred.push(function (OneSignal) {
-        OneSignal.login(session.user.id || session.user.contact);
+
+      window.OneSignalDeferred.push(async function (OneSignal) {
+        try {
+          // Do NOT initialize here again — it is already initialized in <script>
+          // Just set the external user ID
+          await OneSignal.setExternalUserId(
+            session.user.id || session.user.contact
+          );
+        } catch (err) {
+          console.error("OneSignal externalId error:", err);
+        }
       });
     }
   }, [session]);
 
   return children;
 };
+
 
 // -----------------------------------------------------------------
 // Header Component
