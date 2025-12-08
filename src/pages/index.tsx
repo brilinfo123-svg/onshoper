@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ProductMobile from "@/components/ProductMobile/Index";
 import BannerPost from "@/components/BannerPost";
+import CurrentLocation from "@/components/CurrentLocation/Index";
 import IntroAnimation from "@/components/IntroAnimation/Index";
 import Head from "@/components/Head";
 import { useFilter } from "@/contexts/FilterContext";
@@ -316,6 +317,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      {/* <CurrentLocation /> */}
     </div>
   );
 }
