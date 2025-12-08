@@ -299,7 +299,6 @@ const PropertyDetailPage: React.FC = () => {
                   />
                 ))}
               </div>
-
             </div>
 
 
@@ -326,10 +325,7 @@ const PropertyDetailPage: React.FC = () => {
     <div className="container">
       <Head>
         <title>My Profile – OnShoper</title>
-        <meta
-          name="description"
-          content="View and manage your OnShoper profile. Track your listings, favorites, and account settings all in one place."
-        />
+        <meta name="description" content="View and manage your OnShoper profile. Track your listings, favorites, and account settings all in one place."/>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charSet="UTF-8" />
       </Head>

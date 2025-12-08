@@ -146,7 +146,10 @@ const ProductDetails = () => {
       alert('Mobile number not available');
     }
   };
-
+  const contactFromSesstion = session?.user?.contact;
+  console.log("contactFromSesstion", contactFromSesstion)
+  const contactNumber = session?.user?.contact;
+  const isPhoneNumber = contactNumber && /^\d+$/.test(contactFromSesstion);
   // console.log("currentUserId:", session?.user?.id);
   // console.log("otherUserId:", product?.shopOwnerID);
 
@@ -969,8 +972,12 @@ if (fullLocation === "All Cities") {
 
                   <div className={styles.contactButtons}>
                     <button onClick={startChat} className="icon-comment"></button>
-                    <button onClick={handleCallClick} className="icon-phone"></button>
-                    <button onClick={handleWhatsAppClick} className="icon-whatsapp"></button>
+                    {isPhoneNumber && (
+                        <>
+                          <button onClick={handleCallClick} className="icon-phone"></button>
+                          <button onClick={handleWhatsAppClick} className="icon-whatsapp"></button>
+                        </>
+                      )}
                   </div>
                   {/* <p><span className="icon-group"></span>Subscribers: <span>25</span></p>
                   <p><span className="icon-eye"></span>views: <span>295</span></p> */}

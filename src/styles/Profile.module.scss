@@ -632,9 +632,6 @@
       }
       
     }
-    p{
-      
-    }
   }
   .personalDetails{
     margin-top: 5px;
@@ -687,9 +684,6 @@ th, td {
 th {
   background-color: #6c6c6c;
   color: white;
-}
-tr:nth-child(even) {
-  // background-color: #f2f2f2;
 }
 tr:nth-child(odd) {
   background-color: #ffffff;
@@ -778,7 +772,7 @@ tr:nth-child(odd) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 0 15px;
+  margin: 10px 20px 15px;
 
   .highlight-button {
     padding: 12px 28px;
@@ -920,6 +914,7 @@ tr:nth-child(odd) {
   align-items: center;
   left: 0;
   padding-top: 0;
+  margin-top: 20px;
   @media screen and (max-width: 767px) {
     position: initial;
     min-height: 280px;

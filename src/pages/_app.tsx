@@ -19,68 +19,71 @@ import "react-toastify/dist/ReactToastify.css";
 import type { AppProps } from "next/app";
 import MobileBottomNav from "@/components/MobileBottomNav/Index";
 import { useRouter } from "next/router";
+import OneSignal from "react-onesignal";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isAdminPage = router.pathname.startsWith("/admin");
+  const isProductDetailPage = router.pathname.startsWith("/product/");
+
+  // ✅ Initialize OneSignal once
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      window.OneSignalDeferred.push(async function (OneSignal: any) {
+        await OneSignal.init({
+          appId: "e9e306bb-c8ab-4d1a-9723-5749d4300f2f", // replace with your real appId
+          notifyButton: {
+            enable: true,
+            prenotify: true,
+            showCredit: false,
+            position: "bottom-right",
+            size: "medium",
+            text: {
+              'tip.state.unsubscribed': 'Subscribe to notifications',
+              'tip.state.subscribed': 'You are subscribed',
+              'tip.state.blocked': 'Notifications blocked',
+              'message.prenotify': 'Click to subscribe to notifications',
+              'message.action.subscribed': 'Thanks for subscribing!',
+              'message.action.resubscribed': 'You have resubscribed',
+              'message.action.unsubscribed': 'You will not receive notifications',
+              'dialog.main.title': 'Manage Notifications',
+              'dialog.main.button.subscribe': 'Subscribe',
+              'dialog.main.button.unsubscribe': 'Unsubscribe',
+            },
+          },
+        });
+      });
+    }
+  }, []);
+  
 
   return (
     <SessionProvider session={pageProps.session}>
-      {/* Wrap with OneSignal Login Handler */}
-      <OneSignalLoginWrapper>
-        <NotificationProvider>
-          <FavoriteProvider>
-            <ChatProvider>
-              <CityFilterProvider>
-                <FilterProvider>
-                  <ToastContainer position="top-right" autoClose={3000} />
-                  <AutoUnfeaturePoller />
+      <NotificationProvider>
+        <FavoriteProvider>
+          <ChatProvider>
+            <CityFilterProvider>
+              <FilterProvider>
+                <ToastContainer position="top-right" autoClose={3000} />
+                <AutoUnfeaturePoller />
 
-                  {!isAdminPage && <HeaderComponent />}
+                {!isAdminPage && <HeaderComponent />}
 
-                  <main>
-                    <Component {...pageProps} />
-                  </main>
+                <main>
+                  <Component {...pageProps} />
+                </main>
 
-                  {!isAdminPage && <Footer />}
-                  {!isAdminPage && <MobileBottomNav />}
-                </FilterProvider>
-              </CityFilterProvider>
-            </ChatProvider>
-          </FavoriteProvider>
-        </NotificationProvider>
-      </OneSignalLoginWrapper>
+                {!isAdminPage && <Footer />}
+                {!isAdminPage && !isProductDetailPage && <MobileBottomNav />}
+              </FilterProvider>
+            </CityFilterProvider>
+          </ChatProvider>
+        </FavoriteProvider>
+      </NotificationProvider>
     </SessionProvider>
   );
 }
-
-// -----------------------------------------------------------------
-// ✅ Component: Connect logged-in user to OneSignal (External User ID)
-// -----------------------------------------------------------------
-const OneSignalLoginWrapper = ({ children }) => {
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && session?.user) {
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-
-      window.OneSignalDeferred.push(async function (OneSignal) {
-        try {
-          // Do NOT initialize here again — it is already initialized in <script>
-          // Just set the external user ID
-          await OneSignal.setExternalUserId(
-            session.user.id || session.user.contact
-          );
-        } catch (err) {
-          console.error("OneSignal externalId error:", err);
-        }
-      });
-    }
-  }, [session]);
-
-  return children;
-};
-
 
 // -----------------------------------------------------------------
 // Header Component

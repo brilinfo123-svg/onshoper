@@ -150,6 +150,7 @@ export default function LoginPage() {
 
       if (result?.ok) {
         window.OneSignal.push(["setExternalUserId", contact]);
+        console.log("✅ OneSignal externalUserId set:", contact);
         Swal.fire({
           icon: "success",
           title: "Login Successful",
