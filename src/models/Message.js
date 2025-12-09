@@ -11,7 +11,11 @@ const MessageSchema = new mongoose.Schema({
   otherUserName: { type: String, default: null },
   hiddenForSender: { type: Boolean, default: false },
   hiddenForReceiver: { type: Boolean, default: false },
+
+  // ✅ NEW FIELD for read/unread tracking
+  isRead: { type: Boolean, default: false },
+
   createdAt: { type: Date, default: Date.now },
-});
+}, { timestamps: true });
 
 export default mongoose.models.Message || mongoose.model("Message", MessageSchema);

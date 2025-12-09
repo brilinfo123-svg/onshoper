@@ -11,10 +11,10 @@ export default async function handler(req, res) {
   try {
     await connectToDatabase(); // ✅ ensure mongoose is connected
 
-    // Count unread messages for this receiver
+    // Count unread messages for this receiver (isRead = false)
     const unreadCount = await Message.countDocuments({
       receiver: userId,
-      hiddenForReceiver: false,
+      isRead: false,          // ✅ use isRead field instead of hiddenForReceiver
     });
 
     return res.status(200).json({ unreadCount });

@@ -34,6 +34,7 @@ export default async function handler(req, res) {
       otherUserName: otherUserName || null,
       hiddenForSender: false,
       hiddenForReceiver: false,
+      isRead: false,
       createdAt: new Date(),
     });
 

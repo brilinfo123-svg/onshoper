@@ -383,7 +383,7 @@ export default function ChatSidebar({ isOpen,
     });
   };
 
-  const selectChat = (chat) => {
+  const selectChat = async (chat) => {
     setSelectedChat(prev => ({
       ...chat,
       lastMessage: {
@@ -396,8 +396,25 @@ export default function ChatSidebar({ isOpen,
         name: chat.otherUser?.name || prev?.otherUser?.name || initialProduct?.otherUserName || "Seller"
       }
     }));
+  
     clearNotification(chat.otherUserId);
+    // ✅ Mark messages as read in DB
+    if (session?.user?.id) {
+      try {
+        await fetch("/api/messages/markAsRead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: session.user.id,
+            otherUserId: chat.otherUserId,
+          }),
+        });
+      } catch (err) {
+        console.error("Failed to mark messages as read:", err);
+      }
+    }
   };
+  
 
 
   const goBackToList = () => {
