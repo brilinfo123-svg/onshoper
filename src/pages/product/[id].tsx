@@ -12,7 +12,7 @@ import { useSession } from "next-auth/react";
 import ProductDetailsSkeleton from "@/components/ProductDetailsSkeleton/Index";
 import ProfilePicSkeleton from "@/components/ProfilePicSkeleton/Index";
 import useEmblaCarousel from 'embla-carousel-react';
-import { useChat } from "@/contexts/ChatContext";
+import { useChat } from "@/contexts/ChatContext"; 
 import Layout from "@/components/Layout/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import Head from "next/head";
@@ -146,10 +146,8 @@ const ProductDetails = () => {
       alert('Mobile number not available');
     }
   };
-  const contactFromSesstion = session?.user?.contact;
-  console.log("contactFromSesstion", contactFromSesstion)
-  const contactNumber = session?.user?.contact;
-  const isPhoneNumber = contactNumber && /^\d+$/.test(contactFromSesstion);
+  const MobileWithWhatshap = /^\d+$/.test(product?.ownerEmail || "");
+
   // console.log("currentUserId:", session?.user?.id);
   // console.log("otherUserId:", product?.shopOwnerID);
 
@@ -971,8 +969,8 @@ if (fullLocation === "All Cities") {
                 <div className={styles.subscribers}>
 
                   <div className={styles.contactButtons}>
-                    <button onClick={startChat} className="icon-comment"></button>
-                    {isPhoneNumber && (
+                    <button onClick={startChat} className="icon-comment"></button> 
+                    {MobileWithWhatshap && (
                         <>
                           <button onClick={handleCallClick} className="icon-phone"></button>
                           <button onClick={handleWhatsAppClick} className="icon-whatsapp"></button>

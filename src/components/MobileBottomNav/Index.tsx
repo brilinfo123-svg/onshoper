@@ -92,7 +92,7 @@ const MobileBottomNav = () => {
       path: "/ProductForm",
       icon: (
         <Image
-          src="/icons/plusIcone.png"
+          src="/icons/AddProducts.svg"
           alt="Post Ad"
           width={35}
           height={35}

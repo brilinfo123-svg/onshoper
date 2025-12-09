@@ -24,21 +24,49 @@
 
 
   .postAdsContainer {
-   position: relative;
-   .postAdIcon{
-    position: absolute;
-    bottom: -50px;
-    margin-bottom: 30px;
-    width: 55px;
-    height: 55px;
-    border: 3px solid #ffffff;
-    border-radius: 50px;
-    box-shadow: 1px 1px 13px -6px #000000;
+    position: relative;
+    .navIcon{
+      &::before {
+        content: "";
+        position: absolute;
+        top: -32px;
+        left: -26.8px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        border-top-color: #e91e63;
+        border-right-color: #2196f3;
+        border-bottom-color: #4caf50;
+        border-left-color: #ff9800;
+        animation: rotateBorder 2s linear infinite;
+        z-index: 99;
+      }
+    .postAdIcon {
+      position: absolute;
+      bottom: -50px;
+      margin-bottom: 30px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      box-shadow: 1px 1px 13px -6px #000000;
+      background: #fff; // optional
+  
+      
     }
-    span{
-      margin-top: 25px;
-     }
   }
+  
+    span {
+      margin-top: 25px;
+    }
+  
+    @keyframes rotateBorder {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  }
+  
+  
   
 }
 
