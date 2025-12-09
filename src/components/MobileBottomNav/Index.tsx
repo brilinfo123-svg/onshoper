@@ -1,4 +1,3 @@
-// components/MobileBottomNav/MobileBottomNav.tsx
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
@@ -19,8 +18,39 @@ const MobileBottomNav = () => {
   const accountRef = useRef<HTMLDivElement | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
+  // ✅ new state for DB notifications
+  const [dbNotifications, setDbNotifications] = useState(0);
+
   const isOnChatPage = router.pathname.startsWith("/chat");
-  const totalNotifications = isOnChatPage ? 0 : getTotalNotifications();
+
+  // ✅ fetch notifications from DB when session loads + auto refresh
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    const fetchNotifications = async () => {
+      if (!session?.user?.id) return;
+      try {
+        const res = await fetch(`/api/notifications/${session.user.id}`);
+        if (!res.ok) throw new Error("Failed to fetch notifications");
+        const data = await res.json();
+        setDbNotifications(data.unreadCount || 0);
+      } catch (err) {
+        console.error("Error fetching notifications:", err);
+      }
+    };
+
+    fetchNotifications();
+
+    // ✅ auto refresh every 30 seconds
+    interval = setInterval(fetchNotifications, 30000);
+
+    return () => clearInterval(interval);
+  }, [session?.user?.id]);
+
+  // ✅ merge socket + DB counts
+  const totalNotifications = isOnChatPage
+    ? 0
+    : Math.max(dbNotifications, getTotalNotifications());
 
   const handleLogout = () => {
     signOut({ callbackUrl: "/login" });
@@ -44,6 +74,7 @@ const MobileBottomNav = () => {
   const handleNotificationClick = () => {
     clearAllNotifications();
     setNotificationsOpen(false);
+    setDbNotifications(0); // ✅ clear DB badge too
   };
 
   const handleClickOutside = (event: MouseEvent) => {

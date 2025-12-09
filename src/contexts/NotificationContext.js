@@ -14,14 +14,14 @@ export const useNotifications = () => {
 
 export const NotificationProvider = ({ children }) => {
   const [notifications, setNotifications] = useState({});
+  const [dbNotifications, setDbNotifications] = useState(0); // ✅ new state
   const [socket, setSocket] = useState(null);
   const { data: session } = useSession();
   const router = useRouter();
 
-  // Check if we're currently on a chat page
   const isOnChatPage = router.pathname.startsWith('/chat');
 
-  // Load notifications from localStorage on component mount
+  // Load notifications from localStorage on mount
   useEffect(() => {
     const savedNotifications = localStorage.getItem('chatNotifications');
     if (savedNotifications) {
@@ -34,89 +34,98 @@ export const NotificationProvider = ({ children }) => {
     localStorage.setItem('chatNotifications', JSON.stringify(notifications));
   }, [notifications]);
 
-  // Initialize socket connection for real-time notifications
+  // ✅ Fetch notifications from DB + auto refresh
+  useEffect(() => {
+    let interval;
+
+    const fetchNotifications = async () => {
+      if (!session?.user?.id) return;
+      try {
+        const res = await fetch(`/api/notifications/${session.user.id}`);
+        if (!res.ok) throw new Error("Failed to fetch notifications");
+        const data = await res.json();
+        setDbNotifications(data.unreadCount || 0);
+      } catch (err) {
+        console.error("Error fetching notifications:", err);
+      }
+    };
+
+    fetchNotifications();
+    interval = setInterval(fetchNotifications, 30000); // refresh every 30s
+
+    return () => clearInterval(interval);
+  }, [session?.user?.id]);
+
+  // Initialize socket connection
   useEffect(() => {
     if (!session?.user?.id || isOnChatPage) return;
 
-    const initializeSocket = () => {
-      const newSocket = io("https://socket-server-gf0a.onrender.com", {
-        transports: ["websocket"],
-        reconnection: true,
-  reconnectionAttempts: 10,
-  reconnectionDelay: 1000,
-      });
-    
-      newSocket.on("connect", () => {
-        console.log("✅ Connected to notification server");
-        setSocket(newSocket);
-      });
-    
-      newSocket.on("receiveMessage", (message) => {
-        const isOnSenderChatPage =
-          router.pathname.startsWith("/chat/") &&
-          router.query.userId === message.sender;
-      
-        const isIncoming =
-          message.receiver === session.user.id &&
-          message.sender !== session.user.id;
-      
-        if (isIncoming && !isOnSenderChatPage) {
-          // Always update localStorage
-          const saved = JSON.parse(localStorage.getItem("chatNotifications") || "{}");
-          const currentCount = saved[message.sender] || 0;
-          saved[message.sender] = currentCount + 1;
-          localStorage.setItem("chatNotifications", JSON.stringify(saved));
-      
-          // Update React state (if mounted)
-          setNotifications((prev) => ({
-            ...prev,
-            [message.sender]: (prev[message.sender] || 0) + 1,
-          }));
-      
-          // Show browser notification
-          if (Notification.permission === "granted" && currentCount === 0) {
-            new Notification("New Message", {
-              body: `New message from ${message.senderName || "Someone"}`,
-              icon: "/icon.png",
-            });
-          }
-          
-          // Show toast
-          if (currentCount === 0) {
-            toast.info(`💬 New message from ${message.senderName || "Someone"}`, {
-              position: "top-right",
-              autoClose: 6000,
-              theme: "colored",
-              toastId: `message-${message.sender}-${Date.now()}`,
-            });
-          }
+    const newSocket = io("https://socket-server-gf0a.onrender.com", {
+      transports: ["websocket"],
+      reconnection: true,
+      reconnectionAttempts: 10,
+      reconnectionDelay: 1000,
+    });
+
+    newSocket.on("connect", () => {
+      console.log("✅ Connected to notification server");
+      setSocket(newSocket);
+    });
+
+    newSocket.on("receiveMessage", (message) => {
+      const isOnSenderChatPage =
+        router.pathname.startsWith("/chat/") &&
+        router.query.userId === message.sender;
+
+      const isIncoming =
+        message.receiver === session.user.id &&
+        message.sender !== session.user.id;
+
+      if (isIncoming && !isOnSenderChatPage) {
+        const saved = JSON.parse(localStorage.getItem("chatNotifications") || "{}");
+        const currentCount = saved[message.sender] || 0;
+        saved[message.sender] = currentCount + 1;
+        localStorage.setItem("chatNotifications", JSON.stringify(saved));
+
+        setNotifications((prev) => ({
+          ...prev,
+          [message.sender]: (prev[message.sender] || 0) + 1,
+        }));
+
+        if (Notification.permission === "granted" && currentCount === 0) {
+          new Notification("New Message", {
+            body: `New message from ${message.senderName || "Someone"}`,
+            icon: "/icon.png",
+          });
         }
-      });
-      
-    
-      newSocket.on("disconnect", () => {
-        console.log("❌ Disconnected from notification server");
-      });
-    
-      newSocket.on("connect_error", (error) => {
-        console.error("⚠️ Socket connection error:", error);
-      });
-    };
-    
 
-    initializeSocket();
+        if (currentCount === 0) {
+          toast.info(`💬 New message from ${message.senderName || "Someone"}`, {
+            position: "top-right",
+            autoClose: 6000,
+            theme: "colored",
+            toastId: `message-${message.sender}-${Date.now()}`,
+          });
+        }
+      }
+    });
 
-    // Request notification permission
+    newSocket.on("disconnect", () => {
+      console.log("❌ Disconnected from notification server");
+    });
+
+    newSocket.on("connect_error", (error) => {
+      console.error("⚠️ Socket connection error:", error);
+    });
+
     if ('Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission();
     }
 
     return () => {
-      if (socket) {
-        socket.disconnect();
-      }
+      if (socket) socket.disconnect();
     };
-  }, [session?.user?.id, isOnChatPage, router, notifications]); // Added notifications to dependencies
+  }, [session?.user?.id, isOnChatPage, router]);
 
   // Clear notification for a specific chat
   const clearNotification = (userId) => {
@@ -130,18 +139,17 @@ export const NotificationProvider = ({ children }) => {
   // Clear all notifications
   const clearAllNotifications = () => {
     setNotifications({});
+    setDbNotifications(0); // ✅ clear DB badge too
   };
 
+  // ✅ Merge DB + socket counts
   const getTotalNotifications = () => {
-    return Object.keys(notifications).length;
-  };
-
-  const getNotifications = () => {
-    return notifications;
+    const socketCount = Object.keys(notifications).length;
+    return Math.max(dbNotifications, socketCount);
   };
 
   const value = {
-    notifications: getNotifications(),
+    notifications,
     clearNotification,
     clearAllNotifications,
     getTotalNotifications
