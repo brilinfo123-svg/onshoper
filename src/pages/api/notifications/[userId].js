@@ -1,4 +1,5 @@
-import clientPromise from "../../../lib/mongodb";
+import connectToDatabase from "../../../lib/mongodb";
+import Message from "@/models/Message";
 
 export default async function handler(req, res) {
   const { userId } = req.query;
@@ -8,9 +9,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const client = await clientPromise;
-    const db = client.db("test"); // apna DB name
-    const unreadCount = await db.collection("messages").countDocuments({
+    await connectToDatabase(); // ✅ ensure mongoose is connected
+
+    // Count unread messages for this receiver
+    const unreadCount = await Message.countDocuments({
       receiver: userId,
       hiddenForReceiver: false,
     });
