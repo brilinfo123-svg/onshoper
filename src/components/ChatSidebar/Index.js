@@ -397,11 +397,13 @@ export default function ChatSidebar({ isOpen,
       }
     }));
   
+    // ✅ Clear local notification badge for this chat
     clearNotification(chat.otherUserId);
+  
     // ✅ Mark messages as read in DB
     if (session?.user?.id) {
       try {
-        await fetch("/api/messages/markAsRead", {
+        const res = await fetch("/api/messages/markAsRead", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -409,11 +411,20 @@ export default function ChatSidebar({ isOpen,
             otherUserId: chat.otherUserId,
           }),
         });
+  
+        if (res.ok) {
+          // ✅ Immediately update badge state in frontend
+          // If you are using dbNotifications state in MobileBottomNav, reset it here
+          if (typeof setDbNotifications === "function") {
+            setDbNotifications(prev => Math.max(prev - 1, 0));
+          }
+        }
       } catch (err) {
         console.error("Failed to mark messages as read:", err);
       }
     }
   };
+  
   
 
 
