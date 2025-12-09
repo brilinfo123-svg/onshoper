@@ -1,5 +1,4 @@
-// pages/api/notifications/[userId].js
-import db from "../../../lib/mongodb";
+import clientPromise from "../../../lib/mongodb";
 
 export default async function handler(req, res) {
   const { userId } = req.query;
@@ -9,10 +8,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Count unread messages for this receiver
+    const client = await clientPromise;
+    const db = client.db("test"); // apna DB name
     const unreadCount = await db.collection("messages").countDocuments({
       receiver: userId,
-      hiddenForReceiver: false, // only count if not hidden
+      hiddenForReceiver: false,
     });
 
     return res.status(200).json({ unreadCount });
