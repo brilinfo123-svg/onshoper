@@ -131,6 +131,18 @@ const MobileBottomNav = () => {
     },
   ];
 
+  // ✅ Helper to render icon + badge
+  const renderNavIcon = (item: any) => (
+    <div className={styles.navIcon}>
+      {item.icon}
+      {item.showBadge && totalNotifications > 0 && (
+        <span className={styles.notificationBadge}>
+          {totalNotifications > 99 ? "99+" : totalNotifications}
+        </span>
+      )}
+    </div>
+  );
+
   return (
     <>
       <div className={styles.mobileBottomNav}>
@@ -148,14 +160,7 @@ const MobileBottomNav = () => {
                 }`}
                 onClick={item.onClick}
               >
-                <div className={styles.navIcon}>
-                  {item.icon}
-                  {item.showBadge && totalNotifications > 0 && (
-                    <span className={styles.notificationBadge}>
-                      {totalNotifications > 99 ? "99+" : totalNotifications}
-                    </span>
-                  )}
-                </div>
+                {renderNavIcon(item)}
                 <span className={styles.navLabel}>{item.name}</span>
               </button>
             ) : (
@@ -166,14 +171,7 @@ const MobileBottomNav = () => {
                 }`}
                 onClick={item.onClick}
               >
-                <div className={styles.navIcon}>
-                  {item.icon}
-                  {item.showBadge && totalNotifications > 0 && (
-                    <span className={styles.notificationBadge}>
-                      {totalNotifications > 99 ? "99+" : totalNotifications}
-                    </span>
-                  )}
-                </div>
+                {renderNavIcon(item)}
                 <span className={styles.navLabel}>{item.name}</span>
               </Link>
             )}
@@ -187,10 +185,6 @@ const MobileBottomNav = () => {
           <div className={styles.dropdownContent}>
             {session ? (
               <>
-                {/* <Link href="/subscribePlan">
-                  <span className={"icon-star"}></span>
-                  My Purchase
-                </Link> */}
                 <Link href="/profile" onClick={() => setAccountOpen(false)}>
                   <span className={"icon-user-circle"}></span>
                   My Account

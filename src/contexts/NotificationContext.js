@@ -55,43 +55,44 @@ export const NotificationProvider = ({ children }) => {
         const isOnSenderChatPage =
           router.pathname.startsWith("/chat/") &&
           router.query.userId === message.sender;
-    
+      
         const isIncoming =
           message.receiver === session.user.id &&
           message.sender !== session.user.id;
-    
+      
         if (isIncoming && !isOnSenderChatPage) {
-          const currentCount = notifications[message.sender] || 0;
-    
+          // Always update localStorage
+          const saved = JSON.parse(localStorage.getItem("chatNotifications") || "{}");
+          const currentCount = saved[message.sender] || 0;
+          saved[message.sender] = currentCount + 1;
+          localStorage.setItem("chatNotifications", JSON.stringify(saved));
+      
+          // Update React state (if mounted)
           setNotifications((prev) => ({
             ...prev,
-            [message.sender]: currentCount + 1,
+            [message.sender]: (prev[message.sender] || 0) + 1,
           }));
-    
+      
+          // Show browser notification
           if (Notification.permission === "granted" && currentCount === 0) {
             new Notification("New Message", {
               body: `New message from ${message.senderName || "Someone"}`,
               icon: "/icon.png",
             });
           }
-    
+          
+          // Show toast
           if (currentCount === 0) {
             toast.info(`💬 New message from ${message.senderName || "Someone"}`, {
               position: "top-right",
               autoClose: 6000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
               theme: "colored",
               toastId: `message-${message.sender}-${Date.now()}`,
-              // onClick: () => {
-              //   router.push(`/chat/${message.sender}`);
-              // },
             });
           }
         }
       });
+      
     
       newSocket.on("disconnect", () => {
         console.log("❌ Disconnected from notification server");
