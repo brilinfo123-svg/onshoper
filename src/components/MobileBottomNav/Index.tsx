@@ -106,7 +106,7 @@ const MobileBottomNav = () => {
     {
       name: "Chat",
       path: "/chat",
-      icon: <Image src="/icons/chatIcone.png" alt="Chat" width={27} height={27} />,
+      icon: <Image src="/icons/chat-round.svg" alt="Chat" width={30} height={30} />,
       onClick: () => {
         setAccountOpen(false);
         setNotificationsOpen(false);
