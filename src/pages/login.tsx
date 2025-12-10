@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
 import styles from "@/styles/login.module.scss";
 import Swal from "sweetalert2";
+import OneSignal from "react-onesignal";
 
 export default function LoginPage() {
   const { data: session, status } = useSession();
@@ -150,11 +151,15 @@ export default function LoginPage() {
 
       if (result?.ok) {
         window.OneSignal = window.OneSignal || [];
-        window.OneSignal.push(function() {
-          window.OneSignal.setExternalUserId(contact);
-          console.log("✅ OneSignal externalUserId set:", contact);
+        window.OneSignal.push(function () {
+          OneSignal.login(contact)
+            .then(() => {
+              console.log("✅ OneSignal externalUserId set via login:", contact);
+            })
+            .catch((err) => {
+              console.error("❌ Failed to set externalUserId:", err);
+            });
         });
-      
         Swal.fire({
           icon: "success",
           title: "Login Successful",
@@ -166,8 +171,7 @@ export default function LoginPage() {
             router.push("/ProductForm");
           }
         });
-      }
-       else {
+      } else {
         setError("Login failed");
       }
     } else {

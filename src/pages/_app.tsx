@@ -28,11 +28,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
   // ✅ Initialize OneSignal once
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      window.OneSignalDeferred.push(async function (OneSignal: any) {
+    const initOneSignal = async () => {
+      try {
         await OneSignal.init({
           appId: "e9e306bb-c8ab-4d1a-9723-5749d4300f2f", // replace with your real appId
+          allowLocalhostAsSecureOrigin: true,
           notifyButton: {
             enable: true,
             prenotify: true,
@@ -50,13 +50,20 @@ export default function App({ Component, pageProps }: AppProps) {
               'dialog.main.title': 'Manage Notifications',
               'dialog.main.button.subscribe': 'Subscribe',
               'dialog.main.button.unsubscribe': 'Unsubscribe',
+              "dialog.blocked.message": "",
+              "dialog.blocked.title": "",
+              "message.action.subscribing": ""
             },
           },
         });
-      });
-    }
+        console.log("✅ OneSignal initialized");
+      } catch (err) {
+        console.error("❌ OneSignal init failed:", err);
+      }
+    };
+
+    initOneSignal();
   }, []);
-  
 
   return (
     <SessionProvider session={pageProps.session}>
@@ -90,6 +97,26 @@ export default function App({ Component, pageProps }: AppProps) {
 // -----------------------------------------------------------------
 const HeaderComponent = () => {
   const { data: session } = useSession();
+
+  // ✅ When user is logged in, set OneSignal external ID
+  useEffect(() => {
+    const setExternalId = async () => {
+      try {
+        if (session?.user && OneSignal.login) {
+          await OneSignal.login(session.user.email || session.user.id);
+          console.log("✅ ExternalUserId set:", session.user.email || session.user.id);
+        } else if (OneSignal.logout) {
+          await OneSignal.logout();
+          console.log("✅ ExternalUserId cleared");
+        }
+      } catch (err) {
+        console.error("❌ Failed to set externalUserId:", err);
+      }
+    };
+    setExternalId();
+  }, [session]);
+  
+
   return session ? <ProtectedHeader /> : <DefaultHeader />;
 };
 
