@@ -19,49 +19,69 @@ import "react-toastify/dist/ReactToastify.css";
 import type { AppProps } from "next/app";
 import MobileBottomNav from "@/components/MobileBottomNav/Index";
 import { useRouter } from "next/router";
-import OneSignal from "react-onesignal";
+
+// ✅ Firebase imports
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { firebaseConfig } from "@/lib/firebaseConfig";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isAdminPage = router.pathname.startsWith("/admin");
   const isProductDetailPage = router.pathname.startsWith("/product/");
 
-  // ✅ Initialize OneSignal once
+  // ✅ Initialize Firebase + FCM once
   useEffect(() => {
-    const initOneSignal = async () => {
+    const initFirebase = async () => {
       try {
-        await OneSignal.init({
-          appId: "e9e306bb-c8ab-4d1a-9723-5749d4300f2f", // replace with your real appId
-          notifyButton: {
-            enable: true,
-            prenotify: true,
-            showCredit: false,
-            position: "bottom-right",
-            size: "medium",
-            text: {
-              'tip.state.unsubscribed': 'Subscribe to notifications',
-              'tip.state.subscribed': 'You are subscribed',
-              'tip.state.blocked': 'Notifications blocked',
-              'message.prenotify': 'Click to subscribe to notifications',
-              'message.action.subscribed': 'Thanks for subscribing!',
-              'message.action.resubscribed': 'You have resubscribed',
-              'message.action.unsubscribed': 'You will not receive notifications',
-              'dialog.main.title': 'Manage Notifications',
-              'dialog.main.button.subscribe': 'Subscribe',
-              'dialog.main.button.unsubscribe': 'Unsubscribe',
-              "dialog.blocked.message": "",
-              "dialog.blocked.title": "",
-              "message.action.subscribing": ""
-            },
-          },
+        const app = initializeApp(firebaseConfig);
+        const messaging = getMessaging(app);
+
+        // ✅ Register service worker
+        if ("serviceWorker" in navigator) {
+          try {
+            const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+            console.log("✅ Service Worker registered:", registration);
+          } catch (err) {
+            console.error("❌ Service Worker registration failed:", err);
+          }
+        }
+
+        // Ask for notification permission
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          try {
+            const token = await getToken(messaging, {
+              vapidKey: "BK3EVjP3U2u-53JWg3f2stmLlHy5tXBHAzf8k9VqxEmV6sd5n0Kku6lAJS0SQ13kwLuP6H85XskltUb5ynR4xkA", // 👈 Replace with your Firebase Web Push certificate key
+              serviceWorkerRegistration: await navigator.serviceWorker.ready, // 👈 ensure token binds to registered SW
+            });
+            console.log("✅ FCM Token:", token);
+
+            // Save token to backend for this user
+            await fetch("/api/save-fcm-token", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ token }),
+            });
+          } catch (err) {
+            console.error("❌ FCM token error:", err);
+          }
+        }
+
+        // Foreground messages
+        onMessage(messaging, (payload) => {
+          console.log("📩 Foreground message received:", payload);
+          new Notification(payload.notification.title, {
+            body: payload.notification.body,
+            icon: "/icon.png",
+          });
         });
-        console.log("✅ OneSignal initialized");
       } catch (err) {
-        console.error("❌ OneSignal init failed:", err);
+        console.error("❌ Firebase init failed:", err);
       }
     };
 
-    initOneSignal();
+    initFirebase();
   }, []);
 
   return (
@@ -96,26 +116,6 @@ export default function App({ Component, pageProps }: AppProps) {
 // -----------------------------------------------------------------
 const HeaderComponent = () => {
   const { data: session } = useSession();
-
-  // ✅ When user is logged in, set OneSignal external ID
-  useEffect(() => {
-    const setExternalId = async () => {
-      try {
-        if (session?.user && OneSignal.login) {
-          await OneSignal.login(session.user.email || session.user.id);
-          console.log("✅ ExternalUserId set:", session.user.email || session.user.id);
-        } else if (OneSignal.logout) {
-          await OneSignal.logout();
-          console.log("✅ ExternalUserId cleared");
-        }
-      } catch (err) {
-        console.error("❌ Failed to set externalUserId:", err);
-      }
-    };
-    setExternalId();
-  }, [session]);
-  
-
   return session ? <ProtectedHeader /> : <DefaultHeader />;
 };
 

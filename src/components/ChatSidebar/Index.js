@@ -328,9 +328,9 @@ export default function ChatSidebar({ isOpen,
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            receiverId: selectedChat.otherUserId,   // 👈 OneSignal externalUserId of receiver
-            senderName: senderName,                 // 👈 sender name
-            message: newMessage.trim(),             // 👈 message content
+            token: selectedChat.fcmToken,   // 👈 receiver ka FCM token (DB se)
+            title: `${senderName} sent you a message`,
+            body: newMessage.trim(),
           }),
         });
         console.log("Saved message before socket emit:", savedMessage);
