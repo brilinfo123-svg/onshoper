@@ -1,29 +1,29 @@
+import admin from "@/lib/firebaseAdmin";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
   const { token, title, body } = req.body;
 
   try {
-    const response = await fetch("https://fcm.googleapis.com/fcm/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `key=${process.env.FCM_SERVER_KEY}`, // from Firebase console
+    const message = {
+      token,
+      notification: {
+        title,
+        body,
       },
-      body: JSON.stringify({
-        to: token,
+      webpush: {
         notification: {
-          title,
-          body,
           icon: "/icon.png",
         },
-      }),
-    });
+      },
+    };
 
-    const data = await response.json();
-    res.status(200).json({ success: true, data });
+    const response = await admin.messaging().send(message);
+    console.log("✅ FCM v1 message sent:", response);
+    res.status(200).json({ success: true, messageId: response });
   } catch (err) {
-    console.error("FCM error:", err);
+    console.error("❌ FCM v1 error:", err);
     res.status(500).json({ success: false, error: err.message });
   }
 }
