@@ -32,7 +32,6 @@ export default function App({ Component, pageProps }: AppProps) {
       try {
         await OneSignal.init({
           appId: "e9e306bb-c8ab-4d1a-9723-5749d4300f2f", // replace with your real appId
-          allowLocalhostAsSecureOrigin: true,
           notifyButton: {
             enable: true,
             prenotify: true,
