@@ -20,68 +20,52 @@ import type { AppProps } from "next/app";
 import MobileBottomNav from "@/components/MobileBottomNav/Index";
 import { useRouter } from "next/router";
 
-// ✅ Firebase imports
-import { initializeApp } from "firebase/app";
+// ✅ Firebase imports (client SDK)
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
-import { firebaseConfig } from "@/lib/firebaseConfig";
+import { app } from "@/lib/firebaseConfig"; // already initialized in firebaseClient.js
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isAdminPage = router.pathname.startsWith("/admin");
   const isProductDetailPage = router.pathname.startsWith("/product/");
 
-  // ✅ Initialize Firebase + FCM once
+  // ✅ Ask for notification permission + get FCM token
   useEffect(() => {
-    const initFirebase = async () => {
+    const initFirebaseMessaging = async () => {
       try {
-        const app = initializeApp(firebaseConfig);
         const messaging = getMessaging(app);
 
-        // ✅ Register service worker
-        if ("serviceWorker" in navigator) {
-          try {
-            const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
-            console.log("✅ Service Worker registered:", registration);
-          } catch (err) {
-            console.error("❌ Service Worker registration failed:", err);
-          }
-        }
-
-        // Ask for notification permission
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
-          try {
-            const token = await getToken(messaging, {
-              vapidKey: "BK3EVjP3U2u-53JWg3f2stmLlHy5tXBHAzf8k9VqxEmV6sd5n0Kku6lAJS0SQ13kwLuP6H85XskltUb5ynR4xkA", // 👈 Replace with your Firebase Web Push certificate key
-              serviceWorkerRegistration: await navigator.serviceWorker.ready, // 👈 ensure token binds to registered SW
-            });
-            console.log("✅ FCM Token:", token);
+          const token = await getToken(messaging, {
+            vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY, // 👈 set in .env.local
+          });
+          console.log("✅ FCM Token:", token);
 
-            // Save token to backend for this user
-            await fetch("/api/save-fcm-token", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ token }),
-            });
-          } catch (err) {
-            console.error("❌ FCM token error:", err);
-          }
+          // Save token to backend for this user
+          await fetch("/api/save-fcm-token", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token }),
+          });
+        } else {
+          console.warn("❌ Notification permission denied");
         }
 
         // Foreground messages
         onMessage(messaging, (payload) => {
           console.log("📩 Foreground message received:", payload);
-          new Notification(payload.notification.title, {
-            body: payload.notification.body,
+          new Notification(payload.notification?.title || "New Message", {
+            body: payload.notification?.body,
             icon: "/icon.png",
           });
         });
       } catch (err) {
-        console.error("❌ Firebase init failed:", err);
+        console.error("❌ Firebase Messaging init failed:", err);
       }
     };
 
-    initFirebase();
+    initFirebaseMessaging();
   }, []);
 
   return (

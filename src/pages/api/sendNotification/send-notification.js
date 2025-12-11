@@ -1,4 +1,4 @@
-import admin from "@/lib/firebaseAdmin";
+import { admin } from "@/lib/firebaseAdmin";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
@@ -11,11 +11,12 @@ export default async function handler(req, res) {
       notification: { title, body },
     };
 
+    // ✅ Correct usage
     const response = await admin.messaging().send(message);
 
     res.status(200).json({ success: true, messageId: response });
   } catch (err) {
-    console.error("FCM Error:", err);
+    console.error("❌ FCM send error:", err);
     res.status(500).json({ success: false, error: err.message });
   }
 }

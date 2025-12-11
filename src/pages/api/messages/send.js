@@ -1,4 +1,3 @@
-// pages/api/messages/send.js
 import { getSession } from "next-auth/react";
 import dbConnect from "../../../lib/mongodb";
 import Message from "@/models/Message";
@@ -9,6 +8,7 @@ export default async function handler(req, res) {
   }
 
   const session = await getSession({ req });
+
   if (!session || !session.user) {
     return res.status(401).json({ success: false, message: "Unauthorized" });
   }
@@ -41,19 +41,24 @@ export default async function handler(req, res) {
     const savedMessage = await newMessage.save();
 
     // 🔥 Send Push Notification via OneSignal
+    const ONE_SIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID;
+    const ONE_SIGNAL_API_KEY = process.env.ONESIGNAL_API_KEY;
+
     const payload = {
-      app_id: process.env.ONESIGNAL_APP_ID,
+      app_id: ONE_SIGNAL_APP_ID,
       include_external_user_ids: [receiverId],
+
       headings: { en: `${newMessage.senderName} sent you a message` },
       contents: { en: message },
-      url: `https://onshoper.com/chat/${newMessage.sender}`
+
+      url: `https://onshoper.com/chat/${newMessage.sender}` // optional
     };
 
     await fetch("https://onesignal.com/api/v1/notifications", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${process.env.ONESIGNAL_API_KEY}`,
+        Authorization: `Basic ${ONE_SIGNAL_API_KEY}`,
       },
       body: JSON.stringify(payload),
     });
