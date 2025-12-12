@@ -150,16 +150,21 @@ export default function LoginPage() {
       });
 
       if (result?.ok) {
-        window.OneSignal = window.OneSignal || [];
-        window.OneSignal.push(function () {
-          OneSignal.login(contact)
-            .then(() => {
-              console.log("✅ OneSignal externalUserId set via login:", contact);
-            })
-            .catch((err) => {
-              console.error("❌ Failed to set externalUserId:", err);
+        // ✅ Generate FCM token
+        import("@/lib/firebase").then(async ({ generateToken }) => {
+          const token = await generateToken();
+          if (token) {
+            await fetch("/api/saveToken", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ userId: data.user._id, token }),
             });
+            console.log("✅ FCM token saved in DB:", token);
+          }
         });
+      
+       
+      
         Swal.fire({
           icon: "success",
           title: "Login Successful",
@@ -171,7 +176,8 @@ export default function LoginPage() {
             router.push("/ProductForm");
           }
         });
-      } else {
+      }
+       else {
         setError("Login failed");
       }
     } else {

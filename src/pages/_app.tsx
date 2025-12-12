@@ -20,52 +20,42 @@ import type { AppProps } from "next/app";
 import MobileBottomNav from "@/components/MobileBottomNav/Index";
 import { useRouter } from "next/router";
 
-// ✅ Firebase imports (client SDK)
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
-import { app } from "@/lib/firebaseConfig"; // already initialized in firebaseClient.js
+// ✅ Import helper functions for FCM
+import { generateToken, listenForMessages } from "@/lib/firebase"; 
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isAdminPage = router.pathname.startsWith("/admin");
   const isProductDetailPage = router.pathname.startsWith("/product/");
 
-  // ✅ Ask for notification permission + get FCM token
   useEffect(() => {
     const initFirebaseMessaging = async () => {
       try {
-        const messaging = getMessaging(app);
-
-        const permission = await Notification.requestPermission();
-        if (permission === "granted") {
-          const token = await getToken(messaging, {
-            vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY, // 👈 set in .env.local
-          });
+        const token = await generateToken();
+        if (token) {
           console.log("✅ FCM Token:", token);
-
-          // Save token to backend for this user
-          await fetch("/api/save-fcm-token", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token }),
-          });
-        } else {
-          console.warn("❌ Notification permission denied");
+          // 👉 yaha tum token ko apne backend /api/saveToken pe bhej sakte ho
         }
-
-        // Foreground messages
-        onMessage(messaging, (payload) => {
-          console.log("📩 Foreground message received:", payload);
-          new Notification(payload.notification?.title || "New Message", {
-            body: payload.notification?.body,
-            icon: "/icon.png",
-          });
-        });
+        // ✅ Foreground listener attach karo
+        listenForMessages();
       } catch (err) {
-        console.error("❌ Firebase Messaging init failed:", err);
+        console.error("❌ FCM init failed:", err);
       }
     };
 
     initFirebaseMessaging();
+
+    // ✅ Register service worker for background notifications
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/firebase-messaging-sw.js")
+        .then((registration) => {
+          console.log("✅ Service Worker registered:", registration);
+        })
+        .catch((err) => {
+          console.error("❌ Service Worker registration failed:", err);
+        });
+    }
   }, []);
 
   return (
@@ -109,7 +99,7 @@ const HeaderComponent = () => {
 const AutoUnfeaturePoller = () => {
   useEffect(() => {
     const interval = setInterval(() => {
-      fetch("../api/unfeature-expired");
+      fetch("/api/unfeature-expired");
     }, 86400000);
     return () => clearInterval(interval);
   }, []);

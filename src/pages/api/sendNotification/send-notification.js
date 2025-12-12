@@ -1,3 +1,4 @@
+// pages/api/sendNotification/send-notification.js
 import { admin } from "@/lib/firebaseAdmin";
 
 export default async function handler(req, res) {
@@ -11,9 +12,7 @@ export default async function handler(req, res) {
       notification: { title, body },
     };
 
-    // ✅ Correct usage
     const response = await admin.messaging().send(message);
-
     res.status(200).json({ success: true, messageId: response });
   } catch (err) {
     console.error("❌ FCM send error:", err);
