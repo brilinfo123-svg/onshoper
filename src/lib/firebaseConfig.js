@@ -1,14 +1,15 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
+// Direct Firebase config (hard-coded)
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyBUs8cb9Mfhr81b3QlVnJRDGIf7Se9QF5M",
+  authDomain: "onshoper-web.firebaseapp.com",
+  projectId: "onshoper-web",
+  storageBucket: "onshoper-web.firebasestorage.app",
+  messagingSenderId: "1012627011874",
+  appId: "1:1012627011874:web:6ee19a16b70dc076c1cd7b",
+  measurementId: "G-TFBVEK0T65",
 };
 
 // ✅ Initialize only once
