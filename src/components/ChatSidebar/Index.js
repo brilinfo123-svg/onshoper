@@ -45,6 +45,7 @@ export default function ChatSidebar({ isOpen,
   const socketRef = useRef(null);
   const { notifications, clearNotification } = useNotifications();
   const [receiverMap, setReceiverMap] = useState({});
+  const [receiverFcmToken, setReceiverFcmToken] = useState(null);
 
   const socketURL = "https://socket-server-gf0a.onrender.com";
   
@@ -384,21 +385,47 @@ export default function ChatSidebar({ isOpen,
   };
 
   const selectChat = async (chat) => {
+    // ✅ Set selected chat (existing logic preserved)
     setSelectedChat(prev => ({
       ...chat,
       lastMessage: {
         ...chat.lastMessage,
-        coverImage: chat?.lastMessage?.coverImage || prev?.lastMessage?.coverImage || initialProduct?.coverImage || null,
-        otherUserName: chat?.lastMessage?.otherUserName || prev?.lastMessage?.otherUserName || initialProduct?.otherUserName || "Seller"
+        coverImage:
+          chat?.lastMessage?.coverImage ||
+          prev?.lastMessage?.coverImage ||
+          initialProduct?.coverImage ||
+          null,
+        otherUserName:
+          chat?.lastMessage?.otherUserName ||
+          prev?.lastMessage?.otherUserName ||
+          initialProduct?.otherUserName ||
+          "Seller",
       },
       otherUser: {
         ...chat.otherUser,
-        name: chat.otherUser?.name || prev?.otherUser?.name || initialProduct?.otherUserName || "Seller"
-      }
+        name:
+          chat.otherUser?.name ||
+          prev?.otherUser?.name ||
+          initialProduct?.otherUserName ||
+          "Seller",
+      },
     }));
   
-    // ✅ Clear local notification badge for this chat
+    // ✅ Clear local notification badge
     clearNotification(chat.otherUserId);
+  
+    // 🔔 ✅ FETCH RECEIVER FCM TOKEN (NEW)
+    try {
+      const tokenRes = await fetch(
+        `/api/notifications/get-token?userId=${chat.otherUserId}`
+      );
+      const tokenData = await tokenRes.json();
+      setReceiverFcmToken(tokenData?.token || null);
+      console.log("🔔 Receiver FCM Token:", tokenData?.token);
+    } catch (err) {
+      console.error("❌ Failed to fetch receiver FCM token:", err);
+      setReceiverFcmToken(null);
+    }
   
     // ✅ Mark messages as read in DB
     if (session?.user?.id) {
@@ -413,17 +440,17 @@ export default function ChatSidebar({ isOpen,
         });
   
         if (res.ok) {
-          // ✅ Immediately update badge state in frontend
-          // If you are using dbNotifications state in MobileBottomNav, reset it here
+          // ✅ Update badge instantly
           if (typeof setDbNotifications === "function") {
             setDbNotifications(prev => Math.max(prev - 1, 0));
           }
         }
       } catch (err) {
-        console.error("Failed to mark messages as read:", err);
+        console.error("❌ Failed to mark messages as read:", err);
       }
     }
   };
+  
   
   
 
