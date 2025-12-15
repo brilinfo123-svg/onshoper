@@ -5,15 +5,15 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
   try {
-    const { userId, token } = req.body;
-    if (!userId || !token) {
-      return res.status(400).json({ error: "Missing userId or token" });
+    const { userId, contact, token, device } = req.body;
+
+    if (!userId || !contact || !token) {
+      return res.status(400).json({ error: "Missing userId, contact or token" });
     }
 
-    // ✅ Save or update token
     await NotificationToken.updateOne(
-      { userId, token },
-      { userId, token, device: "web" },
+      { userId, contact, device: device || "web" },   // condition
+      { userId, contact, token, device: device || "web", createdAt: new Date() }, // update
       { upsert: true }
     );
 

@@ -2,10 +2,12 @@
 import mongoose from "mongoose";
 
 const NotificationTokenSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  userId: { type: String },   // 👈 allow string
+  contact: { type: String, required: true },
   token: { type: String, required: true },
-  device: { type: String, default: "web" }, // optional: device type
+  device: { type: String, default: "web" },
   createdAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.models.NotificationToken || mongoose.model("NotificationToken", NotificationTokenSchema);
+export default mongoose.models.NotificationToken ||
+  mongoose.model("NotificationToken", NotificationTokenSchema);

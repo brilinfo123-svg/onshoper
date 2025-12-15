@@ -1,20 +1,19 @@
 import NotificationToken from "@/models/NotificationToken"; // mongoose model
 
 export default async function handler(req, res) {
-  const { userId } = req.query;
+  try {
+    // ✅ Fetch latest token (device = "web" optional)
+    const tokenDoc = await NotificationToken.findOne({ device: "web" })
+      .sort({ createdAt: -1 });
 
-  if (!userId) {
-    return res.status(400).json({ error: "userId required" });
+    if (!tokenDoc) {
+      return res.json({ token: null });
+    }
+
+    // ✅ Return only token field
+    res.json({ token: tokenDoc.token });
+  } catch (error) {
+    console.error("❌ Error fetching token:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
-
-  const tokenDoc = await NotificationToken.findOne({
-    userId,
-    device: "web",
-  }).sort({ createdAt: -1 });
-
-  if (!tokenDoc) {
-    return res.json({ token: null });
-  }
-
-  res.json({ token: tokenDoc.token });
 }

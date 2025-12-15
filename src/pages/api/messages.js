@@ -1,5 +1,6 @@
 import connectToDatabase from "@/lib/mongodb";
 import Message from "@/models/Message";
+import NotificationToken from "@/models/NotificationToken"; // 👈 add this
 
 export default async function handler(req, res) {
   await connectToDatabase();
@@ -17,7 +18,6 @@ export default async function handler(req, res) {
         otherUserName
       } = req.body;
 
-      // Validate required fields
       if (!sender || !receiver || !message) {
         return res.status(400).json({
           error: "Missing required fields: sender, receiver, message"
@@ -26,17 +26,32 @@ export default async function handler(req, res) {
 
       const newMessage = new Message({
         sender,
-        senderName: senderName || null,     
+        senderName: senderName || null,
         receiver,
         message,
         productId: productId || null,
         productTitle: productTitle || null,
-        coverImage: coverImage || null,           // ✅ Added
-        otherUserName: otherUserName || null      // ✅ Added
+        coverImage: coverImage || null,
+        otherUserName: otherUserName || null
       });
-      
+
       await newMessage.save();
-      res.status(201).json(newMessage);
+
+      // ✅ Fetch receiver token
+      const tokenDoc = await NotificationToken.findOne({
+        $or: [
+          { userId: receiver },        // if receiver is _id
+          { contact: receiver }        // if receiver is contact string
+        ],
+        device: "web"
+      }).sort({ createdAt: -1 });
+
+      const receiverToken = tokenDoc ? tokenDoc.token : null;
+
+      res.status(201).json({
+        ...newMessage.toObject(),
+        receiverToken   // 👈 include token in response
+      });
     } catch (err) {
       console.error("POST /api/messages error:", err);
       res.status(500).json({ error: err.message });

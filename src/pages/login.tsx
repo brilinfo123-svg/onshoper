@@ -157,11 +157,16 @@ export default function LoginPage() {
             await fetch("/api/saveToken", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ userId: data.user._id, token }),
+              body: JSON.stringify({
+                userId: data.user._id,       // 👈 Mongo _id
+                contact: data.user.contact,  // 👈 mobile/email from user object
+                token,
+                device: "web"                // 👈 optional, default "web"
+              }),
             });
             console.log("✅ FCM token saved in DB:", token);
           }
-        });
+        });        
       
        
       
