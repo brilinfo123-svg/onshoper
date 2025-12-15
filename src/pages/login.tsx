@@ -20,6 +20,8 @@ export default function LoginPage() {
   const [isSendingOtp, setIsSendingOtp] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
+  const [isVerifying, setIsVerifying] = useState(false);
+
 
   // ✅ Email validation helper
   const validateEmail = (email: string) => {
@@ -134,61 +136,72 @@ export default function LoginPage() {
   const verifyOtp = async () => {
     setError("");
     setMessage("");
-    if (otp.length !== 6) return setError("Enter valid 6-digit OTP");
-
-    const res = await fetch("/api/Verification/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contact, otp, loginType }),
-    });
-
-    const data = await res.json();
-    if (data.user) {
-      const result = await signIn("credentials", {
-        redirect: false,
-        contact,
+  
+    if (otp.length !== 6) {
+      return setError("Enter valid 6-digit OTP");
+    }
+  
+    setIsVerifying(true); // 👈 start loader
+  
+    try {
+      const res = await fetch("/api/Verification/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contact, otp, loginType }),
       });
-
-      if (result?.ok) {
-        // ✅ Generate FCM token
-        import("@/lib/firebase").then(async ({ generateToken }) => {
-          const token = await generateToken();
-          if (token) {
-            await fetch("/api/saveToken", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                userId: data.user._id,       // 👈 Mongo _id
-                contact: data.user.contact,  // 👈 mobile/email from user object
-                token,
-                device: "web"                // 👈 optional, default "web"
-              }),
-            });
-            console.log("✅ FCM token saved in DB:", token);
-          }
-        });        
-      
-       
-      
-        Swal.fire({
-          icon: "success",
-          title: "Login Successful",
-          text: "Click OK to go to Product Form",
-          confirmButtonText: "OK",
-          allowOutsideClick: false,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            router.push("/ProductForm");
-          }
+  
+      const data = await res.json();
+  
+      if (data.user) {
+        const result = await signIn("credentials", {
+          redirect: false,
+          contact,
         });
+  
+        if (result?.ok) {
+          // ✅ Generate FCM token
+          import("@/lib/firebase").then(async ({ generateToken }) => {
+            const token = await generateToken();
+            if (token) {
+              await fetch("/api/saveToken", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  userId: data.user._id,       // 👈 Mongo _id
+                  contact: data.user.contact,  // 👈 mobile/email from user object
+                  token,
+                  device: "web"                // 👈 optional, default "web"
+                }),
+              });
+              console.log("✅ FCM token saved in DB:", token);
+            }
+          });
+  
+          Swal.fire({
+            icon: "success",
+            title: "Login Successful",
+            text: "Click OK to go to Product Form",
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              router.push("/ProductForm");
+            }
+          });
+        } else {
+          setError("Login failed");
+        }
+      } else {
+        setError("Invalid OTP");
       }
-       else {
-        setError("Login failed");
-      }
-    } else {
-      setError("Invalid OTP");
+    } catch (err) {
+      console.error("❌ Verification error:", err);
+      setError("Verification failed");
+    } finally {
+      setIsVerifying(false); // 👈 stop loader always
     }
   };
+  
 
   const handleBack = () => {
     setLoginType("");
@@ -296,9 +309,14 @@ export default function LoginPage() {
                 onChange={(e) => setOtp(e.target.value)}
                 maxLength={6}
               />
-              <button className={styles.button} onClick={verifyOtp}>
-                Verify OTP & Login
-              </button>
+              <button className={styles.button} onClick={verifyOtp} disabled={isVerifying}>
+              {isVerifying ? (
+                <span className={styles.loaderOTP}>Verifying...</span>
+              ) : (
+                "Verify OTP & Login"
+              )}
+            </button>
+
               <button className={styles.backButton} onClick={handleBack}>
                 ← Back
               </button>
