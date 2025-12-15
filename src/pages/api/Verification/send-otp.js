@@ -12,15 +12,15 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Contact required" });
   }
 
-  // ✅ Normalize contact number (remove +, spaces, non-digits, ensure starts with 91)
+  // ✅ Normalize contact number → always 10 digits
   let normalizedContact = contact.toString().trim().replace(/\D/g, "");
-  if (!normalizedContact.startsWith("91")) {
-    normalizedContact = "91" + normalizedContact;
+  if (normalizedContact.length > 10) {
+    normalizedContact = normalizedContact.slice(-10);
   }
 
   // ✅ Generate OTP
-  const otp = Math.floor(100000 + Math.random() * 900000).toString(); // random 6-digit
-  const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
   // ✅ Save OTP in DB
   await Otp.findOneAndUpdate(
@@ -33,31 +33,17 @@ export default async function handler(req, res) {
   try {
     const payload = {
       apiKey: process.env.AISENSY_API_KEY,
-      campaignName: "verify_code",        // 👈 your live campaign name
-      destination: normalizedContact,     // 👈 must be 91XXXXXXXXXX format
-      userName: "Send_Verification",      // 👈 template name
-      templateParams: [otp],              // 👈 OTP inject
-      source: "new-landing-page form",    // 👈 source identifier
+      campaignName: "verify_code",
+      destination: "91" + normalizedContact,   // 👈 AiSensy needs 91 prefix for sending
+      userName: "Send_Verification",
+      templateParams: [otp],
+      source: "new-landing-page form",
       media: {},
-      buttons: [
-        {
-          type: "button",
-          sub_type: "url",
-          index: 0,
-          parameters: [
-            {
-              type: "text",
-              text: "TESTCODE20"          // 👈 optional button param
-            }
-          ]
-        }
-      ],
+      buttons: [],
       carouselCards: [],
       location: {},
       attributes: {},
-      paramsFallbackValue: {
-        FirstName: "user"                 // 👈 fallback param
-      }
+      paramsFallbackValue: { FirstName: "user" }
     };
 
     console.log("Sending OTP payload:", payload);
@@ -82,9 +68,9 @@ export default async function handler(req, res) {
     return res.status(500).json({ success: false, error: "Failed to send OTP via AiSensy" });
   }
 
-  // ✅ Return OTP in response (for testing/debugging)
   res.status(200).json({ success: true, otp });
 }
+
 
 
 
