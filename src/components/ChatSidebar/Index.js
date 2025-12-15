@@ -50,6 +50,31 @@ export default function ChatSidebar({ isOpen,
   const socketURL = "https://socket-server-gf0a.onrender.com";
   
 
+// 👆 state
+
+useEffect(() => {
+  const fetchReceiverToken = async () => {
+    if (!selectedChat?.otherUserId) return; // 👈 wait until chat selected
+
+    try {
+      // 👈 dynamically use receiver contact
+      const res = await fetch(`/api/notifications/get-token?contact=${selectedChat.otherUserId}`);
+      const data = await res.json();
+
+      if (res.ok && data?.token) {
+        setReceiverFcmToken(data.token);
+        // console.log("🔔 Receiver FCM Token:", data.token);
+      } else {
+        console.warn("⚠️ No token found for receiver:", selectedChat.otherUserId);
+      }
+    } catch (err) {
+      console.error("❌ Error fetching receiver token:", err);
+    }
+  };
+
+  fetchReceiverToken();
+}, [selectedChat]);
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       if (!session?.user?.contact) return;
@@ -329,7 +354,7 @@ export default function ChatSidebar({ isOpen,
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            token: selectedChat.fcmToken,   // 👈 receiver ka FCM token (DB se)
+            token: receiverFcmToken,   // 👈 receiver ka FCM token (DB se)
             title: `${senderName} sent you a message`,
             body: newMessage.trim(),
           }),
@@ -421,7 +446,7 @@ export default function ChatSidebar({ isOpen,
       );
       const tokenData = await tokenRes.json();
       setReceiverFcmToken(tokenData?.token || null);
-      console.log("🔔 Receiver FCM Token:", tokenData?.token);
+      // console.log("🔔 Receiver FCM Token:", tokenData?.token);
     } catch (err) {
       console.error("❌ Failed to fetch receiver FCM token:", err);
       setReceiverFcmToken(null);

@@ -14,7 +14,7 @@ export const useNotifications = () => {
 
 export const NotificationProvider = ({ children }) => {
   const [notifications, setNotifications] = useState({});
-  const [dbNotifications, setDbNotifications] = useState(0);
+  const [dbNotifications, setDbNotifications] = useState(0); // ✅ new state
   const [socket, setSocket] = useState(null);
   const { data: session } = useSession();
   const router = useRouter();
@@ -51,34 +51,10 @@ export const NotificationProvider = ({ children }) => {
     };
 
     fetchNotifications();
-    interval = setInterval(fetchNotifications, 30000);
+    interval = setInterval(fetchNotifications, 30000); // refresh every 30s
 
     return () => clearInterval(interval);
   }, [session?.user?.id]);
-
-  // ✅ Helper: send push notification via backend
-  const sendPushNotification = async (receiverId, title, body) => {
-    try {
-      const res = await fetch(`/api/notifications/get-token?userId=${receiverId}`);
-      const data = await res.json();
-      const token = data?.token;
-
-      if (!token) {
-        console.warn("No FCM token found for receiver:", receiverId);
-        return;
-      }
-
-      await fetch("/api/sendNotification/send-notification", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, title, body }),
-      });
-
-      console.log("✅ Push notification sent to:", receiverId);
-    } catch (err) {
-      console.error("❌ Failed to send push notification:", err);
-    }
-  };
 
   // Initialize socket connection
   useEffect(() => {
@@ -131,13 +107,6 @@ export const NotificationProvider = ({ children }) => {
             toastId: `message-${message.sender}-${Date.now()}`,
           });
         }
-
-        // ✅ Also send push notification via FCM
-        sendPushNotification(
-          message.receiver, // 👈 receiver userId
-          `${message.senderName} sent you a message`,
-          message.message
-        );
       }
     });
 
@@ -158,6 +127,7 @@ export const NotificationProvider = ({ children }) => {
     };
   }, [session?.user?.id, isOnChatPage, router]);
 
+  // Clear notification for a specific chat
   const clearNotification = (userId) => {
     setNotifications(prev => {
       const newNotifications = { ...prev };
@@ -166,11 +136,13 @@ export const NotificationProvider = ({ children }) => {
     });
   };
 
+  // Clear all notifications
   const clearAllNotifications = () => {
     setNotifications({});
-    setDbNotifications(0);
+    setDbNotifications(0); // ✅ clear DB badge too
   };
 
+  // ✅ Merge DB + socket counts
   const getTotalNotifications = () => {
     const socketCount = Object.keys(notifications).length;
     return Math.max(dbNotifications, socketCount);

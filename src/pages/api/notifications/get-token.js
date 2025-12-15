@@ -1,19 +1,28 @@
-import NotificationToken from "@/models/NotificationToken"; // mongoose model
+// pages/api/notifications/get-token.js
+import connectToDatabase from "../../../lib/mongodb";
+import NotificationToken from "@/models/NotificationToken";
 
 export default async function handler(req, res) {
-  try {
-    // ✅ Fetch latest token (device = "web" optional)
-    const tokenDoc = await NotificationToken.findOne({ device: "web" })
-      .sort({ createdAt: -1 });
+  await connectToDatabase();
 
-    if (!tokenDoc) {
-      return res.json({ token: null });
+  try {
+    const { userId, contact } = req.query;
+
+    if (!userId && !contact) {
+      return res.status(400).json({ error: "Missing userId or contact" });
     }
 
-    // ✅ Return only token field
-    res.json({ token: tokenDoc.token });
-  } catch (error) {
-    console.error("❌ Error fetching token:", error);
-    res.status(500).json({ error: "Internal server error" });
+    const query = userId ? { userId } : { contact };
+
+    const tokenDoc = await NotificationToken.findOne(query).sort({ createdAt: -1 });
+
+    if (!tokenDoc) {
+      return res.status(404).json({ error: "Token not found" });
+    }
+
+    res.status(200).json({ token: tokenDoc.token });
+  } catch (err) {
+    console.error("❌ Error fetching token:", err);
+    res.status(500).json({ error: err.message });
   }
 }
