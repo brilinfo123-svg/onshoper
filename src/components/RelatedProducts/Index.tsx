@@ -65,13 +65,13 @@ const RelatedProducts: React.FC<Props> = ({
         );
 
         const data = await res.json();
-        console.log("API response:", data);
+        // console.log("API response:", data);
 
         const filtered = Array.isArray(data)
           ? data.filter((p: Product) => p._id !== currentProductId)
           : [];
 
-        console.log("Filtered products:", filtered);
+        // console.log("Filtered products:", filtered);
         setRelatedProducts(filtered);
       } catch (err) {
         console.error("❌ Error fetching related products:", err);

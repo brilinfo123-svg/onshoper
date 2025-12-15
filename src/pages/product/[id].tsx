@@ -654,7 +654,7 @@ if (fullLocation === "All Cities") {
               }
               <h2>
                 {product?.title && (
-                  <h2>
+                  <span>
                     {product.title}
 
                     {/* 🚗 Vehicle Details */}
@@ -692,7 +692,7 @@ if (fullLocation === "All Cities") {
                         )}
                       </>
                     )}
-                  </h2>
+                  </span>
                 )}
 
               </h2>

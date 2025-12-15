@@ -15,14 +15,15 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Missing contact, OTP or loginType" });
   }
 
-  // ✅ Normalize only for mobile
+  // ✅ Normalize only for mobile → always 10 digits
   let normalizedContact = contact;
   if (loginType === "mobile") {
     normalizedContact = contact.toString().trim().replace(/\D/g, "");
-    if (!normalizedContact.startsWith("91")) {
-      normalizedContact = "91" + normalizedContact;
+    if (normalizedContact.length > 10) {
+      normalizedContact = normalizedContact.slice(-10); // keep last 10 digits
     }
   }
+
   // ✅ For email, keep contact as-is
 
   // ✅ Find OTP record

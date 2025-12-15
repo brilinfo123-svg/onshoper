@@ -183,8 +183,6 @@ useEffect(() => {
   useEffect(() => {
     if (!session?.user?.id) return;
   
-    // ✅ Use ref to persist socket instance across renders
-  
     // ✅ Initialize socket only once
     if (!socketRef.current) {
       socketRef.current = io(socketURL, {
@@ -232,14 +230,13 @@ useEffect(() => {
       }
     };
   
-    // ✅ Attach listener only when selectedChat changes
+    // ✅ Attach listener only once per selectedChat
+    socketRef.current.off("receiveMessage"); // remove any old listener
     socketRef.current.on("receiveMessage", handleMessage);
   
-    // ✅ Cleanup listener on chat change
+    // ✅ Cleanup listener on unmount/change
     return () => {
-      if (socketRef.current) {
-        socketRef.current.off("receiveMessage", handleMessage);
-      }
+      socketRef.current?.off("receiveMessage", handleMessage);
     };
   }, [session?.user?.id, selectedChat]);
   
