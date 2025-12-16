@@ -27,7 +27,7 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification?.title || 'Background Message';
   const notificationOptions = {
     body: payload.notification?.body || 'You have a new message.',
-    icon: '/firebase-logo.png', // 👈 replace with your app icon if needed
+    icon: '/icons/logoMY.png', // 👈 replace with your app icon if needed
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);

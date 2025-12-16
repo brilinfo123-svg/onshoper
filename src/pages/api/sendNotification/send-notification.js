@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       },
       webpush: {
         notification: {
-          icon: "/icon.png",
+          icon: "/icons/logoMY.png",
           click_action: "https://onshoper.com",
         },
         fcmOptions: {

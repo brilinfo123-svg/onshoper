@@ -299,13 +299,13 @@ useEffect(() => {
 
   const sendMessage = async () => {
     if (!newMessage.trim() || !selectedChat || sendingMessage) return;
-
+  
     if (!session || !session.user || !session.user.id) {
       console.error('No session available');
       alert('Please login again');
       return;
     }
-
+  
     const msg = {
       sender: session.user.id,
       senderName,
@@ -316,58 +316,60 @@ useEffect(() => {
       coverImage: selectedChat.lastMessage?.coverImage || initialProduct?.coverImage || null,
       otherUserName: selectedChat?.otherUser?.name || selectedChat?.lastMessage?.otherUserName || initialProduct?.otherUserName || "Seller"
     };
-
+  
     setSendingMessage(true);
     try {
-      // Optimistically update UI
+      // Optimistic UI update
       const tempMessage = {
-        _id: Date.now().toString(), // Temporary ID
+        _id: Date.now().toString(),
         ...msg,
         createdAt: new Date().toISOString()
       };
-
+  
       setMessages(prev => [...prev, tempMessage]);
       setNewMessage("");
-
+  
       const response = await fetch("/api/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(msg),
       });
-
+  
       if (response.ok) {
         const savedMessage = await response.json();
-
-        // Replace temporary message with actual saved message
+  
+        // Replace temp message with actual saved message
         setMessages(prev =>
           prev.map(m => m._id === tempMessage._id ? savedMessage : m)
         );
-
-        // Emit via socket for real-time
+  
+        // ✅ Emit via socket for real-time chat only
         if (socketRef.current && socketRef.current.connected) {
           socketRef.current.emit("sendMessage", savedMessage);
         }
+  
+        // ✅ Send notification via API (only once)
         await fetch("/api/sendNotification/send-notification", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            token: receiverFcmToken,   // 👈 receiver ka FCM token (DB se)
+            token: receiverFcmToken,
             title: `${senderName} sent you a message`,
             body: newMessage.trim(),
           }),
         });
-        console.log("Saved message before socket emit:", savedMessage);
-        // Refresh chats to update last message
+  
+        console.log("✅ Message saved & notification sent:", savedMessage);
+  
+        // Refresh chats
         fetchChats();
       } else {
-        // Remove the optimistic message if failed
         setMessages(prev => prev.filter(m => m._id !== tempMessage._id));
         setNewMessage(msg.message);
         console.error("Failed to send:", await response.json());
         setError("Failed to send message");
       }
     } catch (error) {
-      // Remove the optimistic message if error
       setMessages(prev => prev.filter(m => m._id !== tempMessage._id));
       setNewMessage(msg.message);
       console.error('Error sending message:', error);
@@ -376,6 +378,7 @@ useEffect(() => {
       setSendingMessage(false);
     }
   };
+  
 
   const formatDate = (dateString) => {
     if (!dateString) return "";

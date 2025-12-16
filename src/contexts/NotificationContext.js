@@ -92,21 +92,21 @@ export const NotificationProvider = ({ children }) => {
           [message.sender]: (prev[message.sender] || 0) + 1,
         }));
 
-        if (Notification.permission === "granted" && currentCount === 0) {
-          new Notification("New Message", {
-            body: `New message from ${message.senderName || "Someone"}`,
-            icon: "/icon.png",
-          });
-        }
+        // if (Notification.permission === "granted" && currentCount === 0) {
+        //   new Notification("New Message", {
+        //     body: `New message from ${message.senderName || "Someone"}`,
+        //     icon: "/icon.png",
+        //   });
+        // }
 
-        if (currentCount === 0) {
-          toast.info(`💬 New message from ${message.senderName || "Someone"}`, {
-            position: "top-right",
-            autoClose: 6000,
-            theme: "colored",
-            toastId: `message-${message.sender}-${Date.now()}`,
-          });
-        }
+        // if (currentCount === 0) {
+        //   toast.info(`💬 New message from ${message.senderName || "Someone"}`, {
+        //     position: "top-right",
+        //     autoClose: 6000,
+        //     theme: "colored",
+        //     toastId: `message-${message.sender}-${Date.now()}`,
+        //   });
+        // }
       }
     });
 

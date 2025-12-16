@@ -18,7 +18,7 @@ const sendNotification = async (receiverId, title, body) => {
       },
     };
 
-    const response = await admin.messaging().send(message);
+    // const response = await admin.messaging().send(message);
     console.log("✅ Notification sent:", response);
   } catch (error) {
     console.error("❌ Error sending notification:", error);
