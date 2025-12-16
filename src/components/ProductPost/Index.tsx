@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import router, { useRouter } from "next/router";
 import { useFavorites } from "@/contexts/FavoriteContext"; // Import the context
 import Image from "next/image";
+import NProgress from "nprogress";
 
 export function formatPostedTime(utcDate: string | Date) {
   const router = useRouter();
@@ -171,10 +172,14 @@ const ProductCard = ({
     setLoading(false);
   };
 
+  const handleClick = () => {
+     NProgress.start(); 
+    };
+
   if (showOnlyWishlistItems && !favorite) return null;
   return (
     <div className={`${styles.card} ${filter.card} ${className || ""}`}>
-      <Link href={`/product/${_id}`} className={styles.button}>
+      <Link href={`/product/${_id}`} className={styles.button} onClick={handleClick}>
         <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} priority />
 
         <div className={`${styles.content} ${filter.content}`}>

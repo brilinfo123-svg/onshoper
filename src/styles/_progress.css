@@ -1,0 +1,46 @@
+#nprogress {
+    pointer-events: none;
+  }
+  
+  #nprogress .bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    height: 6px;
+    background: linear-gradient(90deg, #ff6a00, #ee0979, #00c9ff);
+    box-shadow: 0 0 10px rgba(255, 106, 0, 0.7),
+                0 0 20px rgba(238, 9, 121, 0.7),
+                0 0 30px rgba(0, 201, 255, 0.7);
+    animation: pulseGlow 1.5s infinite alternate;
+  }
+  
+  @keyframes pulseGlow {
+    from {
+      box-shadow: 0 0 10px rgba(255, 106, 0, 0.7),
+                  0 0 20px rgba(238, 9, 121, 0.7),
+                  0 0 30px rgba(0, 201, 255, 0.7);
+    }
+    to {
+      box-shadow: 0 0 20px rgba(255, 106, 0, 1),
+                  0 0 40px rgba(238, 9, 121, 1),
+                  0 0 60px rgba(0, 201, 255, 1);
+    }
+  }
+  
+  #nprogress .peg {
+    display: block;
+    position: absolute;
+    right: 0px;
+    width: 100px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+    opacity: 0.6;
+    transform: rotate(3deg) translate(0px, -4px);
+  }
+  
+  #nprogress .spinner {
+    display: none;
+  }
+  

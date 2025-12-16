@@ -23,11 +23,17 @@ import { useRouter } from "next/router";
 // ✅ Import helper functions for FCM
 import { generateToken, listenForMessages } from "@/lib/firebase"; 
 
+// ✅ Import nprogress for route loading bar
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+import "@/styles/_progress.css";
+
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isAdminPage = router.pathname.startsWith("/admin");
   const isProductDetailPage = router.pathname.startsWith("/product/");
 
+  // ✅ Setup FCM + Service Worker
   useEffect(() => {
     const initFirebaseMessaging = async () => {
       try {
@@ -36,7 +42,6 @@ export default function App({ Component, pageProps }: AppProps) {
           console.log("✅ FCM Token:", token);
           // 👉 yaha tum token ko apne backend /api/saveToken pe bhej sakte ho
         }
-        // ✅ Foreground listener attach karo
         listenForMessages();
       } catch (err) {
         console.error("❌ FCM init failed:", err);
@@ -45,7 +50,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
     initFirebaseMessaging();
 
-    // ✅ Register service worker for background notifications
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       navigator.serviceWorker
         .register("/firebase-messaging-sw.js")
@@ -57,6 +61,22 @@ export default function App({ Component, pageProps }: AppProps) {
         });
     }
   }, []);
+
+  // ✅ Setup NProgress for route changes
+  useEffect(() => {
+    const handleStart = () => NProgress.start();
+    const handleStop = () => NProgress.done();
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleStop);
+    router.events.on("routeChangeError", handleStop);
+
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleStop);
+      router.events.off("routeChangeError", handleStop);
+    };
+  }, [router]);
 
   return (
     <SessionProvider session={pageProps.session}>
@@ -100,7 +120,7 @@ const AutoUnfeaturePoller = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       fetch("/api/unfeature-expired");
-    }, 86400000);
+    }, 86400000); // once per day
     return () => clearInterval(interval);
   }, []);
   return null;

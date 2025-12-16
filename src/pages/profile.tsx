@@ -195,18 +195,18 @@ const PropertyDetailPage: React.FC = () => {
 
 
 
-  useEffect(() => {
-    fetch(`/api/getLocalShopById?id=${shop}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setShop(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching shop:", error);
-        setLoading(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`/api/getLocalShopById?id=${shop}`)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setShop(data);
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching shop:", error);
+  //       setLoading(false);
+  //     });
+  // }, []);
 
   useEffect(() => {
     if (session?.user?.contact) {

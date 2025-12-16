@@ -353,18 +353,18 @@ function AllCategoryRentalForm() {
   };
 
 
-  useEffect(() => {
-    fetch(`/api/getLocalShopById?id=${shopId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setShop(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching shop:", error);
-        setLoading(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`/api/getLocalShopById?id=${shopId}`)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setShop(data);
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching shop:", error);
+  //       setLoading(false);
+  //     });
+  // }, []);
 
   useEffect(() => {
     if (session?.user?.contact) {
