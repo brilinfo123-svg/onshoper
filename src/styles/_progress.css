@@ -8,13 +8,14 @@
     left: 0;
     width: 100%;
     z-index: 9999;
-    height: 6px;
+    height: 4px;
     background: linear-gradient(90deg, #ff6a00, #ee0979, #00c9ff);
     box-shadow: 0 0 10px rgba(255, 106, 0, 0.7),
                 0 0 20px rgba(238, 9, 121, 0.7),
                 0 0 30px rgba(0, 201, 255, 0.7);
     animation: pulseGlow 1.5s infinite alternate;
   }
+  @media (max-width: 767px) { #nprogress .bar { height: 2px;} }
   
   @keyframes pulseGlow {
     from {
