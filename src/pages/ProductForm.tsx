@@ -65,7 +65,7 @@ function AllCategoryRentalForm() {
   const { data: session } = useSession();
   const [shopData, setShopData] = useState<ShopData | null>(null);
   const [shop, setShop] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const shopId = "677bccf4e93c318e3075b932";
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
