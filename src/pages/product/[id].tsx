@@ -958,7 +958,7 @@ if (fullLocation === "All Cities") {
                 {shopData ? (
                   <>
                     <Image src={shopData?.user?.photo || "/images/profile.png"} width="100" height="100" alt="userProfile" />
-                    <h3>{shopData.user?.name || "Add Name"}</h3>
+                    <h3>{shopData.user?.name || "User"}</h3>
                   </>
                 ) : (
                   <ProfilePicSkeleton size="xlarge"

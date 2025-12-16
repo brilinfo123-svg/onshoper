@@ -667,6 +667,9 @@
       h3 {
         font-size: 1.2rem;
         margin: 10px 0;
+        @media screen and (max-width: 767px) {
+           margin-bottom: 0;
+        }
       }
 
       p {
@@ -687,6 +690,27 @@
         border-radius: 50px;
         @media screen and (min-width: 768px) and (max-width: 1440px){
           padding: 5px;
+        }
+        @media (max-width: 767px) {
+            gap: 10px;
+            padding: 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            left: 0;
+            right: 0;
+            border-radius: 0;
+            z-index: 9;
+            button {
+              width: 40px;
+              height: 40px;
+              font-size: 16px;
+              
+              &:hover::after {
+                bottom: -22px;
+                font-size: 10px;
+              }
+            }
         }
         .contactButtons {
           display: flex;
@@ -767,8 +791,8 @@
           @media (max-width: 768px) {
             .contactButtons {
               gap: 12px;
-              padding: 10px;
-              border-radius: 40px;
+              padding: 10px 0;
+              border-radius: 0px;
               @media screen and (min-width: 768px) and (max-width: 1440px){
                 padding: 5px;
               }
@@ -789,27 +813,27 @@
           }
           
           @media (max-width: 767px) {
-            .contactButtons {
-              gap: 10px;
-              padding: 10px 0 11px;
-              position: fixed;
-              bottom: 0;
-              width: 100%;
-              left: 0;
-              right: 0;
-              border-radius: 0;
-              z-index: 9;
-              button {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
+            // .contactButtons {
+            //   gap: 10px;
+            //   padding: 10px 0 11px;
+            //   position: fixed;
+            //   bottom: 0;
+            //   width: 100%;
+            //   left: 0;
+            //   right: 0;
+            //   border-radius: 0;
+            //   z-index: 9;
+            //   button {
+            //     width: 40px;
+            //     height: 40px;
+            //     font-size: 16px;
                 
-                &:hover::after {
-                  bottom: -22px;
-                  font-size: 10px;
-                }
-              }
-            }
+            //     &:hover::after {
+            //       bottom: -22px;
+            //       font-size: 10px;
+            //     }
+            //   }
+            // }
           }
 
         p {
