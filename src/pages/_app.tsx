@@ -1,5 +1,5 @@
 // /pages/_app.tsx
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SessionProvider, useSession } from "next-auth/react";
 import DefaultHeader from "@/components/DefaultHeader/Index";
 import { NotificationProvider } from "../contexts/NotificationContext";
@@ -28,10 +28,17 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import "@/styles/_progress.css";
 
+// ✅ Import ProductProvider for caching products
+import { ProductProvider } from "@/contexts/ProductContext";
+import { CategoryProvider } from "@/contexts/CategoryContext";
+
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  const [isOnline, setIsOnline] = useState(true);
   const isAdminPage = router.pathname.startsWith("/admin");
   const isProductDetailPage = router.pathname.startsWith("/product/");
+
+  useEffect(() => { const handleOnline = () => setIsOnline(true); const handleOffline = () => { setIsOnline(false); router.push("/_offline");}; window.addEventListener("online", handleOnline); window.addEventListener("offline", handleOffline); return () => { window.removeEventListener("online", handleOnline); window.removeEventListener("offline", handleOffline); }; }, [router]);
 
   // ✅ Setup FCM + Service Worker
   useEffect(() => {
@@ -80,27 +87,31 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <SessionProvider session={pageProps.session}>
-      <NotificationProvider>
-        <FavoriteProvider>
-          <ChatProvider>
-            <CityFilterProvider>
-              <FilterProvider>
-                <ToastContainer position="top-right" autoClose={3000} />
-                <AutoUnfeaturePoller />
+      <ProductProvider>
+      <CategoryProvider>
+        <NotificationProvider>
+          <FavoriteProvider>
+            <ChatProvider>
+              <CityFilterProvider>
+                <FilterProvider>
+                  <ToastContainer position="top-right" autoClose={3000} />
+                  <AutoUnfeaturePoller />
 
-                {!isAdminPage && <HeaderComponent />}
+                  {!isAdminPage && <HeaderComponent />}
 
-                <main>
-                  <Component {...pageProps} />
-                </main>
+                  <main>
+                    <Component {...pageProps} />
+                  </main>
 
-                {!isAdminPage && <Footer />}
-                {!isAdminPage && !isProductDetailPage && <MobileBottomNav />}
-              </FilterProvider>
-            </CityFilterProvider>
-          </ChatProvider>
-        </FavoriteProvider>
-      </NotificationProvider>
+                  {!isAdminPage && <Footer />}
+                  {!isAdminPage && !isProductDetailPage && <MobileBottomNav />}
+                </FilterProvider>
+              </CityFilterProvider>
+            </ChatProvider>
+          </FavoriteProvider>
+        </NotificationProvider>
+        </CategoryProvider>
+      </ProductProvider>
     </SessionProvider>
   );
 }

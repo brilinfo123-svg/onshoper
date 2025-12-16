@@ -180,7 +180,7 @@ const ProductCard = ({
   return (
     <div className={`${styles.card} ${filter.card} ${className || ""}`}>
       <Link href={`/product/${_id}`} className={styles.button} onClick={handleClick}>
-        <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} priority />
+        <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} placeholder="blur" blurDataURL={coverImage || images?.[0] || "/images/placeholder.jpg"} priority />
 
         <div className={`${styles.content} ${filter.content}`}>
         <span className={styles.category}>

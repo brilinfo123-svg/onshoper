@@ -1,87 +1,72 @@
-.wrapper {
-    height: 100vh;
-    background: linear-gradient(135deg, #2c3e50, #34495e);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    position: relative;
-    overflow: hidden;
-      
+.offlineWrapper {
+  text-align: center;
+  padding: 150px 0;
+
   h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    animation: slideDown 0.8s ease forwards;
-  }
-  
-  p {
-    font-size: 1.2rem;
-    color: #ccc;
-    margin-bottom: 30px;
-  }
-  }
-  
-  .content {
-    text-align: center;
-    z-index: 2;
-    animation: fadeIn 1s ease forwards;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+
+    @media screen and (max-width: 767px) {
+      font-size: 25px;
+      margin-bottom: 8px;
+    }
   }
 
-  
-  .retryButton {
-    padding: 10px 20px;
-    background-color: #00bcd4;
-    color: white;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background 0.3s ease;
-  }
-  
-  .retryButton:hover {
-    background-color: #0097a7;
-  }
-  
-  .bgAnimation {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.05) 1%, transparent 1%);
-    background-size: 50px 50px;
-    animation: rotateBg 20s linear infinite;
-    z-index: 1;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
+  p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+
+    @media screen and (max-width: 767px) {
+      font-size: 14px;
     }
   }
-  
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+}
+
+.offlineImage {
+  margin-bottom: 20px;
+  animation: pulse 2s infinite;
+}
+
+
+.retryButton {
+  background: #daeefa;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 40px;
+  @media screen and (max-width: 767px) {
+    margin-top: 10px;
+    font-size: 14px;
   }
-  
-  @keyframes rotateBg {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+  &:hover {
+    background: #b6d8ed;
+    transform: scale(1.05);
   }
-  
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
