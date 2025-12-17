@@ -331,7 +331,7 @@ const IndiaAddressForm = ({ onLocationSelect, isProductForm = false, formData, s
           currentStep > 1 ? styles.slideLeft : currentStep < 1 ? styles.slideRight : ''
         }`}>
           <label className={styles.label}>
-            <span className="icon-map-pin"></span>Select State:
+            <span className="icon-location"></span>Select State
           </label>
           <select
             value={selectedState}
@@ -353,7 +353,7 @@ const IndiaAddressForm = ({ onLocationSelect, isProductForm = false, formData, s
           currentStep > 2 ? styles.slideLeft : currentStep < 2 ? styles.slideRight : ''
         }`}>
           <label className={styles.label}>
-            <span className="icon-map-pin"></span>Select Your City:
+            <span className="icon-location"></span>Select Your City
           </label>
           
           <div className={styles.searchContainer}>
