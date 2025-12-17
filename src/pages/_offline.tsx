@@ -13,9 +13,12 @@ export default function Offline() {
       />
         <h1>No Internet Connection</h1>
         <p>Please check your network and try again.</p>
-        <button className={styles.retryButton} onClick={() => window.location.reload()}>
-        Refresh Page
+        <button className={styles.retryButton} onClick={() => {if (navigator.onLine) {window.location.href = "/";
+          } else {
+            window.location.reload();
+          }}}>Refresh Page
         </button>
+
       </div>
     );
   }

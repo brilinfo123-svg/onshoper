@@ -1424,7 +1424,7 @@
   position: relative;
   display: flex;
   background: #eee;
-  border-radius: 30px;
+  border-radius: 5px;
   overflow: hidden;
   width: 180px;
   height: 40px;
@@ -1434,14 +1434,14 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   @media screen and (max-width: 767px) {
-    width: 140px;
+    width: 160px;
     height: 30px;
   }
   @media screen and (max-width: 413.98px) {
-    width: 130px;
+    width: 145px;
   }
   @media screen and (max-width: 374px) {
-    width: 110px;
+    width: 120px;
     height: 28px;
   }
 }
@@ -1480,50 +1480,58 @@
   bottom: 0;
   width: 60px;
   background: #000;
-  border-radius: 30px;
+  border-radius: 5px;
   transition: left 0.3s ease;
   z-index: 0; // 👈 lowered to avoid blocking clicks
   pointer-events: none; // 👈 ensures it doesn't block button clicks
   @media screen and (max-width: 767px) {
     background-color: #007bff;
-    border-radius: 20px;
-    width: 45px;
+    border-radius: 5px;
+    width: 60px;
   }
   @media screen and (max-width: 413.98px) {
-    width: 42px;
+    width: 55px;
   }
   @media screen and (max-width: 374px) {
-    width: 37px;
+    width: 50px;
   }
 }
 
 .toggleThumb.Sale {
-  left: 0;
+  @media screen and (max-width: 767px) {
+    left: -10px;
+  }
+  // @media screen and (max-width: 413.98px) {
+  //   left: 45px;
+  // }
+  // @media screen and (max-width: 374px) {
+  //   left: 37px;
+  // }
 }
 
 .toggleThumb.Rent {
   left: 60px;
   @media screen and (max-width: 767px) {
-    left: 47px;
+    left: 49px;
   }
   @media screen and (max-width: 413.98px) {
-    left: 45px;
+    left: 44px;
   }
   @media screen and (max-width: 374px) {
-    left: 37px;
+    left: 34px;
   }
 }
 
 .toggleThumb.all {
   left: 125px;
   @media screen and (max-width: 767px) {
-    left: 95px;
+    left: 108px;
   }
   @media screen and (max-width: 413.98px) {
-    left: 88px;
+    left: 98px;
   }
   @media screen and (max-width: 374px) {
-    left: 74px;
+    left: 82px;
   }
 }
 

@@ -67,10 +67,13 @@
     }
   }
   @media screen and (max-width: 767px) {
-    padding: 5px 10px;
+    padding: 4px 10px;
   }
   @media screen and (max-width: 413.98px) {
-    padding: 5px;
+    padding: 4px 5px;
+  }
+  @media screen and (max-width: 374.98px) {
+    padding: 3px 5px;
   }
   
 }

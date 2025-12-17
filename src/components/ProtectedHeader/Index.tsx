@@ -312,8 +312,8 @@ const Header: React.FC = () => {
           <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
-              <button onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
-              <button onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
+              <button onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Buy</button>
+              <button onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rental</button>
               <button onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
           </div>
@@ -357,8 +357,8 @@ const Header: React.FC = () => {
           <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
-              <button onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
-              <button onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rent</button>
+              <button onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Buy</button>
+              <button onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rental</button>
               <button onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
           </div>
