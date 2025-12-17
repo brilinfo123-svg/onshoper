@@ -70,7 +70,10 @@
   border: none;
   cursor: pointer;
   width: 100%;
-  
+  @media screen and (max-width: 991px) {
+    padding: 4px 5px;
+  }
+
   &:hover,
   &.active {
     color: #0070f3;
