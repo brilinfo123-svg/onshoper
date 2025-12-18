@@ -99,11 +99,14 @@ const ProductCard = ({
     setFavorite(isFavorite(_id));
   }, [_id, isFavorite]);
 
-  // ✅ Also check if it's in the user's favorites from the API
-  useEffect(() => {
-    const checkFavorite = async () => {
-      if (!session?.user?.contact) return;
+// ✅ Also check if it's in the user's favorites from the API
+useEffect(() => {
+  if (!session?.user?.contact) return;
 
+  let isMounted = true; // guard for unmounted component
+
+  const checkFavorite = async () => {
+    try {
       const res = await fetch("/api/favorites/isFavourite", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -113,64 +116,80 @@ const ProductCard = ({
         }),
       });
 
+      if (!res.ok) throw new Error("Failed to check favorite");
+
       const data = await res.json();
-      if (res.ok && data.isFavourite) {
+
+      if (isMounted && data.isFavourite) {
         setFavorite(true);
-        // Also add to context if it's not already there
+
+        // ✅ only add to context if not already there
         if (!isFavorite(_id)) {
           addFavorite(_id);
         }
       }
-    };
-
-    checkFavorite();
-  }, [_id, session, isFavorite, addFavorite]);
-
-  const toggleFavorite = async () => {
-    if (!session?.user?.contact) {
-      toast.error("Please login first!");
-      router.push("/login");
-      return;
+    } catch (err) {
+      console.error("❌ Error checking favorite:", err);
     }
-
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/favorites/fetchWishlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: session.user.contact,
-          productId: _id,
-          shopOwnerID: shopOwnerID,
-          isFavorited: !favorite,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok && data.success) {
-        if (!favorite) {
-          addFavorite(_id); // Add to global favorites
-        } else {
-          removeFavorite(_id); // Remove from global favorites
-        }
-        
-        setFavorite(!favorite);
-        toast.success(!favorite ? "Added to wishlist" : "Removed from wishlist");
-
-        if (onUnfavorite && favorite) {
-          onUnfavorite(_id); // notify parent to remove this card
-        }
-      } else {
-        toast.error("Something went wrong");
-      }
-    } catch (error) {
-      toast.error("Failed to update favorite");
-    }
-
-    setLoading(false);
   };
+
+  checkFavorite();
+
+  return () => {
+    isMounted = false; // ✅ cleanup
+  };
+}, [_id, session?.user?.contact]); // ✅ simplified dependencies
+
+
+const toggleFavorite = async () => {
+  if (!session?.user?.contact) {
+    toast.error("Please login first!");
+    router.push("/login");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const res = await fetch("/api/favorites/fetchWishlist", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: session.user.contact,
+        productId: _id,
+        shopOwnerID: shopOwnerID,
+        isFavorited: !favorite,
+      }),
+    });
+
+    if (!res.ok) throw new Error("Failed to update favorite");
+
+    const data = await res.json();
+
+    if (data.success) {
+      if (!favorite) {
+        addFavorite(_id); // Add to global favorites
+      } else {
+        removeFavorite(_id); // Remove from global favorites
+      }
+
+      setFavorite(!favorite);
+      toast.success(!favorite ? "Added to wishlist" : "Removed from wishlist");
+
+      if (onUnfavorite && favorite) {
+        onUnfavorite(_id); // notify parent to remove this card
+      }
+    } else {
+      toast.error("Something went wrong");
+    }
+  } catch (error) {
+    console.error("❌ Toggle favorite error:", error);
+    toast.error("Failed to update favorite");
+  }
+
+  setLoading(false);
+};
+
 
   const handleClick = () => {
      NProgress.start(); 

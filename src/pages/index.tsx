@@ -51,7 +51,6 @@ export default function Home() {
 
   // ✅ Products from context
   const { products, setProducts, loaded, setLoaded } = useProducts();
-  console.log("Products in context:", products);
 
   const [productsLoading, setProductsLoading] = useState(!loaded);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);

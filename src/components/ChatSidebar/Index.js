@@ -52,18 +52,30 @@ export default function ChatSidebar({ isOpen,
 
 // 👆 state
 
+// Receiver Token Fetch — cache karo taaki same contact ke liye dobara call na ho
 useEffect(() => {
-  const fetchReceiverToken = async () => {
-    if (!selectedChat?.otherUserId) return; // 👈 wait until chat selected
+  if (!selectedChat?.otherUserId) return;
 
+  // ✅ Avoid duplicate token fetch
+  if (receiverMap[selectedChat.otherUserId]?.token) {
+    setReceiverFcmToken(receiverMap[selectedChat.otherUserId].token);
+    return;
+  }
+
+  const fetchReceiverToken = async () => {
     try {
-      // 👈 dynamically use receiver contact
       const res = await fetch(`/api/notifications/get-token?contact=${selectedChat.otherUserId}`);
       const data = await res.json();
 
       if (res.ok && data?.token) {
         setReceiverFcmToken(data.token);
-        // console.log("🔔 Receiver FCM Token:", data.token);
+        setReceiverMap(prev => ({
+          ...prev,
+          [selectedChat.otherUserId]: {
+            ...(prev[selectedChat.otherUserId] || {}),
+            token: data.token,
+          },
+        }));
       } else {
         console.warn("⚠️ No token found for receiver:", selectedChat.otherUserId);
       }
@@ -74,6 +86,7 @@ useEffect(() => {
 
   fetchReceiverToken();
 }, [selectedChat]);
+
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -183,7 +196,6 @@ useEffect(() => {
   useEffect(() => {
     if (!session?.user?.id) return;
   
-    // ✅ Initialize socket only once
     if (!socketRef.current) {
       socketRef.current = io(socketURL, {
         transports: ["websocket"],
@@ -211,7 +223,6 @@ useEffect(() => {
       });
     }
   
-    // ✅ Scoped message listener for current chat
     const handleMessage = (msg) => {
       console.log("📩 Received message:", msg);
   
@@ -225,20 +236,30 @@ useEffect(() => {
           const exists = prev.some((m) => m._id === msg._id);
           return exists ? prev : [...prev, msg];
         });
-  
-        fetchChats();
       }
+  
+      // ✅ Instead of refetching chats, update local state
+      setChats(prevChats => {
+        const updated = prevChats.map(chat =>
+          chat.otherUserId === msg.sender || chat.otherUserId === msg.receiver
+            ? { ...chat, lastMessage: msg }
+            : chat
+        );
+        return updated.sort((a, b) =>
+          new Date(b.lastMessage?.createdAt || 0).getTime() -
+          new Date(a.lastMessage?.createdAt || 0).getTime()
+        );
+      });
     };
   
-    // ✅ Attach listener only once per selectedChat
-    socketRef.current.off("receiveMessage"); // remove any old listener
+    socketRef.current.off("receiveMessage");
     socketRef.current.on("receiveMessage", handleMessage);
   
-    // ✅ Cleanup listener on unmount/change
     return () => {
       socketRef.current?.off("receiveMessage", handleMessage);
     };
   }, [session?.user?.id, selectedChat]);
+  
   
 
   const fetchChats = async () => {
@@ -248,7 +269,6 @@ useEffect(() => {
       if (response.ok) {
         const data = await response.json();
   
-        // Sort chats by latest message timestamp (descending)
         const sortedChats = data.chats.sort((a, b) => {
           const timeA = new Date(a.lastMessage?.createdAt || 0).getTime();
           const timeB = new Date(b.lastMessage?.createdAt || 0).getTime();
@@ -257,9 +277,11 @@ useEffect(() => {
   
         setChats(sortedChats);
   
-        // Fetch receiver info for each chat
+        // ✅ Only fetch receiver info once per chat
         sortedChats.forEach(chat => {
-          fetchReceiverInfo(chat.otherUserId);
+          if (!receiverMap[chat.otherUserId]) {
+            fetchReceiverInfo(chat.otherUserId);
+          }
         });
       } else {
         console.error('Failed to fetch chats');
@@ -270,6 +292,7 @@ useEffect(() => {
       setLoading(false);
     }
   };
+  
   
 
   const fetchMessages = async (otherUserId) => {

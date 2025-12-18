@@ -6,6 +6,18 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 
+// Custom hook for debounce
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
 interface Category {
   id: number;
   name: string;
@@ -35,7 +47,7 @@ interface Props {
   contentClass?: any;
 }
 
-const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
+const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -45,7 +57,6 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
   const isDesckTop = useMediaQuery("(max-width: 992px)");
 
   const router = useRouter();
-
 
   const rotatingPlaceholders = [
     "Search Mobile Phones...",
@@ -65,22 +76,21 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
     "Search Residential Property...",
     "Search PG & Hostels...",
   ];
-  
+
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [dynamicPlaceholder, setDynamicPlaceholder] = useState(rotatingPlaceholders[0]);
-  
+
   useEffect(() => {
     const interval = setInterval(() => {
       setPlaceholderIndex((prevIndex) => (prevIndex + 1) % rotatingPlaceholders.length);
-    }, 1500); // change every 1 second
-  
-    return () => clearInterval(interval); // cleanup on unmount
+    }, 1500);
+    return () => clearInterval(interval);
   }, []);
-  
+
   useEffect(() => {
     setDynamicPlaceholder(rotatingPlaceholders[placeholderIndex]);
   }, [placeholderIndex]);
-  
+
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -96,19 +106,21 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchProducts();
   }, []);
 
+  // ✅ Debounce only for filtering
+  const debouncedSearchTerm = useDebounce(searchTerm, 400);
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    setSearchTerm(e.target.value); // instant update for input
   };
 
   // Filter suggestions
   useEffect(() => {
-    if (searchTerm.trim()) {
-      const term = searchTerm.toLowerCase();
+    if (debouncedSearchTerm.trim()) {
+      const term = debouncedSearchTerm.toLowerCase();
       const searchWords = term.split(" ").filter(Boolean);
 
       const suggestions = products.filter((product) => {
@@ -138,28 +150,21 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
     } else {
       setFilteredSuggestions([]);
     }
-  }, [searchTerm, products]);
+  }, [debouncedSearchTerm, products]);
 
   const handleSearch = (term?: string) => {
     const query = term || searchTerm;
     if (!query) return;
-  
-    // ✅ Clear suggestions when search is triggered
+
     setFilteredSuggestions([]);
-  
+
     const queryString = new URLSearchParams({ searchTerm: query }).toString();
     router.push(`/filter?${queryString}`);
   };
-  
 
   return (
     <div className={`${Style.banner} ${bannerClass} ${Style.stickyBanner}`}>
       <div className={`${Style.content} ${contentClass}`}>
-        {/* <div className={Style.bannerContent}>
-          <h1 className={Style.heading}>{searchTitle}</h1>
-          <p className={Style.text}>{searchDesc}</p>
-        </div> */}
-
         <div className={Style.searchSection}>
           <div className={Style.searchBox}>
             <input
@@ -178,7 +183,6 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
             {searchTerm && filteredSuggestions.length > 0 && (
               <div className={Style.suggestionsDropdown}>
                 {filteredSuggestions.map((product) => {
-                  // choose the best available value
                   const searchValue =
                     product.MobileModel ||
                     product.brand ||
@@ -197,14 +201,10 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
                       className={Style.suggestionItem}
                       onClick={() => {
                         const finalValue = searchValue || "";
-                      
-                        // ✅ Step 1: Update input box
                         setSearchTerm(finalValue);
-                      
-                        // ✅ Step 2: Clear suggestions AFTER input update
                         setTimeout(() => {
                           setFilteredSuggestions([]);
-                        }, 0); // micro-delay ensures re-render
+                        }, 0);
                         handleSearch(finalValue);
                       }}
                     >
@@ -214,32 +214,15 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass}) => {
                 })}
               </div>
             )}
-
           </div>
 
-          {!isDesckTop && <button className={Style.searchButton} onClick={() => handleSearch()}>
-            <span role="img" aria-label="Search" className="icon-search-1"></span>
-          </button>}
+          {!isDesckTop && (
+            <button className={Style.searchButton} onClick={() => handleSearch()}>
+              <span role="img" aria-label="Search" className="icon-search-1"></span>
+            </button>
+          )}
         </div>
-
-        {/* <div className={`${Style.bannerContent} ${Style.bannerContentLink}`}>
-          <Link href="/watch">
-            <span className="icon-map-signs"></span> Search For Rent
-          </Link>
-          <Link href="/category">
-            <span className="icon-shop"></span> Search For Buy
-          </Link>
-        </div> */}
       </div>
-
-      {/* <div className={Style.imgWrap1}>
-        <Image src={"/images/vendor.png"} width={262} height={262} alt="Vendors" />
-      </div>
-      <div className={Style.imgWrap2}>
-        <Image src={"/images/Vendor2.png"} width={262} height={262} alt="Vendors" />
-      </div> */}
-
-      {/* {loading && <div>Loading products...</div>} */}
       {error && <div>Error: {error}</div>}
     </div>
   );

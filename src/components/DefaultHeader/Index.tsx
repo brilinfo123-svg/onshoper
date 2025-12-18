@@ -176,20 +176,16 @@ const Header: React.FC = () => {
 
         <ul className={Style.rightMenus}>
           {!isMobile && (
-            <li>
-              <Link href="/ProductForm" className={`${Style.sellAdd} icon-shop`} rel="noopener noreferrer">
-              Sell/Rent
-              </Link>
-            </li>
+            <li><Link href="/ProductForm" className={`${Style.sellAdd} icon-shop`} rel="noopener noreferrer">Sell/Rent</Link></li>
           )}
-         <li className={Style.notificationItem}>
+         {/* <li className={Style.notificationItem}>
             <div className={`${Style.Notification} icon-bell`} role="button" tabIndex={0} onClick={() => handleProtectedRedirect("/ProductForm")}
             />
-          </li>
+          </li> */}
 
           <li className={Style.favoriteItem}>
-            <div className={`${Style.favoriteTrigger} icon-heart`} role="button" tabIndex={0} onClick={() => handleProtectedRedirect("/ProductForm")}
-            />
+            <div className={`${Style.favoriteTrigger} icon-heart-empty`} role="button" tabIndex={0} onClick={() => handleProtectedRedirect("/ProductForm")}></div>
+            
           </li>
         </ul>
       </div>

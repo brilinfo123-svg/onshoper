@@ -1400,15 +1400,11 @@
   }
 }
 
-
-
-
-
-
 .toggleWrapper {
   display: flex;
   justify-content: center;
   margin-right: 20px;
+  align-items: center;
   @media screen and (max-width: 767px) {
     margin-right: 10px;
   }
@@ -1424,7 +1420,7 @@
   position: relative;
   display: flex;
   background: #eee;
-  border-radius: 5px;
+  border-radius: 30px;
   overflow: hidden;
   width: 180px;
   height: 40px;
@@ -1433,15 +1429,18 @@
   position: relative;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  @media screen and (max-width: 767px) {
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
     width: 160px;
+  }
+  @media screen and (max-width: 767px) {
+    width: 140px;
     height: 30px;
   }
   @media screen and (max-width: 413.98px) {
-    width: 145px;
+    width: 130px;
   }
   @media screen and (max-width: 374px) {
-    width: 120px;
+    width: 110px;
     height: 28px;
   }
 }
@@ -1458,6 +1457,9 @@
   color: #333;
   transition: color 0.3s ease;
   position: relative;
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    padding: 8px 10px;
+  }
   @media screen and (max-width: 767px) {
     font-size: 12px;
     padding: 8px 10px;
@@ -1480,60 +1482,58 @@
   bottom: 0;
   width: 60px;
   background: #000;
-  border-radius: 5px;
+  border-radius: 30px;
   transition: left 0.3s ease;
   z-index: 0; // 👈 lowered to avoid blocking clicks
   pointer-events: none; // 👈 ensures it doesn't block button clicks
-  @media screen and (max-width: 767px) {
-    background-color: #007bff;
-    border-radius: 5px;
-    width: 60px;
-  }
-  @media screen and (max-width: 413.98px) {
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
     width: 55px;
   }
+  @media screen and (max-width: 767px) {
+    background-color: #007bff;
+    border-radius: 20px;
+    width: 45px;
+  }
+  @media screen and (max-width: 413.98px) {
+    width: 42px;
+  }
   @media screen and (max-width: 374px) {
-    width: 50px;
+    width: 37px;
   }
 }
 
 .toggleThumb.Sale {
-  @media screen and (max-width: 767px) {
-    left: -10px;
-  }
-  // @media screen and (max-width: 413.98px) {
-  //   left: 45px;
-  // }
-  // @media screen and (max-width: 374px) {
-  //   left: 37px;
-  // }
+  left: 0;
 }
 
 .toggleThumb.Rent {
   left: 60px;
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    left: 52px;
+  }
   @media screen and (max-width: 767px) {
-    left: 49px;
+    left: 47px;
   }
   @media screen and (max-width: 413.98px) {
-    left: 44px;
+    left: 47px;
   }
   @media screen and (max-width: 374px) {
-    left: 34px;
+    left: 37px;
   }
 }
 
 .toggleThumb.all {
   left: 125px;
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    left: 106px;
+  }
   @media screen and (max-width: 767px) {
-    left: 108px;
+    left: 95px;
   }
   @media screen and (max-width: 413.98px) {
-    left: 98px;
+    left: 88px;
   }
   @media screen and (max-width: 374px) {
-    left: 82px;
+    left: 74px;
   }
 }
-
-
-

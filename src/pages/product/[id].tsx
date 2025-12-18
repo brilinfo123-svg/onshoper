@@ -37,13 +37,13 @@ export function formatPostedTime(utcDate: string | Date) {
   return `Posted: ${relative}`;
 }
 
-const fetchShopDetails = async (id: string) => {
-  const response = await fetch(`/api/products/${id}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch shop details");
-  }
-  return response.json();
-};
+// const fetchShopDetails = async (id: string) => {
+//   const response = await fetch(`/api/products/${id}`);
+//   if (!response.ok) {
+//     throw new Error("Failed to fetch shop details");
+//   }
+//   return response.json();
+// };
 
 interface ShopData {
   email: string;
@@ -258,34 +258,44 @@ if (fullLocation === "All Cities") {
 }, []);
 
 
-  useEffect(() => {
-    const fetchProductAndSeller = async () => {
-      if (!id) return;
+useEffect(() => {
+  if (!id) return;
 
-      try {
-        const productRes = await fetch(`/api/products/${id}`);
-        const productData = await productRes.json();
-        const productDetails = productData.product;
+  let isMounted = true; // ✅ prevent state update if component unmounts
 
-        setProduct(productDetails);
+  const fetchProductAndSeller = async () => {
+    try {
+      // ✅ Product fetch
+      const productRes = await fetch(`/api/products/${id}`);
+      if (!productRes.ok) throw new Error("Failed to fetch product");
+      const productData = await productRes.json();
+      const productDetails = productData.product;
 
-        if (productDetails?.ownerEmail) {
-          const sellerRes = await fetch(`/api/profile?userEmail=${productDetails.ownerEmail}`);
-          if (sellerRes.ok) {
-            const sellerData = await sellerRes.json();
-            setShopData(sellerData);
-            setSeller(sellerData); // optional
-          } else {
-            console.error("⚠️ Failed to fetch seller data");
-          }
+      if (isMounted) setProduct(productDetails);
+
+      // ✅ Seller fetch only if ownerEmail exists
+      if (productDetails?.ownerEmail) {
+        const sellerRes = await fetch(`/api/profile?userEmail=${productDetails.ownerEmail}`);
+        if (!sellerRes.ok) throw new Error("Failed to fetch seller data");
+        const sellerData = await sellerRes.json();
+
+        if (isMounted) {
+          setShopData(sellerData);
+          setSeller(sellerData); // optional
         }
-      } catch (err) {
-        console.error("❌ Error fetching product or seller:", err);
       }
-    };
+    } catch (err) {
+      console.error("❌ Error fetching product or seller:", err);
+    }
+  };
 
-    fetchProductAndSeller();
-  }, [id]);
+  fetchProductAndSeller();
+
+  return () => {
+    isMounted = false; // ✅ cleanup to avoid memory leaks
+  };
+}, [id]);
+
 
   // Embla Carousel hooks
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -373,27 +383,43 @@ if (fullLocation === "All Cities") {
     useEffect(() => {
       if (!product?._id || !session?.user?.contact) return;
     
-      const checkFavorite = async () => {
-        const res = await fetch("/api/favorites/isFavourite", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userId: session.user.contact,
-            productId: product._id,
-          }),
-        });
+      let isMounted = true; // ✅ guard for unmounted component
     
-        const data = await res.json();
-        if (res.ok && data.isFavourite) {
-          setFavorite(true);
-          if (!isFavorite(product._id)) {
-            addFavorite(product._id);
+      const checkFavorite = async () => {
+        try {
+          const res = await fetch("/api/favorites/isFavourite", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userId: session.user.contact,
+              productId: product._id,
+            }),
+          });
+    
+          if (!res.ok) throw new Error("Failed to check favorite");
+    
+          const data = await res.json();
+    
+          if (isMounted && data.isFavourite) {
+            setFavorite(true);
+    
+            // ✅ only add if not already in context
+            if (!isFavorite(product._id)) {
+              addFavorite(product._id);
+            }
           }
+        } catch (err) {
+          console.error("❌ Error checking favorite:", err);
         }
       };
     
       checkFavorite();
-    }, [product?._id, session, isFavorite, addFavorite]);
+    
+      return () => {
+        isMounted = false; // ✅ cleanup
+      };
+    }, [product?._id, session?.user?.contact, isFavorite, addFavorite]);
+    
     
     
   

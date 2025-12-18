@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
@@ -7,6 +7,7 @@ import { useNotifications } from "@/contexts/NotificationContext";
 import styles from "./index.module.scss";
 import ChatSidebar from "../ChatSidebar/Index";
 import Image from "next/image";
+import debounce from "lodash.debounce";
 
 const MobileBottomNav = () => {
   const router = useRouter();
@@ -25,10 +26,9 @@ const MobileBottomNav = () => {
 
   // ✅ fetch notifications from DB when session loads + auto refresh
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    if (!session?.user?.id) return;
 
     const fetchNotifications = async () => {
-      if (!session?.user?.id) return;
       try {
         const res = await fetch(`/api/notifications/${session.user.id}`);
         if (!res.ok) throw new Error("Failed to fetch notifications");
@@ -39,12 +39,19 @@ const MobileBottomNav = () => {
       }
     };
 
-    fetchNotifications();
+    // ✅ Debounced version of fetch
+    const debouncedFetch = debounce(fetchNotifications, 1000);
+
+    // Initial call
+    debouncedFetch();
 
     // ✅ auto refresh every 30 seconds
-    interval = setInterval(fetchNotifications, 30000);
+    const interval = setInterval(debouncedFetch, 30000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      debouncedFetch.cancel(); // cleanup debounce
+    };
   }, [session?.user?.id]);
 
   // ✅ merge socket + DB counts
