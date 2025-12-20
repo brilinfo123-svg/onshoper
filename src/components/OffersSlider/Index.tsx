@@ -47,28 +47,28 @@ const OffersSlider: React.FC = () => {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
-  useEffect(() => {
-    const fetchOffers = async () => {
-      try {
-        const res = await fetch("/api/Search");
-        const json = await res.json();
+  // useEffect(() => {
+  //   const fetchOffers = async () => {
+  //     try {
+  //       const res = await fetch("/api/Search");
+  //       const json = await res.json();
 
-        if (json.success) {
-          const featuredProducts = (json.data || []).filter(
-            (product: Product) => product.feature === false
-          );
-          setOffers(featuredProducts);
-        } else {
-          console.error("Failed to fetch products:", json.message);
-        }
-      } catch (err) {
-        console.error("Error fetching products:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchOffers();
-  }, []);
+  //       if (json.success) {
+  //         const featuredProducts = (json.data || []).filter(
+  //           (product: Product) => product.feature === false
+  //         );
+  //         setOffers(featuredProducts);
+  //       } else {
+  //         console.error("Failed to fetch products:", json.message);
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching products:", err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchOffers();
+  // }, []);
 
   return (
     <div className={styles.sliderContainer}>

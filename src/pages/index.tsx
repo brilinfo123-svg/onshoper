@@ -226,6 +226,7 @@ export default function Home() {
                       salaryTo={product.salaryTo}
                       salaryPeriod={product.salaryPeriod}
                       positionType={product.positionType}
+                      
                     />
                   ))}
               </div>

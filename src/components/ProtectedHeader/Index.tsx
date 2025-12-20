@@ -21,6 +21,7 @@ import OneSignal from "react-onesignal";
 
 
 
+
 const Header: React.FC = () => {
   const { data: session, status } = useSession();
   const { notifications, clearAllNotifications, getTotalNotifications } = useNotifications();
@@ -42,6 +43,7 @@ const Header: React.FC = () => {
   // Don't show notifications if we're on chat page
   const [fullPageMessage, setFullPageMessage] = useState<string | null>(null);
   const [isSticky, setIsSticky] = useState(false);
+  const hasFetchedWishlist = useRef(false);
 
   const totalNotifications = isOnChatPage ? 0 : getTotalNotifications();
 
@@ -117,36 +119,69 @@ const Header: React.FC = () => {
   }, []);
 
   // Fetch wishlist products when favorites sidebar is opened
+  // useEffect(() => {
+  //   const fetchWishlist = async () => {
+  //     if (isFavoritesSidebarOpen && session?.user?.contact) {
+  //       setLoadingFavorites(true);
+  //       try {
+  //         const res = await fetch("/api/favorites/fetchFavoritesByShopOwner", {
+  //           method: "POST",
+  //           headers: { "Content-Type": "application/json" },
+  //           body: JSON.stringify({ userId: session.user.contact }),
+  //         });
+
+  //         const text = await res.text();
+  //         const data = text ? JSON.parse(text) : {};
+
+  //         if (res.ok) {
+  //           setWishlistProducts(data.products || []);
+  //         } else {
+  //           console.error("Failed to fetch wishlist:", data.error || "Unknown error");
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching wishlist:", error);
+  //       } finally {
+  //         setLoadingFavorites(false);
+  //       }
+  //     }
+  //   };
+
+  //   fetchWishlist();
+  // }, [isFavoritesSidebarOpen, session]);
+
+
   useEffect(() => {
+    if (!session?.user?.contact) return;
+  
+    // ✅ prevent repeated calls
+    if (hasFetchedWishlist.current && favorites.size === wishlistProducts.length) {
+      return;
+    }
+  
     const fetchWishlist = async () => {
-      if (isFavoritesSidebarOpen && session?.user?.contact) {
-        setLoadingFavorites(true);
-        try {
-          const res = await fetch("/api/favorites/fetchFavoritesByShopOwner", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId: session.user.contact }),
-          });
-
-          const text = await res.text();
-          const data = text ? JSON.parse(text) : {};
-
-          if (res.ok) {
-            setWishlistProducts(data.products || []);
-          } else {
-            console.error("Failed to fetch wishlist:", data.error || "Unknown error");
-          }
-        } catch (error) {
-          console.error("Error fetching wishlist:", error);
-        } finally {
-          setLoadingFavorites(false);
-        }
+      setLoadingFavorites(true);
+      try {
+        const res = await fetch("/api/favorites/fetchFavoritesByShopOwner", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: session.user.contact }),
+        });
+  
+        if (!res.ok) throw new Error("Failed");
+  
+        const data = await res.json();
+        setWishlistProducts(data.products || []);
+        hasFetchedWishlist.current = true; // ✅ mark fetched
+      } catch (err) {
+        console.error("❌ Wishlist fetch error:", err);
+      } finally {
+        setLoadingFavorites(false);
       }
     };
-
+  
     fetchWishlist();
-  }, [isFavoritesSidebarOpen, session]);
-
+  }, [session?.user?.contact, favorites.size]);
+  
   const handleLogout = async () => {
     try {
       // ✅ Clear OneSignal external ID
@@ -176,14 +211,21 @@ const Header: React.FC = () => {
     setSidebarOpen(false);
   };
 
-  const toggleFavoritesSidebar = () => {
-    setFavoritesSidebarOpen((prev) => !prev);
-    // Close account sidebar if open
-    if (isSidebarOpen) {
-      setSidebarOpen(false);
-    }
-  };
+  // const toggleFavoritesSidebar = () => {
+  //   setFavoritesSidebarOpen((prev) => !prev);
+  //   // Close account sidebar if open
+  //   if (isSidebarOpen) {
+  //     setSidebarOpen(false);
+  //   }
+  // };
 
+  const toggleFavoritesSidebar = () => {
+    setFavoritesSidebarOpen(prev => !prev);
+    if (isSidebarOpen) setSidebarOpen(false);
+  };
+  const handleRemoveFromWishlist = (id: string) => {
+    setWishlistProducts(prev => prev.filter(p => p._id !== id));
+  };  
   const closeFavoritesSidebar = () => {
     setFavoritesSidebarOpen(false);
   };
@@ -382,7 +424,7 @@ const Header: React.FC = () => {
             <div className={Style.favoritesSidebarHeader}>
               <h2>
                 <span className="icon-heart"></span>
-                My Favorites ({favorites.length})
+                My Favorites ({favorites.size})
               </h2>
               <button className={Style.closeButton} onClick={closeFavoritesSidebar}>&times;</button>
             </div>
@@ -392,7 +434,7 @@ const Header: React.FC = () => {
                 <div className={Style.loadingFavorites}>
                   <span>Loading your favorites...</span>
                 </div>
-              ) : favorites.length > 0 && wishlistProducts.length > 0 ? (
+              ) : favorites.size > 0 && wishlistProducts.length > 0 ? (
                 <div className={Style.favoritesGrid}>
                   {wishlistProducts.map((product) => (
                     <div key={product._id} className={Style.favoriteProductCard}>
@@ -435,7 +477,7 @@ const Header: React.FC = () => {
               )}
             </div>
 
-            {favorites.length > 0 && (
+            {favorites.size > 0 && (
               <div className={Style.favoritesSidebarFooter}>
                 <button
                   className={Style.viewAllButton}
@@ -474,10 +516,10 @@ const Header: React.FC = () => {
           </li>
 
           <li className={Style.favoriteItem}>
-            <div className={`${Style.favoriteTrigger} ${favorites.length > 0 ? Style.hasFavorites : ''}`} onClick={toggleFavoritesSidebar}>
-              <span className={favorites.length > 0 ? "icon-heart" : "icon-heart-empty"}></span>
-              {favorites.length > 0 && (
-                <span className={Style.favoriteBadge}>{favorites.length > 99 ? '99+' : favorites.length}</span>
+            <div className={`${Style.favoriteTrigger} ${favorites.size > 0 ? Style.hasFavorites : ''}`} onClick={toggleFavoritesSidebar}>
+              <span className={favorites.size > 0 ? "icon-heart" : "icon-heart-empty"}></span>
+              {favorites.size > 0 && (
+                <span className={Style.favoriteBadge}>{favorites.size > 99 ? '99+' : favorites.size}</span>
               )}
             </div>
           </li>

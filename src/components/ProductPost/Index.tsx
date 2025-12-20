@@ -91,54 +91,56 @@ const ProductCard = ({
 }: ProductCardProps) => {
   const { data: session } = useSession();
   const { addFavorite, removeFavorite, isFavorite } = useFavorites(); // Use the context
-  const [favorite, setFavorite] = useState(false);
+  // const [favorite, setFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
+  const favorite = isFavorite(_id);
+
   
   // ✅ Check if this product is already in favorites from context
-  useEffect(() => {
-    setFavorite(isFavorite(_id));
-  }, [_id, isFavorite]);
+  // useEffect(() => {
+  //   setFavorite(isFavorite(_id));
+  // }, [_id, isFavorite]);
 
 // ✅ Also check if it's in the user's favorites from the API
-useEffect(() => {
-  if (!session?.user?.contact) return;
+// useEffect(() => {
+//   if (!session?.user?.contact) return;
 
-  let isMounted = true; // guard for unmounted component
+//   let isMounted = true; // guard for unmounted component
 
-  const checkFavorite = async () => {
-    try {
-      const res = await fetch("/api/favorites/isFavourite", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: session.user.contact,
-          productId: _id,
-        }),
-      });
+//   const checkFavorite = async () => {
+//     try {
+//       const res = await fetch("/api/favorites/isFavourite", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({
+//           userId: session.user.contact,
+//           productId: _id,
+//         }),
+//       });
 
-      if (!res.ok) throw new Error("Failed to check favorite");
+//       if (!res.ok) throw new Error("Failed to check favorite");
 
-      const data = await res.json();
+//       const data = await res.json();
 
-      if (isMounted && data.isFavourite) {
-        setFavorite(true);
+//       if (isMounted && data.isFavourite) {
+//         setFavorite(true);
 
-        // ✅ only add to context if not already there
-        if (!isFavorite(_id)) {
-          addFavorite(_id);
-        }
-      }
-    } catch (err) {
-      console.error("❌ Error checking favorite:", err);
-    }
-  };
+//         // ✅ only add to context if not already there
+//         if (!isFavorite(_id)) {
+//           addFavorite(_id);
+//         }
+//       }
+//     } catch (err) {
+//       console.error("❌ Error checking favorite:", err);
+//     }
+//   };
 
-  checkFavorite();
+//   checkFavorite();
 
-  return () => {
-    isMounted = false; // ✅ cleanup
-  };
-}, [_id, session?.user?.contact]); // ✅ simplified dependencies
+//   return () => {
+//     isMounted = false; // ✅ cleanup
+//   };
+// }, [_id, session?.user?.contact]); // ✅ simplified dependencies
 
 
 const toggleFavorite = async () => {
@@ -157,38 +159,32 @@ const toggleFavorite = async () => {
       body: JSON.stringify({
         userId: session.user.contact,
         productId: _id,
-        shopOwnerID: shopOwnerID,
+        shopOwnerID,
         isFavorited: !favorite,
       }),
     });
 
-    if (!res.ok) throw new Error("Failed to update favorite");
+    if (!res.ok) throw new Error("Failed");
 
     const data = await res.json();
 
     if (data.success) {
-      if (!favorite) {
-        addFavorite(_id); // Add to global favorites
+      if (favorite) {
+        removeFavorite(_id);
+        onUnfavorite?.(_id);
+        toast.success("Removed from wishlist");
       } else {
-        removeFavorite(_id); // Remove from global favorites
+        addFavorite(_id);
+        toast.success("Added to wishlist");
       }
-
-      setFavorite(!favorite);
-      toast.success(!favorite ? "Added to wishlist" : "Removed from wishlist");
-
-      if (onUnfavorite && favorite) {
-        onUnfavorite(_id); // notify parent to remove this card
-      }
-    } else {
-      toast.error("Something went wrong");
     }
-  } catch (error) {
-    console.error("❌ Toggle favorite error:", error);
-    toast.error("Failed to update favorite");
+  } catch (err) {
+    toast.error("Something went wrong");
+  } finally {
+    setLoading(false);
   }
-
-  setLoading(false);
 };
+
 
 
   const handleClick = () => {
