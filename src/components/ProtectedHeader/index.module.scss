@@ -1368,7 +1368,60 @@
 }
 
 
+// Favorites Scalton Loading
+.favoriteSkeletonCard {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  padding: 8px;
+}
 
+.skeletonBase {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e6e6e6 37%,
+    #f0f0f0 63%
+  );
+  background-size: 400px 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+.skeletonImage {
+  @extend .skeletonBase;
+  height: 160px;
+  border-radius: 10px;
+}
+
+.skeletonContent {
+  padding: 8px;
+}
+
+.skeletonLine {
+  @extend .skeletonBase;
+  height: 14px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.skeletonLineShort {
+  @extend .skeletonBase;
+  height: 14px;
+  width: 70%;
+  border-radius: 6px;
+  margin-top: 6px;
+}
+
+.skeletonPrice {
+  @extend .skeletonBase;
+  height: 18px;
+  width: 40%;
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+// End Favorites Scalton Loading
 
 // styles/Header.module.scss
 .chatButton {
@@ -1537,3 +1590,13 @@
     left: 74px;
   }
 }
+/* Skeleton shimmer animation */
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+

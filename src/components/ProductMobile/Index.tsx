@@ -37,6 +37,7 @@ const ProductMobile = ({
   const carouselRef = useRef<HTMLDivElement>(null);
   const [hideIcons, setHideIcons] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const fetchedRef = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,13 +60,12 @@ const ProductMobile = ({
   }, []);
 
   useEffect(() => {
-    // Simulate loading delay
-    const timer = setTimeout(() => {
+    if (products && products.length > 0 && !fetchedRef.current) {
       setIsLoading(false);
-    }, 1000);
-    
-    return () => clearTimeout(timer);
-  }, []);
+      fetchedRef.current = true; // ✅ mark as loaded once
+    }
+  }, [products]);
+  
 
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
@@ -499,4 +499,4 @@ const ProductMobile = ({
   );
 };
 
-export default ProductMobile;
+export default React.memo(ProductMobile);

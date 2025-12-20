@@ -46,15 +46,15 @@ export function formatPostedTime(utcDate: string | Date) {
 // };
 
 interface ShopData {
-  email: string;
-  name: string;
-  address?: string;
-  phone?: string;
-  createdAt?: string;
-  [key: string]: any;
-  registration: any;
-  shop: any;
+  user: {
+    _id?: string;
+    name?: string;
+    contact?: string; // 👈 email yahi hai
+    mobile?: string;
+    photo?: string;
+  };
 }
+
 
 const ProductDetails = () => {
   const router = useRouter();
@@ -181,7 +181,9 @@ const ProductDetails = () => {
   //     setIsHomeDeliveryAvailable(shop.homeDelivery);
   //   }
   // }, [shop?.homeDelivery]);
-
+  // console.log("SELLER:", data?.seller);
+  console.log("SHOPDATA:", shopData);
+  
   const openReportModal = (productId) => {
     Swal.fire({
       title: "Report this post",
@@ -261,40 +263,33 @@ if (fullLocation === "All Cities") {
 useEffect(() => {
   if (!id) return;
 
-  let isMounted = true; // ✅ prevent state update if component unmounts
+  const loadData = async () => {
+    const res = await fetch(
+      `/api/products/${id}?userId=${session?.user?.contact || ""}`
+    );
+    const data = await res.json();
 
-  const fetchProductAndSeller = async () => {
-    try {
-      // ✅ Product fetch
-      const productRes = await fetch(`/api/products/${id}`);
-      if (!productRes.ok) throw new Error("Failed to fetch product");
-      const productData = await productRes.json();
-      const productDetails = productData.product;
-
-      if (isMounted) setProduct(productDetails);
-
-      // ✅ Seller fetch only if ownerEmail exists
-      if (productDetails?.ownerEmail) {
-        const sellerRes = await fetch(`/api/profile?userEmail=${productDetails.ownerEmail}`);
-        if (!sellerRes.ok) throw new Error("Failed to fetch seller data");
-        const sellerData = await sellerRes.json();
-
-        if (isMounted) {
-          setShopData(sellerData);
-          setSeller(sellerData); // optional
-        }
-      }
-    } catch (err) {
-      console.error("❌ Error fetching product or seller:", err);
+    if (data.success) {
+      setProduct(data.product);
+    
+      setShopData({
+        user: {
+          _id: data.seller?._id,
+          name: data.seller?.name,
+          contact: data.seller?.contact, // 👈 email
+          mobile: data.seller?.mobile,
+          photo: data.seller?.photo,     // 👈 image
+        },
+      });
+      
+    
+      setFavorite(data.isFavourite);
     }
+    
   };
 
-  fetchProductAndSeller();
-
-  return () => {
-    isMounted = false; // ✅ cleanup to avoid memory leaks
-  };
-}, [id]);
+  loadData();
+}, [id, session?.user?.contact]);
 
 
   // Embla Carousel hooks
@@ -1012,7 +1007,7 @@ useEffect(() => {
                 {/* <p>{shopData ? (<span className="icon-phone"> {shopData.registration?.mobile || "Gurmeet Kour"}</span>) : (<span>Loading...</span>)}</p> */}
                 {shopData ? (
                   <>
-                    <p>{shopData ? (<span className="icon-mail"> {shopData.user?.email || "Not Provided"}</span>) : (<span>Loading...</span>)}</p>
+                    <p>{shopData ? (<span className="icon-mail"> {shopData?.user?.contact || "Not Provided"}</span>) : (<span>Loading...</span>)}</p>
                   </>
                 ) : (
                   <ProfilePicSkeleton size="xlarge" showCircle={false}

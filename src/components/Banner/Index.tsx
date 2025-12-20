@@ -1,12 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Style from "@/components/Banner/Index.module.scss";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 
-// Custom hook for debounce
+// ✅ Debounce hook
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -18,23 +16,13 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue;
 }
 
-interface Category {
-  id: number;
-  name: string;
-}
-
-interface Product {
-  MobileModel: any;
+interface Suggestion {
   _id: string;
-  title: string;
-  category: string;
-  subcategory?: string;
-  price?: number;
-  description?: string;
+  title?: string;
   brand?: string;
   model?: string;
   MobileBrand?: string;
-  BicyclesBrand?: string;
+  MobileModel?: string;
   carBrand?: string;
   carModel?: string;
   commercialBrand?: string;
@@ -47,119 +35,69 @@ interface Props {
   contentClass?: any;
 }
 
-const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass }) => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredSuggestions, setFilteredSuggestions] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const isDesckTop = useMediaQuery("(max-width: 992px)");
-
+const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
   const router = useRouter();
+  const isMobile = useMediaQuery("(max-width: 992px)");
 
-  const rotatingPlaceholders = [
+  const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  // 🔁 Rotating placeholders
+  const placeholders = [
     "Search Mobile Phones...",
     "Search Cars...",
-    "Search Motorcycles...",
+    "Search Bikes...",
     "Search Electronics...",
-    "Search Fashion...",
-    "Search Cameras...",
-    "Search Laptops...",
-    "Search Furniture...",
     "Search Jobs...",
-    "Search Real Estate...",
     "Search Services...",
-    "Search Commercial Vehicles...",
-    "Search Education & Learning...",
-    "Search Commercial Property...",
-    "Search Residential Property...",
-    "Search PG & Hostels...",
+    "Search Properties...",
   ];
 
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
-  const [dynamicPlaceholder, setDynamicPlaceholder] = useState(rotatingPlaceholders[0]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPlaceholderIndex((prevIndex) => (prevIndex + 1) % rotatingPlaceholders.length);
-    }, 1500);
+      setPlaceholderIndex((i) => (i + 1) % placeholders.length);
+    }, 2500); // 👈 smoother
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    setDynamicPlaceholder(rotatingPlaceholders[placeholderIndex]);
-  }, [placeholderIndex]);
-
-  const fetchProducts = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("/api/Search");
-      if (!response.ok) {
-        throw new Error("Failed to fetch products");
-      }
-      const data = await response.json();
-      setProducts(data.data || []);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  // ✅ Debounce only for filtering
+  // ✅ Debounced value
   const debouncedSearchTerm = useDebounce(searchTerm, 400);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value); // instant update for input
-  };
-
-  // Filter suggestions
+  // 🚀 Fetch search suggestions (API based)
   useEffect(() => {
-    if (debouncedSearchTerm.trim()) {
-      const term = debouncedSearchTerm.toLowerCase();
-      const searchWords = term.split(" ").filter(Boolean);
-
-      const suggestions = products.filter((product) => {
-        const fieldsToSearch = [
-          product.title,
-          product.category,
-          product.subcategory,
-          product.brand,
-          product.model,
-          product.MobileBrand,
-          product.MobileModel,
-          product.BicyclesBrand,
-          product.carBrand,
-          product.carModel,
-          product.commercialBrand,
-          product.commercialModel,
-        ]
-          .filter(Boolean)
-          .map((field) => field.toLowerCase());
-
-        return searchWords.every((word) =>
-          fieldsToSearch.some((field) => field.includes(word))
-        );
-      });
-
-      setFilteredSuggestions(suggestions);
-    } else {
-      setFilteredSuggestions([]);
+    if (!debouncedSearchTerm.trim()) {
+      setSuggestions([]);
+      return;
     }
-  }, [debouncedSearchTerm, products]);
 
-  const handleSearch = (term?: string) => {
-    const query = term || searchTerm;
-    if (!query) return;
+    const fetchSuggestions = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(
+          `/api/search-suggestions?q=${encodeURIComponent(debouncedSearchTerm)}`
+        );
+        const data = await res.json();
+        setSuggestions(data?.data || []);
+      } catch (err) {
+        console.error("Search suggestion error", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    setFilteredSuggestions([]);
+    fetchSuggestions();
+  }, [debouncedSearchTerm]);
 
-    const queryString = new URLSearchParams({ searchTerm: query }).toString();
-    router.push(`/filter?${queryString}`);
+  // 🔍 Handle final search
+  const handleSearch = (value?: string) => {
+    const query = value || searchTerm;
+    if (!query.trim()) return;
+
+    setSuggestions([]);
+    router.push(`/filter?searchTerm=${encodeURIComponent(query)}`);
   };
 
   return (
@@ -169,61 +107,59 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, contentClass }) => 
           <div className={Style.searchBox}>
             <input
               type="text"
-              placeholder={dynamicPlaceholder}
               className={Style.searchInput}
+              placeholder={placeholders[placeholderIndex]}
               value={searchTerm}
-              onChange={handleSearchChange}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSearch();
-                }
-              }}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
 
-            {searchTerm && filteredSuggestions.length > 0 && (
+            {/* ✅ Suggestions Dropdown */}
+            {searchTerm && suggestions.length > 0 && (
               <div className={Style.suggestionsDropdown}>
-                {filteredSuggestions.map((product) => {
-                  const searchValue =
-                    product.MobileModel ||
-                    product.brand ||
-                    product.model ||
-                    product.MobileBrand ||
-                    product.BicyclesBrand ||
-                    product.carBrand ||
-                    product.carModel ||
-                    product.commercialBrand ||
-                    product.commercialModel ||
-                    product.title;
+                {suggestions.map((item) => {
+                  const label =
+                    item.MobileModel ||
+                    item.model ||
+                    item.brand ||
+                    item.MobileBrand ||
+                    item.carBrand ||
+                    item.carModel ||
+                    item.commercialBrand ||
+                    item.commercialModel ||
+                    item.title;
 
                   return (
                     <div
-                      key={product._id}
+                      key={item._id}
                       className={Style.suggestionItem}
-                      onClick={() => {
-                        const finalValue = searchValue || "";
-                        setSearchTerm(finalValue);
-                        setTimeout(() => {
-                          setFilteredSuggestions([]);
-                        }, 0);
-                        handleSearch(finalValue);
-                      }}
+                      onClick={() => handleSearch(label)}
                     >
-                      {searchValue}
+                      {label}
                     </div>
                   );
                 })}
               </div>
             )}
+
+            {/* Loading state */}
+            {loading && (
+              <div className={Style.suggestionsDropdown}>
+                <div className={Style.loading}>Searching...</div>
+              </div>
+            )}
           </div>
 
-          {!isDesckTop && (
-            <button className={Style.searchButton} onClick={() => handleSearch()}>
-              <span role="img" aria-label="Search" className="icon-search-1"></span>
+          {!isMobile && (
+            <button
+              className={Style.searchButton}
+              onClick={() => handleSearch()}
+            >
+              <span className="icon-search-1" />
             </button>
           )}
         </div>
       </div>
-      {error && <div>Error: {error}</div>}
     </div>
   );
 };

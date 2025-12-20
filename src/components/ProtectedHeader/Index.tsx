@@ -431,9 +431,18 @@ const Header: React.FC = () => {
 
             <div className={Style.favoritesSidebarContent}>
               {loadingFavorites ? (
-                <div className={Style.loadingFavorites}>
-                  <span>Loading your favorites...</span>
-                </div>
+                 <div className={Style.favoritesGrid}>
+                 {[...Array(6)].map((_, index) => (
+                   <div key={index} className={Style.favoriteSkeletonCard}>
+                     <div className={Style.skeletonImage}></div>
+                     <div className={Style.skeletonContent}>
+                       <div className={Style.skeletonLine}></div>
+                       <div className={Style.skeletonLineShort}></div>
+                       <div className={Style.skeletonPrice}></div>
+                     </div>
+                   </div>
+                 ))}
+               </div>             
               ) : favorites.size > 0 && wishlistProducts.length > 0 ? (
                 <div className={Style.favoritesGrid}>
                   {wishlistProducts.map((product) => (
