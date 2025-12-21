@@ -69,7 +69,8 @@ function AllCategoryRentalForm() {
   const router = useRouter();
   const shopId = "677bccf4e93c318e3075b932";
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
+  const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB
+  const MAX_IMAGES = 8;
   const validateStep = (step: number) => {
     const newErrors: { [key: string]: string } = {};
 
@@ -402,6 +403,7 @@ function AllCategoryRentalForm() {
   const [showTerms, setShowTerms] = useState(false);
   const [step, setStep] = useState(1);
 
+  
   const handleFormattedPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawInput = e.target.value;
 
@@ -778,10 +780,35 @@ function AllCategoryRentalForm() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newImages = Array.from(e.target.files || []);
+  //   setFormData((prev) => ({ ...prev, images: [...prev.images, ...newImages] }));
+  // };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newImages = Array.from(e.target.files || []);
-    setFormData((prev) => ({ ...prev, images: [...prev.images, ...newImages] }));
+    const files = Array.from(e.target.files ?? []) as File[];
+    const valid: File[] = [];
+  
+    for (const file of files) {
+      if (!file.type.startsWith("image/")) {
+        alert("Only image files allowed");
+        continue;
+      }
+  
+      if (file.size > MAX_IMAGE_SIZE) {
+        alert(`${file.name} is larger than 2MB`);
+        continue;
+      }
+  
+      valid.push(file);
+    }
+  
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...valid].slice(0, MAX_IMAGES),
+    }));
   };
+  
 
   const handleRemoveImage = (index: number) => {
     const updatedImages = formData.images.filter((_, i) => i !== index);
@@ -793,11 +820,23 @@ function AllCategoryRentalForm() {
     }
   };
 
-  const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     setFormData((prev) => ({ ...prev, coverImage: file }));
+  //   }
+  // };
+
+  const handleCoverImageChange = (e) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setFormData((prev) => ({ ...prev, coverImage: file }));
+    if (!file) return;
+  
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Cover image must be under 2MB");
+      return;
     }
+  
+    setFormData((prev) => ({ ...prev, coverImage: file }));
   };
 
   const handleRemoveCoverImage = () => {
