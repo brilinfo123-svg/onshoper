@@ -20,53 +20,53 @@ export const FavoriteProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [loading, setLoading] = useState(true);
 
   // 🔥 Load favorites on refresh (DB → localStorage fallback)
-  useEffect(() => {
-    if (status === "loading") return;
+  // useEffect(() => {
+  //   if (status === "loading") return;
 
-    if (!session?.user?.contact) {
-      setFavorites(new Set());
-      setLoading(false);
-      return;
-    }
+  //   if (!session?.user?.contact) {
+  //     setFavorites(new Set());
+  //     setLoading(false);
+  //     return;
+  //   }
 
-    const userKey = `favorites_${session.user.contact}`;
+  //   const userKey = `favorites_${session.user.contact}`;
 
-    const loadFavorites = async () => {
-      try {
-        const res = await fetch("/api/favorites/getAll", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: session.user.contact }),
-        });
+  //   const loadFavorites = async () => {
+  //     try {
+  //       const res = await fetch("/api/favorites/getAll", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ userId: session.user.contact }),
+  //       });
 
-        if (res.ok) {
-          const data = await res.json();
+  //       if (res.ok) {
+  //         const data = await res.json();
 
-          if (Array.isArray(data.favorites)) {
-            const favSet = new Set<string>(data.favorites);
-            setFavorites(favSet);
+  //         if (Array.isArray(data.favorites)) {
+  //           const favSet = new Set<string>(data.favorites);
+  //           setFavorites(favSet);
 
-            // ✅ cache
-            localStorage.setItem(userKey, JSON.stringify(data.favorites));
-            setLoading(false);
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn("⚠️ DB fetch failed, fallback to localStorage");
-      }
+  //           // ✅ cache
+  //           localStorage.setItem(userKey, JSON.stringify(data.favorites));
+  //           setLoading(false);
+  //           return;
+  //         }
+  //       }
+  //     } catch (err) {
+  //       console.warn("⚠️ DB fetch failed, fallback to localStorage");
+  //     }
 
-      // 🔁 Fallback
-      const stored = localStorage.getItem(userKey);
-      if (stored) {
-        setFavorites(new Set(JSON.parse(stored)));
-      }
+  //     // 🔁 Fallback
+  //     const stored = localStorage.getItem(userKey);
+  //     if (stored) {
+  //       setFavorites(new Set(JSON.parse(stored)));
+  //     }
 
-      setLoading(false);
-    };
+  //     setLoading(false);
+  //   };
 
-    loadFavorites();
-  }, [session?.user?.contact, status]);
+  //   loadFavorites();
+  // }, [session?.user?.contact, status]);
 
   // 💾 Persist to localStorage
   useEffect(() => {

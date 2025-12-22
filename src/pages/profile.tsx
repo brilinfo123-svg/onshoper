@@ -28,9 +28,9 @@ interface ShopData {
   address?: string;
   phone?: string;
   createdAt?: string;
-  registration: any;
+  // registration: any;
   shop: any;
-  favourites?: any;
+  // favourites?: any;
 }
 
 const PropertyDetailPage: React.FC = () => {
@@ -40,6 +40,8 @@ const PropertyDetailPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const shopOwnerID = shopData?.user?._id;
+
+  console.log("shopData", shopData, "session", session);
   const [products, setProducts] = useState([]);
   const [wishlistProducts, setWishlistProducts] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3);
@@ -146,33 +148,6 @@ const PropertyDetailPage: React.FC = () => {
       setLoading(false); // ✅ Stop loader
     }
   };
-
-  useEffect(() => {
-    const fetchWishlist = async () => {
-      if (!session?.user?.contact) return;
-
-      try {
-        const res = await fetch("/api/favorites/fetchFavoritesByShopOwner", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: session.user.contact }),
-        });
-
-        const text = await res.text();
-        const data = text ? JSON.parse(text) : {};
-
-        if (res.ok) {
-          setWishlistProducts(data.products || []);
-        } else {
-          console.error("Failed to fetch wishlist:", data.error || "Unknown error");
-        }
-      } catch (error) {
-        console.error("Error fetching wishlist:", error);
-      }
-    };
-
-    fetchWishlist();
-  }, [session]);
 
   useEffect(() => {
     if (!shopOwnerID) return; // wait until shopOwnerID is available
