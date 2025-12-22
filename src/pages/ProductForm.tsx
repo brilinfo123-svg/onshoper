@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import Head from "next/head";
 import Loader from "@/components/loader/Index";
 import Image from "next/image";
+import imageCompression from "browser-image-compression";
 
 const categories = {
   Vehicles: ["Motorcycles", "Scooters", "Bicycles", "Other Vehicles"],
@@ -785,19 +786,76 @@ function AllCategoryRentalForm() {
   //   setFormData((prev) => ({ ...prev, images: [...prev.images, ...newImages] }));
   // };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files ?? []) as File[];
+  const formatSize = (bytes: number) => {
+    return bytes >= 1024 * 1024
+      ? `${(bytes / (1024 * 1024)).toFixed(2)} MB`
+      : `${(bytes / 1024).toFixed(0)} KB`;
+  };
+
+  const handleImageChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = Array.from(e.target.files ?? []);
     const valid: File[] = [];
   
-    for (const file of files) {
+    for (let file of files) {
       if (!file.type.startsWith("image/")) {
-        alert("Only image files allowed");
+        Swal.fire("Invalid File", "Only image files are allowed.", "error");
         continue;
       }
   
+      const originalSize = file.size;
+  
+      // 🔽 Compress if needed
       if (file.size > MAX_IMAGE_SIZE) {
-        alert(`${file.name} is larger than 2MB`);
-        continue;
+        try {
+          // 🔄 Show loader
+          Swal.fire({
+            title: "Optimizing Image",
+            text: "Please wait...",
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading(),
+          });
+  
+          const compressedFile = await imageCompression(file, {
+            maxSizeMB: 2,
+            maxWidthOrHeight: 1920,
+            useWebWorker: true,
+          });
+  
+          Swal.close(); // ✅ close loader
+  
+          // ❌ Still large
+          if (compressedFile.size > MAX_IMAGE_SIZE) {
+            Swal.fire(
+              "Upload Failed",
+              "Image could not be optimized under 2 MB.",
+              "warning"
+            );
+            continue;
+          }
+  
+          const reducedPercent = Math.round(
+            ((originalSize - compressedFile.size) / originalSize) * 100
+          );
+  
+          // ✅ Show compression info
+          Swal.fire({
+            title: "Image Optimized",
+            text: `${formatSize(originalSize)} → ${formatSize(
+              compressedFile.size
+            )} (${reducedPercent}% reduced)`,
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+  
+          file = compressedFile;
+        } catch {
+          Swal.close();
+          Swal.fire("Error", "Image compression failed.", "error");
+          continue;
+        }
       }
   
       valid.push(file);
@@ -808,6 +866,8 @@ function AllCategoryRentalForm() {
       images: [...prev.images, ...valid].slice(0, MAX_IMAGES),
     }));
   };
+  
+  
   
 
   const handleRemoveImage = (index: number) => {
@@ -827,18 +887,77 @@ function AllCategoryRentalForm() {
   //   }
   // };
 
-  const handleCoverImageChange = (e) => {
-    const file = e.target.files?.[0];
+  const handleCoverImageChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let file = e.target.files?.[0];
     if (!file) return;
   
-    if (file.size > 2 * 1024 * 1024) {
-      alert("Cover image must be under 2MB");
+    // ❌ Not an image
+    if (!file.type.startsWith("image/")) {
+      Swal.fire("Invalid File", "Only image files are allowed.", "error");
       return;
     }
   
-    setFormData((prev) => ({ ...prev, coverImage: file }));
+    const originalSize = file.size;
+  
+    // 🔽 Compress if needed
+    if (file.size > MAX_IMAGE_SIZE) {
+      try {
+        Swal.fire({
+          title: "Optimizing Image",
+          text: "Please wait...",
+          allowOutsideClick: false,
+          didOpen: () => Swal.showLoading(),
+        });
+  
+        const compressedFile = await imageCompression(file, {
+          maxSizeMB: 2,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+        });
+  
+        Swal.close();
+  
+        // ❌ Still too large
+        if (compressedFile.size > MAX_IMAGE_SIZE) {
+          Swal.fire(
+            "Upload Failed",
+            "Cover image could not be optimized under 2 MB.",
+            "warning"
+          );
+          return;
+        }
+  
+        const reducedPercent = Math.round(
+          ((originalSize - compressedFile.size) / originalSize) * 100
+        );
+  
+        // ✅ Show compression info
+        Swal.fire({
+          title: "Cover Image Optimized",
+          text: `${formatSize(originalSize)} → ${formatSize(
+            compressedFile.size
+          )} (${reducedPercent}% reduced)`,
+          icon: "success",
+          timer: 2200,
+          showConfirmButton: false,
+        });
+  
+        file = compressedFile;
+      } catch {
+        Swal.close();
+        Swal.fire("Error", "Image compression failed.", "error");
+        return;
+      }
+    }
+  
+    setFormData((prev) => ({
+      ...prev,
+      coverImage: file,
+    }));
   };
-
+  
   const handleRemoveCoverImage = () => {
     setFormData((prev) => ({ ...prev, coverImage: null }));
     if (coverImageInputRef.current) {
