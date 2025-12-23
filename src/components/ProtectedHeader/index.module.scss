@@ -1488,12 +1488,13 @@
   @media screen and (max-width: 767px) {
     width: 140px;
     height: 30px;
+    border-radius: 5px;
   }
   @media screen and (max-width: 413.98px) {
-    width: 130px;
+    width: 145px;
   }
   @media screen and (max-width: 374px) {
-    width: 110px;
+    width: 125px;
     height: 28px;
   }
 }
@@ -1544,14 +1545,15 @@
   }
   @media screen and (max-width: 767px) {
     background-color: #007bff;
-    border-radius: 20px;
+    border-radius: 5px;
     width: 45px;
   }
   @media screen and (max-width: 413.98px) {
-    width: 42px;
+    width: 47px;
   }
   @media screen and (max-width: 374px) {
-    width: 37px;
+    width: 43px;
+    left: -3px !important;
   }
 }
 
@@ -1565,13 +1567,14 @@
     left: 52px;
   }
   @media screen and (max-width: 767px) {
-    left: 47px;
+    left: 44px;
+    width: 51px;
   }
   @media screen and (max-width: 413.98px) {
-    left: 47px;
+    left: 46px;
   }
   @media screen and (max-width: 374px) {
-    left: 37px;
+    left: 37px !important;
   }
 }
 
@@ -1581,13 +1584,13 @@
     left: 106px;
   }
   @media screen and (max-width: 767px) {
-    left: 95px;
+    left: 96px;
   }
   @media screen and (max-width: 413.98px) {
-    left: 88px;
+    left: 98px;
   }
   @media screen and (max-width: 374px) {
-    left: 74px;
+    left: 85px !important;
   }
 }
 /* Skeleton shimmer animation */
