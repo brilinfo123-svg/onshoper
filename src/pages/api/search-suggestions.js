@@ -22,7 +22,6 @@ export default async function handler(req, res) {
   try {
     await connectToDatabase();
 
-    // 🔥 Case-insensitive regex search
     const regex = new RegExp(q, "i");
 
     const products = await Product.find(
@@ -43,6 +42,7 @@ export default async function handler(req, res) {
         ],
       },
       {
+        // 👇 Only return fields you need
         title: 1,
         brand: 1,
         model: 1,
@@ -53,14 +53,21 @@ export default async function handler(req, res) {
         carModel: 1,
         commercialBrand: 1,
         commercialModel: 1,
+        coverImage: 1, // 👈 ONLY THIS IMAGE FIELD
       }
     )
-      .limit(8) // 👈 max 8 suggestions
+      .limit(8)
       .lean();
+
+    // 👇 Format output: image = coverImage only
+    const formatted = products.map((p) => ({
+      ...p,
+      image: p.coverImage || "/images/placeholder.png",
+    }));
 
     return res.status(200).json({
       success: true,
-      data: products,
+      data: formatted,
     });
   } catch (error) {
     console.error("❌ Search suggestions error:", error);

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Style from "@/components/Banner/Index.module.scss";
 import { useRouter } from "next/navigation";
 import useMediaQuery from "../../../hooks/useMediaQuery";
+import Image from "next/image";
 
 // ✅ Debounce hook
 function useDebounce<T>(value: T, delay: number): T {
@@ -17,6 +18,7 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 
 interface Suggestion {
+  coverImage: string;
   _id: string;
   title?: string;
   brand?: string;
@@ -27,6 +29,7 @@ interface Suggestion {
   carModel?: string;
   commercialBrand?: string;
   commercialModel?: string;
+  image?: string; // 👈 NEW
 }
 
 interface Props {
@@ -42,7 +45,7 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(false);
-
+  console.log("suggestions", suggestions)
   // 🔁 Rotating placeholders
   const placeholders = [
     "Search Mobile Phones...",
@@ -59,7 +62,7 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setPlaceholderIndex((i) => (i + 1) % placeholders.length);
-    }, 2500); // 👈 smoother
+    }, 2500);
     return () => clearInterval(interval);
   }, []);
 
@@ -135,7 +138,20 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
                       className={Style.suggestionItem}
                       onClick={() => handleSearch(label)}
                     >
-                      {label}
+                      <div className={Style.suggestionContent}>
+                        {/* 👇 NEW IMAGE SUPPORT */}
+                        <Image
+                          src={item.coverImage || "/images/DefoultImage.jpg"}
+                          alt={label}
+                          width={40}
+                          height={40}
+                          className={Style.suggestionImage}
+                          placeholder="blur"
+                          blurDataURL="/images/placeholder.png" // optional tiny blur image
+                        />
+
+                        <span>{label}</span>
+                      </div>
                     </div>
                   );
                 })}

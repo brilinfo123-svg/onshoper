@@ -95,8 +95,8 @@
         text-overflow: ellipsis;
         line-clamp: 1; /* modern spec */
         font-size: 12px;
-        min-height: 40px;
-        margin: 0 0 5px;
+        min-height: auto;
+        margin: 0 0 10px;
         line-height: 15px;
       }
       span{
