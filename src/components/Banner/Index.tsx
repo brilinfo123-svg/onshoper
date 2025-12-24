@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import Image from "next/image";
 
-// ✅ Debounce hook
+// Debounce hook
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -18,6 +18,7 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 
 interface Suggestion {
+  subcategory: string;
   coverImage: string;
   _id: string;
   title?: string;
@@ -29,7 +30,6 @@ interface Suggestion {
   carModel?: string;
   commercialBrand?: string;
   commercialModel?: string;
-  image?: string; // 👈 NEW
 }
 
 interface Props {
@@ -45,8 +45,7 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(false);
-  console.log("suggestions", suggestions)
-  // 🔁 Rotating placeholders
+
   const placeholders = [
     "Search Mobile Phones...",
     "Search Cars...",
@@ -66,10 +65,8 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // ✅ Debounced value
   const debouncedSearchTerm = useDebounce(searchTerm, 400);
 
-  // 🚀 Fetch search suggestions (API based)
   useEffect(() => {
     if (!debouncedSearchTerm.trim()) {
       setSuggestions([]);
@@ -94,7 +91,6 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
     fetchSuggestions();
   }, [debouncedSearchTerm]);
 
-  // 🔍 Handle final search
   const handleSearch = (value?: string) => {
     const query = value || searchTerm;
     if (!query.trim()) return;
@@ -117,29 +113,24 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
 
-            {/* ✅ Suggestions Dropdown */}
+            {/* Suggestions Dropdown */}
             {searchTerm && suggestions.length > 0 && (
               <div className={Style.suggestionsDropdown}>
                 {suggestions.map((item) => {
-                  const label =
-                    item.MobileModel ||
-                    item.model ||
-                    item.brand ||
-                    item.MobileBrand ||
-                    item.carBrand ||
-                    item.carModel ||
-                    item.commercialBrand ||
-                    item.commercialModel ||
-                    item.title;
+                  // ⭐ Title for UI
+                  const label = item.title || "";
+
+                  // ⭐ Subcategory for search + UI
+                  const subLabel = item.subcategory || "";
 
                   return (
                     <div
                       key={item._id}
                       className={Style.suggestionItem}
-                      onClick={() => handleSearch(label)}
+                      onClick={() => handleSearch(subLabel || label)} // ⭐ send subcategory to filter page
                     >
                       <div className={Style.suggestionContent}>
-                        {/* 👇 NEW IMAGE SUPPORT */}
+                        {/* Image */}
                         <Image
                           src={item.coverImage || "/images/DefoultImage.jpg"}
                           alt={label}
@@ -147,10 +138,17 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
                           height={40}
                           className={Style.suggestionImage}
                           placeholder="blur"
-                          blurDataURL="/images/placeholder.png" // optional tiny blur image
+                          blurDataURL="/images/placeholder.png"
                         />
 
-                        <span>{label}</span>
+                        {/* Text container */}
+                        <div className={Style.suggestionText}>
+                          <span className={Style.mainLabel}>{label}</span>
+
+                          {subLabel && (
+                            <span className={Style.subLabel}>{subLabel}</span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   );

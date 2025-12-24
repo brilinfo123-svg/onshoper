@@ -204,11 +204,30 @@ const Filter: React.FC = () => {
     }
 
     // Search term filter
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
+
+if (searchTerm) {
+  const term = searchTerm.toLowerCase();
+
+  // 1️⃣ Exact subcategory match (highest priority)
+  const exactSubcategoryMatches = products.filter(
+    (p) => p.subcategory?.toLowerCase() === term
+  );
+
+  if (exactSubcategoryMatches.length > 0) {
+    filtered = exactSubcategoryMatches;
+  } else {
+    // 2️⃣ Partial subcategory match
+    const partialSubcategoryMatches = products.filter(
+      (p) => p.subcategory?.toLowerCase().includes(term)
+    );
+
+    if (partialSubcategoryMatches.length > 0) {
+      filtered = partialSubcategoryMatches;
+    } else {
+      // 3️⃣ Fallback to normal search
       const searchWords = term.split(" ").filter(Boolean);
 
-      filtered = filtered.filter((p: any) => {
+      filtered = products.filter((p: any) => {
         const fieldsToSearch = [
           p.title,
           p.category,
@@ -231,6 +250,9 @@ const Filter: React.FC = () => {
         );
       });
     }
+  }
+}
+
 
     // Category filter
     if (selectedCategories.length > 0) {

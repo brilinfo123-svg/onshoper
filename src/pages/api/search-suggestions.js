@@ -42,7 +42,7 @@ export default async function handler(req, res) {
         ],
       },
       {
-        // 👇 Only return fields you need
+        // 👇 Return subcategory also
         title: 1,
         brand: 1,
         model: 1,
@@ -53,10 +53,11 @@ export default async function handler(req, res) {
         carModel: 1,
         commercialBrand: 1,
         commercialModel: 1,
-        coverImage: 1, // 👈 ONLY THIS IMAGE FIELD
+        subcategory: 1,   // ⭐ NEW
+        coverImage: 1,
       }
     )
-      .limit(8)
+      .limit(12)
       .lean();
 
     // 👇 Format output: image = coverImage only
