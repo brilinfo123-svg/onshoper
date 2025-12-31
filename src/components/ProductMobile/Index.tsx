@@ -80,15 +80,15 @@ const ProductMobile = ({
     "Real Estate": "/icons/residential.png",
     "Services": "/icons/customer-service.png",
     "Commercial Vehicles": "/icons/truck.png",
-    "Vehicles": "/icons/motor-sports.png",
-    "Mobiles": "/icons/mobile-app.png",
+    "Vehicles": "/icons/motorcycles.svg",
+    "Mobiles": "/icons/mobile-phone-electronics.svg",
     "Events & Entertainment": "/icons/banner.png",
     "Education & Learning": "/icons/light-bulb.png",
     "Tools & Equipment": "/icons/settings.png",
     "Pets & Pet Care": "/icons/pets.png",
     "Jobs": "/icons/businessman.png",
     "Books & Sports": "/icons/referee.png",
-    "Fashion": "/icons/dress.png",
+    "Fashion": "/icons/pyjamas-suit.svg",
     "Furniture": "/icons/furnitures.png",
     "Electronics & Appliances": "/icons/device.png",
     "Car": "/icons/car.png",
@@ -107,15 +107,15 @@ const ProductMobile = ({
 
     // Vehicles subcategories
     "Cars": "/icons/car.png",
-    "Motorcycles": "/icons/motor-sports.png",
-    "Spare Parts": "/icons/wheel.png",
-    "Scooters": "/icons/scooter.png",
-    "Bicycles": "/icons/bicycle.png",
+    "Motorcycles": "/icons/motorcycle-svg.svg",
+    "Spare Parts": "/icons/wheel-svg.svg",
+    "Scooters": "/icons/motor-scooter-svg.svg",
+    "Bicycles": "/icons/bike-Svg.svg",
 
     // Mobiles subcategories
-    "Mobile Phones": "/icons/phone.png",
-    "Tablets": "/icons/tablet.png",
-    "Accessories": "/icons/adapter.png",
+    "Mobile Phones": "/icons/mobile-phone-electronics.svg",
+    "Tablets": "/icons/ipad-svg.svg",
+    "Accessories": "/icons/Mobile-cable.svg",
     "Other Device": "/icons/sketch-book.png",
 
     // Tools & Equipment
@@ -127,14 +127,14 @@ const ProductMobile = ({
     "Other Tools": "/icons/sketch-book.png",
 
     // Services
-    "Legal & Documentation": "/icons/document.png",
-    "Photography": "/icons/camera.png",
-    "Tutors & Classes": "/icons/virtual-class.png",
-    "Health & Wellness": "/icons/healthcare.png",
-    "Packers & Movers": "/icons/box.png",
-    "Event Services": "/icons/catering.png",
-    "Home Services": "/icons/house-cleaning.png",
-    "Repair": "/icons/mechanic.png",
+    "Legal & Documentation": "/icons/archive-document.svg",
+    "Photography": "/icons/photo-camera.svg",
+    "Tutors & Classes": "/icons/classTeacher.svg",
+    "Health & Wellness": "/icons/healthCare.svg",
+    "Packers & Movers": "/icons/delivery-mans.svg",
+    "Event Services": "/icons/wedding-arch.svg",
+    "Home Services": "/icons/home-Services.svg",
+    "Repair": "/icons/engineer-worker.svg",
     
 
     // Electronics subcategories
@@ -143,7 +143,7 @@ const ProductMobile = ({
     "Home Appliances": "/icons/electric-appliance.png",
     "ACs & Coolers": "/icons/outdoor-unit.png",
     "Kitchen Appliances": "/icons/kitchenCabinet.png",
-    "Cameras & Accessories": "/icons/camera.png",
+    "Cameras & Accessories": "/icons/photo-camera.svg",
     "Gaming Consoles": "/icons/gameController.png",
     "Smart Home Devices": "/icons/domotics.png",
     "Power Banks & Chargers": "/icons/powerBank.png",
@@ -169,11 +169,11 @@ const ProductMobile = ({
 
     // Feshion subcategories
     "Ethnic Wear": "/icons/sari.png",
-    "Eyewear": "/icons/sunglasses.png",
-    "Footwear": "/icons/sneakers.png",
-    "Women’s Clothing": "/icons/fashion.png",
-    "Men’s Clothing": "/icons/male-clothes.png",
-    "Kids": "/icons/baby-clothing.png",
+    "Eyewear": "/icons/sunglassessvg.svg",
+    "Footwear": "/icons/footwear-shoe.svg",
+    "Women’s Clothing": "/icons/clothing-summer.svg",
+    "Men’s Clothing": "/icons/necktie-svg.svg",
+    "Kids": "/icons/body-baby-clothes.svg",
 
     // Education & Learning
     "Skill Courses": "/icons/academic.png",
@@ -194,23 +194,23 @@ const ProductMobile = ({
      // Jobs
      "Office Jobs": "/icons/worker.png",
      "Delivery Jobs": "/icons/delivery-man.png",
-     "Driver Jobs": "/icons/taxi-driver.png",
-     "Freelancers": "/icons/freelance-work.png",
-     "Work from Home": "/icons/work-from-home.png",
-     "Internships": "/icons/internship.png",
-     "Part-time": "/icons/part-time.png",
-     "Full-time": "/icons/full-time-job.png",
+     "Driver Jobs": "/icons/taxi-driver.svg",
+     "Freelancers": "/icons/freelancer.svg",
+     "Work from Home": "/icons/man-doing-remote.svg",
+     "Internships": "/icons/man-office-worker.svg",
+     "Part-time": "/icons/Part_time.svg",
+     "Full-time": "/icons/time-twenty-four.svg",
      "Other Jobs": "/icons/sketch-book.png",
     
 
     // Furniture
-    "Sofas & Dining": "/icons/sofa.png",
-    "Beds & Wardrobes": "/icons/bed.png",
-    "Tables & Chairs": "/icons/chair.png",
-    "Home Decor & Garden": "/icons/shelf.png",
+    "Sofas & Dining": "/icons/sofa-Dinings.svg",
+    "Beds & Wardrobes": "/icons/bed-svg.svg",
+    "Tables & Chairs": "/icons/dining-room.svg",
+    // "Home Decor & Garden": "/icons/shelf.png",
     "Mattresses": "/icons/mat.png",
-    "Office Furniture": "/icons/workspace.png",
-    "Other Household Items": "/icons/sketch-book.png",
+    "Office Furniture": "/icons/office-studio.svg",
+    "Other Household Items": "/icons/furniture-and-household.svg",
 
     // Pets & Pet Care
     "Cats": "/icons/cat.png",
@@ -218,15 +218,15 @@ const ProductMobile = ({
     "Birds": "/icons/love-birds.png",
     "Fish & Aquariums": "/icons/clown-fish.png",
     "Pet Care Services": "/icons/pet-care.png",
-    "Other Pets": "/icons/sketch-book.png",
+    "Other Pets": "/icons/file-document.svg",
 
     // Others
-     "Other Books & Sports": "/icons/sketch-book.png",
-     "Other Events": "/icons/sketch-book.png",
-     "Other Services": "/icons/sketch-book.png",
-     "Other Properties": "/icons/sketch-book.png",
-     "Other Fashion": "/icons/sketch-book.png",
-     "Other Commercial Vehicles": "/icons/sketch-book.png",
+     "Other Books & Sports": "/icons/file-document.svg",
+     "Other Events": "/icons/file-document.svg",
+     "Other Services": "/icons/file-document.svg",
+     "Other Properties": "/icons/file-document.svg",
+     "Other Fashion": "/icons/file-document.svg",
+     "Other Commercial Vehicles": "/icons/file-document.svg",
 
     // Default subcategory icon
     "Default": "/icons/subcategory.png"
