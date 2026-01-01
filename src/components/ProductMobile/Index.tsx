@@ -77,8 +77,8 @@ const ProductMobile = ({
 
   // Map category names to icon paths
   const categoryIcons: Record<string, string> = {
-    "Real Estate": "/icons/residential.png",
-    "Services": "/icons/customer-service.png",
+    "Real Estate": "/icons/building-town.svg",
+    "Services": "/icons/customer-service.svg",
     "Commercial Vehicles": "/icons/bus-passanger.svg",
     "Vehicles": "/icons/motorcycles.svg",
     "Mobiles": "/icons/mobile-phone-electronics.svg",
@@ -86,7 +86,7 @@ const ProductMobile = ({
     "Education & Learning": "/icons/student.svg",
     "Tools & Equipment": "/icons/hammer-and-wrench.svg",
     "Pets & Pet Care": "/icons/dog-face.svg",
-    "Jobs": "/icons/businessman.png",
+    "Jobs": "/icons/work-job.svg",
     "Books & Sports": "/icons/books.svg",
     "Fashion": "/icons/pyjamas-suit.svg",
     "Furniture": "/icons/furnitures.png",
