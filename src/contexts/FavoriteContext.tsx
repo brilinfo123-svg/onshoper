@@ -20,53 +20,61 @@ export const FavoriteProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [loading, setLoading] = useState(true);
 
   // 🔥 Load favorites on refresh (DB → localStorage fallback)
-  // useEffect(() => {
-  //   if (status === "loading") return;
-
-  //   if (!session?.user?.contact) {
-  //     setFavorites(new Set());
-  //     setLoading(false);
-  //     return;
-  //   }
-
-  //   const userKey = `favorites_${session.user.contact}`;
-
-  //   const loadFavorites = async () => {
-  //     try {
-  //       const res = await fetch("/api/favorites/getAll", {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify({ userId: session.user.contact }),
-  //       });
-
-  //       if (res.ok) {
-  //         const data = await res.json();
-
-  //         if (Array.isArray(data.favorites)) {
-  //           const favSet = new Set<string>(data.favorites);
-  //           setFavorites(favSet);
-
-  //           // ✅ cache
-  //           localStorage.setItem(userKey, JSON.stringify(data.favorites));
-  //           setLoading(false);
-  //           return;
-  //         }
-  //       }
-  //     } catch (err) {
-  //       console.warn("⚠️ DB fetch failed, fallback to localStorage");
-  //     }
-
-  //     // 🔁 Fallback
-  //     const stored = localStorage.getItem(userKey);
-  //     if (stored) {
-  //       setFavorites(new Set(JSON.parse(stored)));
-  //     }
-
-  //     setLoading(false);
-  //   };
-
-  //   loadFavorites();
-  // }, [session?.user?.contact, status]);
+  useEffect(() => {
+    if (status === "loading") return;
+  
+    if (!session?.user?.contact) {
+      setFavorites(new Set());
+      setLoading(false);
+      return;
+    }
+  
+    const userKey = `favorites_${session.user.contact}`;
+  
+    // 🟢 STEP 1: Try localStorage FIRST (NO API CALL)
+    const stored = localStorage.getItem(userKey);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          setFavorites(new Set(parsed));
+          setLoading(false);
+          return; // ❌ STOP → no API call
+        }
+      } catch (e) {
+        console.warn("⚠️ localStorage parse error, refetching...");
+      }
+    }
+  
+    // 🔴 STEP 2: Call API ONLY if localStorage missing
+    const loadFavorites = async () => {
+      try {
+        const res = await fetch("/api/favorites/getAll", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: session.user.contact }),
+        });
+  
+        if (!res.ok) throw new Error("API failed");
+  
+        const data = await res.json();
+  
+        if (Array.isArray(data.favorites)) {
+          setFavorites(new Set<string>(data.favorites));
+  
+          // ✅ cache
+          localStorage.setItem(userKey, JSON.stringify(data.favorites));
+        }
+      } catch (err) {
+        console.warn("⚠️ DB fetch failed:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    loadFavorites();
+  }, [session?.user?.contact, status]);
+  
 
   // 💾 Persist to localStorage
   useEffect(() => {
