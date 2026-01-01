@@ -227,7 +227,6 @@ const ProductMobile = ({
     "DJ & Sound Systems": "/icons/sound-system.svg",
     "Lighting Equipment": "/icons/disco-ball-disc.svg",
     "Stage Setup": "/icons/stage.svg",
-    "Other Events": "/icons/file-document.svg",
 
     // Others
      "Other Books & Sports": "/icons/file-document.svg",
