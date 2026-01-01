@@ -79,18 +79,18 @@ const ProductMobile = ({
   const categoryIcons: Record<string, string> = {
     "Real Estate": "/icons/residential.png",
     "Services": "/icons/customer-service.png",
-    "Commercial Vehicles": "/icons/truck.png",
+    "Commercial Vehicles": "/icons/bus-passanger.svg",
     "Vehicles": "/icons/motorcycles.svg",
     "Mobiles": "/icons/mobile-phone-electronics.svg",
-    "Events & Entertainment": "/icons/banner.png",
-    "Education & Learning": "/icons/light-bulb.png",
-    "Tools & Equipment": "/icons/settings.png",
-    "Pets & Pet Care": "/icons/pets.png",
+    "Events & Entertainment": "/icons/wedding-arch.svg",
+    "Education & Learning": "/icons/student.svg",
+    "Tools & Equipment": "/icons/hammer-and-wrench.svg",
+    "Pets & Pet Care": "/icons/dog-face.svg",
     "Jobs": "/icons/businessman.png",
-    "Books & Sports": "/icons/referee.png",
+    "Books & Sports": "/icons/books.svg",
     "Fashion": "/icons/pyjamas-suit.svg",
     "Furniture": "/icons/furnitures.png",
-    "Electronics & Appliances": "/icons/device.png",
+    "Electronics & Appliances": "/icons/computer-tv.svg",
     "Car": "/icons/car.png",
     "Spare Parts": "/icons/spare-parts.svg",
     "Default": "/icons/category.png"
@@ -106,7 +106,7 @@ const ProductMobile = ({
     "PG & Guest House": "/icons/house.png",
 
     // Vehicles subcategories
-    "Cars": "/icons/car.png",
+    "Cars": "/icons/car-angled.svg",
     "Motorcycles": "/icons/motorcycle-svg.svg",
     "Spare Parts": "/icons/wheel-svg.svg",
     "Scooters": "/icons/motor-scooter-svg.svg",
@@ -119,12 +119,12 @@ const ProductMobile = ({
     "Other Device": "/icons/sketch-book.png",
 
     // Tools & Equipment
-    "Cleaning Tools": "/icons/housekeeping.png",
-    "Power Tools": "/icons/car-battery.png",
-    "Construction Tools": "/icons/helmet.png",
-    "Medical Equipment": "/icons/first-aid-kit.png",
-    "Farming Tools": "/icons/cultivator.png",
-    "Other Tools": "/icons/sketch-book.png",
+    "Cleaning Tools": "/icons/cleaning-mop.svg",
+    "Power Tools": "/icons/drill-drill.svg",
+    "Construction Tools": "/icons/building-construction.svg",
+    "Medical Equipment": "/icons/medical-kit.svg",
+    "Farming Tools": "/icons/tractor-s.svg",
+    "Other Tools": "/icons/file-document.svg",
 
     // Services
     "Legal & Documentation": "/icons/archive-document.svg",
@@ -139,9 +139,9 @@ const ProductMobile = ({
 
     // Electronics subcategories
     "TV & Video": "/icons/television.png",
-    "Computers & Laptops": "/icons/computer.png",
+    "Computers & Laptops": "/icons/computer.svg",
     "Home Appliances": "/icons/electric-appliance.png",
-    "ACs & Coolers": "/icons/outdoor-unit.png",
+    "ACs & Coolers": "/icons/cooling.svg",
     "Kitchen Appliances": "/icons/kitchenCabinet.png",
     "Cameras & Accessories": "/icons/photo-camera.svg",
     "Gaming Consoles": "/icons/gameController.png",
@@ -149,21 +149,21 @@ const ProductMobile = ({
     "Power Banks & Chargers": "/icons/powerBank.png",
     "Projectors": "/icons/projector.png",
     "Monitors & Accessories": "/icons/dataAnalysis.png",
-    "Printers & Scanners": "/icons/printer.png",
-    "Water Purifiers": "/icons/waterPurifier.png",
-    "Heaters & Geysers": "/icons/heater.png",
-    "Audio & Music Systems": "/icons/headphones.png",
-    "Washing Machines": "/icons/laundryMachine.png",
-    "Other Electronics": "/icons/sketch-book.png",
+    "Printers & Scanners": "/icons/printer-print.svg",
+    "Water Purifiers": "/icons/tank.svg",
+    "Heaters & Geysers": "/icons/showers-water.svg",
+    "Audio & Music Systems": "/icons/music-player-audio.svg",
+    "Washing Machines": "/icons/washing-machine.svg",
+    "Other Electronics": "/icons/file-document.svg",
 
      // Books & Sports
-     "Gym & Fitness": "/icons/dumbbell.png",
-     "Books": "/icons/stack-of-books.png",
-     "Musical Instruments": "/icons/guitar.png",
-     "Sports Equipment": "/icons/sports.png",
-     "Collectibles": "/icons/data-collection.png",
-     "Board Games": "/icons/chess-piece.png",
-     "Toys": "/icons/teddy-bear.png",
+     "Gym & Fitness": "/icons/dumbbell.svg",
+     "Books": "/icons/books.svg",
+     "Musical Instruments": "/icons/guitar.svg",
+     "Sports Equipment": "/icons/sports-mode.svg",
+     "Collectibles": "/icons/collect.svg",
+     "Board Games": "/icons/chess.svg",
+     "Toys": "/icons/teddy-bear.svg",
      
 
 
@@ -176,20 +176,20 @@ const ProductMobile = ({
     "Kids": "/icons/body-baby-clothes.svg",
 
     // Education & Learning
-    "Skill Courses": "/icons/academic.png",
-    "Competitive Exam Material": "/icons/medal.png",
-    "Tuition": "/icons/teacher.png",
-    "Coaching Classes": "/icons/conference.png",
+    "Skill Courses": "/icons/student.svg",
+    "Competitive Exam Material": "/icons/medal-gold-winner.svg",
+    "Tuition": "/icons/teacher.svg",
+    "Coaching Classes": "/icons/statistics-teacher.svg",
 
     // Commercial Vehicles
-    "Tractors": "/icons/fashion.png",
-    "Mini Trucks": "/icons/truck.png",
-    "Auto Rickshaws": "/icons/rickshaw.png",
+    "Tractors": "/icons/tractor.svg",
+    "Mini Trucks": "/icons/truck-mini.svg",
+    "Auto Rickshaws": "/icons/auto-rickshaw.svg",
     "E-Rickshaws": "/icons/transport.png",
-    "Pickups": "/icons/pickup-car.png",
-    "Passenger Buses": "/icons/student.png",
-    "Construction Vehicles": "/icons/Tippers.png",
-    "Delivery Vans": "/icons/delivery-van.png",
+    "Pickups": "/icons/car-picups.svg",
+    "Passenger Buses": "/icons/bus-passanger.svg",
+    "Construction Vehicles": "/icons/trucking-construction.svg",
+    "Delivery Vans": "/icons/delivery-truck-deliver.svg",
 
      // Jobs
      "Office Jobs": "/icons/worker.png",
@@ -213,11 +213,11 @@ const ProductMobile = ({
     "Other Household Items": "/icons/furniture-and-household.svg",
 
     // Pets & Pet Care
-    "Cats": "/icons/cat.png",
-    "Dogs": "/icons/dog.png",
-    "Birds": "/icons/love-birds.png",
-    "Fish & Aquariums": "/icons/clown-fish.png",
-    "Pet Care Services": "/icons/pet-care.png",
+    "Cats": "/icons/cat-face.svg",
+    "Dogs": "/icons/dog-face.svg",
+    "Birds": "/icons/birds.svg",
+    "Fish & Aquariums": "/icons/fish.svg",
+    "Pet Care Services": "/icons/care-day-health.svg",
     "Other Pets": "/icons/file-document.svg",
 
     // Others

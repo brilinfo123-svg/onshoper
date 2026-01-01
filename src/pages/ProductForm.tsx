@@ -1505,7 +1505,7 @@ function AllCategoryRentalForm() {
 
     "Skill Courses": "/icons/academic.png",
     "Competitive Exam Material": "/icons/medal.png",
-    "Tuition": "/icons/teacher.png",
+    "Tuition Class": "/icons/teacher.png",
     "Coaching Classes": "/icons/conference.png",
 
     "Tractors": "/icons/fashion.png",
