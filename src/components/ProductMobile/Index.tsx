@@ -99,10 +99,10 @@ const ProductMobile = ({
   // Map subcategory names to icon paths
   const subcategoryIcons: Record<string, string> = {
     // Real Estate subcategories
-    "House & Apartments": "/icons/housing.png",
-    "Shops & Offices": "/icons/store.png",
-    "Land & Plots": "/icons/maps-and-location.png",
-    "Commercial Properties": "/icons/building.png",
+    "House & Apartments": "/icons/aparment-house.svg",
+    "Shops & Offices": "/icons/ShopOffice.svg",
+    "Land & Plots": "/icons/geo-fence.svg",
+    "Commercial Properties": "/icons/building-tows.svg",
     "PG & Guest House": "/icons/house.png",
 
     // Vehicles subcategories
@@ -200,7 +200,7 @@ const ProductMobile = ({
      "Internships": "/icons/man-office-worker.svg",
      "Part-time": "/icons/Part_time.svg",
      "Full-time": "/icons/time-twenty-four.svg",
-     "Other Jobs": "/icons/sketch-book.png",
+     "Other Jobs": "/icons/file-document.svg",
     
 
     // Furniture
@@ -219,6 +219,15 @@ const ProductMobile = ({
     "Fish & Aquariums": "/icons/fish.svg",
     "Pet Care Services": "/icons/care-day-health.svg",
     "Other Pets": "/icons/file-document.svg",
+
+    // Events & Entertainment
+
+    "Party Supplies": "/icons/notebook-wedding.svg",
+    "Costumes": "/icons/bride-dress-wedding.svg",
+    "DJ & Sound Systems": "/icons/sound-system.svg",
+    "Lighting Equipment": "/icons/disco-ball-disc.svg",
+    "Stage Setup": "/icons/stage.svg",
+    "Other Events": "/icons/file-document.svg",
 
     // Others
      "Other Books & Sports": "/icons/file-document.svg",
