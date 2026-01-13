@@ -74,6 +74,7 @@
               justify-content: space-between;
               height: 100%;
               box-sizing: border-box;
+              position: relative;
             }
             @media screen and (max-width: 375px) {
               padding-right: 5px;
@@ -83,13 +84,13 @@
               @media screen and (max-width: 767px) {
                 position: absolute;
                 bottom: 25.5px;
-                left: 98px;
+                left: 4px;
               }
               p{
                 @media screen and (max-width: 767px) {
-                  left: 4px;
+                  left: -41px;
                   width: max-content;
-                  top: 0;
+                  top: 11px;
                 }
               }
             }

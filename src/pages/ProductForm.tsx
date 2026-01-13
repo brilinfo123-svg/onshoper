@@ -806,10 +806,8 @@ function AllCategoryRentalForm() {
   
       const originalSize = file.size;
   
-      // 🔽 Compress if needed
       if (file.size > MAX_IMAGE_SIZE) {
         try {
-          // 🔄 Show loader
           Swal.fire({
             title: "Optimizing Image",
             text: "Please wait...",
@@ -817,16 +815,15 @@ function AllCategoryRentalForm() {
             didOpen: () => Swal.showLoading(),
           });
   
-          const compressedFile = await imageCompression(file, {
+          const compressedBlob = await imageCompression(file, {
             maxSizeMB: 2,
             maxWidthOrHeight: 1920,
             useWebWorker: true,
           });
   
-          Swal.close(); // ✅ close loader
+          Swal.close();
   
-          // ❌ Still large
-          if (compressedFile.size > MAX_IMAGE_SIZE) {
+          if (compressedBlob.size > MAX_IMAGE_SIZE) {
             Swal.fire(
               "Upload Failed",
               "Image could not be optimized under 2 MB.",
@@ -835,18 +832,24 @@ function AllCategoryRentalForm() {
             continue;
           }
   
+          // ✅ Blob → File (VERY IMPORTANT)
+          const compressedFile = new File(
+            [compressedBlob],
+            file.name,
+            { type: file.type }
+          );
+  
           const reducedPercent = Math.round(
             ((originalSize - compressedFile.size) / originalSize) * 100
           );
   
-          // ✅ Show compression info
           Swal.fire({
             title: "Image Optimized",
             text: `${formatSize(originalSize)} → ${formatSize(
               compressedFile.size
             )} (${reducedPercent}% reduced)`,
             icon: "success",
-            timer: 2000,
+            timer: 1800,
             showConfirmButton: false,
           });
   
@@ -866,6 +869,7 @@ function AllCategoryRentalForm() {
       images: [...prev.images, ...valid].slice(0, MAX_IMAGES),
     }));
   };
+  
   
   
   
@@ -1054,7 +1058,9 @@ function AllCategoryRentalForm() {
       payload.append("coverImage", formData.coverImage);
     }
 
-    formData.images.forEach((img) => payload.append("images", img));
+    formData.images.forEach((img, index) => {
+      payload.append(`images`, img, img.name || `image-${index}.jpg`);
+    });
 
     if (selectedCategory === "Car") {
       switch (selectedSubcategory) {
