@@ -36,6 +36,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isAdminPage = router.pathname.startsWith("/admin");
   const isProductDetailPage = router.pathname.startsWith("/product/");
+  const isAuthPage = router.pathname.startsWith("/login");
+  
 
   // ✅ Setup FCM + Service Worker
   useEffect(() => {
@@ -94,7 +96,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     <ToastContainer position="top-right" autoClose={3000} />
                     <AutoUnfeaturePoller />
 
-                    {!isAdminPage && <HeaderComponent />}
+                    {!isAdminPage && !isAuthPage && <HeaderComponent />}
 
                     <main>
                       <Component {...pageProps} />

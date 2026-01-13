@@ -511,7 +511,7 @@ const Header: React.FC = () => {
         </div>
 
         <ul className={Style.rightMenus}>
-        {!isMobile && <li><Link href="/ProductForm" className={`${Style.sellAdd} ${"icon-shop"}`} onClick={closeSidebar}>Sell/Rent</Link></li>}
+        {!isMobile && <li><Link href="/ProductForm" className={`${Style.sellAdd} ${"icon-plus"}`} onClick={closeSidebar}>Post</Link></li>}
           <li className={Style.notificationItem}>
           {!isMobile && 
           <div className={`${Style.Notification} icon-bell`} onClick={() => setIsChatOpen(true)} role="button" tabIndex={0}>

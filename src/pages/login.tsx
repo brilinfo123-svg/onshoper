@@ -231,13 +231,13 @@ export default function LoginPage() {
           <h2 className={styles.heading}>Login</h2>
           {!loginType && (
             <div className={styles.options}>
-              <button
+              {/* <button
                 onClick={() => setLoginType("mobile")}
                 className={`${styles.mobileButton} ${styles.optionButton} icon-mobile`}
               >
                 Login with Mobile
               </button>
-              OR
+              OR */}
               <button
                 onClick={() => setLoginType("email")}
                 className={`${styles.emailButton} ${styles.optionButton} icon-mail`}

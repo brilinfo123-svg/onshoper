@@ -176,7 +176,7 @@ const Header: React.FC = () => {
 
         <ul className={Style.rightMenus}>
           {!isMobile && (
-            <li><Link href="/ProductForm" className={`${Style.sellAdd} icon-shop`} rel="noopener noreferrer">Sell/Rent</Link></li>
+            <li><Link href="/ProductForm" className={`${Style.sellAdd} icon-plus`} rel="noopener noreferrer">POST</Link></li>
           )}
          {/* <li className={Style.notificationItem}>
             <div className={`${Style.Notification} icon-bell`} role="button" tabIndex={0} onClick={() => handleProtectedRedirect("/ProductForm")}
