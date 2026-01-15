@@ -29,7 +29,12 @@
   @media (max-width: 767px) {
     padding: 10px 10px;
     border-radius: 5px;
-  }
+    background: #000;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
 }
 
 .slideContent {
@@ -47,6 +52,7 @@
   @media (max-width: 767px) {
     font-size: 16px;
     margin-bottom: 7px;
+    color: #fff;
   }
 }
 
@@ -55,9 +61,11 @@
   color: #666;
   @media (max-width: 767px) {
     font-size: 12px;
-    font-weight: 300;
-    color: #000;
+    font-weight: 400;
+    color: #fff;
     line-height: 15px;
+    max-width: 300px;
+    // letter-spacing: 0.3px;
   }
 }
 .skeletonContainer {
