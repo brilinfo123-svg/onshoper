@@ -104,8 +104,8 @@ export default function App({ Component, pageProps }: AppProps) {
                       <Component {...pageProps} />
                     </main>
 
-                    {!isAdminPage && <Footer />}
-                    {!isAdminPage && !isProductDetailPage && <MobileBottomNav />}
+                    {!isAdminPage && !isOfflinePage && <Footer />}
+                    {!isAdminPage && !isProductDetailPage && !isOfflinePage && <MobileBottomNav />}
                   </FilterProvider>
                 </CityFilterProvider>
               </ChatProvider>
