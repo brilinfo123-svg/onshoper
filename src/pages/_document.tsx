@@ -6,6 +6,7 @@ export default function Document() {
       <Head>
         <link rel="manifest" href="/manifest.json" /> 
         <meta name="theme-color" content="#0A84FF" />
+        <link rel="apple-touch-icon" href="/icons/onshoperMobile.png" />
         {/* Google & Facebook Verification */}
         <meta 
           name="google-site-verification" 
