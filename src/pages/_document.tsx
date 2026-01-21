@@ -4,7 +4,8 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-
+        <link rel="manifest" href="/manifest.json" /> 
+        <meta name="theme-color" content="#0A84FF" />
         {/* Google & Facebook Verification */}
         <meta 
           name="google-site-verification" 

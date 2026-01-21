@@ -1,18 +1,22 @@
 import type { NextConfig } from "next";
+import withPWA from "next-pwa";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+
+  // Cloudinary images
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "res.cloudinary.com", // Cloudinary support
+        hostname: "res.cloudinary.com",
       },
     ],
   },
+
+  // Global headers
   async headers() {
     return [
-      // ✅ Global security headers for all routes
       {
         source: "/(.*)",
         headers: [
@@ -22,22 +26,30 @@ const nextConfig: NextConfig = {
           },
           { key: "X-Frame-Options", value: "SAMEORIGIN" },
           { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
           {
             key: "Permissions-Policy",
-            value: "geolocation=(self), microphone=(), camera=(), payment=()",
+            value:
+              "geolocation=(self), microphone=(), camera=(), payment=()",
           },
         ],
       },
-      // ✅ Cache headers for static CSS
       {
         source: "/_next/static/css/(.*)",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
         ],
       },
     ];
   },
+
+  // Webpack fallbacks
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -73,10 +85,19 @@ const nextConfig: NextConfig = {
 
     return config;
   },
+
   serverExternalPackages: ["mongoose", "mongodb"],
 };
 
-export default nextConfig;
+// -------------------------
+// 🚀 Wrap with PWA
+// -------------------------
+export default withPWA({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+})(nextConfig);
+
 
 
 
