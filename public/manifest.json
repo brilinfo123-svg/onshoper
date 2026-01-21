@@ -1,18 +1,18 @@
 {
-    "name": "My PMS App",
-    "short_name": "PMS",
+    "name": "My Onshoper App",
+    "short_name": "Onshoper",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#0A84FF",
     "icons": [
       {
-        "src": "/icons/icon-192.png",
+        "src": "/icons/onshoperMobile.png",
         "sizes": "192x192",
         "type": "image/png"
       },
       {
-        "src": "/icons/icon-512.png",
+        "src": "/icons/tabOnshoper.png",
         "sizes": "512x512",
         "type": "image/png"
       }
