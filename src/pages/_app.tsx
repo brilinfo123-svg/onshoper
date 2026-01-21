@@ -38,6 +38,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const isProductDetailPage = router.pathname.startsWith("/product/");
   const isAuthPage = router.pathname.startsWith("/login");
   const isOfflinePage = router.pathname === "/_offline";
+  const isInstall = router.pathname === "/install";
 
   
 
@@ -98,14 +99,14 @@ export default function App({ Component, pageProps }: AppProps) {
                     <ToastContainer position="top-right" autoClose={3000} />
                     <AutoUnfeaturePoller />
 
-                    {!isAdminPage && !isAuthPage && !isOfflinePage && <HeaderComponent />}
+                    {!isAdminPage && !isAuthPage && !isOfflinePage && !isInstall && <HeaderComponent />}
 
                     <main>
                       <Component {...pageProps} />
                     </main>
 
-                    {!isAdminPage && !isOfflinePage && <Footer />}
-                    {!isAdminPage && !isProductDetailPage && !isOfflinePage && <MobileBottomNav />}
+                    {!isAdminPage && !isOfflinePage && !isInstall && <Footer />}
+                    {!isAdminPage && !isProductDetailPage && !isOfflinePage && !isInstall && <MobileBottomNav />}
                   </FilterProvider>
                 </CityFilterProvider>
               </ChatProvider>

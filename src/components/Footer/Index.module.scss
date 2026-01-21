@@ -119,3 +119,14 @@
     }
   }
 }
+
+
+.installLink {
+  font-weight: 600;
+  color: #3b82f6;
+
+  &:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+  }
+}
