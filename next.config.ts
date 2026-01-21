@@ -94,12 +94,12 @@ export default withPWA({
   register: true,
   skipWaiting: true,
 
-  // 👇 Offline fallback page
+  // Offline fallback page
   fallbacks: {
     document: "/_offline",
   },
 
-  // 👇 Fix for missing SVG icons in PWA offline mode
+  // Cache SVG icons + offline CSS + offline images
   runtimeCaching: [
     {
       urlPattern: /\/icons\/.*\.svg$/,
@@ -109,8 +109,25 @@ export default withPWA({
         expiration: { maxEntries: 50 },
       },
     },
+    {
+      urlPattern: /\/offline\.css$/,
+      handler: "CacheFirst",
+      options: {
+        cacheName: "offline-css",
+        expiration: { maxEntries: 1 },
+      },
+    },
+    {
+      urlPattern: /\/images\/.*$/,
+      handler: "CacheFirst",
+      options: {
+        cacheName: "offline-images",
+        expiration: { maxEntries: 20 },
+      },
+    },
   ],
 })(nextConfig);
+
 
 
 
