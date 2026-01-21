@@ -103,7 +103,7 @@ const MobileBottomNav = () => {
     {
       name: "Home",
       path: "/",
-      icon: <Image src="/icons/homeIcone.png" alt="Home" width={32} height={32} />,
+      icon: <img src="/icons/homeIcone.png" alt="Home" width={32} height={32} />,
       onClick: () => {
         setAccountOpen(false);
         setNotificationsOpen(false);
@@ -113,7 +113,7 @@ const MobileBottomNav = () => {
     {
       name: "Chat",
       path: "/chat",
-      icon: <Image src="/icons/chat-round.svg" alt="Chat" width={30} height={30} />,
+      icon: <img src="/icons/chat-round.svg" alt="Chat" width={30} height={30} />,
       onClick: () => {
         setAccountOpen(false);
         setNotificationsOpen(false);
@@ -129,13 +129,7 @@ const MobileBottomNav = () => {
       name: "Post Ads",
       path: "/ProductForm",
       icon: (
-        <Image
-          src="/icons/AddProducts.svg"
-          alt="Post Ad"
-          width={35}
-          height={35}
-          className={styles.postAdIcon}
-        />
+        <img src="/icons/AddProducts.svg" width={35} height={35} alt="Post Ad" className={styles.postAdIcon}/>
       ),
       onClick: () => {
         setAccountOpen(false);
@@ -150,7 +144,7 @@ const MobileBottomNav = () => {
     {
       name: "My Ads",
       path: "/profile",
-      icon: <Image src="/icons/catalog-alt.svg" alt="My Ads" width={25} height={23} />,
+      icon: <img src="/icons/catalog-alt.svg" alt="My Ads" width={25} height={23} />,
       onClick: () => {
         setAccountOpen(false);
         setNotificationsOpen(false);
@@ -164,7 +158,7 @@ const MobileBottomNav = () => {
     {
       name: "Account",
       path: session ? "/profile" : "/auth/signin",
-      icon: <Image src="/icons/userIcone.png" alt="Account" width={27} height={27} />,
+      icon: <img src="/icons/userIcone.png" alt="Account" width={27} height={27} />,
       onClick: toggleAccount,
     },
   ];

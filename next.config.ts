@@ -4,7 +4,6 @@ import withPWA from "next-pwa";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
-  // Cloudinary images
   images: {
     remotePatterns: [
       {
@@ -14,7 +13,6 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // Global headers
   async headers() {
     return [
       {
@@ -49,7 +47,6 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Webpack fallbacks
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -96,8 +93,24 @@ export default withPWA({
   dest: "public",
   register: true,
   skipWaiting: true,
-})(nextConfig);
 
+  // 👇 Offline fallback page
+  fallbacks: {
+    document: "/_offline",
+  },
+
+  // 👇 Fix for missing SVG icons in PWA offline mode
+  runtimeCaching: [
+    {
+      urlPattern: /\/icons\/.*\.svg$/,
+      handler: "CacheFirst",
+      options: {
+        cacheName: "svg-icons",
+        expiration: { maxEntries: 50 },
+      },
+    },
+  ],
+})(nextConfig);
 
 
 
