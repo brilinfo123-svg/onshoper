@@ -37,6 +37,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const isAdminPage = router.pathname.startsWith("/admin");
   const isProductDetailPage = router.pathname.startsWith("/product/");
   const isAuthPage = router.pathname.startsWith("/login");
+  const isOfflinePage = router.pathname === "/_offline";
+
   
 
   // ✅ Setup FCM + Service Worker
@@ -96,7 +98,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     <ToastContainer position="top-right" autoClose={3000} />
                     <AutoUnfeaturePoller />
 
-                    {!isAdminPage && !isAuthPage && <HeaderComponent />}
+                    {!isAdminPage && !isAuthPage && !isOfflinePage && <HeaderComponent />}
 
                     <main>
                       <Component {...pageProps} />
