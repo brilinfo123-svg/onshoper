@@ -1,3 +1,4 @@
+import InstallButton from "@/components/AppInstall/Index";
 import Link from "next/link";
 
 export default function InstallApp() {
@@ -109,6 +110,7 @@ export default function InstallApp() {
               className="qrImage"
             />
           </div>
+          <InstallButton />
 
           <p className="linkText">
             or visit:{" "}
