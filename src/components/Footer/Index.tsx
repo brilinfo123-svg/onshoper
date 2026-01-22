@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import styles from '@/components/Footer/Index.module.scss';
 
 const Footer = () => {
@@ -23,26 +24,39 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Third Column */}
+        {/* Quick Links */}
         <div className={styles.footerSection}>
           <h4>Quick Links</h4>
           <ul>
-            <li><a href="/ProductForm">Post Your Product</a></li>
-            <li><a href="/terms-and-conditions">Terms and Conditions</a></li>
-            <li><a href="/privacy-policy">Privacy Policy</a></li>
-            <li><a href="/shipping-policy">Shipping Policy</a></li>
-            <li><a href="/contact-us">Contact Us</a></li>
-
-            {/* ⭐ New Install App Link */}
             <li>
-              <a href="/install" className={styles.installLink}>
+              <Link href="/ProductForm">Post Your Product</Link>
+            </li>
+            <li>
+              <Link href="/terms-and-conditions">Terms and Conditions</Link>
+            </li>
+            <li>
+              <Link href="/privacy-policy">Privacy Policy</Link>
+            </li>
+            <li>
+              <Link href="/shipping-policy">Shipping Policy</Link>
+            </li>
+            <li>
+              <Link href="/contact-us">Contact Us</Link>
+            </li>
+            <li>
+              <Link href="/blog">Blogs</Link>
+            </li>
+
+            {/* ⭐ Install App */}
+            <li>
+              <Link href="/install" className={styles.installLink}>
                 Install App
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
 
-        {/* Fourth Column */}
+        {/* Address */}
         <div className={styles.footerSection}>
           <h4>Address</h4>
           <ul>
@@ -50,6 +64,7 @@ const Footer = () => {
               <a
                 href="https://www.google.com/maps?q=8-A,+Lakhnaur+Pind+Rd,+Industrial+Area,+Sector+75,+Sahibzada+Ajit+Singh+Nagar,+Punjab+140307"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="icon-location"
               >
                 D-258, GR Tower Industrial Area, Sector 75 S.A.S. Nagar (Mohali) Punjab – 160071 India

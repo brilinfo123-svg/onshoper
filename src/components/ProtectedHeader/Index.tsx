@@ -16,7 +16,6 @@ import Layout from "../Layout/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import { useFilter } from "@/contexts/FilterContext";
 import Swal from "sweetalert2";
-import OneSignal from "react-onesignal";
 
 
 
@@ -184,12 +183,6 @@ const Header: React.FC = () => {
   
   const handleLogout = async () => {
     try {
-      // ✅ Clear OneSignal external ID
-      if (typeof OneSignal !== "undefined" && OneSignal.logout) {
-        await OneSignal.logout();
-        console.log("✅ OneSignal externalUserId cleared on logout");
-      }
-  
       // ✅ NextAuth logout
       signOut({ callbackUrl: "/login" });
     } catch (err) {
