@@ -40,9 +40,8 @@ export default function InstallApp() {
 
         .qrCard {
           display: inline-block;
-          border-radius: 16px;
-          background: #ffffff;
-          box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+          border-radius: 55px;
+          box-shadow: 0 -30px 50px rgba(0, 0, 0, 0.08);
           animation: float 3s infinite ease-in-out;
         }
 

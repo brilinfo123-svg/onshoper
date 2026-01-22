@@ -2,11 +2,27 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 export default function InstallButton() {
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showButton, setShowButton] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(false);
 
   useEffect(() => {
-    const handler = (e) => {
+    // Detect if PWA is already installed
+    const checkInstalled = () => {
+      const isStandalone =
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.matchMedia("(display-mode: minimal-ui)").matches ||
+        (window.navigator as any).standalone === true;
+
+      if (isStandalone) {
+        setIsInstalled(true);
+        setShowButton(false);
+      }
+    };
+
+    checkInstalled();
+
+    const handler = (e: any) => {
       e.preventDefault();
       setDeferredPrompt(e);
       setShowButton(true);
@@ -21,11 +37,17 @@ export default function InstallButton() {
     if (!deferredPrompt) return;
 
     deferredPrompt.prompt();
-
     const result = await deferredPrompt.userChoice;
 
     if (result.outcome === "accepted") {
-      Swal.fire({ icon: "success", title: "Thank You!", text: "Your app installation has started.", confirmButtonColor: "#3b82f6", });
+      Swal.fire({
+        icon: "success",
+        title: "Thank You!",
+        text: "Your app installation has started.",
+        confirmButtonColor: "#3b82f6",
+      }).then(() => {
+        window.location.href = "/";
+      });
     } else {
       Swal.fire({
         icon: "info",
@@ -41,7 +63,20 @@ export default function InstallButton() {
 
   return (
     <>
-      {showButton && (
+      {isInstalled && (
+        <p
+          style={{
+            marginTop: "20px",
+            color: "#16a34a",
+            fontWeight: "600",
+            textAlign: "center",
+          }}
+        >
+          ✔ You already installed this app
+        </p>
+      )}
+
+      {!isInstalled && showButton && (
         <button
           onClick={installApp}
           style={{
