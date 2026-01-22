@@ -40,7 +40,6 @@ export default function InstallApp() {
 
         .qrCard {
           display: inline-block;
-          padding: 20px;
           border-radius: 16px;
           background: #ffffff;
           box-shadow: 0 8px 25px rgba(0,0,0,0.08);
@@ -97,32 +96,20 @@ export default function InstallApp() {
 
       <div className="pageWrapper">
         <div className="wraper">
-          <h1 className="title">Install Onshoper App</h1>
+          {/* <h1 className="title">Install Onshoper App</h1>
 
           <p className="subtitle">
-            Scan the QR code to install the app.
-          </p>
-
+            Safe and secure
+          </p> */}
+  
           <div className="qrCard">
             <img
-              src="/icons/qr-code.png"
+              src="/icons/tabOnshoper.png"
               alt="Scan to Install Onshoper App"
               className="qrImage"
             />
           </div>
           <InstallButton />
-
-          <p className="linkText">
-            or visit:{" "}
-            <strong>
-              <Link href="https://onshoper.com">https://onshoper.com</Link>
-            </strong>
-          </p>
-
-          {/* Back to Home Button */}
-          <Link href="/" className="backButton">
-            ← Back to Home
-          </Link>
         </div>
       </div>
     </>

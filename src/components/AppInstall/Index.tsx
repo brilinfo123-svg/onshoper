@@ -25,12 +25,7 @@ export default function InstallButton() {
     const result = await deferredPrompt.userChoice;
 
     if (result.outcome === "accepted") {
-      Swal.fire({
-        icon: "success",
-        title: "App Installed",
-        text: "Onshoper App has been successfully installed!",
-        confirmButtonColor: "#3b82f6",
-      });
+      Swal.fire({ icon: "success", title: "Thank You!", text: "Your app installation has started.", confirmButtonColor: "#3b82f6", });
     } else {
       Swal.fire({
         icon: "info",
@@ -58,9 +53,10 @@ export default function InstallButton() {
             cursor: "pointer",
             fontSize: "16px",
             marginTop: "20px",
+            width: "100%",
           }}
         >
-          Install App
+          Install Now
         </button>
       )}
     </>
