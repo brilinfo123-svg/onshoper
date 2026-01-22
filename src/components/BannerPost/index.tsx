@@ -1,54 +1,27 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import styles from "./banner.module.scss";
 
 const bannerSlides = [
-  {
-    title: "🛒 Sell & Rent Old Accessories",
-    description: "List your pre-owned items in seconds and reach people looking to buy or rent.",
-  },
-  {
-    title: "✨ A New Marketplace Experience",
-    description: "Onshoper is fresh and growing — discover deals on electronics, fashion, furniture, and more.",
-  },
-  {
-    title: "📱 Easy to Use on Any Device",
-    description: "Post ads and browse listings seamlessly on mobile, tablet, or desktop.",
-  },
-  {
-    title: "🔎 Find What You Need Fast",
-    description: "Smart filters by category, price, and location help you connect with the right audience.",
-  },
-  {
-    title: "🤝 Connect with Real People",
-    description: "Trusted platform for individuals, agents, and small businesses to buy, sell, or rent accessories.",
-  },
-  {
-    title: "🛡️ Safe & Transparent Deals",
-    description: "We protect your data and moderate listings to keep the marketplace secure and fair.",
-  },
-  {
-    title: "🌱 Promote Reuse & Sustainability",
-    description: "Give old accessories a second life — save money and reduce waste while helping others.",
-  },
-  {
-    title: "🚀 Growing Community",
-    description: "Be part of a new marketplace that’s expanding every day with fresh listings and opportunities.",
-  },
+  { title: "🛒 Sell & Rent Old Accessories", description: "List your pre-owned items in seconds and reach people looking to buy or rent." },
+  { title: "✨ A New Marketplace Experience", description: "Onshoper is fresh and growing — discover deals on electronics, fashion, furniture, and more." },
+  { title: "📱 Easy to Use on Any Device", description: "Post ads and browse listings seamlessly on mobile, tablet, or desktop." },
+  { title: "🔎 Find What You Need Fast", description: "Smart filters by category, price, and location help you connect with the right audience." },
+  { title: "🤝 Connect with Real People", description: "Trusted platform for individuals, agents, and small businesses to buy, sell, or rent accessories." },
+  { title: "🛡️ Safe & Transparent Deals", description: "We protect your data and moderate listings to keep the marketplace secure and fair." },
+  { title: "🌱 Promote Reuse & Sustainability", description: "Give old accessories a second life — save money and reduce waste while helping others." },
+  { title: "🚀 Growing Community", description: "Be part of a new marketplace that’s expanding every day with fresh listings and opportunities." },
 ];
 
-
 const BannerPost = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
   const autoplayOptions = {
     delay: 5000,
     stopOnInteraction: false,
     stopOnMouseEnter: false,
   };
 
-  const [emblaRef, emblaApi] = useEmblaCarousel(
+  const [emblaRef] = useEmblaCarousel(
     {
       loop: true,
       align: "start",
@@ -58,28 +31,9 @@ const BannerPost = () => {
     [Autoplay(autoplayOptions)]
   );
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000); // simulate loading delay
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <div className="container">
       <div className={styles.bannerWrapper}>
-      {isLoading ? (
-        <div className={styles.skeletonContainer}>
-          {[...Array(1)].map((_, index) => (
-            <div className={styles.skeletonSlide} key={index}>
-              <div className={styles.skeletonTitle}></div>
-              <div className={styles.skeletonText}></div>
-              <div className={styles.skeletonText}></div>
-            </div>
-          ))}
-        </div>
-      ) : (
         <div className={styles.embla} ref={emblaRef}>
           <div className={styles.embla__container}>
             {bannerSlides.map((slide, index) => (
@@ -92,8 +46,7 @@ const BannerPost = () => {
             ))}
           </div>
         </div>
-      )}
-    </div>
+      </div>
     </div>
   );
 };

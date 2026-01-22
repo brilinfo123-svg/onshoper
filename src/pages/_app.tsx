@@ -40,8 +40,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const isOfflinePage = router.pathname === "/_offline";
   const isInstall = router.pathname === "/install";
 
-  
-
   // ✅ Setup FCM + Service Worker
   useEffect(() => {
     const initFirebaseMessaging = async () => {
