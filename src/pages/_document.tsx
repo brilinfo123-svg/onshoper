@@ -8,10 +8,7 @@ export default function Document() {
         <meta name="theme-color" content="#0A84FF" />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
         {/* Google & Facebook Verification */}
-        <meta 
-          name="google-site-verification" 
-          content="6XOdt6iyzuee-IXJ6Axq600RFXyh-mKqGObQvYgr2qE" 
-        />
+        <meta name="google-site-verification" content="9o4H1zQMeYw4iWtD4JcfrFGwQ5ZiIOUuAMhR-eO9nuc" />
         <meta 
           name="facebook-domain-verification" 
           content="5rpwhxj3a87kpora90zzvsxj147g1l" 
