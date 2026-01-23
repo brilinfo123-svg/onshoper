@@ -29,7 +29,9 @@ export default function BlogPost() {
       <small>{post.date}</small>
 
       <div className={styles.content}>
-        <ReactMarkdown>{post.content}</ReactMarkdown>
+        {/* <ReactMarkdown>{post.content}</ReactMarkdown> */}
+        <div className="blog-content" dangerouslySetInnerHTML={{ __html: post.content }}/>
+
       </div>
 
       <div className={styles.cta}>

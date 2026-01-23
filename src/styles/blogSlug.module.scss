@@ -1,198 +1,226 @@
-/* ------------------------------
-   GLOBAL CONTAINER
---------------------------------*/
+/* ============================================================
+   GLOBAL CONTAINER + ANIMATION
+============================================================ */
 .container {
-    max-width: 1200px;
-    margin: 60px auto;
-    padding: 0 22px;
-    animation: fadeIn 0.6s ease;
-  }
-  
-  /* Smooth fade animation */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  /* ------------------------------
-     CATEGORY ROW (Icon + Tag)
-  --------------------------------*/
-  .categoryRow {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 18px;
-    animation: fadeIn 0.7s ease;
-  }
-  
-  .categoryIcon {
-    width: 60px !important;
-    height: 60px !important;
-    border-radius: 50%;
-    padding: 10px;
-    background: rgba(255, 107, 0, 0.1);
-    border: 2px solid rgba(255, 107, 0, 0.25);
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 22px;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   CATEGORY ROW (Icon + Tag)
+============================================================ */
+.categoryRow {
+  gap: 14px;
+  margin-bottom: 18px;
+  animation: fadeIn 0.7s ease;
+  text-align: center;
+}
+
+.categoryIcon {
+  width: 100%;
+    max-width: 150px;
     transition: 0.3s ease;
-  }
-  
-  .categoryIcon:hover {
+    margin-bottom: 10px;
+
+  &:hover {
     transform: scale(1.08) rotate(4deg);
     border-color: #ff6b00;
   }
-  
-  /* Category Tag */
-  .category {
-    display: inline-block;
-    background: rgba(255, 107, 0, 0.12);
-    color: #ff6b00;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: 0.3s ease;
-  }
-  
-  .category:hover {
+}
+
+.category {
+  display: block;
+  background: rgba(255, 107, 0, 0.12);
+  color: #ff6b00;
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: 0.3s ease;
+  width: max-content;
+  margin: 0 auto;
+
+  &:hover {
     background: rgba(255, 107, 0, 0.22);
     transform: translateY(-2px);
   }
-  
-  /* ------------------------------
-     BLOG TITLE + DATE
-  --------------------------------*/
-  .container h1 {
-    font-size: 2.6rem;
-    line-height: 1.25;
-    margin-bottom: 8px;
-    color: #222;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    animation: fadeIn 0.8s ease;
-  }
-  
-  .container small {
-    color: #777;
-    font-size: 0.95rem;
-    margin-bottom: 25px;
-    display: block;
-  }
-  
-  /* ------------------------------
-     CONTENT AREA (Premium Typography)
-  --------------------------------*/
-  .content {
-    margin-top: 30px;
-    line-height: 1.85;
-    font-size: 1.15rem;
-    color: #333;
-    animation: fadeIn 0.9s ease;
-  }
-  
-  .content h2 {
-    margin-top: 32px;
-    font-size: 1.9rem;
-    color: #222;
-    font-weight: 700;
-    border-left: 4px solid #ff6b00;
-    padding-left: 12px;
-    @media screen and (max-width:767px) {
-       font-size: 20px;
-    }
-  }
-  
-  .content p {
-    margin-bottom: 20px;
-    border-left: 4px solid #ff6b00;
-    padding-left: 12px;
-    line-height: normal;
-    @media screen and (max-width:767px) {
-        font-size: 14px;
-     }
-  }
-  
-  .content img {
-    width: 100%;
-    border-radius: 14px;
-    margin: 25px 0;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  }
-  
-  /* Blockquote */
-  .content blockquote {
-    padding: 18px 22px;
-    background: #fff7f0;
-    border-left: 4px solid #ff6b00;
-    border-radius: 8px;
-    margin: 20px 0;
-    font-style: italic;
-    color: #444;
-  }
-  
-  /* Lists */
-  .content ul, .content ol {
-    margin: 18px 0 18px 25px;
-  }
-  
-  /* ------------------------------
-     CTA BOX (Premium Gradient + Glow)
-  --------------------------------*/
-  .cta {
-    margin-top: 55px;
-    padding: 32px;
-    border-radius: 16px;
+}
+
+/* ============================================================
+   BLOG TITLE + DATE
+============================================================ */
+.container h1 {
+  font-size: 30px;
+  line-height: 1.25;
+  margin-bottom: 20px;
+  color: #222;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  animation: fadeIn 0.8s ease;
+  background-color: #f0f8ff;
+    padding: 10px 30px;
     text-align: center;
-    background: linear-gradient(135deg, #fff1e6, #ffd8bf);
-    box-shadow: 0 8px 24px rgba(255, 107, 0, 0.18);
-    animation: fadeIn 1s ease;
-    border: 1px solid rgba(255, 107, 0, 0.25);
-  }
-  
-  .cta h3 {
-    margin-bottom: 14px;
-    font-size: 1.55rem;
-    font-weight: 700;
-    @media screen and (max-width:767px) {
-        margin-bottom: 4px;
-        font-size: 20px;
-        font-weight: 700;
-     }
-  }
-  
-  /* CTA Button */
-  .btn {
-    display: inline-block;
-    margin-top: 14px;
-    padding: 14px 26px;
-    background: #ff6b00;
-    color: #fff;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.3s ease;
-    box-shadow: 0 5px 14px rgba(255, 107, 0, 0.35);
-  }
-  
-  .btn:hover {
+}
+
+.container small {
+  color: #777;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+  display: block;
+}
+
+/* ============================================================
+   CONTENT AREA (Premium Typography)
+============================================================ */
+.content {
+  margin-top: 30px;
+  line-height: 1.85;
+  font-size: 1.15rem;
+  color: #333;
+  animation: fadeIn 0.9s ease;
+}
+
+/* H2 */
+.content h2 {
+  margin-top: 32px;
+  font-size: 1.9rem;
+  color: #222;
+  font-weight: 700;
+  border-left: 4px solid #ff6b00;
+  padding-left: 12px;
+}
+
+/* H3 */
+.content h3 {
+  margin-top: 28px;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #222;
+  border-left: 4px solid #ff6b00;
+  padding-left: 12px;
+}
+
+/* H4 */
+.content h4 {
+  margin-top: 26px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: -0.2px;
+}
+
+/* Paragraphs */
+.content p {
+  margin-bottom: 18px;
+  line-height: 1.3;
+  color: #444;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Images */
+.content img {
+  width: 100%;
+  border-radius: 14px;
+  margin: 25px 0;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* Blockquote */
+.content blockquote {
+  padding: 18px 22px;
+  background: #fff7f0;
+  border-left: 4px solid #ff6b00;
+  border-radius: 8px;
+  margin: 20px 0;
+  font-style: italic;
+  color: #444;
+}
+
+/* Lists */
+.content ul,
+.content ol {
+  margin: 18px 0 22px 28px;
+  border-left: 4px solid #ff6b00;
+  padding-left: 32px;
+  margin-left: 2px;
+}
+
+.content ul li,
+.content ol li {
+  line-height: 1.6;
+  color: #333;
+  font-size: 16px;
+}
+
+/* HR Divider */
+.content hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, #ff6b00, transparent);
+  margin: 32px 0;
+  opacity: 0.4;
+}
+
+/* ============================================================
+   CTA BOX (Premium Gradient + Glow)
+============================================================ */
+.cta {
+  margin-top: 55px;
+  padding: 32px;
+  border-radius: 16px;
+  text-align: center;
+  background: linear-gradient(135deg, #fff1e6, #ffd8bf);
+  box-shadow: 0 8px 24px rgba(255, 107, 0, 0.18);
+  border: 1px solid rgba(255, 107, 0, 0.25);
+}
+
+.cta h3 {
+  margin-bottom: 14px;
+  font-size: 1.55rem;
+  font-weight: 700;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 14px 26px;
+  background: #ff6b00;
+  color: #fff;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s ease;
+  box-shadow: 0 5px 14px rgba(255, 107, 0, 0.35);
+
+  &:hover {
     background: #e65f00;
     transform: translateY(-4px);
     box-shadow: 0 8px 22px rgba(255, 107, 0, 0.45);
   }
-  
-  /* ------------------------------
-     RESPONSIVE
-  --------------------------------*/
-  @media (max-width: 768px) {
-    .container h1 {
-      font-size: 2rem;
-    }
-  
-    .content {
-      font-size: 1.05rem;
-    }
-  
-    .categoryIcon {
-      width: 50px !important;
-      height: 50px !important;
-    }
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 768px) {
+  .container h1 {
+    font-size: 2rem;
   }
-  
+
+  .content {
+    font-size: 1.05rem;
+  }
+
+  .categoryIcon {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
