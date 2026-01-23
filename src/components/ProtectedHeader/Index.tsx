@@ -368,13 +368,13 @@ const Header: React.FC = () => {
         <div className={Style.logoSection}>
           <Link href="/">
             {/* <h2><span className="icon-shop"></span> Local  </h2> */}
-            {/* <div className={Style.logo}>
+            <div className={Style.logo}>
               <h3>ON</h3>
               <div className={Style.logoDesc}>
                  <h4>Shoper</h4>
                  <span>Sale & Rent</span>
               </div>
-            </div> */}
+            </div>
           </Link>
         </div>
         }

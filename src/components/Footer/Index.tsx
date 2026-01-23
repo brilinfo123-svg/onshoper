@@ -43,15 +43,15 @@ const Footer = () => {
             <li>
               <Link href="/contact-us">Contact Us</Link>
             </li>
-            <li>
-              <Link href="/blog">Blogs</Link>
-            </li>
 
             {/* ⭐ Install App */}
             <li>
               <Link href="/install" className={styles.installLink}>
                 Install App
               </Link>
+            </li>
+            <li>
+              <Link href="/blog">Blogs</Link>
             </li>
           </ul>
         </div>
