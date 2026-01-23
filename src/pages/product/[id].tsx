@@ -78,8 +78,8 @@ const ProductDetails = () => {
 
 
   const SallerName = shopData?.user?.name;
-  const SallerMobile = shopData?.user?.contact;
-  const shopOwnerID = shopData?.user?.contact;
+  const SallerMobile = shopData?.user?.contact || shopData?.user?.mobile;
+  const shopOwnerID = shopData?.user?.contact || shopData?.user?.mobile;
 
   const [isHomeDeliveryAvailable, setIsHomeDeliveryAvailable] = useState(true);
 
@@ -146,7 +146,9 @@ const ProductDetails = () => {
       alert('Mobile number not available');
     }
   };
-  const MobileWithWhatshap = /^\d+$/.test(product?.ownerEmail || "");
+  // const MobileWithWhatshap = /^\d+$/.test(product?.ownerEmail || shopData?.user?.mobile || "");
+  const MobileWithWhatshap = /^\d+$/.test(shopData?.user?.mobile || "");
+  
 
   // console.log("currentUserId:", session?.user?.id);
   // console.log("otherUserId:", product?.shopOwnerID);
@@ -183,6 +185,7 @@ const ProductDetails = () => {
   // }, [shop?.homeDelivery]);
   // console.log("SELLER:", data?.seller);
   console.log("SHOPDATA:", shopData);
+  console.log("MobileWithWhatshap", MobileWithWhatshap, shopData?.user?.mobile)
   
   const openReportModal = (productId) => {
     Swal.fire({

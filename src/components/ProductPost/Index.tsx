@@ -312,7 +312,19 @@ const toggleFavorite = async () => {
           {/* CTA Buttons */}
           <div className={styles.CtaBtn}>
             {/* {!onUpdate && !onDelete && (<Link href={`/product/${_id}`} className={styles.button}>View Details</Link>)} */}
-            {onUpdate && (<button className={styles.updateBtn} onClick={() => router.push(`/product/productUpdate/${_id}`)}>Update</button>)}
+            {onUpdate && (
+            <button
+              className={styles.updateBtn}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                router.push(`/product/productUpdate/${_id}`);
+              }}
+            >
+              Update
+            </button>
+          )}
+
             {onDelete && (<button onClick={(e) => { e.stopPropagation(); e.preventDefault(); onDelete(_id);}} className={styles.deleteBtn}>Delete</button>)}
           </div>
           {isFeatured && <PremiumBadge Premium={isFeatured} />}

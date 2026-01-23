@@ -36,7 +36,10 @@ const PropertyDetailPage: React.FC = () => {
   const [shopData, setShopData] = useState<ShopData | null>(null);
   const [products, setProducts] = useState<any[]>([]);
   const [wishlistProducts, setWishlistProducts] = useState<any[]>([]);
-
+  const rentProducts = products.filter((p: any) => p.SaleType === "Rent");
+  const saleProducts = products.filter((p: any) => p.SaleType === "Sale");  
+  const [activeTab, setActiveTab] = useState("rent");
+  
   // ✅ Alag-alag loading states
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(true);
@@ -233,45 +236,81 @@ const PropertyDetailPage: React.FC = () => {
                     </Link>
                   </div>
                 )}
+                <div className={styles.ProductTabs}>
+  <button
+    className={activeTab === "rent" ? styles.activeTab : ""}
+    onClick={() => setActiveTab("rent")}
+  >
+    Rental Products
+  </button>
 
-                <div className={styles.productGrid}>
-                  {products.slice(0, visibleCount).map((product: any) => (
-                    <ProductPost
-                      key={product._id}
-                      _id={product._id}
-                      title={product.title}
-                      description={""}
-                      category={product.category}
-                      subCategory={product.subcategory}
-                      price={Number(product.price)}
-                      SalePrice={product.SalePrice}
-                      priceWeek={
-                        product.priceWeek !== undefined
-                          ? Number(product.priceWeek)
-                          : undefined
-                      }
-                      priceMonth={
-                        product.priceMonth !== undefined
-                          ? Number(product.priceMonth)
-                          : undefined
-                      }
-                      coverImage={
-                        product.coverImage ||
-                        product.images?.[0] ||
-                        "/images/DefoultLogo.jpg"
-                      }
-                      images={product.images || []}
-                      createdAt={product.createdAt}
-                      isFeatured={product.feature || false}
-                      onDelete={handleDelete}
-                      onUpdate={(id) => console.log("Update product", id)}
-                      shopOwnerID={product.shopOwnerID}
-                    />
-                  ))}
+  <button
+    className={activeTab === "sale" ? styles.activeTab : ""}
+    onClick={() => setActiveTab("sale")}
+  >
+    Saling Products
+  </button>
                 </div>
+
+                <div className={styles.tabContent}>
+                  <div className={styles.productGrid}>
+                    {(activeTab === "rent" ? rentProducts : saleProducts)
+                      .slice(0, visibleCount)
+                      .map((product: any) => (
+                        <ProductPost
+                          key={product._id}
+                          _id={product._id}
+                          title={product.title}
+                          description={""}
+                          category={product.category}
+                          subCategory={product.subcategory}
+                          price={Number(product.price)}
+                          SalePrice={product.SalePrice}
+                          location={product.location || "Not specified"}
+                          priceWeek={
+                            product.priceWeek !== undefined
+                              ? Number(product.priceWeek)
+                              : undefined
+                          }
+                          priceMonth={
+                            product.priceMonth !== undefined
+                              ? Number(product.priceMonth)
+                              : undefined
+                          }
+                          coverImage={
+                            product.coverImage ||
+                            product.images?.[0] ||
+                            "/images/DefoultLogo.jpg"
+                          }
+                          images={product.images || []}
+                          createdAt={product.createdAt}
+                          isFeatured={product.feature || false}
+                          onDelete={handleDelete}
+                          onUpdate={(id) => router.push(`/product/productUpdate/${id}`)}
+                          shopOwnerID={product.shopOwnerID}
+                        />
+                      ))}
+                  </div>
+
+                  {visibleCount < (activeTab === "rent" ? rentProducts.length : saleProducts.length) && (
+                    <div className={styles.viewMoreWrapper}>
+                      <Button
+                        className={styles["highlight-button"]}
+                        onClick={handleViewMore}
+                        color="black"
+                        text="white"
+                        href={""}
+                      >
+                        View More
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
+
               </div>
 
-              {visibleCount < products.length && (
+              {/* {visibleCount < products.length && (
                 <div className={styles.viewMoreWrapper}>
                   <Button
                     className={styles["highlight-button"]}
@@ -283,7 +322,7 @@ const PropertyDetailPage: React.FC = () => {
                     View More
                   </Button>
                 </div>
-              )}
+              )} */}
             </>
           )}
 
@@ -349,13 +388,12 @@ const PropertyDetailPage: React.FC = () => {
                 <p>
                   <span className="icon-phone">
                     {" "}
-                    {shopData?.user?.contact || "N/A"}
+                    {shopData?.user?.mobile || "N/A"}
                   </span>
                 </p>
                 <p>
                   <span className="icon-mail">
-                    {" "}
-                    {shopData?.user?.email || "N/A"}
+                    {shopData?.user?.contact || "N/A"}
                   </span>
                 </p>
               </div>
