@@ -57,9 +57,9 @@
             border-bottom: 0;
             @media screen and (max-width: 767px) {
               padding: 0;
-              height: 140px;
-              width: 150px;
-              object-fit: cover;
+              height: 150px;
+              width: 190px;
+              object-fit: contain;
               object-position: center;
             }
             @media screen and (max-width: 374px) {
@@ -80,20 +80,8 @@
               padding-right: 5px;
             }
             }
-            .timeStamp{
-              @media screen and (max-width: 767px) {
-                position: absolute;
-                bottom: 25.5px;
-                left: 4px;
-              }
-              p{
-                @media screen and (max-width: 767px) {
-                  left: -41px;
-                  width: max-content;
-                  top: 11px;
-                }
-              }
-            }
+           
+            
             .location{
               @media screen and (max-width: 767px) {
                 display: block;
@@ -114,7 +102,23 @@
             }
           }
         }
-        
+        .ProductCoverImg{
+          .timeStamp{
+            @media screen and (max-width: 767px) {
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              width: max-content;
+            }
+            p{
+              @media screen and (max-width: 767px) {
+                right: inherit;
+                top: initial;
+                position: relative;
+              }
+            }
+          }
+        }
       }
     }
   }

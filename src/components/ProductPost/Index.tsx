@@ -195,7 +195,12 @@ const toggleFavorite = async () => {
   return (
     <div className={`${styles.card} ${filter.card} ${className || ""}`}>
       <Link href={`/product/${_id}`} className={styles.button} onClick={handleClick}>
+        <div className={`${styles.ProductCoverImg} ${filter.ProductCoverImg}`}>
         <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} placeholder="blur" blurDataURL={coverImage || images?.[0] || "/images/placeholder.jpg"} priority />
+        <span className={`${styles.timeStamp} ${filter.timeStamp}`}>
+          <p>{formatPostedTime(createdAt)}</p>
+        </span>
+        </div>
 
         <div className={`${styles.content} ${filter.content}`}>
         <span className={styles.category}>
@@ -250,9 +255,7 @@ const toggleFavorite = async () => {
           </span>
         </div>
 
-        <span className={`${styles.timeStamp} ${filter.timeStamp}`}>
-          <p>{formatPostedTime(createdAt)}</p>
-        </span>
+        
       </div>
 
 

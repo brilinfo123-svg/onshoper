@@ -29,30 +29,38 @@
           font-size: 11px;
         }
         .PriceNumber{
-          color: #2E7D32;
+          color: #0FA958;
         }
         .priceType{
           color: #000 !important; 
         }
       }
+    }
+    .ProductCoverImg{
+      position: relative;
       .timeStamp{
         font-size: 14px;
+        position: absolute;
+        right: 8px;
+        top: 186px;
         @media screen and (max-width: 767px) {
           font-size: 9px;
+          position: absolute;
+          right: 0;
+          background-color: #f0f8ff;
+          padding: 2px 6px;
+          border-top-left-radius: 3px;
+          width: max-content;
+          bottom: 4px;
+          top: auto;
         }
         p{
           color: #404040;
-          position: absolute;
-          right: 8px;
-          top: 186px;
           background-color: #f0f8ff;
           padding: 2px 6px;
           border-top-left-radius: 3px;
           font-size: 10px;
           @media screen and (max-width: 767px) {
-            position: absolute;
-            right: 0;
-            top: 156px;
             background-color: #f0f8ff;
             padding: 2px 6px;
             border-top-left-radius: 3px;
@@ -68,7 +76,7 @@
   .image {
     width: 100%;
     height: 210px;
-    object-fit: cover;
+    object-fit: contain;
     padding: 8px;
     border-bottom: 0;
     @media screen and (max-width: 767px) {
@@ -172,12 +180,12 @@
   
     .prices {
       font-weight: bold;
-      color: #2a7b2a;
+      color: #0FA958;
       margin-bottom: 12px;
       .PriceNumber{
         font-size: 20px;
         @media screen and (max-width: 767px) {
-          font-size: 14px;
+          font-size: 16px;
         }
       }
     }
