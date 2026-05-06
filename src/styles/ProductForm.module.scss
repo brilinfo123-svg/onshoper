@@ -8,13 +8,15 @@
   font-family: 'Segoe UI', sans-serif;
   transition: all 0.3s ease;
   @media (max-width: 768px) {
-    padding: 15px 10px 50px;
+    padding: 15px 15px 50px;
     margin: 0px auto 50px;
     border-radius: 0px;
   }
-  // .SelectedItem{
-  //   background-color: #005ad3;
-  // }
+  .SelectedItem{
+    background-color: #fff8dc;
+    padding: 4px 5px;
+    margin-left: 2px;
+  }
   .errorText {
     color: #d9534f;
     font-size: 0.9rem;
