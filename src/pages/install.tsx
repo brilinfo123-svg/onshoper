@@ -80,6 +80,58 @@ export default function InstallApp() {
           transform: translateY(-3px);
           box-shadow: 0 6px 16px rgba(37,99,235,0.35);
         }
+.installContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.leftImages {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeIn 1s ease-out;
+}
+@media screen and (max-width: 767px){
+.leftImages{
+ display: none;
+}
+}
+.phoneImg {
+      width: 100%;
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 280px;
+}
+
+.rightContent {
+  text-align: center;
+  max-width: 300px;
+}
+.backBtnWrapper {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.backButtonTop {
+  background: #3b82f6;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+  transition: 0.3s ease;
+}
+
+.backButtonTop:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37,99,235,0.35);
+}
 
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }
@@ -93,24 +145,39 @@ export default function InstallApp() {
         }
       `}</style>
 
-      <div className="pageWrapper">
-        <div className="wraper">
-          {/* <h1 className="title">Install Onshoper App</h1>
+<div className="pageWrapper">
+<div className="backBtnWrapper">
+  <Link href="/" className="backButtonTop">
+    ← Back
+  </Link>
+</div>
 
-          <p className="subtitle">
-            Safe and secure
-          </p> */}
-  
-          <div className="qrCard">
-            <img
-              src="/icons/tabOnshoper.png"
-              alt="Scan to Install Onshoper App"
-              className="qrImage"
-            />
-          </div>
-          <InstallButton />
-        </div>
+  <div className="installContainer">
+    
+    {/* LEFT SIDE – Mobile App Images */}
+    <div className="leftImages">
+      <img src="/images/App_Image.png" className="phoneImg" alt="App Preview 1" />
+    </div>
+
+    {/* RIGHT SIDE – QR + Install Button */}
+    <div className="rightContent">
+      {/* <h1 className="title">Install Onshoper App</h1> */}
+      {/* <p className="subtitle">Safe and secure</p> */}
+
+      <div className="qrCard">
+        <img
+          src="/icons/tabOnshoper.png"
+          alt="Scan to Install Onshoper App"
+          className="qrImage"
+        />
       </div>
+
+      <InstallButton />
+    </div>
+
+  </div>
+</div>
+
     </>
   );
 }

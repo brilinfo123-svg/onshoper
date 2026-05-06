@@ -1,8 +1,8 @@
 .bannerWrapper {
-  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-  padding: 10px 10px;
+  // background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  padding: 0;
   @media (max-width: 767px) {
-    padding: 5px;
+    // padding: 5px;
   }
 }
 
@@ -21,15 +21,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 0;
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  min-width: 100%;
+  position: relative;
+  height: auto;
+  img{
+    position: initial !important;
+  }
   @media (max-width: 767px) {
-    padding: 10px 10px;
+    padding:0;
     border-radius: 5px;
-    background: #000;
+    // background: #000;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     -ms-border-radius: 5px;

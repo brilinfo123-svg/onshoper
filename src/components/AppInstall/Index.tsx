@@ -3,85 +3,68 @@ import Swal from "sweetalert2";
 
 export default function InstallButton() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [showButton, setShowButton] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
 
   useEffect(() => {
-    // Detect if PWA is already installed
-    const checkInstalled = () => {
-      const isStandalone =
-        window.matchMedia("(display-mode: standalone)").matches ||
-        window.matchMedia("(display-mode: minimal-ui)").matches ||
-        (window.navigator as any).standalone === true;
+    const isStandalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (window.navigator as any).standalone === true;
 
-      if (isStandalone) {
-        setIsInstalled(true);
-        setShowButton(false);
-      }
-    };
-
-    checkInstalled();
+    if (isStandalone) {
+      setIsInstalled(true);
+    }
 
     const handler = (e: any) => {
       e.preventDefault();
       setDeferredPrompt(e);
-      setShowButton(true);
     };
 
     window.addEventListener("beforeinstallprompt", handler);
 
-    return () => window.removeEventListener("beforeinstallprompt", handler);
+    return () =>
+      window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
   const installApp = async () => {
-    if (!deferredPrompt) return;
-
-    deferredPrompt.prompt();
-    const result = await deferredPrompt.userChoice;
-
-    if (result.outcome === "accepted") {
-      Swal.fire({
-        icon: "success",
-        title: "Thank You!",
-        text: "Your app installation has started.",
-        confirmButtonColor: "#3b82f6",
-      }).then(() => {
-        window.location.href = "/";
-      });
-    } else {
+    if (!deferredPrompt) {
       Swal.fire({
         icon: "info",
-        title: "Installation Cancelled",
-        text: "You dismissed the install prompt.",
+        title: "Please refresh the page",
+        // text: " to try again.",
+        confirmButtonText: "Refresh Page", // 👈 button text
         confirmButtonColor: "#3b82f6",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload(); // 🔄 reload
+        }
       });
+      return;
     }
-
+  
+    deferredPrompt.prompt();
+    const result = await deferredPrompt.userChoice;
+  
+    if (result.outcome === "accepted") {
+      Swal.fire("Success", "App installation started", "success");
+    }
+  
     setDeferredPrompt(null);
-    setShowButton(false);
   };
 
   return (
     <>
       {isInstalled && (
-        <p
-          style={{
-            marginTop: "20px",
-            color: "#16a34a",
-            fontWeight: "600",
-            textAlign: "center",
-          }}
-        >
+        <p style={{ color: "#16a34a", textAlign: "center" }}>
           ✔ You already installed this app
         </p>
       )}
 
-      {!isInstalled && showButton && (
+      {!isInstalled && (
         <button
           onClick={installApp}
           style={{
             padding: "12px 20px",
-            background: "#3b82f6",
+            background: deferredPrompt ? "#3b82f6" : "#3cb231",
             color: "#fff",
             borderRadius: "10px",
             border: "none",
@@ -91,7 +74,7 @@ export default function InstallButton() {
             width: "100%",
           }}
         >
-          Install Now
+          {deferredPrompt ? "Install Now" : "Get App"}
         </button>
       )}
     </>

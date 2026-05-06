@@ -94,12 +94,12 @@ export default withPWA({
   register: true,
   skipWaiting: true,
 
-  // Offline fallback page
+  disable: process.env.NODE_ENV === "development", // 🔥 ADD THIS
+
   fallbacks: {
     document: "/_offline",
   },
 
-  // Cache SVG icons + offline CSS + offline images
   runtimeCaching: [
     {
       urlPattern: /\/icons\/.*\.svg$/,
