@@ -11,17 +11,18 @@
   margin-top: 5px;
   @media screen and (max-width: 767px) {
     font-size: 9px;
-    display: block;
     text-align: center;
     padding: 2px 3px;
-    margin-top: 2px;
+    position: relative;
+    top: -2px;
     width: max-content;
     border-radius: 2px;
+    left: 2px;
+    display: initial;
   }
 }
 .extraText{
   @media screen and (max-width: 767px) {
-    display: block;
     margin: 0px 0 4px;
   }
 }

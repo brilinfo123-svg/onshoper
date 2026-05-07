@@ -4,8 +4,9 @@ import Autoplay from "embla-carousel-autoplay";
 import styles from "./banner.module.scss";
 import Image from "next/image";
 
+
 // const bannerSlides = [
-//   { title: "🛒 Sell & Rent Old Accessories", description: "List your pre-owned items in seconds and reach people looking to buy or rent." },
+//   { title: "🛒 Buy Sell & Rent Old Accessories", description: "List your pre-owned items in seconds and reach people looking to buy or rent." },
 //   { title: "✨ A New Marketplace Experience", description: "Onshoper is fresh and growing — discover deals on electronics, fashion, furniture, and more." },
 //   { title: "📱 Easy to Use on Any Device", description: "Post ads and browse listings seamlessly on mobile, tablet, or desktop." },
 //   { title: "🔎 Find What You Need Fast", description: "Smart filters by category, price, and location help you connect with the right audience." },
@@ -17,11 +18,9 @@ import Image from "next/image";
 
 
 const bannerSlides = [
-  { image: "/images/banner2.jpg" },
-  { image: "/images/banner1.jpg" },
-  { image: "/images/banner3.jpg" },
-  { image: "/images/banner4.jpg" },
-  { image: "/images/banner5.jpg" },
+  { image: "/images/banner2_4k.jpg" },
+  { image: "/images/banner3_4k.jpg" },
+  { image: "/images/banner1_4K.png" },
 ];
 
 const BannerPost = () => {

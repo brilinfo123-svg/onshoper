@@ -210,7 +210,7 @@ const toggleFavorite = async () => {
         <div className={`${styles.prices}`}>
           {/* ✅ Show salary for Jobs */}
           {category?.toLowerCase() === "jobs" && (salaryFrom || salaryTo) && (
-            <div>
+            <div className={styles.salaryPrice}>
               <span className={`${styles.PriceNumber} ${filter.PriceNumber}`}>
                 {salaryFrom ? `₹${Number(salaryFrom).toLocaleString("en-IN")}` : ""}
                 {salaryFrom && salaryTo ? " - " : ""}
@@ -222,7 +222,7 @@ const toggleFavorite = async () => {
           )}
           {/* ✅ Existing price logic */}
           {price > 0 && (
-            <div>
+            <div className={styles.salaryPrice}>
               <span className={`${styles.PriceNumber} ${filter.PriceNumber}`}>
                 ₹{price}
               </span>
@@ -230,7 +230,7 @@ const toggleFavorite = async () => {
             </div>
           )}
           {priceWeek > 0 && (
-            <div>
+            <div className={styles.salaryPrice}>
               ₹<span className={`${styles.PriceNumber} ${filter.PriceNumber}`}>
                 {priceWeek}
               </span>
@@ -238,7 +238,7 @@ const toggleFavorite = async () => {
             </div>
           )}
           {priceMonth > 0 && (
-            <div>
+            <div className={styles.salaryPrice}>
               ₹<span className={`${styles.PriceNumber} ${filter.PriceNumber}`}>
                 {priceMonth}
               </span>
@@ -254,11 +254,7 @@ const toggleFavorite = async () => {
             {SalePrice}
           </span>
         </div>
-
-        
       </div>
-
-
           <h2>
               {(() => {
                 let displayTitle = title;
