@@ -78,10 +78,10 @@ const ProductDetails = () => {
 
 
   const SallerName = shopData?.user?.name;
-  const SallerMobile = shopData?.user?.contact || shopData?.user?.mobile;
+  const SallerMobile = shopData?.user?.mobile || shopData?.user?.contact;
   const shopOwnerID = shopData?.user?.contact || shopData?.user?.mobile;
 
-  const [isHomeDeliveryAvailable, setIsHomeDeliveryAvailable] = useState(true);
+  // const [isHomeDeliveryAvailable, setIsHomeDeliveryAvailable] = useState(true);
 
   const startChat = () => {
     if (!session) {
@@ -1011,6 +1011,7 @@ useEffect(() => {
                 {shopData ? (
                   <>
                     <p>{shopData ? (<span className="icon-mail"> {shopData?.user?.contact || "Not Provided"}</span>) : (<span>Loading...</span>)}</p>
+                    <p>{shopData ? (<span className="icon-phone"> {shopData?.user?.mobile || "Not Provided"}</span>) : (<span>Loading...</span>)}</p>
                   </>
                 ) : (
                   <ProfilePicSkeleton size="xlarge" showCircle={false}
