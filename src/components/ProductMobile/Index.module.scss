@@ -122,9 +122,11 @@
   }
   @media (max-width: 768px) {
     width: 55px;
-    height: 55px;         
-    max-width: 55px;
-    max-height: 55px;
+    height: 55px;       
+  }
+  @media (max-width: 414px) {
+    width: 50px;
+    height: 50px;  
   }
 
   img {
@@ -636,10 +638,12 @@
     min-width: 12%;
   }
   @media (max-width: 768px) {
-    min-width: 18%;
+    min-width: 14.5%;
     padding: 0;
   }
-  
+  @media (max-width: 414px) {
+    min-width: 18%;
+  }
   @media (min-width: 1440px) {
     min-width: 10%; // Show 5 items on desktop
   }
