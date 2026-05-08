@@ -1,61 +1,135 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import styles from "./banner.module.scss";
 import Image from "next/image";
 
-
-// const bannerSlides = [
-//   { title: "🛒 Buy Sell & Rent Old Accessories", description: "List your pre-owned items in seconds and reach people looking to buy or rent." },
-//   { title: "✨ A New Marketplace Experience", description: "Onshoper is fresh and growing — discover deals on electronics, fashion, furniture, and more." },
-//   { title: "📱 Easy to Use on Any Device", description: "Post ads and browse listings seamlessly on mobile, tablet, or desktop." },
-//   { title: "🔎 Find What You Need Fast", description: "Smart filters by category, price, and location help you connect with the right audience." },
-//   { title: "🤝 Connect with Real People", description: "Trusted platform for individuals, agents, and small businesses to buy, sell, or rent accessories." },
-//   { title: "🛡️ Safe & Transparent Deals", description: "We protect your data and moderate listings to keep the marketplace secure and fair." },
-//   { title: "🌱 Promote Reuse & Sustainability", description: "Give old accessories a second life — save money and reduce waste while helping others." },
-//   { title: "🚀 Growing Community", description: "Be part of a new marketplace that’s expanding every day with fresh listings and opportunities." },
-// ];
-
-
 const bannerSlides = [
-  { image: "/images/banner2_4k.jpg" },
-  { image: "/images/banner3_4k.jpg" },
-  { image: "/images/banner1_4K.png" },
+  {
+    desktop: "/images/banner1_4K.png",
+    mobile: "/images/banner1_Mobile.jpg",
+  },
+  {
+    desktop: "/images/banner2_4K.jpg",
+    mobile: "/images/banner3_mobile.jpg",
+  },
+  {
+    desktop: "/images/banner5.jpg",
+    mobile: "/images/banner4_mobile.jpg",
+  },
+  {
+    desktop: "/images/banner2_4K.jpg",
+    mobile: "/images/banner2_mbile.jpg",
+  },
+  
 ];
 
 const BannerPost = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Active dot
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  // ✅ Smooth autoplay
   const autoplayOptions = {
-    delay: 5000,
+    delay: 4500,
     stopOnInteraction: false,
-    stopOnMouseEnter: false,
+    stopOnMouseEnter: true,
+    playOnInit: true,
   };
 
-  const [emblaRef] = useEmblaCarousel(
+  // ✅ Smooth Embla Config
+  const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
-      align: "start",
+      align: "center",
       slidesToScroll: 1,
       dragFree: false,
+
+      // 👇 smoother transition
+      duration: 40,
+
+      // 👇 smoother dragging
+      skipSnaps: false,
+
+      // 👇 smooth edge handling
+      containScroll: "trimSnaps",
     },
     [Autoplay(autoplayOptions)]
   );
+
+  // Active dot update
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    onSelect();
+
+    emblaApi.on("select", onSelect);
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
+  // Screen detection
+  useEffect(() => {
+    setMounted(true);
+
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkScreen();
+
+    window.addEventListener("resize", checkScreen);
+
+    return () => {
+      window.removeEventListener("resize", checkScreen);
+    };
+  }, []);
+
+  // Prevent hydration mismatch
+  if (!mounted) return null;
 
   return (
     <div className="container">
       <div className={styles.bannerWrapper}>
         <div className={styles.embla} ref={emblaRef}>
-        <div className={styles.embla__container}>
+          <div className={styles.embla__container}>
             {bannerSlides.map((slide, index) => (
               <div className={styles.embla__slide} key={index}>
                 <Image
-                    src={slide.image}
-                    alt={`banner-${index}`}
-                    fill
-                    className={styles.bannerImage}
-                  />
+                  src={isMobile ? slide.mobile : slide.desktop}
+                  alt={`banner-${index}`}
+                  fill
+                  priority={index === 0}
+                  quality={100}
+                  className={styles.bannerImage}
+                />
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Stylish Dots */}
+        <div className={styles.dots}>
+          {bannerSlides.map((_, index) => (
+            <button
+              key={index}
+              aria-label={`Go to slide ${index + 1}`}
+              className={`${styles.dot} ${
+                selectedIndex === index ? styles.activeDot : ""
+              }`}
+              onClick={() => emblaApi?.scrollTo(index)}
+            />
+          ))}
         </div>
       </div>
     </div>
