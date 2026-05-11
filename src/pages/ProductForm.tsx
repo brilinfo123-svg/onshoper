@@ -761,124 +761,227 @@ function AllCategoryRentalForm() {
   };
 
 
-  // Handler
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    field: string
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+// ✅ Common Input Handler
+const handleFileChange = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  field: string
+) => {
+  const file = e.target.files?.[0];
 
-    setFormData((prev) => ({
-      ...prev,
-      [field]: file,
-    }));
-  };
+  if (!file) return;
 
-  // console.log("Is terms accepted?", formData.termsAccepted);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  setFormData((prev) => ({
+    ...prev,
+    [field]: file,
+  }));
+};
 
-  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newImages = Array.from(e.target.files || []);
-  //   setFormData((prev) => ({ ...prev, images: [...prev.images, ...newImages] }));
-  // };
+// ✅ Text / Select Handler
+const handleChange = (
+  e: React.ChangeEvent<
+    HTMLInputElement |
+    HTMLTextAreaElement |
+    HTMLSelectElement
+  >
+) => {
+  setFormData((prev) => ({
+    ...prev,
+    [e.target.name]: e.target.value,
+  }));
+};
 
-  const formatSize = (bytes: number) => {
-    return bytes >= 1024 * 1024
-      ? `${(bytes / (1024 * 1024)).toFixed(2)} MB`
-      : `${(bytes / 1024).toFixed(0)} KB`;
-  };
+// ✅ Format File Size
+const formatSize = (bytes: number) => {
+  return bytes >= 1024 * 1024
+    ? `${(bytes / (1024 * 1024)).toFixed(2)} MB`
+    : `${(bytes / 1024).toFixed(0)} KB`;
+};
 
-  const handleImageChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const files = Array.from(e.target.files ?? []);
-    const valid: File[] = [];
-  
-    for (let file of files) {
-      if (!file.type.startsWith("image/")) {
-        Swal.fire("Invalid File", "Only image files are allowed.", "error");
-        continue;
-      }
-  
-      const originalSize = file.size;
-  
-      // 🔽 Compress if needed
+// ✅ Product Images Upload
+// ✅ Product Images Upload
+// ✅ Product Images Upload
+const handleImageChange = async (
+  e: React.ChangeEvent<HTMLInputElement>
+) => {
+  const files = Array.from(e.target.files ?? []);
+
+  if (!files.length) return;
+
+  // ✅ Max limit check
+  const totalImages = formData.images.length + files.length;
+
+  if (totalImages > 10) {
+    Swal.fire({
+      icon: "warning",
+      title: "Upload Limit",
+      text: "Maximum 10 images allowed.",
+      confirmButtonColor: "#3b82f6",
+    });
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+
+    return;
+  }
+
+  const valid: File[] = [];
+
+  for (let file of files) {
+    // ✅ Duplicate image check
+    const isDuplicate = formData.images.some(
+      (img) =>
+        img instanceof File &&
+        img.name === file.name &&
+        img.size === file.size
+    );
+
+    if (isDuplicate) {
+      Swal.fire({
+        icon: "warning",
+        title: "Duplicate Image",
+        text: `${file.name} is already selected.`,
+        confirmButtonColor: "#3b82f6",
+      });
+
+      continue;
+    }
+
+    // ❌ Invalid file
+    if (!file.type.startsWith("image/")) {
+      Swal.fire(
+        "Invalid File",
+        "Only image files are allowed.",
+        "error"
+      );
+
+      continue;
+    }
+
+    // ❌ Huge image
+    if (file.size > 20 * 1024 * 1024) {
+      Swal.fire(
+        "Too Large",
+        `${file.name} must be under 20MB.`,
+        "warning"
+      );
+
+      continue;
+    }
+
+    const originalSize = file.size;
+
+    try {
+      // ✅ Compress large image
       if (file.size > MAX_IMAGE_SIZE) {
-        try {
-          // 🔄 Show loader
-          Swal.fire({
-            title: "Optimizing Image",
-            text: "Please wait...",
-            allowOutsideClick: false,
-            didOpen: () => Swal.showLoading(),
-          });
-  
-          const compressedFile = await imageCompression(file, {
-            maxSizeMB: 2,
-            maxWidthOrHeight: 1920,
-            useWebWorker: true,
-          });
-  
-          Swal.close(); // ✅ close loader
-  
-          // ❌ Still large
-          if (compressedFile.size > MAX_IMAGE_SIZE) {
-            Swal.fire(
-              "Upload Failed",
-              "Image could not be optimized under 2 MB.",
-              "warning"
-            );
-            continue;
+        Swal.fire({
+          title: "Optimizing Image",
+          text: `Compressing ${file.name}`,
+          allowOutsideClick: false,
+          didOpen: () => Swal.showLoading(),
+        });
+
+        const compressedBlob = await imageCompression(file, {
+          maxSizeMB: 1.8,
+          maxWidthOrHeight: 1600,
+          useWebWorker: true,
+          initialQuality: 0.8,
+        });
+
+        Swal.close();
+
+        // ✅ Blob → File
+        file = new File(
+          [compressedBlob],
+          file.name,
+          {
+            type: compressedBlob.type,
+            lastModified: Date.now(),
           }
-  
-          const reducedPercent = Math.round(
-            ((originalSize - compressedFile.size) / originalSize) * 100
+        );
+
+        // ❌ Still large
+        if (file.size > MAX_IMAGE_SIZE) {
+          Swal.fire(
+            "Upload Failed",
+            `${file.name} could not be optimized under 2MB.`,
+            "warning"
           );
-  
-          // ✅ Show compression info
-          Swal.fire({
-            title: "Image Optimized",
-            text: `${formatSize(originalSize)} → ${formatSize(
-              compressedFile.size
-            )} (${reducedPercent}% reduced)`,
-            icon: "success",
-            timer: 2000,
-            showConfirmButton: false,
-          });
-  
-          file = compressedFile;
-        } catch {
-          Swal.close();
-          Swal.fire("Error", "Image compression failed.", "error");
+
           continue;
         }
-      }
-  
-      valid.push(file);
-    }
-  
-    setFormData((prev) => ({
-      ...prev,
-      images: [...prev.images, ...valid].slice(0, MAX_IMAGES),
-    }));
-  };
-  
-  
-  
 
-  const handleRemoveImage = (index: number) => {
-    const updatedImages = formData.images.filter((_, i) => i !== index);
-    setFormData((prev) => ({ ...prev, images: updatedImages }));
-    if (fileInputRef.current) {
-      const dataTransfer = new DataTransfer();
-      updatedImages.forEach((file) => dataTransfer.items.add(file));
-      fileInputRef.current.files = dataTransfer.files;
+        const reducedPercent = Math.round(
+          ((originalSize - file.size) / originalSize) * 100
+        );
+
+        Swal.fire({
+          title: "Image Optimized",
+          text: `${formatSize(originalSize)} → ${formatSize(
+            file.size
+          )} (${reducedPercent}% reduced)`,
+          icon: "success",
+          timer: 1800,
+          showConfirmButton: false,
+        });
+      }
+
+      valid.push(file);
+    } catch (error) {
+      console.error(error);
+
+      Swal.close();
+
+      Swal.fire(
+        "Error",
+        `Compression failed for ${file.name}`,
+        "error"
+      );
     }
-  };
+  }
+
+  // ✅ Save images
+  setFormData((prev) => ({
+    ...prev,
+    images: [
+      ...prev.images.filter(
+        (img): img is File => img instanceof File
+      ),
+      ...valid,
+    ].slice(0, 10),
+  }));
+
+  // ✅ Reset input
+  if (fileInputRef.current) {
+    fileInputRef.current.value = "";
+  }
+};
+
+// ✅ Remove Product Image
+const handleRemoveImage = (index: number) => {
+  const updatedImages = formData.images.filter(
+    (_, i) => i !== index
+  );
+
+  // ✅ Revoke memory
+  const removedImage = formData.images[index];
+
+  if (removedImage instanceof File) {
+    URL.revokeObjectURL(
+      URL.createObjectURL(removedImage)
+    );
+  }
+
+  setFormData((prev) => ({
+    ...prev,
+    images: updatedImages,
+  }));
+
+  // ✅ Reset input safely
+  if (fileInputRef.current) {
+    fileInputRef.current.value = "";
+  }
+};
 
   // const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   const file = e.target.files?.[0];
@@ -891,19 +994,38 @@ function AllCategoryRentalForm() {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     let file = e.target.files?.[0];
+  
     if (!file) return;
   
-    // ❌ Not an image
+    // ✅ Allow only images
     if (!file.type.startsWith("image/")) {
-      Swal.fire("Invalid File", "Only image files are allowed.", "error");
+      Swal.fire(
+        "Invalid File",
+        "Only image files are allowed.",
+        "error"
+      );
+  
+      e.target.value = "";
+      return;
+    }
+  
+    // ✅ Prevent huge files (important for mobiles)
+    if (file.size > 20 * 1024 * 1024) {
+      Swal.fire(
+        "Too Large",
+        "Image must be under 20MB.",
+        "warning"
+      );
+  
+      e.target.value = "";
       return;
     }
   
     const originalSize = file.size;
   
-    // 🔽 Compress if needed
-    if (file.size > MAX_IMAGE_SIZE) {
-      try {
+    try {
+      // ✅ Compress large image
+      if (file.size > MAX_IMAGE_SIZE) {
         Swal.fire({
           title: "Optimizing Image",
           text: "Please wait...",
@@ -911,57 +1033,92 @@ function AllCategoryRentalForm() {
           didOpen: () => Swal.showLoading(),
         });
   
-        const compressedFile = await imageCompression(file, {
-          maxSizeMB: 2,
-          maxWidthOrHeight: 1920,
+        const compressedBlob = await imageCompression(file, {
+          maxSizeMB: 1.8,
+          maxWidthOrHeight: 1600,
           useWebWorker: true,
+          initialQuality: 0.8,
         });
   
         Swal.close();
   
+        // ✅ Convert Blob → File
+        file = new File(
+          [compressedBlob],
+          file.name,
+          {
+            type: compressedBlob.type,
+            lastModified: Date.now(),
+          }
+        );
+  
         // ❌ Still too large
-        if (compressedFile.size > MAX_IMAGE_SIZE) {
+        if (file.size > MAX_IMAGE_SIZE) {
           Swal.fire(
             "Upload Failed",
             "Cover image could not be optimized under 2 MB.",
             "warning"
           );
+  
+          e.target.value = "";
           return;
         }
   
         const reducedPercent = Math.round(
-          ((originalSize - compressedFile.size) / originalSize) * 100
+          ((originalSize - file.size) / originalSize) * 100
         );
   
-        // ✅ Show compression info
         Swal.fire({
           title: "Cover Image Optimized",
           text: `${formatSize(originalSize)} → ${formatSize(
-            compressedFile.size
+            file.size
           )} (${reducedPercent}% reduced)`,
           icon: "success",
-          timer: 2200,
+          timer: 2000,
           showConfirmButton: false,
         });
-  
-        file = compressedFile;
-      } catch {
-        Swal.close();
-        Swal.fire("Error", "Image compression failed.", "error");
-        return;
       }
-    }
   
-    setFormData((prev) => ({
-      ...prev,
-      coverImage: file,
-    }));
+      // ✅ Save image
+      setFormData((prev) => ({
+        ...prev,
+        coverImage: file,
+      }));
+    } catch (error) {
+      console.error(error);
+  
+      Swal.close();
+  
+      Swal.fire(
+        "Error",
+        "Image compression failed.",
+        "error"
+      );
+  
+      e.target.value = "";
+    }
   };
   
   const handleRemoveCoverImage = () => {
-    setFormData((prev) => ({ ...prev, coverImage: null }));
+    // ✅ Remove image from state
+    setFormData((prev) => ({
+      ...prev,
+      coverImage: null,
+    }));
+  
+    // ✅ Reset input field properly
     if (coverImageInputRef.current) {
       coverImageInputRef.current.value = "";
+    }
+  
+    // ✅ Optional: free browser memory
+    if (
+      formData.coverImage &&
+      formData.coverImage instanceof File
+    ) {
+      URL.revokeObjectURL(
+        URL.createObjectURL(formData.coverImage)
+      );
     }
   };
 
@@ -2710,30 +2867,65 @@ function AllCategoryRentalForm() {
             <div className={styles.fileManageWrap}>
               <div className={styles.formGroup}>
                 <div className={styles.fileUpload}>
-                  <label htmlFor="file" className="icon-upload-cloud-outline">Cover Image</label>
-                  <input type="file" accept="image/*" onChange={handleCoverImageChange} ref={coverImageInputRef} />
+                  <label htmlFor="coverImage" className="icon-upload-cloud-outline">Cover Image</label>
+                  <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handleCoverImageChange} ref={coverImageInputRef} />
                 </div>
                 {formData.coverImage && (
-                  <div className={styles.imagePreviewBox}>
-                    <img src={URL.createObjectURL(formData.coverImage)} alt="Cover Preview" />
-                    <button type="button" className={styles.removeImage} onClick={handleRemoveCoverImage}>&times;</button>
-                  </div>
-                )}
+                    <div className={styles.imagePreviewBox}>
+                      <Image
+                        src={URL.createObjectURL(formData.coverImage as File)}
+                        alt="Cover Preview"
+                        width={200}
+                        height={200}
+                        unoptimized
+                        className={styles.previewImage}
+                      />
+
+                      <button
+                        type="button"
+                        className={styles.removeImage}
+                        onClick={handleRemoveCoverImage}
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  )}
               </div>
 
               <div className={styles.formGroup}>
                 <div className={styles.fileUpload}>
-                  <label htmlFor="file" className="icon-upload-cloud-outline"> Product Images</label>
-                  <input type="file" multiple accept="image/*" onChange={handleImageChange} ref={fileInputRef} />
+                  <label htmlFor="productImages" className="icon-upload-cloud-outline"> Product Images</label>
+                  <input type="file" multiple accept="image/png,image/jpeg,image/webp" onChange={handleImageChange} ref={fileInputRef} />
                 </div>
                 <div className={`${styles.imagePreviewWrapper} ${styles.SpaceBox}`}>
-                  {formData.images.map((img, idx) => (
-                    <div key={idx} className={`${styles.imagePreviewBox} ${styles.NewPreviewBox}`}>
-                      <img src={URL.createObjectURL(img)} alt={`Preview ${idx}`} />
-                      <button type="button" className={styles.removeImage} onClick={() => handleRemoveImage(idx)}>&times;</button>
+                      {formData.images.map((img, idx) => {
+                        if (!(img instanceof File)) return null;
+
+                        return (
+                          <div
+                            key={idx}
+                            className={`${styles.imagePreviewBox} ${styles.NewPreviewBox}`}
+                          >
+                            <Image
+                              src={URL.createObjectURL(img)}
+                              alt={`Preview ${idx}`}
+                              width={200}
+                              height={200}
+                              unoptimized
+                              className={styles.previewImage}
+                            />
+
+                            <button
+                              type="button"
+                              className={styles.removeImage}
+                              onClick={() => handleRemoveImage(idx)}
+                            >
+                              &times;
+                            </button>
+                          </div>
+                        );
+                      })}
                     </div>
-                  ))}
-                </div>
               </div>
               {/* Rental Terms File Upload */}
 

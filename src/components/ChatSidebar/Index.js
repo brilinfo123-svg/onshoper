@@ -615,7 +615,17 @@ useEffect(() => {
             <div className={styles.messagesContainer} ref={messagesContainerRef}>
               <div className={styles.messagesList}>
                 {messagesLoading ? (
-                 <div className={styles.fetchingText}>Fetching messages<span>.</span><span>.</span><span>.</span></div>             
+                  <div className={styles.loadingWrapper}>
+                  <div className={styles.chatLoader}>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+              
+                  <p className={styles.loadingText}>
+                    Loading Messages...
+                  </p>
+                </div>          
                 ) : messages.length === 0 ? (
                   <div className={styles.noMessages}>No messages yet. Start a conversation!</div>
                 ) : (
