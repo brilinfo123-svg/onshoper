@@ -1617,11 +1617,12 @@
 
 .modalContent {
   position: relative;
-  max-width: 90%;
-  max-height: 90%;
   width: 100%;
-  height: auto;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   cursor: default;
+  background-color: #000;
 }
 
 .closeButton {
@@ -1640,10 +1641,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.8);
-  }
 }
 
 .mainImageContainer {
@@ -1788,26 +1785,26 @@
 .embla__button {
   outline: 0;
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #fff;
   touch-action: manipulation;
   position: absolute;
   z-index: 1;
   top: 50%;
   transform: translateY(-50%);
   border: 0;
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 90px;
   justify-content: center;
   align-items: center;
   padding: 0;
-  border-radius: 50%;
+  border-radius: 5px;
   transition: all 0.3s ease;
   display: flex;
   
-  &:hover:not(:disabled) {
-    background-color: rgba(0, 0, 0, 0.8);
-    transform: translateY(-50%) scale(1.1);
-  }
+  // &:hover:not(:disabled) {
+  //   background-color: rgba(0, 0, 0, 0.8);
+  //   transform: translateY(-50%) scale(1.1);
+  // }
   
   &:disabled {
     cursor: default;
@@ -1897,9 +1894,10 @@
 
 .modalContent {
   position: relative;
-  width: 90%;
-  height: 90%;
-  max-width: 1200px;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   cursor: default;
 }
 
@@ -1907,24 +1905,19 @@
   position: absolute;
   top: 15px;
   right: 15px;
-  background: rgba(0, 0, 0, 0.7);
+  background-color: #fff;
   color: white;
   border: none;
   border-radius: 50%;
   width: 45px;
   height: 45px;
-  font-size: 28px;
+  font-size: 18px;
   cursor: pointer;
   z-index: 1001;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.2s ease;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.9);
-    transform: scale(1.1);
-  }
 }
 
 .imageCounter {
@@ -2056,12 +2049,12 @@
     }
     
     &.active {
-      background: rgba(255, 68, 68, 0.1);
+      background: rgb(255 68 68 / 37%);
       
       span {
         color: #ff4444;
         @media screen and (max-width: 767px) {
-          font-size: 20px;
+          font-size: 17px;
         }
       }
     }
