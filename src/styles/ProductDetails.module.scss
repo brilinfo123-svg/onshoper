@@ -20,6 +20,7 @@
   }
   @media screen and (max-width: 767px) {
     display: block;
+    margin-top: 0;
   }
 
   .termFile {
@@ -47,11 +48,7 @@
 
     :global(.slick-prev),
     :global(.slick-next) {
-      width: 40px;
-      height: 40px;
       z-index: 1;
-      background-color: rgba(0, 0, 0, 0.4);
-      border-radius: 50%;
       color: #fff;
 
       :global(.slick-prev)::before,
@@ -74,6 +71,7 @@
     :global(.slick-next) {
       top: 45%;
       transform: translateY(-50%);
+      display: none !important;
     }
 
     /* Dots styling */
@@ -81,30 +79,39 @@
       bottom: -10px;
       height: 50px;
     }
-
+    :global(.slick-dots li) {
+      @media screen and (max-width: 767px) {
+        margin: 0;
+        width: 15px;
+      }
+    }
     :global(.slick-dots li button:before) {
       font-size: 10px;
-      color: #888;
+      color: #bbbbbb;
       opacity: 1;
+    }
+    :global(.slick-dots li button) {
+      padding: 0;
     }
 
     :global(.slick-dots li.slick-active button:before) {
-      color: #000;
+      color: #fff;
+      font-size: 12px;
     }
-
   }
 
   .slider {
     border-radius: 8px;
     overflow: hidden;
-    padding-bottom: 50px;
+    padding-bottom: 0;
   }
 
   .slide {
     height: 400px;
-    background-color: #000;
+    background: #333333;
+    background: linear-gradient(270deg,rgba(51, 51, 51, 1) 0%, rgba(150, 150, 150, 1) 50%, rgba(87, 87, 87, 1) 100%);
     @media screen and (max-width: 767px) {
-      height: 230px;
+      height: 320px;
     }  
     img {
       border-radius: 8px;
@@ -786,7 +793,7 @@
             &:last-child {
               background: linear-gradient(135deg, #25D366 0%, #3bb2a4 100%);
               color: #fff;
-              font-size: 28px !important;
+              font-size: 28 px !important;
             }
           }
         }
@@ -1226,6 +1233,7 @@
   justify-content: space-between;
   @media screen and (max-width: 767px) {
     padding: 5px 8px;
+    margin: 0 -5px 15px;
   }
   h1 {
     font-size: 2rem;
@@ -1259,6 +1267,7 @@
   @media screen and (max-width: 767px) {
     border-radius: 0;
     padding: 18px 10px;
+    box-shadow: none;
   }
   h2 {
     font-size: 1.2rem;
@@ -1845,6 +1854,12 @@
   border: 0;
   display: flex;
   align-items: center;
+  @media screen and (max-width: 767px) {
+    width: 15px;
+    height: 30px;
+    margin-right: 3.5px;
+    margin-left: 3.5px;
+  }
   
   &::after {
     background-color: rgba(255, 255, 255, 0.5);
@@ -1938,21 +1953,28 @@
 // Responsive adjustments
 @media (max-width: 768px) {
   .modalContent {
-    width: 95%;
-    height: 75%;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    max-width: 100%;
+    max-height: 100%;
+    background-color: #000;
   }
   
   .closeButton {
-    top: 10px;
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    font-size: 24px;
+    top: 13px;
+    right: 13px;
+    width: 35px;
+    height: 35px;
+    font-size: 15px;
+    color: #000;
+    background-color: #fff;
   }
   
   .embla__button {
-    width: 40px;
+    width: 25px;
     height: 40px;
+    border-radius: 0;
     
     &__prev {
       left: 10px;
@@ -1966,12 +1988,17 @@
   .embla__button__svg {
     width: 16px;
     height: 16px;
+    color: #fff;
   }
   
   .imageCounter {
-    bottom: 60px;
-    padding: 6px 12px;
+    bottom: 0;
+    padding: 3px 15px;
     font-size: 14px;
+    top: 20px;
+    height: fit-content;
+    background-color: #fff;
+    color: #000;
   }
 }
 // Optional: Add pulse animation for attention
@@ -1983,6 +2010,9 @@
 // <button onClick={startChat} className={`icon-comment ${styles.pulse}`}></button>
 .productImages{
   position: relative;
+  @media screen and (max-width: 767px) {
+    margin: 0 -5px;
+  }
 .favoriteIcon {
   position: absolute;
   top: 10px;
@@ -1990,8 +2020,8 @@
   z-index: 10;
   cursor: pointer;
   @media screen and (max-width: 767px) {
-    top: 5px;
-    right: 5px;
+    top: 10px;
+    right: 10px;
   }
   div {
     width: 36px;
@@ -2042,4 +2072,72 @@
     opacity: 0.7;
   }
 }
+}
+
+
+
+.sliderWrapper {
+  position: relative;
+  .slideCounter {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    background-color: rgb(255 255 255 / 24%);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    backdrop-filter: blur(5px);
+  
+    @media (max-width: 767px) {
+      bottom: 10px;
+      right: 6px;
+      font-size: 13px;
+      padding: 3px 7px;
+    }
+    span{
+      color: #fff;
+    }
+  }
+}
+
+.backBtn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  gap: 3px;
+
+  padding: 8px 14px;
+  border-radius: 999px;
+
+  background-color: #fff;
+  backdrop-filter: blur(12px);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #000;
+  transition: all 0.3s ease;
+  @media (max-width: 767px) {
+    padding: 5px 10px;
+    top: 10px;
+    left: 10px;
+  }
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+  }
+  span{
+    color: #000;
+  }
 }

@@ -21,6 +21,7 @@ import ShareButtons from "@/components/ShareButtons/Index";
 
 import { useFavorites } from "@/contexts/FavoriteContext";
 import { toast } from "react-toastify";
+// const [selectedIndex, setSelectedIndex] = useState(0);
 import Swal from "sweetalert2";
 // import { WheelGesturesPlugin } from 'emb';
 
@@ -491,29 +492,49 @@ useEffect(() => {
       <div className={styles.mainContent}>
         {/* Left Column */}
         <div className={styles.leftColumn}>
-        <div className={styles.productImages}>
-        <div className={`${styles.favoriteIcon} ${loading ? styles.disabled : ""}`} onClick={toggleFavorite}>
-        <div className={favorite ? styles.active : ""}>
-          <span className="icon-heart"></span>
-        </div>
-        
-
-      </div>
+          <div className={styles.productImages}>
+          <Link href="/" className={styles.backBtn}><span className="icon-left-1"></span>Back</Link>
+            <div className={`${styles.favoriteIcon} ${loading ? styles.disabled : ""}`} onClick={toggleFavorite}>
+            <div className={favorite ? styles.active : ""}>
+              <span className="icon-heart"></span>
+            </div>
+          </div>
           {product.images?.length > 1 ? (
-            <Slider {...sliderSettings}>
-              {product.images.map((img: string, index: number) => (
-                <div key={index} className={styles.slide} onClick={() => openImageModal(index)}>
-                  <Image
-                    src={img || "/images/watercolor.png"} // fallback for broken image
-                    alt={`product-${index}`}
-                    width={600}
-                    height={400}
-                    style={{ objectFit: "contain", width: "100%", height: "100%", cursor: "pointer" }}
-                  />
-                </div>
-              ))}
-            </Slider>
-          ) : product.images?.length === 1 ? (
+  <div className={styles.sliderWrapper}>
+    <Slider
+      {...sliderSettings}
+      beforeChange={(_, next) => setSelectedIndex(next)}
+    >
+      {product.images.map((img: string, index: number) => (
+        <div
+          key={index}
+          className={styles.slide}
+          onClick={() => openImageModal(index)}
+        >
+          <Image
+            src={img || "/images/watercolor.png"}
+            alt={`product-${index}`}
+            width={600}
+            height={400}
+            style={{
+              objectFit: "contain",
+              width: "100%",
+              height: "100%",
+              cursor: "pointer",
+            }}
+          />
+        </div>
+      ))}
+    </Slider>
+
+    {/* ✅ OLX Style Counter */}
+    <div className={styles.slideCounter}>
+      <span>{selectedIndex + 1}</span>
+      <span>/</span>
+      <span>{product.images.length}</span>
+    </div>
+  </div>
+) : product.images?.length === 1 ? (
             <div className={styles.slide} onClick={() => openImageModal(0)}>
               <Image src={product.images[0] || "/images/watercolor.png"} alt="product-single" width={600} height={400} style={{ objectFit: "contain", width: "100%", height: "100%", cursor: "pointer" }}
               />
@@ -536,7 +557,7 @@ useEffect(() => {
             <div className={styles.imageModal} onClick={closeImageModal}>
               <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={closeImageModal}>
-                  &times;
+                 <span className="icon-cancel"></span>
                 </button>
 
                 <div className={styles.embla}>
@@ -599,9 +620,9 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-          )}
+            )}
 
-        </div>
+          </div>
         
           <div className={styles.details}>
             {/* Header */}
@@ -1176,4 +1197,5 @@ useEffect(() => {
   );
 };
 
+ProductDetails.hideHeader = true;
 export default ProductDetails;

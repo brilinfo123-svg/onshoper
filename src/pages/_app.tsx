@@ -1,5 +1,5 @@
 // /pages/_app.tsx
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SessionProvider, useSession } from "next-auth/react";
 import DefaultHeader from "@/components/DefaultHeader/Index";
 import { NotificationProvider } from "../contexts/NotificationContext";
@@ -38,7 +38,20 @@ export default function App({ Component, pageProps }: AppProps) {
   const isProductDetailPage = router.pathname.startsWith("/product/");
   const isAuthPage = router.pathname.startsWith("/login");
   const isOfflinePage = router.pathname === "/_offline";
+  const ProductForms = router.pathname === "/ProductForm";
   const isInstall = router.pathname === "/install";
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+  
+    handleResize();
+    window.addEventListener("resize", handleResize);
+  
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // ✅ Setup FCM + Service Worker
   useEffect(() => {
@@ -97,7 +110,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     <ToastContainer position="top-right" autoClose={3000} />
                     <AutoUnfeaturePoller />
 
-                    {!isAdminPage && !isAuthPage && !isOfflinePage && !isInstall && <HeaderComponent />}
+                    {!isAdminPage && !isAuthPage && !isOfflinePage && !isInstall && !(router.pathname === "/ProductForm" && isMobile) && (<HeaderComponent Component={Component} />)}
 
                     <main>
                       <Component {...pageProps} />
@@ -119,8 +132,12 @@ export default function App({ Component, pageProps }: AppProps) {
 // -----------------------------------------------------------------
 // Header Component
 // -----------------------------------------------------------------
-const HeaderComponent = () => {
+const HeaderComponent = ({ Component }: any) => {
   const { data: session } = useSession();
+
+  // ✅ page-level override
+  if (Component.hideHeader) return null;
+
   return session ? <ProtectedHeader /> : <DefaultHeader />;
 };
 

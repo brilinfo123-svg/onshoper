@@ -16,7 +16,6 @@ import Layout from "../Layout/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import { useFilter } from "@/contexts/FilterContext";
 import Swal from "sweetalert2";
-import Image from "next/image";
 
 
 
@@ -337,12 +336,11 @@ const Header: React.FC = () => {
           </h3> */}
           {/* <img src="/icons/logo2.png" alt="" width="100px"/> */}
           <div className={Style.logo}>
-          <Image src="/images/ColoredLogo.png" alt="Logo" width={100} height={25} priority/>
-              {/* <h3>ON</h3>
+              <h3>ON</h3>
               <div className={Style.logoDesc}>
                  <h4>Shoper</h4>
                  <span>Sale & Rent</span>
-              </div> */}
+              </div>
             </div>
         </Link>
           <div className={Style.wrapper}>
@@ -371,12 +369,11 @@ const Header: React.FC = () => {
           <Link href="/">
             {/* <h2><span className="icon-shop"></span> Local  </h2> */}
             <div className={Style.logo}>
-              <img src="/images/OnshoperLogo.png" alt="OnshoperLogo" width={200}/>
-              {/* <h3>ON</h3>
+              <h3>ON</h3>
               <div className={Style.logoDesc}>
                  <h4>Shoper</h4>
                  <span>Sale & Rent</span>
-              </div> */}
+              </div>
             </div>
           </Link>
         </div>

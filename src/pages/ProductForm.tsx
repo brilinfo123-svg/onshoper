@@ -404,7 +404,7 @@ function AllCategoryRentalForm() {
   const [showTerms, setShowTerms] = useState(false);
   const [step, setStep] = useState(1);
 
-  
+
   const handleFormattedPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawInput = e.target.value;
 
@@ -761,227 +761,272 @@ function AllCategoryRentalForm() {
   };
 
 
-// ✅ Common Input Handler
-const handleFileChange = (
-  e: React.ChangeEvent<HTMLInputElement>,
-  field: string
-) => {
-  const file = e.target.files?.[0];
+  // ✅ Common Input Handler
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: string
+  ) => {
+    const file = e.target.files?.[0];
 
-  if (!file) return;
+    if (!file) return;
 
-  setFormData((prev) => ({
-    ...prev,
-    [field]: file,
-  }));
-};
+    setFormData((prev) => ({
+      ...prev,
+      [field]: file,
+    }));
+  };
 
-// ✅ Text / Select Handler
-const handleChange = (
-  e: React.ChangeEvent<
-    HTMLInputElement |
-    HTMLTextAreaElement |
-    HTMLSelectElement
-  >
-) => {
-  setFormData((prev) => ({
-    ...prev,
-    [e.target.name]: e.target.value,
-  }));
-};
+  // ✅ Text / Select Handler
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement |
+      HTMLTextAreaElement |
+      HTMLSelectElement
+    >
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
-// ✅ Format File Size
-const formatSize = (bytes: number) => {
-  return bytes >= 1024 * 1024
-    ? `${(bytes / (1024 * 1024)).toFixed(2)} MB`
-    : `${(bytes / 1024).toFixed(0)} KB`;
-};
+  // ✅ Format File Size
+  const formatSize = (bytes: number) => {
+    return bytes >= 1024 * 1024
+      ? `${(bytes / (1024 * 1024)).toFixed(2)} MB`
+      : `${(bytes / 1024).toFixed(0)} KB`;
+  };
 
-// ✅ Product Images Upload
-// ✅ Product Images Upload
-// ✅ Product Images Upload
-const handleImageChange = async (
-  e: React.ChangeEvent<HTMLInputElement>
-) => {
-  const files = Array.from(e.target.files ?? []);
+  // ✅ Product Images Upload
+  // ✅ Product Images Upload
+  // ✅ Product Images Upload
+  const handleImageChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = Array.from(e.target.files ?? []);
 
-  if (!files.length) return;
+    if (!files.length) return;
 
-  // ✅ Max limit check
-  const totalImages = formData.images.length + files.length;
+    // ✅ Max limit check
+    const totalImages = formData.images.length + files.length;
 
-  if (totalImages > 10) {
-    Swal.fire({
-      icon: "warning",
-      title: "Upload Limit",
-      text: "Maximum 10 images allowed.",
-      confirmButtonColor: "#3b82f6",
-    });
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-
-    return;
-  }
-
-  const valid: File[] = [];
-
-  for (let file of files) {
-    // ✅ Duplicate image check
-    const isDuplicate = formData.images.some(
-      (img) =>
-        img instanceof File &&
-        img.name === file.name &&
-        img.size === file.size
-    );
-
-    if (isDuplicate) {
+    if (totalImages > 10) {
       Swal.fire({
         icon: "warning",
-        title: "Duplicate Image",
-        text: `${file.name} is already selected.`,
+        title: "Upload Limit",
+        text: "Maximum 10 images allowed.",
         confirmButtonColor: "#3b82f6",
       });
 
-      continue;
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+
+      return;
     }
 
-    // ❌ Invalid file
-    if (!file.type.startsWith("image/")) {
-      Swal.fire(
-        "Invalid File",
-        "Only image files are allowed.",
-        "error"
+    const valid: File[] = [];
+
+    for (let file of files) {
+      // ✅ Duplicate image check
+      const isDuplicate = formData.images.some(
+        (img) =>
+          img instanceof File &&
+          img.name === file.name &&
+          img.size === file.size
       );
 
-      continue;
-    }
-
-    // ❌ Huge image
-    if (file.size > 20 * 1024 * 1024) {
-      Swal.fire(
-        "Too Large",
-        `${file.name} must be under 20MB.`,
-        "warning"
-      );
-
-      continue;
-    }
-
-    const originalSize = file.size;
-
-    try {
-      // ✅ Compress large image
-      if (file.size > MAX_IMAGE_SIZE) {
+      if (isDuplicate) {
         Swal.fire({
-          title: "Optimizing Image",
-          text: `Compressing ${file.name}`,
-          allowOutsideClick: false,
-          didOpen: () => Swal.showLoading(),
+          icon: "warning",
+          title: "Duplicate Image",
+          text: `${file.name} is already selected.`,
+          confirmButtonColor: "#3b82f6",
         });
 
-        const compressedBlob = await imageCompression(file, {
-          maxSizeMB: 1.8,
-          maxWidthOrHeight: 1600,
-          useWebWorker: true,
-          initialQuality: 0.8,
-        });
+        continue;
+      }
+
+      // ✅ Allow normal + HEIC/HEIF
+      const isValidImage =
+        file.type.startsWith("image/") ||
+        file.name.toLowerCase().endsWith(".heic") ||
+        file.name.toLowerCase().endsWith(".heif");
+
+      if (!isValidImage) {
+        Swal.fire(
+          "Invalid File",
+          "Only image files are allowed.",
+          "error"
+        );
+
+        continue;
+      }
+
+      // ❌ Huge image
+      if (file.size > 20 * 1024 * 1024) {
+        Swal.fire(
+          "Too Large",
+          `${file.name} must be under 20MB.`,
+          "warning"
+        );
+
+        continue;
+      }
+
+      const originalSize = file.size;
+
+      try {
+        if (
+          file.type === "image/heic" ||
+          file.type === "image/heif" ||
+          file.name.toLowerCase().endsWith(".heic") ||
+          file.name.toLowerCase().endsWith(".heif")
+        ) {
+          Swal.fire({
+            title: "Converting Image",
+            text: `${file.name} is being converted...`,
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading(),
+          });
+
+          // ✅ Browser only
+          if (typeof window !== "undefined") {
+            const heic2any = (await import("heic2any")).default;
+
+            const convertedBlob = await heic2any({
+              blob: file,
+              toType: "image/jpeg",
+              quality: 0.8,
+            });
+
+            const finalBlob = Array.isArray(convertedBlob)
+              ? convertedBlob[0]
+              : convertedBlob;
+
+            file = new File(
+              [finalBlob as Blob],
+              file.name.replace(/\.(heic|heif)$/i, ".jpg"),
+              {
+                type: "image/jpeg",
+                lastModified: Date.now(),
+              }
+            );
+          }
+
+          Swal.close();
+        }
+
+        // ✅ Compress large image
+        if (file.size > MAX_IMAGE_SIZE) {
+          Swal.fire({
+            title: "Optimizing Image",
+            text: `Compressing ${file.name}`,
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading(),
+          });
+
+          const compressedBlob = await imageCompression(file, {
+            maxSizeMB: 1.8,
+            maxWidthOrHeight: 1600,
+            useWebWorker: true,
+            initialQuality: 0.8,
+          });
+
+          Swal.close();
+
+          // ✅ Blob → File
+          file = new File(
+            [compressedBlob],
+            file.name,
+            {
+              type: compressedBlob.type,
+              lastModified: Date.now(),
+            }
+          );
+
+          // ❌ Still large
+          if (file.size > MAX_IMAGE_SIZE) {
+            Swal.fire(
+              "Upload Failed",
+              `${file.name} could not be optimized under 2MB.`,
+              "warning"
+            );
+
+            continue;
+          }
+
+          const reducedPercent = Math.round(
+            ((originalSize - file.size) / originalSize) * 100
+          );
+
+          Swal.fire({
+            title: "Image Optimized",
+            text: `${formatSize(originalSize)} → ${formatSize(
+              file.size
+            )} (${reducedPercent}% reduced)`,
+            icon: "success",
+            timer: 1800,
+            showConfirmButton: false,
+          });
+        }
+
+        valid.push(file);
+      } catch (error) {
+        console.error(error);
 
         Swal.close();
 
-        // ✅ Blob → File
-        file = new File(
-          [compressedBlob],
-          file.name,
-          {
-            type: compressedBlob.type,
-            lastModified: Date.now(),
-          }
+        Swal.fire(
+          "Error",
+          `Processing failed for ${file.name}`,
+          "error"
         );
-
-        // ❌ Still large
-        if (file.size > MAX_IMAGE_SIZE) {
-          Swal.fire(
-            "Upload Failed",
-            `${file.name} could not be optimized under 2MB.`,
-            "warning"
-          );
-
-          continue;
-        }
-
-        const reducedPercent = Math.round(
-          ((originalSize - file.size) / originalSize) * 100
-        );
-
-        Swal.fire({
-          title: "Image Optimized",
-          text: `${formatSize(originalSize)} → ${formatSize(
-            file.size
-          )} (${reducedPercent}% reduced)`,
-          icon: "success",
-          timer: 1800,
-          showConfirmButton: false,
-        });
       }
+    }
 
-      valid.push(file);
-    } catch (error) {
-      console.error(error);
+    // ✅ Save images
+    setFormData((prev) => ({
+      ...prev,
+      images: [
+        ...prev.images.filter(
+          (img): img is File => img instanceof File
+        ),
+        ...valid,
+      ].slice(0, 10),
+    }));
 
-      Swal.close();
+    // ✅ Reset input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
-      Swal.fire(
-        "Error",
-        `Compression failed for ${file.name}`,
-        "error"
+  // ✅ Remove Product Image
+  const handleRemoveImage = (index: number) => {
+    const updatedImages = formData.images.filter(
+      (_, i) => i !== index
+    );
+
+    // ✅ Revoke memory
+    const removedImage = formData.images[index];
+
+    if (removedImage instanceof File) {
+      URL.revokeObjectURL(
+        URL.createObjectURL(removedImage)
       );
     }
-  }
 
-  // ✅ Save images
-  setFormData((prev) => ({
-    ...prev,
-    images: [
-      ...prev.images.filter(
-        (img): img is File => img instanceof File
-      ),
-      ...valid,
-    ].slice(0, 10),
-  }));
+    setFormData((prev) => ({
+      ...prev,
+      images: updatedImages,
+    }));
 
-  // ✅ Reset input
-  if (fileInputRef.current) {
-    fileInputRef.current.value = "";
-  }
-};
-
-// ✅ Remove Product Image
-const handleRemoveImage = (index: number) => {
-  const updatedImages = formData.images.filter(
-    (_, i) => i !== index
-  );
-
-  // ✅ Revoke memory
-  const removedImage = formData.images[index];
-
-  if (removedImage instanceof File) {
-    URL.revokeObjectURL(
-      URL.createObjectURL(removedImage)
-    );
-  }
-
-  setFormData((prev) => ({
-    ...prev,
-    images: updatedImages,
-  }));
-
-  // ✅ Reset input safely
-  if (fileInputRef.current) {
-    fileInputRef.current.value = "";
-  }
-};
+    // ✅ Reset input safely
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   // const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   const file = e.target.files?.[0];
@@ -990,6 +1035,8 @@ const handleRemoveImage = (index: number) => {
   //   }
   // };
 
+
+
   const handleCoverImageChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -997,8 +1044,13 @@ const handleRemoveImage = (index: number) => {
   
     if (!file) return;
   
-    // ✅ Allow only images
-    if (!file.type.startsWith("image/")) {
+    // ✅ Allow images + HEIC/HEIF
+    const isValidImage =
+      file.type.startsWith("image/") ||
+      file.name.toLowerCase().endsWith(".heic") ||
+      file.name.toLowerCase().endsWith(".heif");
+  
+    if (!isValidImage) {
       Swal.fire(
         "Invalid File",
         "Only image files are allowed.",
@@ -1009,7 +1061,7 @@ const handleRemoveImage = (index: number) => {
       return;
     }
   
-    // ✅ Prevent huge files (important for mobiles)
+    // ✅ Max 20MB
     if (file.size > 20 * 1024 * 1024) {
       Swal.fire(
         "Too Large",
@@ -1024,7 +1076,48 @@ const handleRemoveImage = (index: number) => {
     const originalSize = file.size;
   
     try {
-      // ✅ Compress large image
+      // ✅ HEIC / HEIF convert
+      if (
+        file.type === "image/heic" ||
+        file.type === "image/heif" ||
+        file.name.toLowerCase().endsWith(".heic") ||
+        file.name.toLowerCase().endsWith(".heif")
+      ) {
+        Swal.fire({
+          title: "Converting Image",
+          text: "HEIC image is being converted...",
+          allowOutsideClick: false,
+          didOpen: () => Swal.showLoading(),
+        });
+  
+        // ✅ CLIENT SIDE ONLY IMPORT
+        const heic2anyModule = await import("heic2any");
+        const heic2any = heic2anyModule.default;
+  
+        const convertedBlob = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+          quality: 0.8,
+        });
+  
+        // ✅ Fix array issue
+        const finalBlob = Array.isArray(convertedBlob)
+          ? convertedBlob[0]
+          : convertedBlob;
+  
+        file = new File(
+          [finalBlob as Blob],
+          file.name.replace(/\.(heic|heif)$/i, ".jpg"),
+          {
+            type: "image/jpeg",
+            lastModified: Date.now(),
+          }
+        );
+  
+        Swal.close();
+      }
+  
+      // ✅ Compress image
       if (file.size > MAX_IMAGE_SIZE) {
         Swal.fire({
           title: "Optimizing Image",
@@ -1042,7 +1135,6 @@ const handleRemoveImage = (index: number) => {
   
         Swal.close();
   
-        // ✅ Convert Blob → File
         file = new File(
           [compressedBlob],
           file.name,
@@ -1056,7 +1148,7 @@ const handleRemoveImage = (index: number) => {
         if (file.size > MAX_IMAGE_SIZE) {
           Swal.fire(
             "Upload Failed",
-            "Cover image could not be optimized under 2 MB.",
+            "Cover image could not be optimized under 2MB.",
             "warning"
           );
   
@@ -1084,6 +1176,7 @@ const handleRemoveImage = (index: number) => {
         ...prev,
         coverImage: file,
       }));
+  
     } catch (error) {
       console.error(error);
   
@@ -1091,26 +1184,26 @@ const handleRemoveImage = (index: number) => {
   
       Swal.fire(
         "Error",
-        "Image compression failed.",
+        "Image processing failed.",
         "error"
       );
   
       e.target.value = "";
     }
   };
-  
+
   const handleRemoveCoverImage = () => {
     // ✅ Remove image from state
     setFormData((prev) => ({
       ...prev,
       coverImage: null,
     }));
-  
+
     // ✅ Reset input field properly
     if (coverImageInputRef.current) {
       coverImageInputRef.current.value = "";
     }
-  
+
     // ✅ Optional: free browser memory
     if (
       formData.coverImage &&
@@ -1607,7 +1700,7 @@ const handleRemoveImage = (index: number) => {
     "Scooters": "/icons/motor-scooter-svg.svg",
     "Bicycles": "/icons/bike-Svg.svg",
     "Other Vehicles": "/icons/file-document.svg",
-    
+
 
     "Mobile Phones": "/icons/mobile-phone-electronics.svg",
     "Tablets": "/icons/ipad-svg.svg",
@@ -2868,64 +2961,64 @@ const handleRemoveImage = (index: number) => {
               <div className={styles.formGroup}>
                 <div className={styles.fileUpload}>
                   <label htmlFor="coverImage" className="icon-upload-cloud-outline">Cover Image</label>
-                  <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handleCoverImageChange} ref={coverImageInputRef} />
+                  <input type="file" accept="image/*,.heic,.heif" onChange={handleCoverImageChange} ref={coverImageInputRef} />
                 </div>
                 {formData.coverImage && (
-                    <div className={styles.imagePreviewBox}>
-                      <Image
-                        src={URL.createObjectURL(formData.coverImage as File)}
-                        alt="Cover Preview"
-                        width={200}
-                        height={200}
-                        unoptimized
-                        className={styles.previewImage}
-                      />
+                  <div className={styles.imagePreviewBox}>
+                    <Image
+                      src={URL.createObjectURL(formData.coverImage as File)}
+                      alt="Cover Preview"
+                      width={200}
+                      height={200}
+                      unoptimized
+                      className={styles.previewImage}
+                    />
 
-                      <button
-                        type="button"
-                        className={styles.removeImage}
-                        onClick={handleRemoveCoverImage}
-                      >
-                        &times;
-                      </button>
-                    </div>
-                  )}
+                    <button
+                      type="button"
+                      className={styles.removeImage}
+                      onClick={handleRemoveCoverImage}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className={styles.formGroup}>
                 <div className={styles.fileUpload}>
                   <label htmlFor="productImages" className="icon-upload-cloud-outline"> Product Images</label>
-                  <input type="file" multiple accept="image/png,image/jpeg,image/webp" onChange={handleImageChange} ref={fileInputRef} />
+                  <input type="file" multiple accept="image/*,.heic,.heif" onChange={handleImageChange} ref={fileInputRef} />
                 </div>
                 <div className={`${styles.imagePreviewWrapper} ${styles.SpaceBox}`}>
-                      {formData.images.map((img, idx) => {
-                        if (!(img instanceof File)) return null;
+                  {formData.images.map((img, idx) => {
+                    if (!(img instanceof File)) return null;
 
-                        return (
-                          <div
-                            key={idx}
-                            className={`${styles.imagePreviewBox} ${styles.NewPreviewBox}`}
-                          >
-                            <Image
-                              src={URL.createObjectURL(img)}
-                              alt={`Preview ${idx}`}
-                              width={200}
-                              height={200}
-                              unoptimized
-                              className={styles.previewImage}
-                            />
+                    return (
+                      <div
+                        key={idx}
+                        className={`${styles.imagePreviewBox} ${styles.NewPreviewBox}`}
+                      >
+                        <Image
+                          src={URL.createObjectURL(img)}
+                          alt={`Preview ${idx}`}
+                          width={200}
+                          height={200}
+                          unoptimized
+                          className={styles.previewImage}
+                        />
 
-                            <button
-                              type="button"
-                              className={styles.removeImage}
-                              onClick={() => handleRemoveImage(idx)}
-                            >
-                              &times;
-                            </button>
-                          </div>
-                        );
-                      })}
-                    </div>
+                        <button
+                          type="button"
+                          className={styles.removeImage}
+                          onClick={() => handleRemoveImage(idx)}
+                        >
+                          &times;
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
               {/* Rental Terms File Upload */}
 
@@ -3097,4 +3190,5 @@ const handleRemoveImage = (index: number) => {
     </>
   );
 }
+
 export default withProtectedPage(AllCategoryRentalForm);
