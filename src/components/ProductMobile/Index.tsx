@@ -81,6 +81,7 @@ const ProductMobile = ({
     "Services": "/icons/customer-service.svg",
     "Commercial Vehicles": "/icons/bus-passanger.svg",
     "Vehicles": "/icons/motorcycles.svg",
+    "Bicycles": "/icons/bike-Svg.svg",
     "Mobiles": "/icons/mobile-phone-electronics.svg",
     "Events & Entertainment": "/icons/wedding-arch.svg",
     "Education & Learning": "/icons/student.svg",

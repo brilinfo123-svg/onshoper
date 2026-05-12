@@ -67,7 +67,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="icon-location"
               >
-                D-258, GR Tower Industrial Area, Sector 75 S.A.S. Nagar (Mohali) Punjab – 160071 India
+                Industrial Area, Sector 75 S.A.S. Nagar (Mohali) Punjab – 160071 India
               </a>
             </li>
           </ul>

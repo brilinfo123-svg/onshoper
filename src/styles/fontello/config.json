@@ -443,6 +443,18 @@
       "css": "left-1",
       "code": 59460,
       "src": "mfglabs"
+    },
+    {
+      "uid": "9d3e9faf68fd4e12def853f0d4e1173b",
+      "css": "whatsapp",
+      "code": 62002,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "21f6a88daf13c62e5a70f5ef6ad9e23f",
+      "css": "chats",
+      "code": 59439,
+      "src": "websymbols"
     }
   ]
 }

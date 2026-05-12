@@ -13,11 +13,12 @@ import Image from "next/image";
 import imageCompression from "browser-image-compression";
 
 const categories = {
-  Vehicles: ["Motorcycles", "Scooters", "Bicycles", "Other Vehicles"],
+  Bikes: ["Motorcycles", "Scooters", "Other Vehicles"],
   Car: ["Cars", "Spare Parts",],
-  Mobiles: ["Mobile Phones", "Tablets", "Accessories", "Other Device"],
   "Electronics": ["TV & Video", "Computers & Laptops", "Home Appliances", "ACs & Coolers", "Kitchen Appliances", "Cameras & Accessories", "Gaming Consoles", "Smart Home Devices", "Power Banks & Chargers", "Projectors",
     "Monitors & Accessories", "Printers & Scanners", "Water Purifiers", "Heaters & Geysers", "Audio & Music Systems", "Washing Machines", "Other Electronics",],
+  Mobiles: ["Mobile Phones", "Tablets", "Accessories", "Other Device"],
+  Bicycles: ["Bicycles", "Other Vehicles"],
   "Commercial Vehicles": ["Tractors", "E-Rickshaws", "Pickups", "Delivery Vans", "Mini Trucks", "Passenger Buses", "Auto Rickshaws", "Construction Vehicles", "Other Commercial Vehicles"],
   
   Furniture: ["Beds & Wardrobes", "Sofas & Dining", "Tables & Chairs", "Mattresses", "Office Furniture", "Other Household Items"],
@@ -1826,7 +1827,8 @@ function AllCategoryRentalForm() {
     "Real Estate": "/icons/building-town.svg",
     "Services": "/icons/customer-service.svg",
     "Commercial Vehicles": "/icons/bus-passanger.svg",
-    "Vehicles": "/icons/motorcycles.svg",
+    "Bikes": "/icons/motorcycles.svg",
+    "Bicycles": "/icons/bike-Svg.svg",
     "Mobiles": "/icons/mobile-phone-electronics.svg",
     "Events & Entertainment": "/icons/wedding-arch.svg",
     "Education & Learning": "/icons/student.svg",

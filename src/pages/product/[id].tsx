@@ -1014,7 +1014,7 @@ useEffect(() => {
                 <div className={styles.subscribers}>
 
                   <div className={styles.contactButtons}>
-                    <button onClick={startChat} className="icon-comment"></button> 
+                    <button onClick={startChat} className="icon-chats"></button> 
                     {MobileWithWhatshap && (
                         <>
                           <button onClick={handleCallClick} className="icon-phone"></button>
