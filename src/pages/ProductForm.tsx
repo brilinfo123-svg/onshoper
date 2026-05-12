@@ -15,9 +15,11 @@ import imageCompression from "browser-image-compression";
 const categories = {
   Vehicles: ["Motorcycles", "Scooters", "Bicycles", "Other Vehicles"],
   Car: ["Cars", "Spare Parts",],
-  "Commercial Vehicles": ["Tractors", "E-Rickshaws", "Pickups", "Delivery Vans", "Mini Trucks", "Passenger Buses", "Auto Rickshaws", "Construction Vehicles", "Other Commercial Vehicles"],
-  "Electronics & Appliances": ["TV & Video", "Computers & Laptops", "Home Appliances", "ACs & Coolers", "Kitchen Appliances", "Cameras & Accessories", "Gaming Consoles", "Smart Home Devices", "Power Banks & Chargers", "Projectors",
+  Mobiles: ["Mobile Phones", "Tablets", "Accessories", "Other Device"],
+  "Electronics": ["TV & Video", "Computers & Laptops", "Home Appliances", "ACs & Coolers", "Kitchen Appliances", "Cameras & Accessories", "Gaming Consoles", "Smart Home Devices", "Power Banks & Chargers", "Projectors",
     "Monitors & Accessories", "Printers & Scanners", "Water Purifiers", "Heaters & Geysers", "Audio & Music Systems", "Washing Machines", "Other Electronics",],
+  "Commercial Vehicles": ["Tractors", "E-Rickshaws", "Pickups", "Delivery Vans", "Mini Trucks", "Passenger Buses", "Auto Rickshaws", "Construction Vehicles", "Other Commercial Vehicles"],
+  
   Furniture: ["Beds & Wardrobes", "Sofas & Dining", "Tables & Chairs", "Mattresses", "Office Furniture", "Other Household Items"],
   Fashion: ["Men’s Clothing", "Women’s Clothing", "Kids", "Footwear", "Eyewear", "Ethnic Wear", "Other Fashion"],
   "Books & Sports": ["Books", "Gym & Fitness", "Musical Instruments", "Sports Equipment", "Board Games", "Toys", "Other Books & Sports"],
@@ -28,7 +30,7 @@ const categories = {
   "Tools & Equipment": ["Power Tools", "Construction Tools", "Cleaning Tools", "Farming Tools", "Medical Equipment", "Other Tools"],
   "Education & Learning": ["Tuition", "Competitive Exam Material", "Skill Courses", "Coaching Classes"],
   "Events & Entertainment": ["Party Supplies", "Costumes", "DJ & Sound Systems", "Lighting Equipment", "Stage Setup", "Other Events"],
-  Mobiles: ["Mobile Phones", "Tablets", "Accessories", "Other Device"],
+  
 };
 
 declare global {
@@ -1834,7 +1836,7 @@ function AllCategoryRentalForm() {
     "Books & Sports": "/icons/books.svg",
     "Fashion": "/icons/pyjamas-suit.svg",
     "Furniture": "/icons/furnitures.png",
-    "Electronics & Appliances": "/icons/computer-tv.svg",
+    "Electronics": "/icons/computer-tv.svg",
     "Car": "/icons/car.png",
     "Spare Parts": "/icons/spare-parts.svg",
     "Default": "/icons/category.png"
