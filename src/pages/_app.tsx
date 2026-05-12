@@ -116,8 +116,8 @@ export default function App({ Component, pageProps }: AppProps) {
                       <Component {...pageProps} />
                     </main>
 
-                    {!isAdminPage && !isOfflinePage && !isInstall && <Footer />}
-                    {!isAdminPage && !isProductDetailPage && !isOfflinePage && !isInstall && <MobileBottomNav />}
+                    {!isAdminPage && !isOfflinePage && !isInstall && !ProductForms && <Footer />}
+                    {!isAdminPage && !isProductDetailPage && !isOfflinePage && !isInstall && !ProductForms && <MobileBottomNav />}
                   </FilterProvider>
                 </CityFilterProvider>
               </ChatProvider>

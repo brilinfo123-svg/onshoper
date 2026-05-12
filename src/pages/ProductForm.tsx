@@ -608,22 +608,34 @@ function AllCategoryRentalForm() {
   const [rentalTermsFile, setRentalTermsFile] = useState<File | null>(null);
 
   const bikeBrands = {
-    Honda: ["Activa", "CB Shine", "Hornet", "Dio", "CBR 250R", "Unicorn", "XBlade"],
-    Hero: ["Splendor", "HF Deluxe", "Glamour", "Xpulse", "Passion Pro", "Maestro Edge", "Destini 125"],
-    Bajaj: ["Pulsar 150", "Pulsar NS200", "CT 100", "Avenger", "Dominar 400", "Platina", "Discover"],
-    TVS: ["Apache RTR", "Jupiter", "NTorq", "Star City", "Sport", "XL100", "Raider 125"],
-    Yamaha: ["FZ", "R15", "MT-15", "Ray ZR", "Fascino", "SZ-RR", "Fazer"],
-    Suzuki: ["Access", "Gixxer", "Burgman", "Intruder", "Hayate", "Let's"],
-    RoyalEnfield: ["Classic 350", "Bullet 350", "Meteor", "Himalayan", "Interceptor 650", "Continental GT 650"],
-    KTM: ["Duke 200", "Duke 250", "RC 200", "RC 390", "Adventure 390"],
-    BMW: ["G 310 R", "G 310 GS", "F 850 GS", "R 1250 GS"],
-    Kawasaki: ["Ninja 300", "Ninja 400", "Z650", "Versys 650"],
-    HarleyDavidson: ["Street 750", "Iron 883", "Forty-Eight", "Fat Boy"],
+    Honda: ["Activa", "Activa 6G", "Activa 125", "Activa e", "CB Shine", "Shine 100", "Hornet 2.0", "Dio", "Dio 125", "CBR 250R", "Unicorn", "XBlade", "SP 125", "SP160", "Hness CB350", "CB350RS", "Livo"],
+    Hero: ["Splendor", "Super Splendor", "HF Deluxe", "Glamour", "Xpulse 200", "Xpulse 210", "Passion Pro", "Maestro Edge", "Destini 125", "Pleasure+", "Xtreme 125R", "Xtreme 160R", "Karizma XMR", "Vida V1", "Vida V1 Pro"],
+    Bajaj: ["Pulsar 125", "Pulsar 150", "Pulsar NS160", "Pulsar NS200", "Pulsar N250", "CT 100", "Avenger", "Dominar 250", "Dominar 400", "Platina", "Discover", "Chetak Electric"],
+    TVS: ["Apache RTR 160", "Apache RTR 200", "Apache RR 310", "Jupiter", "Jupiter 125", "NTorq", "Star City","Sport", "XL100", "Raider 125", "iQube Electric"],
+    Yamaha: ["FZ", "FZ-S", "R15", "MT-15", "Ray ZR", "Fascino", "Aerox 155", "SZ-RR", "Fazer"],
+    Suzuki: ["Access 125", "Avenis", "Gixxer", "Gixxer SF", "Burgman Street", "Intruder", "Hayate", "Let's"],
+    RoyalEnfield: ["Classic 350", "Classic 650", "Bullet 350", "Meteor 350", "Hunter 350", "Himalayan 450", "Interceptor 650", "Continental GT 650", "Shotgun 650", "Guerrilla 450"],
+    KTM: ["Duke 125", "Duke 200", "Duke 250", "Duke 390", "RC 125", "RC 200", "RC 390", "Adventure 250", "Adventure 390"],
+    BMW: ["G 310 R", "G 310 GS", "F 850 GS", "R 1250 GS", "CE 02", "CE 04 Electric"],
+    Kawasaki: ["Ninja 300", "Ninja 400", "Ninja ZX-6R", "Z650", "Z900", "Versys 650"],
+    HarleyDavidson: ["Street 750", "Iron 883", "Forty-Eight", "Fat Boy", "Sportster S", "X440"],
     Mahindra: ["Gusto", "Centuro", "Mojo"],
-    Aprilia: ["SR 125", "SR 160", "SXR 160"],
+    Aprilia: ["SR 125", "SR 160", "SXR 160", "RS 457"],
     Vespa: ["VXL", "SXL", "ZX", "Elegante"],
-    Jawa: ["Jawa", "42", "Perak"],
-    Yezdi: ["Roadster", "Scrambler", "Adventure"]
+    Jawa: ["Jawa", "42", "42 Bobber", "Perak"],
+    Yezdi: ["Roadster", "Scrambler", "Adventure"],
+    OlaElectric: ["S1 Air", "S1 X", "S1 Pro", "Roadster"],
+    Ather: ["450X", "450S", "Rizta"],
+    Revolt: ["RV400", "RV1", "RV1+"],
+    SimpleEnergy: ["Simple One", "Simple Dot One"],  
+    Ultraviolette: ["F77", "F77 Mach 2"],
+    Tork: ["Kratos", "Kratos R"],
+    Oben: ["Rorr"],
+    Okinawa: ["Praise Pro", "iPraise+", "Ridge+", "Lite"],
+    Ampere: ["Magnus EX", "Primus", "Zeal EX"],
+    PureEV: ["EPluto 7G", "ETryst 350"],
+    Bounce: ["Infinity E1"],
+    River: ["Indie"]
   };
   const carBrands = {
     Maruti: ["Alto", "Swift", "Baleno", "Ertiga", "Dzire", "WagonR", "Brezza", "Celerio"],
@@ -674,89 +686,231 @@ function AllCategoryRentalForm() {
       "iPhone SE (3rd gen)",
       "iPhone 14", "iPhone 14 Plus", "iPhone 14 Pro", "iPhone 14 Pro Max",
       "iPhone 15", "iPhone 15 Plus", "iPhone 15 Pro", "iPhone 15 Pro Max",
+      "iPhone 16", "iPhone 16 Plus", "iPhone 16 Pro", "iPhone 16 Pro Max",
+      "iPhone 17", "iPhone 17 Plus", "iPhone 17 Pro", "iPhone 17 Pro Max", "iPhone 17 Air",
     ],
+  
     Samsung: [
-      "Galaxy S", "Galaxy S II", "Galaxy S III", "Galaxy S4", "Galaxy S5", "Galaxy S6", "Galaxy S6 Edge", "Galaxy S7", "Galaxy S7 Edge",
-      "Galaxy S8", "Galaxy S8+", "Galaxy S9", "Galaxy S9+", "Galaxy S10", "Galaxy S10+", "Galaxy S10e",
+      // Galaxy S Series
       "Galaxy S20", "Galaxy S20+", "Galaxy S20 Ultra", "Galaxy S20 FE",
       "Galaxy S21", "Galaxy S21+", "Galaxy S21 Ultra", "Galaxy S21 FE",
       "Galaxy S22", "Galaxy S22+", "Galaxy S22 Ultra",
-      "Galaxy S23", "Galaxy S23+", "Galaxy S23 Ultra",
-      "Galaxy S24", "Galaxy S24+", "Galaxy S24 Ultra",
-      // A Series (2014+)
-      "Galaxy A10", "Galaxy A20", "Galaxy A30", "Galaxy A50", "Galaxy A70", "Galaxy A90", "Galaxy A52", "Galaxy A72", "Galaxy A53", "Galaxy A73",
-      // Note Series
-      "Galaxy Note", "Galaxy Note II", "Galaxy Note 3", "Galaxy Note 4", "Galaxy Note 5", "Galaxy Note 7", "Galaxy Note 8", "Galaxy Note 9",
-      "Galaxy Note 10", "Galaxy Note 10+", "Galaxy Note 20", "Galaxy Note 20 Ultra",
+      "Galaxy S23", "Galaxy S23+", "Galaxy S23 Ultra", "Galaxy S23 FE",
+      "Galaxy S24", "Galaxy S24+", "Galaxy S24 Ultra", "Galaxy S24 FE",
+      "Galaxy S25", "Galaxy S25+", "Galaxy S25 Ultra",
+    
+      // Galaxy A Series
+      "Galaxy A14", "Galaxy A15", "Galaxy A24", "Galaxy A25", "Galaxy A34", "Galaxy A35", "Galaxy A54", "Galaxy A55", "Galaxy A73",
+    
+      // Galaxy M Series
+      "Galaxy M14", "Galaxy M15", "Galaxy M34", "Galaxy M35", "Galaxy M54", "Galaxy M55",
+    
+      // Galaxy F Series
+      "Galaxy F14", "Galaxy F15", "Galaxy F34", "Galaxy F54", "Galaxy F55",
+    
       // Foldables
-      "Galaxy Z Fold", "Galaxy Z Fold 2", "Galaxy Z Fold 3", "Galaxy Z Fold 4", "Galaxy Z Fold 5",
-      "Galaxy Z Flip", "Galaxy Z Flip 3", "Galaxy Z Flip 4", "Galaxy Z Flip 5",
+      "Galaxy Z Fold 4", "Galaxy Z Fold 5", "Galaxy Z Fold 6",
+    
+      "Galaxy Z Flip 4", "Galaxy Z Flip 5", "Galaxy Z Flip 6",
+    
+      // Galaxy Note
+      "Galaxy Note 20", "Galaxy Note 20 Ultra",
+
+      // Rugged / Business
+      "Galaxy XCover 6 Pro",
+    
+      // Others
+      "Galaxy S21 FE", "Galaxy S23 FE", "Galaxy S24 FE",
     ],
+  
     OnePlus: [
-      "OnePlus One", "OnePlus 2", "OnePlus X",
-      "OnePlus 3", "OnePlus 3T",
-      "OnePlus 5", "OnePlus 5T",
       "OnePlus 6", "OnePlus 6T",
-      "OnePlus 7", "OnePlus 7 Pro", "OnePlus 7T", "OnePlus 7T Pro",
-      "OnePlus 8", "OnePlus 8 Pro", "OnePlus 8T",
-      "OnePlus 9", "OnePlus 9 Pro", "OnePlus 9R",
+      "OnePlus 7", "OnePlus 7 Pro",
+      "OnePlus 8", "OnePlus 8 Pro",
+      "OnePlus 9", "OnePlus 9 Pro",
       "OnePlus 10 Pro", "OnePlus 10T",
       "OnePlus 11", "OnePlus 11R",
       "OnePlus 12", "OnePlus 12R",
+      "Nord", "Nord 2", "Nord 3", "Nord CE 2", "Nord CE 3",
     ],
+  
     Xiaomi: [
-      "Mi 1", "Mi 2", "Mi 3", "Mi 4", "Mi 5", "Mi 6", "Mi 8", "Mi 9", "Mi 10", "Mi 11", "Mi 11X", "Mi 12 Pro",
-      "Redmi Note 3", "Redmi Note 4", "Redmi Note 5", "Redmi Note 6 Pro",
-      "Redmi Note 7", "Redmi Note 8", "Redmi Note 9", "Redmi Note 10", "Redmi Note 11", "Redmi Note 12", "Redmi Note 13",
-      "Poco F1", "Poco F2 Pro", "Poco X2", "Poco X3", "Poco X3 Pro", "Poco F3", "Poco F4", "Poco F5",
+      "Mi 10", "Mi 11", "Mi 12", "Mi 13",
+      "Redmi 10", "Redmi 11", "Redmi 12", "Redmi 13",
+      "Redmi Note 10", "Redmi Note 11", "Redmi Note 12", "Redmi Note 13",
+      "Poco X3", "Poco X5", "Poco X6",
+      "Poco F3", "Poco F4", "Poco F5", "Poco F6",
+      "Poco M4", "Poco M5", "Poco M6",
     ],
+  
     Realme: [
-      "Realme 1", "Realme 2", "Realme 2 Pro", "Realme 3", "Realme 3 Pro", "Realme 5", "Realme 5 Pro",
-      "Realme 6", "Realme 6 Pro", "Realme 7", "Realme 7 Pro", "Realme 8", "Realme 8 Pro",
-      "Realme 9", "Realme 9 Pro", "Realme GT", "Realme GT Neo", "Realme GT 2 Pro", "Realme GT Neo 3", "Realme 11", "Realme 12",
+      "Realme 8", "Realme 8 Pro", "Realme 9", "Realme 9 Pro", "Realme 9 Pro+",
+      "Realme 10", "Realme 10 Pro", "Realme 10 Pro+", "Realme 11", "Realme 11 Pro",
+      "Realme 11 Pro+", "Realme 12", "Realme 12 Pro", "Realme 12 Pro+", "Realme 13",
+      "Realme 13 Pro", "Realme 13 Pro+",
+
+      // Narzo Series
+      "Realme Narzo 50", "Realme Narzo 60", "Realme Narzo 60 Pro", "Realme Narzo 70", "Realme Narzo 70 Pro",
+
+      // GT Series
+      "Realme GT", "Realme GT Neo 3", "Realme GT 5", "Realme GT 6", "Realme GT 6T",
+
+      // C Series
+      "Realme C35", "Realme C51", "Realme C53", "Realme C55", "Realme C61", "Realme C63", "Realme C65",
     ],
+  
     Vivo: [
-      "Vivo V9", "Vivo V11 Pro", "Vivo V15 Pro", "Vivo V17 Pro", "Vivo V19", "Vivo V20", "Vivo V21", "Vivo V23", "Vivo V25", "Vivo V27",
-      "Vivo X50", "Vivo X60", "Vivo X70", "Vivo X80", "Vivo X90", "Vivo X100",
+      "Vivo V20", "Vivo V21", "Vivo V23", "Vivo V25", "Vivo V27", "Vivo V29", "Vivo V30",
+      "Vivo X70", "Vivo X80", "Vivo X90", "Vivo X100",
+      "Vivo Y20", "Vivo Y56", "Vivo Y100",
     ],
+  
     Oppo: [
-      "Oppo F1", "Oppo F3", "Oppo F5", "Oppo F7", "Oppo F9", "Oppo F11", "Oppo F15", "Oppo F17", "Oppo F19", "Oppo F21", "Oppo F25",
-      "Oppo Reno", "Oppo Reno 2", "Oppo Reno 3", "Oppo Reno 4", "Oppo Reno 5", "Oppo Reno 6", "Oppo Reno 7", "Oppo Reno 8", "Oppo Reno 9", "Oppo Reno 10",
-      "Oppo Find X", "Oppo Find X2", "Oppo Find X3", "Oppo Find X5", "Oppo Find X6",
+      "Oppo F17", "Oppo F19", "Oppo F21", "Oppo F23", "Oppo F25",
+      "Oppo Reno 6", "Reno 7", "Reno 8", "Reno 10", "Reno 11",
+      "Oppo Find X3", "Find X5", "Find X6", "Find X7","Oppo Reno 14",
+      "Oppo Reno 14 Pro", "Oppo Reno 15", "Oppo Reno 15 Pro",
+      "Oppo F17", "Oppo F19 Pro", "Oppo F21 Pro", "Oppo F27", "Oppo F27 Pro+",
+      "Oppo K10", "Oppo K10 5G", "Oppo K11", "Oppo K12",
+      "Oppo A17", "Oppo A18", "Oppo A38", "Oppo A58", "Oppo A59", "Oppo A78", "Oppo A79", "Oppo A98",
     ],
+  
     Motorola: [
-      "Moto G", "Moto G2", "Moto G3", "Moto G4", "Moto G5", "Moto G6", "Moto G7", "Moto G8", "Moto G9", "Moto G10", "Moto G20", "Moto G30", "Moto G40", "Moto G60",
-      "Moto Edge", "Moto Edge 20", "Moto Edge 30", "Moto Edge 40",
-      "Moto Razr", "Moto Razr 5G", "Moto Razr 40",
+      "Moto G", "Moto G2", "Moto G3", "Moto G4", "Moto G4 Plus", "Moto G5", "Moto G5 Plus", "Moto G5S", "Moto G5S Plus", "Moto G6", "Moto G6 Play",
+      "Moto G6 Plus", "Moto G7", "Moto G7 Play", "Moto G7 Power", "Moto G7 Plus", "Moto G8", "Moto G8 Power", "Moto G8 Plus", "Moto G9", "Moto G9 Play",
+      "Moto G9 Power", "Moto G9 Plus", "Moto G10", "Moto G20", "Moto G30", "Moto G31", "Moto G32", "Moto G40 Fusion", "Moto G41", "Moto G42", "Moto G51", 
+      "Moto G52", "Moto G53", "Moto G54", "Moto G54 Power", "Moto G55", "Moto G60", "Moto G62", "Moto G64", "Moto G71", "Moto G72", "Moto G73", "Moto G82", "Moto G84", "Moto G85",
+      "Moto Edge 20", "Moto Edge 20 Fusion", "Moto Edge 20 Pro", "Moto Edge 30", "Moto Edge 30 Fusion", "Moto Edge 30 Pro", "Moto Edge 30 Ultra", "Moto Edge 40",
+      "Moto Edge 40 Neo", "Moto Edge 40 Pro", "Moto Edge 50", "Moto Edge 50 Fusion", "Moto Edge 50 Pro", "Moto Edge 50 Ultra", "Moto Edge+",
+      "Moto Razr", "Moto Razr 5G", "Moto Razr 40", "Moto Razr 40 Ultra", "Moto Razr 50", "Moto Razr 50 Ultra",
+      "Moto E5", "Moto E6", "Moto E7", "Moto E7 Plus", "Moto E13", "Moto E14", "Moto E20", "Moto E22", "Moto E22i", "Moto E32", "Moto E32s", "Moto E40",
+      "Moto One", "Moto One Action", "Moto One Fusion", "Moto One Fusion+", "Moto One Hyper", "Moto One Macro", "Moto One Power", "Moto One Vision",
+      "Moto X", "Moto X Play", "Moto X Style", "Moto X4", "Moto X30",
+      "Moto Z", "Moto Z Play", "Moto Z2 Play", "Moto Z2 Force", "Moto Z3 Play", "Moto Z4",
+      "Lenovo K8", "Lenovo K8 Plus", "Lenovo K8 Note", "Lenovo Z6 Pro"
     ],
+  
     Nokia: [
-      "Nokia Lumia 800", "Nokia Lumia 920", "Nokia Lumia 1020",
-      "Nokia 3", "Nokia 5", "Nokia 6", "Nokia 7 Plus", "Nokia 8",
-      "Nokia 5.4", "Nokia G20", "Nokia X20", "Nokia X30",
+      "Nokia 1", "Nokia 1.3", "Nokia 1.4",
+      "Nokia 2", "Nokia 2.1", "Nokia 2.2", "Nokia 2.3", "Nokia 2.4",
+      "Nokia 3", "Nokia 3.1", "Nokia 3.2", "Nokia 3.4",
+      "Nokia 5", "Nokia 5.1", "Nokia 5.3", "Nokia 5.4",
+      "Nokia 6", "Nokia 6.1", "Nokia 6.2",
+      "Nokia 7", "Nokia 7 Plus", "Nokia 7.1", "Nokia 7.2",
+      "Nokia 8", "Nokia 8.1", "Nokia 8.3",
+      "Nokia 9 PureView",
+      "Nokia C01", "Nokia C1", "Nokia C1 Plus", "Nokia C2", "Nokia C2 2nd Edition", "Nokia C3", "Nokia C10", "Nokia C12", "Nokia C12 Pro", "Nokia C20", "Nokia C21", "Nokia C22", "Nokia C31", "Nokia C32",
+      "Nokia G10", "Nokia G11", "Nokia G20", "Nokia G21", "Nokia G22", "Nokia G42", "Nokia G50", "Nokia G60",
+      "Nokia X10", "Nokia X20", "Nokia X30",
+      "Nokia XR20", "Nokia XR21",
+      "Nokia Lumia 520", "Nokia Lumia 620", "Nokia Lumia 720", "Nokia Lumia 820", "Nokia Lumia 920", "Nokia Lumia 1020"
     ],
+    
     Sony: [
-      "Xperia Z", "Xperia Z1", "Xperia Z2", "Xperia Z3", "Xperia Z5",
+      "Xperia X", "Xperia XA", "Xperia XA1", "Xperia XA2", "Xperia XA Ultra",
       "Xperia XZ", "Xperia XZ1", "Xperia XZ2", "Xperia XZ3",
-      "Xperia 1", "Xperia 5", "Xperia 10", "Xperia 1 II", "Xperia 1 III", "Xperia 1 IV", "Xperia 1 V",
+      "Xperia 1", "Xperia 1 II", "Xperia 1 III", "Xperia 1 IV", "Xperia 1 V", "Xperia 1 VI",
+      "Xperia 5", "Xperia 5 II", "Xperia 5 III", "Xperia 5 IV", "Xperia 5 V",
+      "Xperia 10", "Xperia 10 II", "Xperia 10 III", "Xperia 10 IV", "Xperia 10 V",
+      "Xperia PRO", "Xperia PRO-I",
+      "Xperia L1", "Xperia L2", "Xperia L3",
+      "Xperia Z", "Xperia Z1", "Xperia Z2", "Xperia Z3", "Xperia Z5"
     ],
+    
     Huawei: [
-      "Huawei P8", "Huawei P9", "Huawei P10", "Huawei P20", "Huawei P30", "Huawei P40", "Huawei P50", "Huawei P60",
-      "Mate 8", "Mate 9", "Mate 10", "Mate 20", "Mate 30", "Mate 40", "Mate 50", "Mate 60",
-      "Nova 5", "Nova 7", "Nova 8", "Nova 9", "Nova 10", "Nova 11",
+      "Huawei P20", "Huawei P20 Pro", "Huawei P30", "Huawei P30 Pro", "Huawei P40", "Huawei P40 Pro", "Huawei P50", "Huawei P50 Pro", "Huawei P60", "Huawei P60 Pro", "Huawei P70", "Huawei P70 Pro",
+      "Huawei Mate 20", "Huawei Mate 20 Pro", "Huawei Mate 30", "Huawei Mate 30 Pro", "Huawei Mate 40", "Huawei Mate 40 Pro", "Huawei Mate 50", "Huawei Mate 50 Pro", "Huawei Mate 60", "Huawei Mate 60 Pro", "Huawei Mate X3", "Huawei Mate X5",
+      "Huawei Nova 5", "Huawei Nova 5T", "Huawei Nova 7", "Huawei Nova 8", "Huawei Nova 9", "Huawei Nova 10", "Huawei Nova 11", "Huawei Nova 12",
+      "Huawei Y6", "Huawei Y7", "Huawei Y9", "Huawei Y9 Prime", "Huawei Y5p", "Huawei Y6p", "Huawei Y7p", "Huawei Y8p",
+      "Huawei Enjoy 20", "Huawei Enjoy 50", "Huawei Enjoy 60",
+      "Honor 8X", "Honor 9X", "Honor 10", "Honor 20", "Honor 20 Pro"
     ],
+  
     Google: [
       "Pixel", "Pixel XL",
       "Pixel 2", "Pixel 2 XL",
-      "Pixel 3", "Pixel 3 XL",
-      "Pixel 3a", "Pixel 3a XL",
-      "Pixel 4", "Pixel 4 XL",
-      "Pixel 4a", "Pixel 4a 5G",
+      "Pixel 3", "Pixel 3 XL", "Pixel 3a", "Pixel 3a XL",
+      "Pixel 4", "Pixel 4 XL", "Pixel 4a", "Pixel 4a 5G",
       "Pixel 5", "Pixel 5a",
       "Pixel 6", "Pixel 6 Pro", "Pixel 6a",
       "Pixel 7", "Pixel 7 Pro", "Pixel 7a",
       "Pixel 8", "Pixel 8 Pro", "Pixel 8a",
+      "Pixel 9", "Pixel 9 Pro", "Pixel 9 Pro XL", "Pixel 9a",
+      "Pixel Fold"
     ],
-    Nothing: ["Phone (1)", "Phone (2)"],
+    
+    Nothing: [
+      "Phone (1)",
+      "Phone (2)",
+      "Phone (2a)",
+      "Phone (2a) Plus",
+      "CMF Phone 1",
+      "CMF Phone 2"
+    ],
+    
+    Asus: [
+      "ROG Phone 3",
+      "ROG Phone 5",
+      "ROG Phone 5s",
+      "ROG Phone 6",
+      "ROG Phone 6D",
+      "ROG Phone 7",
+      "ROG Phone 8",
+      "ROG Phone 8 Pro",
+      "Zenfone 7",
+      "Zenfone 8",
+      "Zenfone 9",
+      "Zenfone 10",
+      "Zenfone 11 Ultra"
+    ],
+    
+    Infinix: [
+      "Hot 10", "Hot 11", "Hot 12", "Hot 20", "Hot 30", "Hot 40",
+      "Note 10", "Note 11", "Note 12", "Note 30", "Note 40",
+      "Zero 5G", "Zero Ultra", "Zero 30", "Zero 40",
+      "GT 10 Pro", "GT 20 Pro",
+      "Smart 7", "Smart 8"
+    ],
+    
+    Tecno: [
+      "Spark 8", "Spark 9", "Spark 10", "Spark 20", "Spark Go",
+      "Camon 18", "Camon 19", "Camon 20", "Camon 30",
+      "Phantom X", "Phantom X2", "Phantom V Fold", "Phantom V Flip",
+      "Pova 4", "Pova 5", "Pova 6",
+      "Pop 7", "Pop 8"
+    ],
+    
+    Lava: [
+      "Lava Blaze", "Lava Blaze 2", "Lava Blaze 3", "Lava Blaze 5G",
+      "Lava Blaze Curve", "Lava Agni", "Lava Agni 2", "Lava Yuva",
+      "Lava Yuva 2", "Lava Yuva 3", "Lava Storm 5G"
+    ],
+    
+    IQOO: [
+      "iQOO 7", "iQOO 9", "iQOO 11", "iQOO 12", "iQOO Neo 6", "iQOO Neo 7", "iQOO Neo 7 Pro",
+      "iQOO Neo 9", "iQOO Neo 9 Pro", "iQOO Z6", "iQOO Z7", "iQOO Z9", "iQOO Z9s", "iQOO Z9 Turbo"
+    ],
+    
+    Honor: [
+      "Honor 50", "Honor 70", "Honor 90", "Honor 100", "Honor 200", "Honor X7", "Honor X8", "Honor X9", "Honor Magic 4 Pro", "Honor Magic 5 Pro", "Honor Magic 6 Pro", "Honor Magic V2", "Honor Magic V3"
+    ],
+    
+    Lenovo: [
+      "Legion Duel", "Legion Duel 2", "Legion Y70", "Lenovo K10", "Lenovo K13 Note", "Lenovo Z5", "Lenovo Z6 Pro"
+    ],
+    
+    Meizu: [
+      "Meizu 16", "Meizu 17", "Meizu 18", "Meizu 20", "Meizu 21", "Meizu 21 Pro"
+    ],
+    
+    ZTE: [
+      "Nubia Red Magic 6", "Nubia Red Magic 7", "Nubia Red Magic 8", "Nubia Red Magic 9", "Nubia Z50", "Nubia Z60 Ultra", "Axon 30 Ultra", "Axon 40 Ultra", "Axon 50 Ultra"
+    ],
+    
+    BlackBerry: [
+      "BlackBerry KeyOne", "BlackBerry Key2", "BlackBerry Motion", "BlackBerry Evolve", "BlackBerry Priv", "BlackBerry Passport"
+    ],
+  
     Others: ["Other Model"],
   };
 
@@ -1041,26 +1195,26 @@ function AllCategoryRentalForm() {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     let file = e.target.files?.[0];
-  
+
     if (!file) return;
-  
+
     // ✅ Allow images + HEIC/HEIF
     const isValidImage =
       file.type.startsWith("image/") ||
       file.name.toLowerCase().endsWith(".heic") ||
       file.name.toLowerCase().endsWith(".heif");
-  
+
     if (!isValidImage) {
       Swal.fire(
         "Invalid File",
         "Only image files are allowed.",
         "error"
       );
-  
+
       e.target.value = "";
       return;
     }
-  
+
     // ✅ Max 20MB
     if (file.size > 20 * 1024 * 1024) {
       Swal.fire(
@@ -1068,13 +1222,13 @@ function AllCategoryRentalForm() {
         "Image must be under 20MB.",
         "warning"
       );
-  
+
       e.target.value = "";
       return;
     }
-  
+
     const originalSize = file.size;
-  
+
     try {
       // ✅ HEIC / HEIF convert
       if (
@@ -1089,22 +1243,22 @@ function AllCategoryRentalForm() {
           allowOutsideClick: false,
           didOpen: () => Swal.showLoading(),
         });
-  
+
         // ✅ CLIENT SIDE ONLY IMPORT
         const heic2anyModule = await import("heic2any");
         const heic2any = heic2anyModule.default;
-  
+
         const convertedBlob = await heic2any({
           blob: file,
           toType: "image/jpeg",
           quality: 0.8,
         });
-  
+
         // ✅ Fix array issue
         const finalBlob = Array.isArray(convertedBlob)
           ? convertedBlob[0]
           : convertedBlob;
-  
+
         file = new File(
           [finalBlob as Blob],
           file.name.replace(/\.(heic|heif)$/i, ".jpg"),
@@ -1113,10 +1267,10 @@ function AllCategoryRentalForm() {
             lastModified: Date.now(),
           }
         );
-  
+
         Swal.close();
       }
-  
+
       // ✅ Compress image
       if (file.size > MAX_IMAGE_SIZE) {
         Swal.fire({
@@ -1125,16 +1279,16 @@ function AllCategoryRentalForm() {
           allowOutsideClick: false,
           didOpen: () => Swal.showLoading(),
         });
-  
+
         const compressedBlob = await imageCompression(file, {
           maxSizeMB: 1.8,
           maxWidthOrHeight: 1600,
           useWebWorker: true,
           initialQuality: 0.8,
         });
-  
+
         Swal.close();
-  
+
         file = new File(
           [compressedBlob],
           file.name,
@@ -1143,7 +1297,7 @@ function AllCategoryRentalForm() {
             lastModified: Date.now(),
           }
         );
-  
+
         // ❌ Still too large
         if (file.size > MAX_IMAGE_SIZE) {
           Swal.fire(
@@ -1151,15 +1305,15 @@ function AllCategoryRentalForm() {
             "Cover image could not be optimized under 2MB.",
             "warning"
           );
-  
+
           e.target.value = "";
           return;
         }
-  
+
         const reducedPercent = Math.round(
           ((originalSize - file.size) / originalSize) * 100
         );
-  
+
         Swal.fire({
           title: "Cover Image Optimized",
           text: `${formatSize(originalSize)} → ${formatSize(
@@ -1170,24 +1324,24 @@ function AllCategoryRentalForm() {
           showConfirmButton: false,
         });
       }
-  
+
       // ✅ Save image
       setFormData((prev) => ({
         ...prev,
         coverImage: file,
       }));
-  
+
     } catch (error) {
       console.error(error);
-  
+
       Swal.close();
-  
+
       Swal.fire(
         "Error",
         "Image processing failed.",
         "error"
       );
-  
+
       e.target.value = "";
     }
   };
@@ -1827,11 +1981,26 @@ function AllCategoryRentalForm() {
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
-        <h2>Post Ads: <span className={styles.SelectedItem}>{selectedCategory} {">"} {selectedSubcategory}</span></h2>
+       
 
 
         {step === 1 && (
           <div className={styles.slideIn}>
+          <div className={styles.btnCategoryTitle}>
+             {!selectedCategory && (
+          <Link href="/" className={`${styles.backButton} ${"icon-left-1"}`}>
+          </Link>
+        )}
+        <h2>
+          <span className={styles.SelectedItem}>
+            {!selectedCategory
+              ? "Select Category"
+              : selectedSubcategory
+                ? `${selectedCategory} / ${selectedSubcategory}`
+                : selectedCategory}
+          </span>
+        </h2>
+        </div>
             <div className={styles.listContainer}>
               <ul className={styles.listBox}>
                 {Object.keys(categories).map((cat) => (
@@ -1866,17 +2035,22 @@ function AllCategoryRentalForm() {
 
         {step === 2 && (
           <div className={styles.slideIn}>
+             <div className={styles.btnCategoryTitle}>
+             <button type="button" className={`${styles.backButton} ${"icon-left-1"}`} onClick={() => { setSelectedCategory(""); setSelectedSubcategory("");goToStep(1, true);}}></button>
+             <h2>
+                <span className={styles.SelectedItem}>
+                  {!selectedCategory
+                    ? "Select Category"
+                    : selectedSubcategory
+                      ? `${selectedCategory} / ${selectedSubcategory}`
+                      : selectedCategory}
+                </span>
+              </h2>
+             </div>
             <div className={styles.listContainer}>
               <ul className={styles.listBox}>
                 {categories[selectedCategory]?.map((sub) => (
-                  <li
-                    key={sub}
-                    className={styles.listItem}
-                    onClick={() => {
-                      setSelectedSubcategory(sub);
-                      setStep(3);
-                    }}
-                  >
+                  <li key={sub} className={styles.listItem} onClick={() => {setSelectedSubcategory(sub); setStep(3);}}>
                     <Image
                       src={subcategoryIcons[sub] || subcategoryIcons["Default"]}
                       alt={sub}
@@ -1884,24 +2058,11 @@ function AllCategoryRentalForm() {
                       height={40}
                       className={styles.icon}
                     />
-
-
                     <span className={styles.title}>{sub}</span>
                   </li>
                 ))}
               </ul>
             </div>
-
-
-            <center>
-              <button
-                type="button"
-                className={styles.backButton}
-                onClick={() => goToStep(1, true)}
-              >
-                ← Back
-              </button>
-            </center>
           </div>
         )}
 
@@ -1909,6 +2070,20 @@ function AllCategoryRentalForm() {
 
         {step === 3 && (
           <div className={styles.slideIn}>
+            {/* <div className={styles.BtnFlex}> */}
+            <div className={styles.btnCategoryTitle}>
+            <button type="button" className={`${styles.backButton} ${"icon-left-1"}`} onClick={() => {setSelectedSubcategory(""); goToStep(2, true);}}></button>
+             <h2>
+                <span className={styles.SelectedItem}>
+                  {!selectedCategory
+                    ? "Select Category"
+                    : selectedSubcategory
+                      ? `${selectedCategory} / ${selectedSubcategory}`
+                      : selectedCategory}
+                </span>
+              </h2>
+              </div>
+            {/* </div> */}
             {!["Services"].includes(selectedSubcategory) &&
               !["Services", "Jobs", "Education & Learning"].includes(selectedCategory) && (
                 <>
@@ -3058,15 +3233,25 @@ function AllCategoryRentalForm() {
                 <input type="url" name="twitter" placeholder="https://twitter.com/yourprofile" value={formData.twitter} onChange={handleChange} />
               </div>
             </div>
-            <div className={styles.BtnFlex}>
-              <button type="button" className={styles.backButton} onClick={() => goToStep(2, true)}>← Back</button>
-              <button type="button" className={styles.backButton} onClick={() => goToStep(4)}>Next →</button>
-            </div>
+            <button type="button" className={`${styles.backButton} ${styles.NextButton}`} onClick={() => goToStep(4)}>Next →</button>
           </div>
         )}
 
         {step === 4 && (
           <div className={styles.formGroup}>
+             <div className={styles.btnCategoryTitle}>
+             <button type="button" className={`${styles.backButton} icon-left-1`} onClick={() => { goToStep(3, true);}}></button>
+             <h2>
+                <span className={styles.SelectedItem}>
+                  {!selectedCategory
+                    ? "Select Category"
+                    : selectedSubcategory
+                      ? `${selectedCategory} / ${selectedSubcategory}`
+                      : selectedCategory}
+                </span>
+              </h2>
+             </div>
+            
             <IndiaAddressForm onLocationSelect={handleLocationSelect} isProductForm={true} formData={formData} setFormData={setFormData} />
             {errors.location && <p className={styles.errorText}>{errors.location}</p>}
             {/* <label><span className="icon-map-pin"></span>Enter Your Location</label> */}
@@ -3083,8 +3268,7 @@ function AllCategoryRentalForm() {
         )} */}
 
             <div className={styles.BtnFlex}>
-              <button type="button" className={styles.backButton} onClick={() => goToStep(3, true)}>← Back</button>
-              <button type="button" className={styles.backButton} onClick={() => goToStep(5)}>Next →</button>
+              <button type="button" className={`${styles.backButton} ${styles.NextButton}`} onClick={() => goToStep(5)}>Next →</button>
             </div>
           </div>
         )}
@@ -3092,6 +3276,20 @@ function AllCategoryRentalForm() {
         {step === 5 && (
           <>
             <div className={styles.slideIn}>
+
+            <div className={styles.btnCategoryTitle}>
+            <button type="button" className={`${styles.backButton} icon-left-1`} onClick={() => {goToStep(4, true);}}></button>
+             <h2>
+                <span className={styles.SelectedItem}>
+                  {!selectedCategory
+                    ? "Select Category"
+                    : selectedSubcategory
+                      ? `${selectedCategory} / ${selectedSubcategory}`
+                      : selectedCategory}
+                </span>
+              </h2>
+             </div>
+
               {!["Jobs"].includes(selectedCategory) && (
                 <>
                   {formData.SaleType !== "Sale" && (
@@ -3153,7 +3351,7 @@ function AllCategoryRentalForm() {
                 <label className={styles.checkboxLabel}>
                   <input type="checkbox" checked={formData.termsAccepted} onChange={(e) => setFormData((prev) => ({ ...prev, termsAccepted: e.target.checked }))} required />I agree to<button type="button" className={styles.linkButton} onClick={() => setShowTerms(true)}>Terms & Conditions</button>
                 </label>
-                <button type="button" className={styles.backButton} onClick={() => goToStep(4, true)}>← Back</button>
+
               </div>
 
               <button type="submit" disabled={loading} className={styles.submitButton}>

@@ -8,12 +8,12 @@
   font-family: 'Segoe UI', sans-serif;
   transition: all 0.3s ease;
   @media (max-width: 768px) {
-    padding: 15px 15px 50px;
-    margin: 0px auto 50px;
+    padding: 15px 15px 20px;
+    margin: 0px auto 20px;
     border-radius: 0px;
+    box-shadow: none;
   }
   .SelectedItem{
-    background-color: #fff8dc;
     padding: 4px 5px;
     margin-left: 2px;
   }
@@ -28,17 +28,18 @@
   h2 {
     font-size: 2rem;
     font-weight: 500;
-    margin-bottom: 1.8rem;
+    margin-bottom: 0;
     color: #1a202c;
-    background-color: #f4f5f6;
+    background-color: #e9e9ea;
     width: 100%;
     padding: 15px 30px;
     font-size: 18px;
     text-align: center;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
     @media (max-width: 768px) {
       font-size: 14px;
       padding: 15px 15px;
-      margin-bottom: 10px;
     }
     @media (max-width: 374px) {
       padding: 15px 5px;
@@ -46,7 +47,7 @@
     span{
       font-weight: 300;
       @media (max-width: 768px) {
-        font-size: 14px;
+        font-size: 13px;
       }
     }
   }
@@ -281,16 +282,14 @@
     display: inline-flex;
     align-items: center;
     padding: 0.5rem 1.2rem;
-    background: #edf2f7;
-    border: 1px solid #cbd5e0;
-    border-radius: 8px;
+    border-radius: 4px;
     font-size: 0.9rem;
     font-weight: 500;
-    color: #2d3748;
-    margin-top: 1rem;
+    color: #fff;
+    margin-top: 0;
     display: flex;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
     cursor: pointer;
     transition: all 0.2s;
     @media (max-width: 374px) {
@@ -301,7 +300,21 @@
       background: #e2e8f0;
     }
   }
-
+.MainbackButton{
+  font-size: 17px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: block;
+  text-align: center;
+  width: max-content;
+  margin-bottom: 10px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 1px 1px 14px -8px black;
+}
   .slideIn {
     animation: slide-in 0.4s ease forwards;
   }
@@ -478,7 +491,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 30px;
+    margin: 30px 0 0;
   }
   .socialLink{
     display: flex;
@@ -714,6 +727,7 @@
   @media (max-width: 768px) {
     border-radius: 0px;
     margin: 0;
+    max-height: 607px;
   }
 }
 
@@ -757,16 +771,52 @@
   font-weight: bold;
 }
 
-.backButton {
+.backButton,.NextButton {
   margin-top: 15px;
   padding: 8px 18px;
-  background: #eee;
+  // background: #eee;
   border: none;
   border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
+  
 }
-
+.formContainer{
+  .NextButton {
+    width: 100%;
+    display: block;
+    background: #10B981 !important;
+    border: none;
+    padding: 12px 0;
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+    margin-top: 16px;
+    border-radius: 5px;
+    &:hover {
+      background: #059669!important;
+  }
+}
+} 
 .backButton:hover {
   background: #ddd;
+}
+.btnCategoryTitle{
+  display: flex;
+  margin-bottom: 15px;
+  position: relative;
+  .backButton{
+    padding: 0;
+    width: 60px;
+    border-radius: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: #e9e9ea;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    color: #000;
+    font-size: 17px;
+    margin-right: 5px;
+  }
 }
