@@ -221,7 +221,7 @@
     button{
       width: 100%;
       border: none;
-      background-color: #E63946;
+      background: #EF4444;
       color: #fff;
       cursor: pointer;
       text-transform: uppercase;
@@ -229,12 +229,13 @@
       @media screen and (max-width: 767px) {
         font-weight: 500;
         font-size: 13px;
+        padding: 7px 5px;
       }
     }
     .updateBtn{
       display: inline-block;
       padding: 12px 0;
-      background: #28A745;
+      background: linear-gradient(135deg, #F59E0B, #F97316);
       color: #fff;
       border-radius: 0;
       text-decoration: none;
@@ -250,6 +251,15 @@
         font-weight: 500;
         font-size: 13px;
       }
+    }
+    .soldBtn{
+      background: #10B981;
+      color: #fff;
+    }
+    .deleteBtn{
+      background: #EF4444;
+      color: #fff;
+      z-index: 999;
     }
   }
     .descWrap{

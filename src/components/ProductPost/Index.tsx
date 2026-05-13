@@ -48,6 +48,8 @@ interface ProductCardProps {
   onUnfavorite?: (_id: string) => void;
   onDelete?: (id: string) => void;
   onUpdate?: (id: string) => void;
+  onSold?: (id: string) => void;
+  status?: string;
   year?: number;
   KmDriven?: number;
   mobileBrand?: string;
@@ -57,6 +59,9 @@ interface ProductCardProps {
   salaryPeriod?: string;
   positionType?: string;
   className?: string;
+  CoverImgClass?: string;
+  favoriteIconeClass?: string;
+  
 }
 
 const ProductCard = ({
@@ -79,6 +84,8 @@ const ProductCard = ({
   onUnfavorite,
   onDelete,
   onUpdate,
+  onSold,
+  status,
   year,
   KmDriven,
   mobileBrand,
@@ -88,6 +95,8 @@ const ProductCard = ({
   salaryPeriod,
   positionType,
   className,
+  CoverImgClass,
+  favoriteIconeClass
 }: ProductCardProps) => {
   const { data: session } = useSession();
   const { addFavorite, removeFavorite, isFavorite } = useFavorites(); // Use the context
@@ -195,7 +204,7 @@ const toggleFavorite = async () => {
   return (
     <div className={`${styles.card} ${filter.card} ${className || ""}`}>
       <Link href={`/product/${_id}`} className={styles.button} onClick={handleClick}>
-        <div className={`${styles.ProductCoverImg} ${filter.ProductCoverImg}`}>
+        <div className={`${styles.ProductCoverImg} ${filter.ProductCoverImg} ${CoverImgClass || ""}`}>
         <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} placeholder="blur" blurDataURL={coverImage || images?.[0] || "/images/placeholder.jpg"} priority />
         <span className={`${styles.timeStamp} ${filter.timeStamp}`}>
           <p>{formatPostedTime(createdAt)}</p>
@@ -311,25 +320,15 @@ const toggleFavorite = async () => {
           {/* CTA Buttons */}
           <div className={styles.CtaBtn}>
             {/* {!onUpdate && !onDelete && (<Link href={`/product/${_id}`} className={styles.button}>View Details</Link>)} */}
-            {onUpdate && (
-            <button
-              className={styles.updateBtn}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                router.push(`/product/productUpdate/${_id}`);
-              }}
-            >
-              Update
-            </button>
-          )}
-
-            {onDelete && (<button onClick={(e) => { e.stopPropagation(); e.preventDefault(); onDelete(_id);}} className={styles.deleteBtn}>Delete</button>)}
+            {status !== "sold" && onUpdate && (<button className={`${styles.updateBtn}`} onClick={(e) => {e.preventDefault(); e.stopPropagation(); router.push(`/product/productUpdate/${_id}`);}}><i className="icon-pencil"></i> Update</button>)}
+            {status !== "sold" && onSold && (<button onClick={(e) => { e.stopPropagation(); e.preventDefault(); onSold(_id);}} className={`${styles.soldBtn}`}><i className="icon-ok-1"></i>  Mark Sold</button>)}
+            {onDelete && (<button onClick={(e) => { e.stopPropagation(); e.preventDefault(); onDelete(_id);}} className={`${styles.deleteBtn}`}><i className="icon-trash-delete"></i> Delete</button>)}
+            
           </div>
           {isFeatured && <PremiumBadge Premium={isFeatured} />}
         </div>
       </Link>
-      <div className={`${style.favoriteIcon} ${loading ? style.disabled : ""}`} onClick={toggleFavorite}>
+      <div className={`${style.favoriteIcon} ${favoriteIconeClass || ""} ${loading ? style.disabled : ""}`} onClick={toggleFavorite}>
         <div className={favorite ? style.active : ""}>
           <span className="icon-heart"></span>
         </div>

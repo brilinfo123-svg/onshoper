@@ -6,6 +6,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* Creates 5 equal columns */
     gap: 5px;
+    margin-top: 0;
   }
   button{
     border-right: 1px solid #ddd;
@@ -26,7 +27,7 @@
   color: #fff;
   @media screen and (max-width: 767px) {
     font-size: 14px;
-    padding: 10px 5px;
+    padding: 10px 12px;
     border-radius: 5px;
   }
   span{
@@ -50,6 +51,6 @@
   padding: 15px 0;
   background-color: #f0f8ff;
   @media screen and (max-width: 767px) {
-    padding: 5px 5px 30px;
+    padding: 15px 5px 30px;
   }
 }

@@ -1,10 +1,10 @@
-// components/Tabs.tsx
 import React, { useState } from "react";
 import styles from "@/components/Tabs/Index.module.scss";
 
 type Tab = {
   label: JSX.Element;
   content: React.ReactNode;
+  className?: string;
 };
 
 interface TabsProps {
@@ -19,7 +19,15 @@ const Tabs: React.FC<TabsProps> = ({ tabs }) => {
       {/* Tab Navigation */}
       <div className={styles.tabNavigation}>
         {tabs.map((tab, index) => (
-          <button key={index} className={`${styles.tabButton} ${ activeTab === index ? styles.tabButtonActive : "" }`} onClick={() => setActiveTab(index)}>
+          <button
+            key={index}
+            className={`
+              ${styles.tabButton}
+              ${activeTab === index ? styles.tabButtonActive : ""}
+              ${tab.className || ""}
+            `}
+            onClick={() => setActiveTab(index)}
+          >
             {tab.label}
           </button>
         ))}

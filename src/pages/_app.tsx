@@ -40,6 +40,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const isOfflinePage = router.pathname === "/_offline";
   const ProductForms = router.pathname === "/ProductForm";
   const isInstall = router.pathname === "/install";
+  const profilePage = router.pathname === "/profile";
+  
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -110,7 +112,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     <ToastContainer position="top-right" autoClose={3000} />
                     <AutoUnfeaturePoller />
 
-                    {!isAdminPage && !isAuthPage && !isOfflinePage && !isInstall && !(router.pathname === "/ProductForm" && isMobile) && (<HeaderComponent Component={Component} />)}
+                    {!isAdminPage && !isAuthPage && !isOfflinePage && !isInstall && !(router.pathname === "/ProductForm" && isMobile) && !(router.pathname.startsWith("/profile") && isMobile) && (<HeaderComponent Component={Component} />)}
 
                     <main>
                       <Component {...pageProps} />

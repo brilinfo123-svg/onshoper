@@ -37,9 +37,25 @@ const PropertyDetailPage: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [wishlistProducts, setWishlistProducts] = useState<any[]>([]);
   const rentProducts = products.filter((p: any) => p.SaleType === "Rent");
-  const saleProducts = products.filter((p: any) => p.SaleType === "Sale");  
+  const saleProducts = products.filter((p: any) => p.SaleType === "Sale");
+  const soldProducts = products.filter((p: any) => p.status === "sold");
   const [activeTab, setActiveTab] = useState("rent");
   
+  const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 767);
+  };
+
+  handleResize();
+
+  window.addEventListener("resize", handleResize);
+
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
+  console.log(shopData);
   // ✅ Alag-alag loading states
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(true);
@@ -143,6 +159,57 @@ const PropertyDetailPage: React.FC = () => {
       setActionLoading(false);
     }
   };
+  const handleMarkSold = async (productId: string) => {
+    const confirm = await Swal.fire({
+      title: "Mark as Sold?",
+      text: "This product will be moved to Sold section.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, mark it",
+      cancelButtonText: "Cancel",
+    });
+  
+    if (!confirm.isConfirmed) return;
+  
+    setActionLoading(true);
+  
+    try {
+      const res = await fetch(`/api/products/markSold?id=${productId}`, {
+        method: "PUT",
+      });
+  
+      if (res.ok) {
+        setProducts((prev) =>
+          prev.map((item) =>
+            item._id === productId
+              ? { ...item, status: "sold" }
+              : item
+          )
+        );
+  
+        Swal.fire({
+          icon: "success",
+          title: "Marked as Sold",
+          text: "Product updated successfully",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: "Could not update product",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Something went wrong",
+      });
+    } finally {
+      setActionLoading(false);
+    }
+  };
 
   // ✅ Single effect: profile + products flow handled yahin
   useEffect(() => {
@@ -188,15 +255,14 @@ const PropertyDetailPage: React.FC = () => {
 
   const tabs = [
     {
-      label: <span className="icon-picture">My Ads</span>,
+      label: <div className={styles.WrapMyAdsBtn}><span className="icon-shop"></span> <div className={styles.labelWraper}><span className={styles.myadsLabel}>My Ads</span><span className={styles.ManageAdsLabel}>Manage Your Ads</span></div> <span className="icon-right-open-big"></span></div>,
+      className: styles.myAdsBtn,
       content: (
         <div className={styles.myAdss}>
-          <div className={styles.makeProductFutured}>
+          {/* <div className={styles.makeProductFutured}>
             <h2>My Products</h2>
-            <p>
-              Listed Ads: <strong>{products.length}</strong>
-            </p>
-          </div>
+            <p>Listed Ads: <strong>{products.length}</strong></p>
+          </div> */}
 
           {/* ✅ Products skeleton loading */}
           {loadingProducts ? (
@@ -228,84 +294,119 @@ const PropertyDetailPage: React.FC = () => {
               <div className={styles.productGridWrapper}>
                 {products.some((p: any) => p.status === "expired") && (
                   <div className={styles.upgradeTopWrapper}>
-                    <Link
-                      href="/subscribePlan"
-                      className={styles.upgradeButton}
-                    >
-                      Upgrade
-                    </Link>
+                    <Link href="/subscribePlan" className={styles.upgradeButton}>Upgrade</Link>
                   </div>
                 )}
                 <div className={styles.ProductTabs}>
-  <button
-    className={activeTab === "rent" ? styles.activeTab : ""}
-    onClick={() => setActiveTab("rent")}
-  >
-    Rental Products
-  </button>
-
-  <button
-    className={activeTab === "sale" ? styles.activeTab : ""}
-    onClick={() => setActiveTab("sale")}
-  >
-    Saling Products
-  </button>
+                    <button className={activeTab === "all" ? styles.activeTab : ""} onClick={() => setActiveTab("all")}>All <span className={styles.badge}>{products.length}</span></button>
+                    <button className={activeTab === "rent" ? styles.activeTab : ""} onClick={() => setActiveTab("rent")}>Rental <span className={styles.badge}>{rentProducts.length}</span></button>
+                    <button className={activeTab === "sale" ? styles.activeTab : ""} onClick={() => setActiveTab("sale")}>Sale <span className={styles.badge}>{saleProducts.length}</span></button>
+                    <button className={activeTab === "sold" ? styles.activeTab : ""} onClick={() => setActiveTab("sold")}>Sold <span className={styles.badge}>{soldProducts.length}</span></button>
                 </div>
 
                 <div className={styles.tabContent}>
-                  <div className={styles.productGrid}>
-                    {(activeTab === "rent" ? rentProducts : saleProducts)
-                      .slice(0, visibleCount)
-                      .map((product: any) => (
-                        <ProductPost
-                          key={product._id}
-                          _id={product._id}
-                          title={product.title}
-                          description={""}
-                          category={product.category}
-                          subCategory={product.subcategory}
-                          price={Number(product.price)}
-                          SalePrice={product.SalePrice}
-                          location={product.location || "Not specified"}
-                          priceWeek={
-                            product.priceWeek !== undefined
-                              ? Number(product.priceWeek)
-                              : undefined
-                          }
-                          priceMonth={
-                            product.priceMonth !== undefined
-                              ? Number(product.priceMonth)
-                              : undefined
-                          }
-                          coverImage={
-                            product.coverImage ||
-                            product.images?.[0] ||
-                            "/images/DefoultLogo.jpg"
-                          }
-                          images={product.images || []}
-                          createdAt={product.createdAt}
-                          isFeatured={product.feature || false}
-                          onDelete={handleDelete}
-                          onUpdate={(id) => router.push(`/product/productUpdate/${id}`)}
-                          shopOwnerID={product.shopOwnerID}
-                        />
-                      ))}
-                  </div>
-
-                  {visibleCount < (activeTab === "rent" ? rentProducts.length : saleProducts.length) && (
-                    <div className={styles.viewMoreWrapper}>
-                      <Button
-                        className={styles["highlight-button"]}
-                        onClick={handleViewMore}
-                        color="black"
-                        text="white"
-                        href={""}
-                      >
-                        View More
-                      </Button>
+                    <div className={styles.productGrid}>
+                      {(
+                        activeTab === "all"
+                          ? products
+                          : activeTab === "rent"
+                          ? rentProducts
+                          : activeTab === "sale"
+                          ? saleProducts
+                          : soldProducts
+                      ).length === 0 ? (
+                        <div className={styles.noAdsFound}>
+                          <Image
+                            src="/icons/not-found.png"
+                            alt="No Ads"
+                            width={120}
+                            height={120}
+                          />
+                          <h3>No Ads</h3>
+                          <p>No ads available in this section.</p>
+                        </div>
+                      ) : (
+                        (
+                          activeTab === "all"
+                            ? products
+                            : activeTab === "rent"
+                            ? rentProducts
+                            : activeTab === "sale"
+                            ? saleProducts
+                            : soldProducts
+                        )
+                          .slice(0, visibleCount)
+                          .map((product: any) => (
+                            <ProductPost
+                              key={product._id}
+                              _id={product._id}
+                              title={product.title}
+                              description={""}
+                              category={product.category}
+                              subCategory={product.subcategory}
+                              price={Number(product.price)}
+                              SalePrice={product.SalePrice}
+                              location={product.location || "Not specified"}
+                              priceWeek={
+                                product.priceWeek !== undefined
+                                  ? Number(product.priceWeek)
+                                  : undefined
+                              }
+                              priceMonth={
+                                product.priceMonth !== undefined
+                                  ? Number(product.priceMonth)
+                                  : undefined
+                              }
+                              coverImage={
+                                product.coverImage ||
+                                product.images?.[0] ||
+                                "/images/DefoultLogo.jpg"
+                              }
+                              images={product.images || []}
+                              createdAt={product.createdAt}
+                              isFeatured={product.feature || false}
+                              onDelete={handleDelete}
+                              onSold={handleMarkSold}
+                              status={product.status}
+                              onUpdate={(id) =>
+                                router.push(`/product/productUpdate/${id}`)
+                              }
+                              shopOwnerID={product.shopOwnerID}
+                              className={`${styles.ProfileProduct} ${
+                                product.status === "sold"
+                                  ? styles.SoledProduct
+                                  : ""
+                              }`}
+                              CoverImgClass={styles.ProfileCoverImg}
+                              favoriteIconeClass={styles.ProfileFavoriteIcon}
+                            />
+                          ))
+                      )}
                     </div>
-                  )}
-                </div>
+
+                    {visibleCount <
+                      (
+                        activeTab === "all"
+                          ? products.length
+                          : activeTab === "rent"
+                          ? rentProducts.length
+                          : activeTab === "sale"
+                          ? saleProducts.length
+                          : soldProducts.length
+                      ) && (
+                      <div className={styles.viewMoreWrapper}>
+                        <Button
+                          className={styles["highlight-button"]}
+                          onClick={handleViewMore}
+                          color="black"
+                          text="white"
+                          href={""}
+                        >
+                          View More
+                        </Button>
+                      </div>
+                    )}
+                  </div>
 
 
               </div>
@@ -332,7 +433,8 @@ const PropertyDetailPage: React.FC = () => {
       ),
     },
     {
-      label: <span className="icon-user">Update Profile</span>,
+      label: <div className={styles.WrapMyAdsBtn}><span className="icon-edit"></span> <div className={styles.labelWraper}><span className={styles.myadsLabel}>Edit Profile</span><span className={styles.ManageAdsLabel}>Update Your Details</span></div> <span className="icon-right-open-big"></span></div>,
+      className: styles.editProfileBtn,
       content: <UpdateDetail />,
     },
   ];
@@ -352,17 +454,35 @@ const PropertyDetailPage: React.FC = () => {
       <div className={styles.mainContent}>
         <div className={styles.leftColumn}>
           <Tabs tabs={tabs} />
+          <div className={styles.mobileSellerInfoAcount}>
+          {isMobile && (
+              <div className={styles.sellerInfo}>
+                <div className={styles.shopID}>
+                  <p>
+                    <span className="icon-user-circle"></span> <b>User ID</b>: {shopData?.user?._id || "N/A"}
+                  </p>
+                </div>
+
+                <button
+                  onClick={handleDeleteAccount}
+                  className={styles.deleteBtn}
+                >
+                  Delete Account
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className={styles.rightColumn}>
           <div className={styles.detailsSection}>
             <div className={styles.storeCard}>
               <div className={styles.focusedata}>
+              <div className={styles.activeAds}><h5>{products.length}</h5><span>Active Ads</span></div>
                 {loadingProfile ? (
                   <>
                     {/* Profile Image Skeleton */}
                     <div className={styles.profileSkeletonImage}></div>
-
                     {/* Name Skeleton */}
                     <div className={styles.profileSkeletonName}></div>
                   </>
@@ -378,7 +498,13 @@ const PropertyDetailPage: React.FC = () => {
                       blurDataURL="/images/profile-blur.png"
                       priority
                     />
-                    <h3>{shopData?.user?.name || "User"}</h3>
+                    <div className={styles.userPersonalDetails}>
+                        <h3>{shopData?.user?.name || "User"}</h3>
+                        <div className={styles.verifiedBadge}>
+                          <span className={styles.icon}>✓</span>
+                          <span className={styles.text}>Verified</span>
+                        </div>
+                    </div>
                   </>
                 )}
               </div>
@@ -402,18 +528,35 @@ const PropertyDetailPage: React.FC = () => {
               {/* {loadingProfile && (
                 <p className={styles.smallLoadingText}>Loading profile...</p>
               )} */}
+              
             </div>
           </div>
 
 
-          <div className={styles.sellerInfo}>
+          {/* <div className={styles.sellerInfo}>
             <div className={styles.shopID}>
               <p>
                 <b>SHOP ID</b>: {shopData?.user?._id || "N/A"}
               </p>
             </div>
             <button onClick={handleDeleteAccount} className={styles.deleteBtn}>Delete Account</button>
-          </div>
+          </div> */}
+          {!isMobile && (
+              <div className={styles.sellerInfo}>
+                <div className={styles.shopID}>
+                  <p>
+                    <b>SHOP ID</b>: {shopData?.user?._id || "N/A"}
+                  </p>
+                </div>
+
+                <button
+                  onClick={handleDeleteAccount}
+                  className={styles.deleteBtn}
+                >
+                  Delete Account
+                </button>
+              </div>
+            )}
         </div>
       </div>
     </div>
