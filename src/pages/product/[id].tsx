@@ -136,13 +136,30 @@ const ProductDetails = () => {
     if (SallerMobile) {
       const cleanNumber = SallerMobile.replace(/\D/g, '');
       let whatsappNumber = cleanNumber;
-
-      // Add country code if missing (assuming India +91)
+  
       if (!whatsappNumber.startsWith('91') && whatsappNumber.length === 10) {
         whatsappNumber = `91${whatsappNumber}`;
       }
+  
+      // Dynamic data (props/API se lena best hai)
+      const adLink = window.location.href;
+      const adTitle = document.title;
+      const sellerName = SallerName || "Seller"; // dynamic karo
+  
+      const message = `
+Hi ${sellerName}
 
-      window.open(`https://wa.me/${whatsappNumber}`, '_blank');
+I saw your ad on Onshoper and I’m interested in this product. 
+Is it still available?
+
+📦 Product: ${adTitle}
+🔗 Link: ${adLink}
+
+Thank you 🙂`;
+  
+      const encodedMessage = encodeURIComponent(message);
+  
+      window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
     } else {
       alert('Mobile number not available');
     }
