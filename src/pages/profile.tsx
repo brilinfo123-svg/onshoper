@@ -29,15 +29,12 @@ interface ShopData {
 const PropertyDetailPage: React.FC = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-
   const [shopData, setShopData] = useState<ShopData | null>(null);
   const [products, setProducts] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState("rent");
-
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
-
   const [visibleCount, setVisibleCount] = useState(3);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -50,11 +47,8 @@ const PropertyDetailPage: React.FC = () => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 767);
     };
-
     handleResize();
-
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -151,7 +145,7 @@ const PropertyDetailPage: React.FC = () => {
   // =========================
   const handleTabChange = useCallback((tab: string) => {
     setActiveTab(tab);
-    setVisibleCount(3);
+    setVisibleCount(1);
   }, []);
 
   // =========================
@@ -283,8 +277,7 @@ const PropertyDetailPage: React.FC = () => {
     try {
       setActionLoading(true);
 
-      const res = await fetch(
-        `/api/products/markSold?id=${productId}`,
+      const res = await fetch(`/api/products/markSold?id=${productId}`,
         {
           method: "PUT",
         }
@@ -331,19 +324,13 @@ const PropertyDetailPage: React.FC = () => {
       label: (
         <div className={styles.WrapMyAdsBtn}>
           <span className="icon-shop"></span>
-
           <div className={styles.labelWraper}>
             <span className={styles.myadsLabel}>My Ads</span>
-
-            <span className={styles.ManageAdsLabel}>
-              Manage Your Ads
-            </span>
+            <span className={styles.ManageAdsLabel}>Manage Your Ads</span>
           </div>
-
           <span className="icon-right-open-big"></span>
         </div>
       ),
-
       className: styles.myAdsBtn,
 
       content: (
@@ -356,100 +343,31 @@ const PropertyDetailPage: React.FC = () => {
             </div>
           ) : products.length === 0 ? (
             <div className={styles.notFoundShops}>
-              <Image
-                src="/icons/not-found.png"
-                alt="not-found"
-                width={200}
-                height={200}
-                priority
-              />
-
+              <Image src="/icons/not-found.png" alt="not-found" width={200} height={200} priority/>
               <p>No products listed yet</p>
-
-              <Link
-                href="/ProductForm"
-                className={`${styles.sellAdd} icon-shop`}
-              >
-                List Your Ad
-              </Link>
+              <Link href="/ProductForm" className={`${styles.sellAdd} icon-shop`}>List Your Ad</Link>
             </div>
           ) : (
             <>
               <div className={styles.productGridWrapper}>
                 {products.some((p: any) => p.status === "expired") && (
                   <div className={styles.upgradeTopWrapper}>
-                    <Link
-                      href="/subscribePlan"
-                      className={styles.upgradeButton}
-                    >
-                      Upgrade
-                    </Link>
+                    <Link href="/subscribePlan" className={styles.upgradeButton}>Upgrade</Link>
                   </div>
                 )}
-
                 <div className={styles.ProductTabs}>
-                  <button
-                    className={
-                      activeTab === "all" ? styles.activeTab : ""
-                    }
-                    onClick={() => handleTabChange("all")}
-                  >
-                    All
-                    <span className={styles.badge}>
-                      {products.length}
-                    </span>
-                  </button>
-
-                  <button
-                    className={
-                      activeTab === "rent" ? styles.activeTab : ""
-                    }
-                    onClick={() => handleTabChange("rent")}
-                  >
-                    Rental
-                    <span className={styles.badge}>
-                      {rentProducts.length}
-                    </span>
-                  </button>
-
-                  <button
-                    className={
-                      activeTab === "sale" ? styles.activeTab : ""
-                    }
-                    onClick={() => handleTabChange("sale")}
-                  >
-                    Sale
-                    <span className={styles.badge}>
-                      {saleProducts.length}
-                    </span>
-                  </button>
-
-                  <button
-                    className={
-                      activeTab === "sold" ? styles.activeTab : ""
-                    }
-                    onClick={() => handleTabChange("sold")}
-                  >
-                    Sold
-                    <span className={styles.badge}>
-                      {soldProducts.length}
-                    </span>
-                  </button>
+                  <button className={ activeTab === "all" ? styles.activeTab : "" } onClick={() => handleTabChange("all")}>All <span className={styles.badge}>{products.length}</span></button>
+                  <button className={ activeTab === "rent" ? styles.activeTab : "" } onClick={() => handleTabChange("rent")} > Rental <span className={styles.badge}> {rentProducts.length}</span></button>
+                  <button className={activeTab === "sale" ? styles.activeTab : ""} onClick={() => handleTabChange("sale")}>Sale <span className={styles.badge}>{saleProducts.length}</span></button>
+                  <button className={activeTab === "sold" ? styles.activeTab : ""} onClick={() => handleTabChange("sold")}>Sold <span className={styles.badge}>{soldProducts.length}</span></button>
                 </div>
 
                 <div className={styles.tabContent}>
                   <div className={styles.productGrid}>
                     {currentProducts.length === 0 ? (
                       <div className={styles.noAdsFound}>
-                        <Image
-                          src="/icons/not-found.png"
-                          alt="No Ads"
-                          width={120}
-                          height={120}
-                        />
-
+                        <Image src="/icons/not-found.png" alt="No Ads" width={120} height={120}/>
                         <h3>No Ads</h3>
-
                         <p>No ads available in this section.</p>
                       </div>
                     ) : (
@@ -465,47 +383,21 @@ const PropertyDetailPage: React.FC = () => {
                             subCategory={product.subcategory}
                             price={Number(product.price)}
                             SalePrice={product.SalePrice}
-                            location={
-                              product.location || "Not specified"
-                            }
-                            priceWeek={
-                              product.priceWeek
-                                ? Number(product.priceWeek)
-                                : undefined
-                            }
-                            priceMonth={
-                              product.priceMonth
-                                ? Number(product.priceMonth)
-                                : undefined
-                            }
-                            coverImage={
-                              product.coverImage ||
-                              product.images?.[0] ||
-                              "/images/DefoultLogo.jpg"
-                            }
+                            location={product.location || "Not specified"}
+                            priceWeek={product.priceWeek ? Number(product.priceWeek) : undefined}
+                            priceMonth={product.priceMonth ? Number(product.priceMonth) : undefined}
+                            coverImage={product.coverImage || product.images?.[0] || "/images/DefoultLogo.jpg"}
                             images={product.images || []}
                             createdAt={product.createdAt}
                             isFeatured={product.feature || false}
                             onDelete={handleDelete}
                             onSold={handleMarkSold}
                             status={product.status}
-                            onUpdate={(id) =>
-                              router.push(
-                                `/product/productUpdate/${id}`
-                              )
-                            }
+                            onUpdate={(id) => router.push(`/product/productUpdate/${id}`)}
                             shopOwnerID={product.shopOwnerID}
-                            className={`${styles.ProfileProduct} ${
-                              product.status === "sold"
-                                ? styles.SoledProduct
-                                : ""
-                            }`}
-                            CoverImgClass={
-                              styles.ProfileCoverImg
-                            }
-                            favoriteIconeClass={
-                              styles.ProfileFavoriteIcon
-                            }
+                            className={`${styles.ProfileProduct} ${product.status === "sold" ? styles.SoledProduct : ""}`}
+                            CoverImgClass={styles.ProfileCoverImg}
+                            favoriteIconeClass={styles.ProfileFavoriteIcon}
                           />
                         ))
                     )}
@@ -513,22 +405,13 @@ const PropertyDetailPage: React.FC = () => {
 
                   {visibleCount < currentProducts.length && (
                     <div className={styles.viewMoreWrapper}>
-                      <Button
-                        className={styles["highlight-button"]}
-                        onClick={handleViewMore}
-                        color="black"
-                        text="white"
-                        href=""
-                      >
-                        View More
-                      </Button>
+                      <Button className={styles["highlight-button"]} onClick={handleViewMore} color="black" text="white" href="">View More</Button>
                     </div>
                   )}
                 </div>
               </div>
             </>
           )}
-
           {actionLoading && (
             <Loader message="Please wait..." />
           )}
@@ -540,23 +423,14 @@ const PropertyDetailPage: React.FC = () => {
       label: (
         <div className={styles.WrapMyAdsBtn}>
           <span className="icon-edit"></span>
-
           <div className={styles.labelWraper}>
-            <span className={styles.myadsLabel}>
-              Edit Profile
-            </span>
-
-            <span className={styles.ManageAdsLabel}>
-              Update Your Details
-            </span>
+            <span className={styles.myadsLabel}>Edit Profile</span>
+            <span className={styles.ManageAdsLabel}>Update Your Details</span>
           </div>
-
           <span className="icon-right-open-big"></span>
         </div>
       ),
-
       className: styles.editProfileBtn,
-
       content: <UpdateDetail />,
     },
   ];
@@ -565,17 +439,8 @@ const PropertyDetailPage: React.FC = () => {
     <div className="container">
       <Head>
         <title>My Profile – OnShoper</title>
-
-        <meta
-          name="description"
-          content="View and manage your OnShoper profile."
-        />
-
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1"
-        />
-
+        <meta name="description" content="View and manage your OnShoper profile."/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta charSet="UTF-8" />
       </Head>
 
@@ -583,25 +448,13 @@ const PropertyDetailPage: React.FC = () => {
         {/* LEFT */}
         <div className={styles.leftColumn}>
           <Tabs tabs={tabs} />
-
           {isMobile && (
             <div className={styles.mobileSellerInfoAcount}>
               <div className={styles.sellerInfo}>
-                <div className={styles.shopID}>
-                  <p>
-                    <span className="icon-user-circle"></span>
-
-                    <b>User ID</b>:{" "}
-                    {shopData?.user?._id || "N/A"}
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleDeleteAccount}
-                  className={styles.deleteBtn}
-                >
-                  Delete Account
-                </button>
+                {/* <div className={styles.shopID}>
+                  <p><span className="icon-user-circle"></span> <b>User ID</b>:{" "} {shopData?.user?._id || "N/A"}</p>
+                </div> */}
+                <button onClick={handleDeleteAccount} className={styles.deleteBtn}>Delete Account</button>
               </div>
             </div>
           )}
@@ -616,74 +469,45 @@ const PropertyDetailPage: React.FC = () => {
                   <h5>{products.length}</h5>
                   <span>Ads</span>
                 </div>
-
                 {loadingProfile ? (
                   <>
-                    <div
-                      className={styles.profileSkeletonImage}
-                    ></div>
-
-                    <div
-                      className={styles.profileSkeletonName}
-                    ></div>
-                    <div
-                      className={styles.profileSkeletonName}
-                    ></div>
+                    <div className={styles.profileSkeletonImage}></div>
+                    <div className={styles.profileSkeletonName}></div>
+                    <div className={styles.profileSkeletonName}></div>
                   </>
                 ) : (
                   <>
-                    <Image
-                      src={
-                        shopData?.user?.photo ||
-                        "/images/profile.png"
-                      }
-                      width={100}
-                      height={100}
-                      alt="userProfile"
-                      className={styles.profileImage}
-                      priority
-                    />
-
-                    <div
-                      className={styles.userPersonalDetails}
-                    >
-                      <h3>
-                        {shopData?.user?.name || "User"}
-                      </h3>
-
-                      <div
+                    <Image src={shopData?.user?.photo || "/images/profile.png"} width={100} height={100} alt="userProfile" className={styles.profileImage} priority/>
+                    <div className={styles.userPersonalDetails}>
+                      <h3>{shopData?.user?.name || "User"}</h3>
+                      {/* <div
                         className={styles.verifiedBadge}
                       >
                         <span className={styles.icon}>
                           ✓
                         </span>
-
                         <span className={styles.text}>
                           Verified
                         </span>
-                      </div>
+                      </div> */}
                     </div>
                   </>
                 )}
               </div>
-
               <div className={styles.personalDetails}>
                 <div className={styles.detailCard}>
                   <div className={`${styles.iconBox} ${styles.IconPhone}`}>
                     <span className="icon-phone"></span>
                   </div>
-
                   <div className={styles.detailContent}>
                     <span className={styles.label}>Phone Number</span>
                     <p>{shopData?.user?.mobile || "N/A"}</p>
                   </div>
                 </div>
-
                 <div className={styles.detailCard}>
                   <div className={`${styles.iconBox} ${styles.IconMail}`}>
                     <span className="icon-mail"></span>
                   </div>
-
                   <div className={styles.detailContent}>
                     <span className={styles.label}>Email Address</span>
                     <p>{shopData?.user?.contact || "N/A"}</p>
@@ -696,18 +520,9 @@ const PropertyDetailPage: React.FC = () => {
           {!isMobile && (
             <div className={styles.sellerInfo}>
               <div className={styles.shopID}>
-                <p>
-                  <b>SHOP ID</b>:{" "}
-                  {shopData?.user?._id || "N/A"}
-                </p>
+                <p><b>SHOP ID</b>:{" "} {shopData?.user?._id || "N/A"}</p>
               </div>
-
-              <button
-                onClick={handleDeleteAccount}
-                className={styles.deleteBtn}
-              >
-                Delete Account
-              </button>
+              <button onClick={handleDeleteAccount} className={styles.deleteBtn}>Delete Account</button>
             </div>
           )}
         </div>

@@ -149,8 +149,6 @@ export default function ProfileForm() {
     }
   };
   
-  
-
   if (status === "loading") return <p>Loading...</p>;
 
   return (
@@ -160,16 +158,15 @@ export default function ProfileForm() {
         
       <div className={styles.imageUpload}>
           <div className={styles.imagePreview}>
-            <img src={previewPhoto || "/images/profile.png"} alt="Profile Photo" />
-            
+            <img src={previewPhoto || photo || "/images/profile.png"} alt="Profile Photo"/>
           </div>
+
           <p className={styles.heading}>Profile Photo</p>
           <label className={styles.uploadLabel}>
-            Upload Photo
-            <input type="file" accept="image/*" onChange={handleFileChange} />
+            <span className="icon-camera"></span>Update Photo
+            <input type="file" accept="image/*" onChange={handleFileChange}/>
           </label>
         </div>
-
       </div>
 
       <div className={styles.profileInputs}>
