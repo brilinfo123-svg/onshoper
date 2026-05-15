@@ -508,3 +508,796 @@ const IndiaAddressForm = ({ onLocationSelect, isProductForm = false, formData, s
 };
 
 export default IndiaAddressForm;
+
+
+
+
+
+
+
+
+// Updated Vesion Select Location Code ======================================
+
+// import React,{useState,useRef,useMemo,useCallback,useEffect} from "react";
+// import { State, City } from "country-state-city";
+// import areaData from "../../indiaArea/indian-areas.json";
+// import styles from "./Index.module.scss";
+
+// const IndiaAddressForm=({
+//   onLocationSelect,
+//   isProductForm=false,
+//   formData,
+//   setFormData,
+// })=>{
+
+//   const [selectedState,setSelectedState]=useState(formData?.location?.stateCode || "");
+//   const [selectedCity,setSelectedCity]=useState(formData?.location?.city || "");
+//   const [selectedArea,setSelectedArea]=useState(formData?.location?.area || "");
+//   const [selectedAreaCoords,setSelectedAreaCoords]=useState(formData?.location?.coordinates || null);
+
+//   const [cities,setCities]=useState([]);
+//   const [areas,setAreas]=useState([]);
+
+//   const [filteredCities,setFilteredCities]=useState([]);
+//   const [filteredAreas,setFilteredAreas]=useState([]);
+
+//   const [citySearch,setCitySearch]=useState("");
+//   const [areaSearch,setAreaSearch]=useState("");
+
+//   const [showCityDropdown,setShowCityDropdown]=useState(false);
+//   const [showAreaDropdown,setShowAreaDropdown]=useState(false);
+
+//   const [globalSearch,setGlobalSearch]=useState("");
+//   const [globalSuggestions,setGlobalSuggestions]=useState([]);
+//   const [showGlobalSuggestions,setShowGlobalSuggestions]=useState(false);
+
+//   const [currentLocation,setCurrentLocation]=useState(null);
+//   const [isDetectingLocation,setIsDetectingLocation]=useState(false);
+//   const [locationError,setLocationError]=useState("");
+
+//   const [recentLocations,setRecentLocations]=useState([]);
+
+//   // NEW SLIDE STATES
+//   const [view,setView]=useState("state");
+//   const [slideDirection,setSlideDirection]=useState("right");
+
+//   const formContainerRef=useRef(null);
+
+//   const indianStates=useMemo(()=>State.getStatesOfCountry("IN"),[]);
+
+//   const getStateName=useCallback((stateCode)=>{
+//     return indianStates.find(
+//       (state)=>state.isoCode===stateCode
+//     )?.name || "";
+//   },[indianStates]);
+
+//   const updateFormData=useCallback((locationData)=>{
+//     if(setFormData){
+//       setFormData((prev)=>({
+//         ...prev,
+//         location:locationData,
+//       }));
+//     }
+//   },[setFormData]);
+
+//   const calculateDistance=(lat1,lon1,lat2,lon2)=>{
+//     const toRad=(value)=>(value * Math.PI) / 180;
+
+//     const R=6371;
+
+//     const dLat=toRad(lat2 - lat1);
+//     const dLon=toRad(lon2 - lon1);
+
+//     const a=
+//       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+//       Math.cos(toRad(lat1)) *
+//       Math.cos(toRad(lat2)) *
+//       Math.sin(dLon / 2) *
+//       Math.sin(dLon / 2);
+
+//     const c=
+//       2 *
+//       Math.atan2(
+//         Math.sqrt(a),
+//         Math.sqrt(1 - a)
+//       );
+
+//     return R * c;
+//   };
+
+//   useEffect(()=>{
+
+//     detectCurrentLocation();
+
+//     const savedRecent=localStorage.getItem("recentLocations");
+
+//     if(savedRecent){
+//       setRecentLocations(JSON.parse(savedRecent));
+//     }
+
+//   },[]);
+
+//   const detectCurrentLocation=()=>{
+
+//     if(!navigator.geolocation) return;
+
+//     setIsDetectingLocation(true);
+
+//     navigator.geolocation.getCurrentPosition(
+//       (position)=>{
+
+//         const userLat=position.coords.latitude;
+//         const userLng=position.coords.longitude;
+
+//         let nearestLocation=null;
+//         let minDistance=Infinity;
+
+//         Object.keys(areaData).forEach((stateCode)=>{
+
+//           const stateCities=areaData[stateCode];
+
+//           Object.keys(stateCities).forEach((cityName)=>{
+
+//             const cityAreas=stateCities[cityName];
+
+//             Object.keys(cityAreas).forEach((areaName)=>{
+
+//               const coords=cityAreas[areaName];
+
+//               const distance=calculateDistance(
+//                 userLat,
+//                 userLng,
+//                 coords.lat,
+//                 coords.lng
+//               );
+
+//               if(distance < minDistance){
+
+//                 minDistance=distance;
+
+//                 nearestLocation={
+//                   stateCode,
+//                   city:cityName,
+//                   area:areaName,
+//                   coordinates:coords,
+//                 };
+//               }
+//             });
+//           });
+//         });
+
+//         if(nearestLocation){
+//           setCurrentLocation(nearestLocation);
+//         }
+
+//         setIsDetectingLocation(false);
+
+//       },
+//       ()=>{
+//         setLocationError("Unable to detect location");
+//         setIsDetectingLocation(false);
+//       },
+//       {
+//         enableHighAccuracy:true,
+//         timeout:10000,
+//       }
+//     );
+//   };
+
+//   const saveRecentLocation=(location)=>{
+
+//     const updated=[
+//       location,
+//       ...recentLocations.filter(
+//         (item)=>
+//           item.city !== location.city ||
+//           item.area !== location.area
+//       ),
+//     ].slice(0,5);
+
+//     setRecentLocations(updated);
+
+//     localStorage.setItem(
+//       "recentLocations",
+//       JSON.stringify(updated)
+//     );
+//   };
+
+//   const selectLocation=(location)=>{
+
+//     setSelectedState(location.stateCode);
+//     setSelectedCity(location.city);
+//     setSelectedArea(location.area || "");
+//     setSelectedAreaCoords(location.coordinates);
+
+//     const stateCities=City.getCitiesOfState(
+//       "IN",
+//       location.stateCode
+//     );
+
+//     setCities(stateCities);
+//     setFilteredCities(stateCities);
+
+//     const cityAreas=Object.keys(
+//       areaData?.[location.stateCode]?.[location.city] || {}
+//     );
+
+//     setAreas(cityAreas);
+//     setFilteredAreas(cityAreas);
+
+//     setGlobalSearch(
+//       `${location.area ? `${location.area}, ` : ""}${location.city}`
+//     );
+
+//     setCitySearch(location.city);
+//     setAreaSearch(location.area || "");
+
+//     const finalLocation={
+//       state:getStateName(location.stateCode),
+//       stateCode:location.stateCode,
+//       city:location.city,
+//       area:location.area || "",
+//       coordinates:location.coordinates,
+//     };
+
+//     updateFormData(finalLocation);
+
+//     if(onLocationSelect){
+//       onLocationSelect(finalLocation);
+//     }
+
+//     saveRecentLocation(finalLocation);
+
+//     setShowGlobalSuggestions(false);
+//     setShowCityDropdown(false);
+//     setShowAreaDropdown(false);
+//   };
+
+//   const handleGlobalSearch=(e)=>{
+
+//     const value=e.target.value.toLowerCase();
+
+//     setGlobalSearch(e.target.value);
+
+//     if(!value){
+//       setShowGlobalSuggestions(false);
+//       return;
+//     }
+
+//     let suggestions=[];
+
+//     Object.keys(areaData).forEach((stateCode)=>{
+
+//       const stateCities=areaData[stateCode];
+
+//       Object.keys(stateCities).forEach((cityName)=>{
+
+//         const cityAreas=stateCities[cityName];
+
+//         if(cityName.toLowerCase().includes(value)){
+
+//           suggestions.push({
+//             stateCode,
+//             city:cityName,
+//             area:"",
+//             coordinates:null,
+//           });
+//         }
+
+//         Object.keys(cityAreas).forEach((areaName)=>{
+
+//           if(areaName.toLowerCase().includes(value)){
+
+//             suggestions.push({
+//               stateCode,
+//               city:cityName,
+//               area:areaName,
+//               coordinates:cityAreas[areaName],
+//             });
+//           }
+//         });
+//       });
+//     });
+
+//     setGlobalSuggestions(suggestions.slice(0,15));
+//     setShowGlobalSuggestions(true);
+//   };
+
+//   // STATE SELECT
+//   const handleStateChange=(stateCode)=>{
+
+//     setSelectedState(stateCode);
+//     setSelectedCity("");
+//     setSelectedArea("");
+
+//     const stateCities=City.getCitiesOfState(
+//       "IN",
+//       stateCode
+//     );
+
+//     setCities(stateCities);
+//     setFilteredCities(stateCities);
+
+//     setSlideDirection("left");
+
+//     setTimeout(()=>{
+//       setView("city");
+//     },100);
+//   };
+
+//   // CITY SEARCH
+//   const handleCitySearch=(e)=>{
+
+//     const value=e.target.value.toLowerCase();
+
+//     setCitySearch(e.target.value);
+
+//     const filtered=cities.filter((city)=>
+//       city.name.toLowerCase().includes(value)
+//     );
+
+//     setFilteredCities(filtered);
+//   };
+
+//   // CITY SELECT
+// // CITY SELECT
+// const handleCityChange=(cityName)=>{
+
+//   setSelectedCity(cityName);
+
+//   // RESET AREA
+//   setSelectedArea("");
+//   setAreaSearch("");
+
+//   setCitySearch(cityName);
+
+//   const cityAreas=Object.keys(
+//     areaData?.[selectedState]?.[cityName] || {}
+//   );
+
+//   setAreas(cityAreas);
+//   setFilteredAreas(cityAreas);
+
+//   // IF AREA AVAILABLE
+//   if(cityAreas.length > 0){
+
+//     setSlideDirection("left");
+
+//     setTimeout(()=>{
+//       setView("area");
+//     },100);
+
+//   }else{
+
+//     // STAY IN CITY VIEW
+//     setView("city");
+
+//     const finalLocation={
+//       state:getStateName(selectedState),
+//       stateCode:selectedState,
+//       city:cityName,
+//       area:"",
+//       coordinates:null,
+//     };
+
+//     updateFormData(finalLocation);
+
+//     if(onLocationSelect){
+//       onLocationSelect(finalLocation);
+//     }
+
+//     saveRecentLocation(finalLocation);
+//   }
+// };
+
+//   // AREA SEARCH
+//   const handleAreaSearch=(e)=>{
+
+//     const value=e.target.value.toLowerCase();
+
+//     setAreaSearch(e.target.value);
+
+//     const filtered=areas.filter((area)=>
+//       area.toLowerCase().includes(value)
+//     );
+
+//     setFilteredAreas(filtered);
+//   };
+
+//   // AREA SELECT
+//   const handleAreaChange=(areaName)=>{
+
+//     setSelectedArea(areaName);
+//     setAreaSearch(areaName);
+
+//     const coords=
+//       areaData?.[selectedState]?.[selectedCity]?.[areaName];
+
+//     setSelectedAreaCoords(coords);
+
+//     const finalLocation={
+//       state:getStateName(selectedState),
+//       stateCode:selectedState,
+//       city:selectedCity,
+//       area:areaName,
+//       coordinates:coords,
+//     };
+
+//     updateFormData(finalLocation);
+
+//     if(onLocationSelect){
+//       onLocationSelect(finalLocation);
+//     }
+
+//     saveRecentLocation(finalLocation);
+//   };
+
+//   // BACK
+//  // BACK
+// const handleBack=()=>{
+
+//   // AREA -> CITY
+//   if(view==="area"){
+
+//     setSelectedArea("");
+//     setAreaSearch("");
+
+//     setSlideDirection("right");
+
+//     setTimeout(()=>{
+//       setView("city");
+//     },100);
+
+//     return;
+//   }
+
+//   // CITY -> STATE
+//   if(view==="city"){
+
+//     setSelectedCity("");
+//     setSelectedArea("");
+
+//     setCitySearch("");
+//     setAreaSearch("");
+
+//     setSlideDirection("right");
+
+//     setTimeout(()=>{
+//       setView("state");
+//     },100);
+//   }
+// };
+
+//   return(
+//     <div
+//       ref={formContainerRef}
+//       className={styles.container}
+//     >
+
+//       {/* HEADER */}
+
+//       {/* HEADER */}
+
+// {/* HEADER */}
+
+// <div className={styles.header}>
+
+//   {/* BACK BUTTON */}
+
+//   {view !== "state" && (
+
+//     <button
+//       className={styles.backBtn}
+//       onClick={handleBack}
+//     >
+//       ←
+//     </button>
+
+//   )}
+
+//   <div className={styles.headerContent}>
+
+//     <h2>Location</h2>
+
+//     {/* SELECTED PATH */}
+
+//     {(selectedState || selectedCity || selectedArea) && (
+
+//       <div className={styles.selectedPath}>
+
+//         {/* STATE */}
+
+//         {selectedState && (
+//           <span className={styles.pathItem}>
+//             {getStateName(selectedState)}
+//           </span>
+//         )}
+
+//         {/* CITY */}
+
+//         {selectedCity && (
+//           <>
+//             <span className={styles.pathDivider}>
+//               /
+//             </span>
+
+//             <span className={styles.pathItem}>
+//               {selectedCity}
+//             </span>
+//           </>
+//         )}
+
+//         {/* AREA */}
+
+//         {selectedArea && (
+//           <>
+//             <span className={styles.pathDivider}>
+//               /
+//             </span>
+
+//             <span className={styles.pathItem}>
+//               {selectedArea}
+//             </span>
+//           </>
+//         )}
+
+//       </div>
+
+//     )}
+
+//   </div>
+
+// </div>
+
+//       {/* SEARCH */}
+
+//       <div className={styles.globalSearchWrapper}>
+
+//         <div className={styles.searchInputBox}>
+
+//           <span className={styles.searchIcon}>
+//             🔍
+//           </span>
+
+//           <input
+//             type="text"
+//             placeholder="Search city, area or neighbourhood"
+//             value={globalSearch}
+//             onChange={handleGlobalSearch}
+//             onFocus={()=>setShowGlobalSuggestions(true)}
+//             className={styles.globalSearchInput}
+//           />
+
+//         </div>
+
+//         {showGlobalSuggestions && globalSuggestions.length > 0 && (
+
+//           <div className={styles.suggestionBox}>
+
+//             {globalSuggestions.map((location,index)=>(
+
+//               <div
+//                 key={index}
+//                 className={styles.suggestionItem}
+//                 onClick={()=>selectLocation(location)}
+//               >
+
+//                 <span className={styles.locationDot}>
+//                   📍
+//                 </span>
+
+//                 <div>
+
+//                   <h4>
+//                     {location.area || location.city}
+//                   </h4>
+
+//                   <p>
+//                     {location.city},{" "}
+//                     {getStateName(location.stateCode)}
+//                   </p>
+
+//                 </div>
+
+//               </div>
+//             ))}
+
+//           </div>
+//         )}
+
+//       </div>
+
+//       {/* CURRENT LOCATION */}
+
+//       {currentLocation && view==="state" && (
+
+//         <div
+//           className={styles.currentLocationBox}
+//           onClick={()=>selectLocation(currentLocation)}
+//         >
+
+//           <div className={styles.currentLocationIcon}>
+//             📍
+//           </div>
+
+//           <div>
+
+//             <h3>
+//               Use current location
+//             </h3>
+
+//             <p>
+//               {currentLocation.area},{" "}
+//               {currentLocation.city}
+//             </p>
+
+//           </div>
+
+//         </div>
+//       )}
+
+//       {/* RECENT */}
+
+//       {recentLocations.length > 0 && view==="state" && (
+
+//         <div className={styles.section}>
+
+//           <h5 className={styles.sectionTitle}>
+//             RECENTLY USED
+//           </h5>
+
+//           {recentLocations.map((item,index)=>(
+
+//             <div
+//               key={index}
+//               className={styles.recentItem}
+//               onClick={()=>selectLocation(item)}
+//             >
+
+//               <span className={styles.recentIcon}>
+//                 📍
+//               </span>
+
+//               <div>
+
+//                 <h4>
+//                   {item.area || item.city}
+//                 </h4>
+
+//                 <p>
+//                   {item.city}
+//                 </p>
+
+//               </div>
+
+//             </div>
+//           ))}
+
+//         </div>
+//       )}
+
+//       {/* SLIDE VIEW */}
+
+//       <div className={`${styles.slideWrapper} ${slideDirection==="left" ? styles.slideLeft : styles.slideRight}`}>
+
+//         {/* STATES */}
+
+//         {view==="state" && (
+
+//           <div className={styles.section}>
+
+//             <h5 className={styles.sectionTitle}>
+//               CHOOSE STATE
+//             </h5>
+
+//             {indianStates.map((state)=>(
+
+//               <div
+//                 key={state.isoCode}
+//                 className={styles.stateItem}
+//                 onClick={()=>
+//                   handleStateChange(state.isoCode)
+//                 }
+//               >
+
+//                 <span>
+//                   {state.name}
+//                 </span>
+
+//                 <span>
+//                   ›
+//                 </span>
+
+//               </div>
+//             ))}
+
+//           </div>
+//         )}
+
+//         {/* CITIES */}
+
+//         {view==="city" && (
+
+//           <div className={styles.section}>
+
+//             <div className={styles.topSearch}>
+
+//               <input
+//                 type="text"
+//                 placeholder="Search city..."
+//                 value={citySearch}
+//                 onChange={handleCitySearch}
+//                 className={styles.searchInput}
+//               />
+
+//             </div>
+
+//             {filteredCities.map((city)=>(
+
+//               <div
+//                 key={city.name}
+//                 className={styles.stateItem}
+//                 onClick={()=>
+//                   handleCityChange(city.name)
+//                 }
+//               >
+
+//                 <span>
+//                   {city.name}
+//                 </span>
+
+//                 <span>
+//                   ›
+//                 </span>
+
+//               </div>
+//             ))}
+
+//           </div>
+//         )}
+
+//         {/* AREAS */}
+
+//         {view==="area" && (
+
+//           <div className={styles.section}>
+
+//             <div className={styles.topSearch}>
+
+//               <input
+//                 type="text"
+//                 placeholder="Search area..."
+//                 value={areaSearch}
+//                 onChange={handleAreaSearch}
+//                 className={styles.searchInput}
+//               />
+
+//             </div>
+
+//             {filteredAreas.map((area)=>(
+
+//               <div
+//                 key={area}
+//                 className={styles.stateItem}
+//                 onClick={()=>
+//                   handleAreaChange(area)
+//                 }
+//               >
+
+//                 <span>
+//                   {area}
+//                 </span>
+
+//               </div>
+//             ))}
+
+//           </div>
+//         )}
+
+//       </div>
+
+//     </div>
+//   );
+// };
+
+// export default IndiaAddressForm;

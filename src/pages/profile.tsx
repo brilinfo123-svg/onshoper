@@ -465,6 +465,9 @@ const PropertyDetailPage: React.FC = () => {
           <div className={styles.detailsSection}>
             <div className={styles.storeCard}>
               <div className={styles.focusedata}>
+                <div className={styles.BackBtnWrapper}>
+                  <Link href="/" className={`${styles.backButtonWrap} ${"icon-left-1"}`}></Link>
+                </div>
                 <div className={styles.activeAds}>
                   <h5>{products.length}</h5>
                   <span>Ads</span>

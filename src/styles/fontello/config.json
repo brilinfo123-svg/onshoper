@@ -455,6 +455,84 @@
       "css": "chats",
       "code": 59439,
       "src": "websymbols"
+    },
+    {
+      "uid": "63af7ffdab0d3546333634c63554bb82",
+      "css": "fuel",
+      "code": 59446,
+      "src": "maki"
+    },
+    {
+      "uid": "e15f0d620a7897e2035c18c80142f6d9",
+      "css": "link-ext",
+      "code": 61582,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "19c50c52858a81de58f9db488aba77bc",
+      "css": "mic",
+      "code": 61744,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "53c28626072159c49f33b71d67138ad9",
+      "css": "commenting",
+      "code": 62074,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "9cc990bbcac7aa8504078b3f49df79b1",
+      "css": "commenting-o",
+      "code": 62075,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "70370693ada58ef0a60fa0984fe8d52a",
+      "css": "plus-1",
+      "code": 59440,
+      "src": "entypo"
+    },
+    {
+      "uid": "a66cdc7278e6b33b8bd44a141f5e1a8d",
+      "css": "plus-circled",
+      "code": 59441,
+      "src": "entypo"
+    },
+    {
+      "uid": "9e1c33b6849ceb08db8acfaf02188b7d",
+      "css": "plus-squared",
+      "code": 59442,
+      "src": "entypo"
+    },
+    {
+      "uid": "1d2a6c3d9236b88b0f185c7c4530fa52",
+      "css": "flag",
+      "code": 59443,
+      "src": "entypo"
+    },
+    {
+      "uid": "cb13afd4722a849d48056540bb74c47e",
+      "css": "play",
+      "code": 59445,
+      "src": "entypo"
+    },
+    {
+      "uid": "6b6e59e33915710a9f935b04a06d507d",
+      "css": "camera-1",
+      "code": 59447,
+      "src": "elusive"
+    },
+    {
+      "uid": "25acee28eb78eaa800b32bb6f20ebc62",
+      "css": "flag-1",
+      "code": 59449,
+      "src": "elusive"
+    },
+    {
+      "uid": "7ea2f977b793b6044189122babbaa8eb",
+      "css": "road",
+      "code": 59450,
+      "src": "elusive"
     }
   ]
 }

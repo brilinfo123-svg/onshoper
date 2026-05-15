@@ -614,6 +614,23 @@
           display: block;
         }
         
+      } 
+      .backButtonWrap{
+        display: none;
+        @media screen and (max-width: 767px) {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          background-color: #000000;
+          color: #ffffff;
+          border-radius: 50px;
+          padding: 0;
+          width: 27px;
+          height: 27px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
       }
       img{
         object-fit: cover;
@@ -634,7 +651,7 @@
         }
       }
   
-      p {
+      p { 
         font-size: 0.9rem;
         color: #555;
         margin-top: 10px;
