@@ -388,7 +388,7 @@
 
 .container{
   width:100%;
-  min-height:100vh;
+  min-height:300px;
   background:#f4f7fb;
   overflow:hidden;
   position:relative;
@@ -404,9 +404,9 @@
   top:0;
   z-index:100;
   display:flex;
-  align-items:flex-start;
+  align-items: center;
   gap:14px;
-  padding:18px 20px;
+  padding:18px 0px;
   backdrop-filter:blur(18px);
   background:rgba(255,255,255,0.88);
   border-bottom:1px solid rgba(0,0,0,0.05);
@@ -467,7 +467,7 @@
   display:flex;
   flex-wrap: wrap;
   gap: 0px;
-  margin-top: 12px;
+  margin-top: 4px;
 }
 
 .pathItem{
@@ -489,32 +489,37 @@
 
 .globalSearchWrapper{
   position:sticky;
-  top:90px;
+  top: 63px;
   z-index:90;
-  padding:18px 20px;
+  padding: 10px;
   background:#e1e5eb;
 }
 
 .searchInputBox{
   width:100%;
-  height:64px;
-  border-radius:22px;
+  height: 64px;
+  border-radius: 5px;
   background:#fff;
   display:flex;
   align-items:center;
   gap:14px;
   padding:0 15px;
   border:1px solid rgba(0,0,0,0.06);
-  box-shadow:
-    0 8px 30px rgba(0,0,0,0.05);
+  box-shadow:    0 8px 30px rgba(0,0,0,0.05);
   transition:all .3s ease;
-
-  &:focus-within{
-    transform:translateY(-2px);
-    box-shadow:
-      0 10px 40px rgba(37,99,235,0.15);
-    border-color:#2563eb;
-  }
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  transform:translateY(-2px);
+  box-shadow:      0 10px 40px rgba(37,99,235,0.15);
+  border-color: #2563eb;
+  -webkit-transition:all .3s ease;
+  -moz-transition:all .3s ease;
+  -ms-transition:all .3s ease;
+  -o-transition:all .3s ease;
+}
+  
   .searchIcon{
     font-size:22px;
     opacity:.7;
@@ -534,7 +539,6 @@
       color:#94a3b8;
     }
   }
-}
 
 
 
@@ -682,7 +686,7 @@
   animation:fadeUp .3s ease;
 
   // FIXED SCROLL AREA
-  
+  height: 460px;
   overflow-y:auto;
 
   // SMOOTH SCROLL
@@ -702,17 +706,112 @@
     background:transparent;
   }
 }
+.section{
+  padding:5px 5px 10px;
+  height: 290px;
+}
+.RecentItemState{
+  @media(max-width:768px){
+    height: 240px;
+  }
+  .recentItem{
+    margin: 0;
+    padding: 5px 0;
+  }
+  .sectionTitle{
+    padding: 30px 0 30px;
+    @media(max-width:768px){
+      padding: 20px 0 10px;
+    }
+  }
+}
 .ChooseState{
   padding-top: 0 !important;
   height: 100%;
- 
+  .sectionTitle{
+    top: -10px;
+    padding: 50px 0 20px;
+    @media(max-width:768px){
+      padding: 10px 0 20px;
+    }
+  }
+  @media(max-width:768px){
+    height: 400px;
+  }
+}
+.CitySection{
+  height: 630px;
+  @media(max-width:768px){
+    height: 400px;
+    padding-top: 95px;
+  }
+  .stateItem{
+    @media(max-width:768px){
+      padding: 10px 0;
+    }
+  }
+  .topSearch{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    left: 0;
+    right: 0;
+    padding: 30px 0 15px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    @media(max-width:768px){
+    
+    }
+    input{
+      @media(max-width:768px){
+        height: 48px;
+      }
+      &::placeholder{
+        color: #111827;
+      }
+    }
+  }
+}
+.AreaSection{
+  height: 630px;
+  @media(max-width:768px){
+    height: 400px;
+    padding-top: 75px;
+  }
+  .topSearch{
+    margin-bottom: 20px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    left: 0;
+    right: 0;
+    padding: 30px 0 15px;
+    background-color: #fff;
+    @media(max-width:768px){
+      padding: 30px 0 10px;
+    }
+    input{
+      @media(max-width:768px){
+        height: 48px;
+      }
+      &::placeholder{
+        color: #111827;
+      }
+    }
+  }
 }
 .sectionTitle {
   position: sticky;
-  top: 0;
+  top: -10px;
   background: #fff;
   z-index: 10;
-  padding: 10px 0 10px;
+  padding: 30px 0 10px;
+  font-size: 16px;
+  @media(max-width:768px){
+    top: 0;
+    padding: 20px 0 10px;
+    font-size: 14px;
+  }
 }
 
 // ====================================
@@ -737,7 +836,10 @@
   }
 
   p{
-    font-size:14px;
+    font-size: 16px;
+    @media(max-width:768px){
+      font-size: 14px;
+    }
   }
 }
 
@@ -774,12 +876,13 @@
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:20px;
-  margin-bottom:14px;
+  padding: 10px 0;
+  margin-bottom: 10px;
   background:#fff;
   cursor:pointer;
   transition:all .25s ease;
   box-shadow:0 5px 15px rgba(0,0,0,0.04);
+  border-bottom: 1px solid #ddd;
 
   &:hover{
     transform:translateX(6px);
@@ -795,6 +898,10 @@
     font-size:17px;
     color:#111827;
     font-weight:500;
+    i{
+      font-size: 20px;
+      color: #ff4757;
+    }
   }
 }
 
@@ -804,10 +911,13 @@
 
 .topSearch{
   margin-bottom:20px;
+  position: relative;
+  z-index: 9;
   input{
     padding: 10px 20px !important;
     font-size: 15px !important;
     color: #111827 !important;
+    border: 1px solid #6d6d6d !important;
   }
 }
 
@@ -874,7 +984,20 @@
   font-size:14px;
   font-weight:700;
 }
-
+.sheetContent {
+  height: 90%;
+  overflow-y: auto;
+  padding: 0 15px 20px;
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  margin-top: 30px;
+}
+.LocationName{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 // ====================================
 // ANIMATIONS
 // ====================================
@@ -941,20 +1064,23 @@
   }
 
   .globalSearchWrapper{
-    padding: 5px;
-    top: 64px;
+    padding: 10px 8px 5px;
+    top: 58px;
   }
 
-  .section{
-    padding:22px 5px 10px;
-  }
+
 
   .currentLocationBox{
     margin: 10px 16px;
     border-radius: 10px;
     padding: 10px;
   }
-
+  .sheetContent {
+    height: 100%;
+    overflow-y: auto;
+    padding: 0 15px 20px;
+    margin-top: 0;
+  }
   .searchInputBox{
     height:55px;
     border-radius: 5px;
@@ -991,13 +1117,9 @@
       font-size: 14px;
     }
   }
-  .LocationName{
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
+  
   .slideWrapper{
-    height:calc(100vh - 210px);
+    height:calc(100vh - 200px);
   }
 
   .suggestionBox{
@@ -1014,21 +1136,15 @@
 .bottomSheet {
   position: fixed;
   left: 0;
+  right: 0;
   bottom: 0;
   width: 100%;
   height: 100%;
-  background: #fff;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  background: #cac8c8;
   z-index: 999;
-
   animation: slideUp 0.3s ease;
-}
-
-.sheetContent {
-  height: 100%;
-  overflow-y: auto;
-  padding: 0 15px 20px;
+  margin: 0 auto;
+  z-index: 9999;
 }
 
 .sheetHeader {

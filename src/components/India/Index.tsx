@@ -592,7 +592,7 @@ return (
 
           {/* RECENT */}
           {recentLocations.length > 0 && view === "state" && (
-            <div className={styles.section}>
+            <div className={`${styles.section} ${styles.RecentItemState}`}>
               <h5 className={styles.sectionTitle}>RECENTLY USED</h5>
 
               {recentLocations.map((item, index) => (
@@ -633,7 +633,7 @@ return (
                     className={styles.stateItem}
                     onClick={() => handleStateChange(state.isoCode)}
                   >
-                    <span>{state.name}</span>
+                    <span><i className="icon-location"></i> {state.name}</span>
                     <span>›</span>
                   </div>
                 ))}
@@ -642,7 +642,7 @@ return (
 
             {/* CITIES */}
             {view === "city" && (
-              <div className={styles.section}>
+              <div className={`${styles.section} ${styles.CitySection}`}>
                 <div className={styles.topSearch}>
                   <input
                     type="text"
@@ -671,7 +671,7 @@ return (
                         }
                       }}
                     >
-                      <span>{city.name}</span>
+                      <span><i className="icon-location"></i> {city.name}</span>
                       {hasAreas && <span>›</span>}
                     </div>
                   );
@@ -681,7 +681,7 @@ return (
 
             {/* AREAS */}
             {view === "area" && (
-              <div className={styles.section}>
+              <div className={`${styles.section} ${styles.AreaSection}`}>
                 <div className={styles.topSearch}>
                   <input
                     type="text"
@@ -701,7 +701,7 @@ return (
                       setShowLocationSheet(false); // 🔥 CLOSE
                     }}
                   >
-                    <span>{area}</span>
+                    <span><i className="icon-location"></i> {area}</span>
                   </div>
                 ))}
               </div>
