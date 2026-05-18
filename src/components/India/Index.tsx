@@ -475,26 +475,44 @@ return (
 
         <div>
         <h3>
-  {selectedCity
+          Confirm Your Location
+  {/* {selectedCity
     ? "Selected Location"
     : currentLocation
     ? "Auto detected location"
-    : "Detecting location..."}
+    : "Detecting location..."} */}
 </h3>
 
-<p>
-  {selectedState
-    ? [
-        getStateName(selectedState),
-        selectedCity,
-        selectedArea
-      ]
-        .filter(Boolean)
-        .join(", ")
-    : currentLocation
-    ? `${currentLocation.area}, ${currentLocation.city}`
-    : "Detecting location..."}
+{/* 
+{selectedState
+  ? [
+      getStateName(selectedState),
+      selectedCity,
+      selectedArea
+    ]
+      .filter(Boolean)
+      .join(", ")
+  : currentLocation
+  ? `${currentLocation.area}, ${currentLocation.city}`
+  : "Detecting location..."}
 </p>
+*/}
+
+    <p>
+      {selectedArea
+        ? `${selectedCity}, ${selectedArea}`
+
+        : selectedCity && selectedState
+        ? `${selectedCity}, ${getStateName(selectedState)}`
+
+        : selectedState
+        ? getStateName(selectedState)
+
+        : currentLocation
+        ? `${currentLocation.area}, ${currentLocation.city}`
+
+        : "Detecting location..."}
+    </p>
         </div>
       </div>
     )}

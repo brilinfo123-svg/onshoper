@@ -742,8 +742,9 @@
 .CitySection{
   height: 630px;
   @media(max-width:768px){
-    height: 400px;
+    height: 650px;
     padding-top: 95px;
+    padding-bottom: 150px;
   }
   .stateItem{
     @media(max-width:768px){
@@ -775,8 +776,9 @@
 .AreaSection{
   height: 630px;
   @media(max-width:768px){
-    height: 400px;
+    height: 650px;
     padding-top: 75px;
+    padding-bottom: 150px;
   }
   .topSearch{
     margin-bottom: 20px;
