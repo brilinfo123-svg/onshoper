@@ -144,8 +144,8 @@
           font-size: 18px;
         }
         @media screen and (max-width: 767px) {
-          left: 16px;
-          top: 16px;
+          left: 23px;
+          top: 18px;
         }
       }
         .searchInput {
@@ -166,11 +166,13 @@
             min-height: 56px;
           }
           @media screen and (max-width: 767px) {
-            min-height: 46px;
-            padding: 14px 16px 14px 40px;
+            min-height: 50px;
+            padding: 14px 16px 14px 45px;
             font-size: 13px;
             font-weight: 300;
             color: #000;
+            border-radius: 15px;
+            border: 2px solid #ff6d01;
           }
         }
       }
@@ -283,7 +285,7 @@
     overflow-y: auto;
     z-index: 10;
     @media screen and (max-width: 767px) {
-      top: 52px;
+      top: 53px;
       border-top: 0;
     }
     .loading{

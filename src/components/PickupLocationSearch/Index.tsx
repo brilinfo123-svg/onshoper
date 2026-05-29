@@ -112,7 +112,7 @@ const PickupLocationSearch = ({
           if (region && !readableAddress.includes(region)) {
             readableAddress += `, ${region}`;
           }
-
+          
           return {
             ...place,
             readableAddress,
