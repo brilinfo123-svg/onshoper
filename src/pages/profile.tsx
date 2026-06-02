@@ -356,10 +356,10 @@ const PropertyDetailPage: React.FC = () => {
                   </div>
                 )}
                 <div className={styles.ProductTabs}>
-                  <button className={ activeTab === "all" ? styles.activeTab : "" } onClick={() => handleTabChange("all")}>All <span className={styles.badge}>{products.length}</span></button>
-                  <button className={ activeTab === "rent" ? styles.activeTab : "" } onClick={() => handleTabChange("rent")} > Rental <span className={styles.badge}> {rentProducts.length}</span></button>
-                  <button className={activeTab === "sale" ? styles.activeTab : ""} onClick={() => handleTabChange("sale")}>Sale <span className={styles.badge}>{saleProducts.length}</span></button>
-                  <button className={activeTab === "sold" ? styles.activeTab : ""} onClick={() => handleTabChange("sold")}>Sold <span className={styles.badge}>{soldProducts.length}</span></button>
+                  <button className={activeTab === "all" ? styles.activeTab : ""} onClick={() => handleTabChange("all")}>All {products.length > 0 && <span className={styles.badge}>{products.length}</span>}</button>
+                  <button className={activeTab === "rent" ? styles.activeTab : ""} onClick={() => handleTabChange("rent")}>Rental {rentProducts.length > 0 && <span className={styles.badge}>{rentProducts.length}</span>}</button>
+                  <button className={activeTab === "sale" ? styles.activeTab : ""} onClick={() => handleTabChange("sale")}>Sale {saleProducts.length > 0 && <span className={styles.badge}>{saleProducts.length}</span>}</button>
+                  <button className={activeTab === "sold" ? styles.activeTab : ""} onClick={() => handleTabChange("sold")}>Sold {soldProducts.length > 0 && <span className={styles.badge}>{soldProducts.length}</span>}</button>
                 </div>
 
                 <div className={styles.tabContent}>
