@@ -15,7 +15,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     // Initialize socket connection
-    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER || 'http://localhost:3001', {
+    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER || 'http://localhost:3000', {
       transports: ['websocket'],
     });
     

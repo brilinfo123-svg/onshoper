@@ -68,29 +68,40 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
   const debouncedSearchTerm = useDebounce(searchTerm, 400);
 
   useEffect(() => {
-    if (!debouncedSearchTerm.trim()) {
+    if (debouncedSearchTerm.trim().length < 2) {
       setSuggestions([]);
       return;
     }
-
+  
+    const controller = new AbortController();
+  
     const fetchSuggestions = async () => {
       setLoading(true);
+  
       try {
         const res = await fetch(
-          `/api/search-suggestions?q=${encodeURIComponent(debouncedSearchTerm)}`
+          `/api/search-suggestions?q=${encodeURIComponent(debouncedSearchTerm)}`,
+          { signal: controller.signal }
         );
+  
         const data = await res.json();
         setSuggestions(data?.data || []);
-      } catch (err) {
-        console.error("Search suggestion error", err);
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          console.error("Search suggestion error", err);
+        }
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchSuggestions();
+  
+    return () => {
+      controller.abort(); // ✅ kills previous request
+    };
   }, [debouncedSearchTerm]);
-
+  
   const handleSearch = (value?: string) => {
     const query = value || searchTerm;
     if (!query.trim()) return;

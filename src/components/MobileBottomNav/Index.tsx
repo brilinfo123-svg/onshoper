@@ -27,30 +27,31 @@ const MobileBottomNav = () => {
   // ✅ fetch notifications from DB when session loads + auto refresh
   useEffect(() => {
     if (!session?.user?.id) return;
-
+  
+    let isMounted = true;
+  
     const fetchNotifications = async () => {
       try {
         const res = await fetch(`/api/notifications/${session.user.id}`);
-        if (!res.ok) throw new Error("Failed to fetch notifications");
         const data = await res.json();
-        setDbNotifications(data.unreadCount || 0);
+  
+        if (isMounted) {
+          setDbNotifications(data.unreadCount || 0);
+        }
       } catch (err) {
         console.error("Error fetching notifications:", err);
       }
     };
-
-    // ✅ Debounced version of fetch
-    const debouncedFetch = debounce(fetchNotifications, 1000);
-
-    // Initial call
-    debouncedFetch();
-
-    // ✅ auto refresh every 30 seconds
-    const interval = setInterval(debouncedFetch, 30000);
-
+  
+    // initial fetch
+    fetchNotifications();
+  
+    // stable interval (NO debounce)
+    const interval = setInterval(fetchNotifications, 30000);
+  
     return () => {
+      isMounted = false;
       clearInterval(interval);
-      debouncedFetch.cancel(); // cleanup debounce
     };
   }, [session?.user?.id]);
 

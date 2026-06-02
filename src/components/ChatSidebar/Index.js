@@ -6,8 +6,6 @@ import { useRouter } from "next/router";
 import { io } from "socket.io-client";
 import SkeletonChatItem from "@/components/SkeletonChatItem/Index";
 
-const socketURL = "https://socket-server-gf0a.onrender.com";
-
 export default function ChatSidebar({ isOpen,
   onClose,
   initialChatUser = null,  // Add this prop
@@ -43,6 +41,7 @@ export default function ChatSidebar({ isOpen,
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
   const socketRef = useRef(null);
+  const fetchedUsers = useRef(new Set());
   const { notifications, clearNotification } = useNotifications();
   const [receiverMap, setReceiverMap] = useState({});
   const [receiverFcmToken, setReceiverFcmToken] = useState(null);
@@ -64,7 +63,7 @@ useEffect(() => {
 
   const fetchReceiverToken = async () => {
     try {
-      const res = await fetch(`/api/notifications/get-token?contact=${selectedChat.otherUserId}`);
+      const res = await fetch(`/api/notifications/get-token?userId=${selectedChat.otherUserId}`);
       const data = await res.json();
 
       if (res.ok && data?.token) {
@@ -136,26 +135,27 @@ useEffect(() => {
     }
   }, [initialChatUser, initialProduct, isOpen, chats]);
 
-  const fetchReceiverInfo = async (contact) => {
-    if (receiverMap[contact]) return; // Avoid duplicate fetches
+  const fetchReceiverInfo = async (userId) => {
+    if (fetchedUsers.current.has(userId)) return;
+  
+    fetchedUsers.current.add(userId);
   
     try {
-      const res = await fetch(`/api/users/byContact?contact=${contact}`);
+      const res = await fetch(`/api/users/byContact?contact=${userId}`);
       const data = await res.json();
+  
       if (res.ok) {
         setReceiverMap(prev => ({
           ...prev,
-          [contact]: {
-            name: data.name || `User`,
+          [userId]: {
+            name: data.name || "User",
             photo: data.photo || "/icons/profile.png",
             contact: data.contact
           }
         }));
-      } else {
-        console.error("Receiver fetch failed:", data.error);
       }
     } catch (err) {
-      console.error("Error fetching receiver info:", err);
+      console.error(err);
     }
   };
   
@@ -164,7 +164,7 @@ useEffect(() => {
     if (selectedChat?.otherUserId) {
       fetchReceiverInfo(selectedChat.otherUserId);
     }
-  }, [selectedChat]);
+  }, [selectedChat?.otherUserId]);
 
   // Function to scroll to bottom of messages container
   const scrollToBottom = () => {
@@ -174,10 +174,10 @@ useEffect(() => {
   };
 
   useEffect(() => {
-    if (isOpen && session) {
+    if (isOpen && session?.user?.id) {
       fetchChats();
     }
-  }, [isOpen, session]);
+  }, [isOpen, session?.user?.id]);
 
   useEffect(() => {
     if (selectedChat) {
@@ -279,9 +279,7 @@ useEffect(() => {
   
         // ✅ Only fetch receiver info once per chat
         sortedChats.forEach(chat => {
-          if (!receiverMap[chat.otherUserId]) {
-            fetchReceiverInfo(chat.otherUserId);
-          }
+          fetchReceiverInfo(chat.otherUserId);
         });
       } else {
         console.error('Failed to fetch chats');
