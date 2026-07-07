@@ -35,6 +35,7 @@ interface ProductCardProps {
   priceMonth?: number;
   coverImage: string;
   images: string[];
+  SaleType?: "Sale" | "Rent";
   location?: {  // <-- Yahan change karo
     city?: string;
     area?: string;
@@ -80,6 +81,7 @@ const ProductCard = ({
   location,
   createdAt,
   shopOwnerID,
+  SaleType,
   showOnlyWishlistItems,
   onUnfavorite,
   onDelete,
@@ -205,6 +207,11 @@ const toggleFavorite = async () => {
     <div className={`${styles.card} ${filter.card} ${className || ""}`}>
       <Link href={`/product/${_id}`} className={styles.button} onClick={handleClick}>
         <div className={`${styles.ProductCoverImg} ${filter.ProductCoverImg} ${CoverImgClass || ""}`}>
+        {SaleType === "Rent" && (
+          <span className={styles.rentBadge}>
+            FOR RENT
+          </span>
+        )}
         <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} placeholder="blur" blurDataURL={coverImage || images?.[0] || "/images/placeholder.jpg"} priority />
         <span className={`${styles.timeStamp} ${filter.timeStamp}`}>
           <p>{formatPostedTime(createdAt)}</p>

@@ -75,6 +75,25 @@
           }
         }
       }
+      .rentBadge {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        z-index: 20;
+        background: #0b42f5;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        padding: 6px 12px;
+        border-radius: 5px;
+        text-transform: uppercase;
+        box-shadow: 0 3px 10px rgba(0,0,0,.18);
+        @media screen and (max-width: 767px) {
+          font-size: 10px;
+          padding: 4px 6px;
+        }
+      }
     }
   }
   

@@ -195,6 +195,7 @@ export default function Home() {
                       title={product.title}
                       description={""}
                       category={product.category}
+                      SaleType={product.SaleType}
                       subCategory={product.subcategory}
                       price={Number(product.price)}
                       priceWeek={
