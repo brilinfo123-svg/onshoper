@@ -767,16 +767,16 @@ useEffect(() => {
                       ["Education & Learning", "Pets & Pet Care", "Tools & Equipment", "Jobs", "Events & Entertainment", "Services", "Books & Sports", "Fashion", "Furniture", "Electronics & Appliances", "Real Estate"].includes(product?.category) ||
                       ["Tablets", "Spare Parts"].includes(product?.subcategory)
                     ) && (
-                        <li><strong className="icon-tag-1"> Brand:</strong> {product?.commercialBrand || product?.brand || product?.BicyclesBrand || product?.MobileBrand || product?.MobileModel || product?.TabsType || product?.carBrand || "..."}</li>
+                        <li><strong className="icon-tag"> Brand:</strong> {product?.commercialBrand || product?.brand || product?.BicyclesBrand || product?.MobileBrand || product?.MobileModel || product?.TabsType || product?.carBrand || "..."}</li>
                       )}
                     {product?.MobileModel && (
                       <li>
-                        <strong className="icon-mobile"> Model:</strong> {product.MobileModel}
+                        <strong className="icon-medal-solid-full"> Model:</strong> {product.MobileModel}
                       </li>
                     )}
                     {!shouldHide && (
                       <>
-                        <li><strong className="icon-barcode"> Model:</strong> {product?.commercialModel || product?.model || product?.carModel || "..."}</li>
+                        <li><strong className="icon-medal-solid-full"> Model:</strong> {product?.commercialModel || product?.model || product?.carModel || "..."}</li>
                         <li><strong className="icon-calendar"> Year:</strong> {product?.year ? product?.year : "..."}</li>
                       </>
                     )}
