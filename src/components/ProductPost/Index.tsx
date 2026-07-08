@@ -231,7 +231,7 @@ const toggleFavorite = async () => {
                 {salaryFrom ? `₹${Number(salaryFrom).toLocaleString("en-IN")}` : ""}
                 {salaryFrom && salaryTo ? " - " : ""}
                 {salaryTo ? `₹${Number(salaryTo).toLocaleString("en-IN")}` : ""}
-                {salaryPeriod && (<span className={style.priceType}>{salaryPeriod}</span>)}
+                {/* {salaryPeriod && (<span className={style.priceType}>{salaryPeriod}</span>)} */}
               </span>
               {/* <span className={style.priceType}>{salaryPeriod}</span> */}
             </div>
@@ -240,7 +240,7 @@ const toggleFavorite = async () => {
           {price > 0 && (
             <div className={styles.salaryPrice}>
               <span className={`${styles.PriceNumber} ${filter.PriceNumber}`}>
-                ₹{price}
+                ₹{price}<span>/</span>
               </span>
               <span className={style.priceType}>Per Day</span>
             </div>
@@ -248,22 +248,22 @@ const toggleFavorite = async () => {
           {priceWeek > 0 && (
             <div className={styles.salaryPrice}>
               ₹<span className={`${styles.PriceNumber} ${filter.PriceNumber}`}>
-                {priceWeek}
+                {priceWeek}<span>/</span>
               </span>
               <span className={style.priceType}>Weekly</span>
             </div>
           )}
           {priceMonth > 0 && (
             <div className={styles.salaryPrice}>
-              ₹<span className={`${styles.PriceNumber} ${filter.PriceNumber}`}>
-                {priceMonth}
+              <span className={`${styles.PriceNumber} ${filter.PriceNumber}`}>
+              ₹{priceMonth}<span>/</span>
               </span>
               <span className={style.priceType}>Monthly</span>
             </div>
           )}
           {SalePrice > 0 && (
             <div className={`${styles.PriceNumber} ${filter.PriceNumber}`}>
-              ₹ {SalePrice}
+              ₹{SalePrice}<span>/</span>
             </div>
           )}
           <span className={`${styles.PriceNumber} ${filter.PriceNumber}`}>

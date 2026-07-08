@@ -13,7 +13,7 @@
   .productGrid{
     // padding-left: 20px;
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 4 equal columns */
+    grid-template-columns: repeat(6, 1fr); /* 4 equal columns */
     gap: 15px; /* Space between grid items */
     width: 100%;
     transition: opacity 0.5s ease-in-out;

@@ -1,24 +1,10 @@
 
 .priceType{
   font-size: 12px;
-  background-color: #708090;
   color: #fff;
-  width: max-content;
-  border-radius: 5px;
-  display: block;
-  padding: 3px 6px;
-  font-weight: 600;
-  margin-top: 5px;
+  margin-left: 3px;
   @media screen and (max-width: 767px) {
-    font-size: 9px;
-    text-align: center;
-    padding: 2px 3px;
-    position: relative;
-    top: -2px;
-    width: max-content;
-    border-radius: 2px;
-    left: 2px;
-    display: initial;
+    font-size: 10px;
   }
 }
 .extraText{

@@ -31,9 +31,31 @@
         }
         .salaryPrice{
           font-size: 16px;
+          display: flex;
+          align-items: center;
+          background-color: #ff6d01;
+          padding: 3px 8px;
+          border-radius: 5px;
+          @media screen and (max-width: 767px) {
+            padding: 3px 4px;
+            border-radius: 4px;
+          }
+          .PriceNumber{
+            color: #fff;
+            font-size: 16px;
+            @media screen and (max-width: 767px) {
+              font-size: 12px;
+            }
+            span{
+              color: #fff;
+            }
+          }
         }
         .PriceNumber{
           color: #0FA958;
+          display: flex;
+          gap: 3px;
+          align-items: center;
         }
         .priceType{
           color: #000 !important; 
@@ -82,16 +104,18 @@
         z-index: 20;
         background: #0b42f5;
         color: #fff;
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 700;
         letter-spacing: 0.5px;
-        padding: 6px 12px;
+        padding: 4px 6px;
         border-radius: 5px;
         text-transform: uppercase;
         box-shadow: 0 3px 10px rgba(0,0,0,.18);
         @media screen and (max-width: 767px) {
-          font-size: 10px;
+          font-size: 9px;
           padding: 4px 6px;
+          top: 2px;
+          left: 2px;
         }
       }
     }

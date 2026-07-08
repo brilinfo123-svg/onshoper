@@ -610,6 +610,7 @@ if (searchTerm) {
                       description={""}
                       category={product.category}
                       subCategory={product.subcategory}
+                      SaleType={product.SaleType}
                       price={Number(product.price)}
                       priceWeek={product.priceWeek ? Number(product.priceWeek) : undefined}
                       priceMonth={product.priceMonth ? Number(product.priceMonth) : undefined}

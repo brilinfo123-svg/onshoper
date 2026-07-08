@@ -2,7 +2,6 @@
 .sidebarWrapper {
   position: relative;
   width: 100%;
-  margin-bottom: 1rem;
   @media screen and (max-width: 767px) {
     margin-bottom: 10px;
   }
@@ -645,7 +644,7 @@
     min-width: 18%;
   }
   @media (min-width: 1440px) {
-    min-width: 10%; // Show 5 items on desktop
+    min-width: 7%; // Show 5 items on desktop
   }
 }
 
@@ -681,8 +680,8 @@
 
 .carouselContainer {
   width: 100%;
-  margin-bottom: 20px;
-  margin-top: 40px;
+  margin-bottom: 10px;
+  margin-top: 10px;
   @media screen and (min-width: 768px) and (max-width: 991px) {
     margin-top: 20px;
   }
