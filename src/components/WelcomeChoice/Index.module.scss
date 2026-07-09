@@ -68,8 +68,6 @@
 
   transition: .35s ease;
 
-  // box-shadow: 0 12px 35px rgba(15,23,42,.05);
-
   &::before {
     content: "";
     position: absolute;
@@ -159,7 +157,7 @@
 
   .overlay {
     padding: 15px;
-    align-items: flex-start;
+    top: -80px;
   }
 
   .modal {
@@ -175,7 +173,7 @@
   .heading {
 
     margin-bottom: 30px;
-
+    display: none;
     h2 {
       font-size: 20px;
       margin: 10px 0 10px;
@@ -194,7 +192,9 @@
 
   .card {
     padding: 28px;
-
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.05);
+    border: 1px solid #ff6d02;
+    border-radius: 15px;
     h3 {
       font-size: 20px;
       margin: 20px 0 0;
