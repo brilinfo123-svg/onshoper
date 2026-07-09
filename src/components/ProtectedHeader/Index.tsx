@@ -16,6 +16,7 @@ import Layout from "../Layout/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import { useFilter } from "@/contexts/FilterContext";
 import Swal from "sweetalert2";
+import WelcomeChoice from "@/components/WelcomeChoice/Index";
 
 
 
@@ -46,6 +47,21 @@ const Header: React.FC = () => {
 
   const totalNotifications = isOnChatPage ? 0 : getTotalNotifications();
 
+  const [showChoice, setShowChoice] = useState(true);
+
+  useEffect(() => {
+    const choice = localStorage.getItem("homeChoice");
+  
+    if (!choice) {
+      setShowChoice(true);
+    }
+  }, []);
+  
+  const handleWelcomeChoice = (type: "Sale" | "Rent" | "all") => {
+    localStorage.setItem("homeChoice", type);
+    handleFilterChange(type);
+    setShowChoice(false);
+  };
 
   const handleFilterChange = (type: "Sale" | "Rent" | "all") => {
 
@@ -325,7 +341,9 @@ const Header: React.FC = () => {
           </div>
         </div>
       )}
-
+      {showChoice && (
+        <WelcomeChoice onChoose={handleWelcomeChoice} />
+      )}
       {!isDesckTop && 
         <div className={Style.MobileTopbar}>
         <Link href="/">

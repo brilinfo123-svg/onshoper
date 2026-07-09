@@ -10,6 +10,8 @@ import useMediaQuery from "../../../hooks/useMediaQuery";
 import { useFilter } from "@/contexts/FilterContext";
 import Swal from "sweetalert2";
 
+import WelcomeChoice from "@/components/WelcomeChoice/Index";
+
 
 const Header: React.FC = () => {
   const isDesktop = useMediaQuery("(min-width: 992px)");
@@ -19,6 +21,7 @@ const Header: React.FC = () => {
   const { data: session } = useSession();
   const { filterType, setFilterType } = useFilter();
   const [isSticky, setIsSticky] = useState(false);
+  const [showChoice, setShowChoice] = useState(false);
 
 
   
@@ -92,6 +95,19 @@ const Header: React.FC = () => {
     }
   };
 
+    useEffect(() => {
+      const choice = localStorage.getItem("homeChoice");
+
+      if (!choice) {
+        setShowChoice(true);
+      }
+    }, []);
+
+    const handleWelcomeChoice = (type: "Sale" | "Rent" | "all") => {
+      localStorage.setItem("homeChoice", type);
+      handleFilterChange(type);
+      setShowChoice(false);
+    };
   
 
   const HeaderSkeleton = () => (
@@ -162,6 +178,9 @@ const Header: React.FC = () => {
         <div className={Style.filterLocationWrapper}>
           {!isMobile && <FilterLocation onCityChange={handleCityChange} />}
           <Banner />
+          {showChoice && (
+            <WelcomeChoice onChoose={handleWelcomeChoice} />
+          )}
           {!isMobile && 
           <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>

@@ -542,7 +542,7 @@
     },
     {
       "uid": "aab7e7622e6ee1ed8166fb73f20e8c9a",
-      "css": "bicycle",
+      "css": "bicycle-1",
       "code": 59452,
       "src": "maki"
     },
@@ -565,6 +565,48 @@
       "search": [
         "medal-solid-full"
       ]
+    },
+    {
+      "uid": "fb94e23ae1e7660aa63cc5f351ec7560",
+      "css": "right",
+      "code": 61816,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "ef3eda51383ce050517892df3fc05ffc",
+      "css": "right-thin",
+      "code": 59439,
+      "src": "entypo"
+    },
+    {
+      "uid": "1d35198f5190ec004dd4ec742fbe19ca",
+      "css": "right-1",
+      "code": 59461,
+      "src": "mfglabs"
+    },
+    {
+      "uid": "d531ea7e8c094b73df941ed0bac921f3",
+      "css": "shopping-bag",
+      "code": 62096,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "9a76bc135eac17d2c8b8ad4a5774fc87",
+      "css": "download",
+      "code": 59440,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "d7271d490b71df4311e32cdacae8b331",
+      "css": "home",
+      "code": 59441,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "197375a3cea8cb90b02d06e4ddf1433d",
+      "css": "globe",
+      "code": 59442,
+      "src": "fontawesome"
     },
     {
       "uid": "2f9af52dc10388a13324719018e62fab",
