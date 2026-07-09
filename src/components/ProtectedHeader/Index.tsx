@@ -47,7 +47,7 @@ const Header: React.FC = () => {
 
   const totalNotifications = isOnChatPage ? 0 : getTotalNotifications();
 
-  const [showChoice, setShowChoice] = useState(true);
+  const [showChoice, setShowChoice] = useState(false);
 
   useEffect(() => {
     const choice = localStorage.getItem("homeChoice");
