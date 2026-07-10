@@ -1029,27 +1029,50 @@ tr:nth-child(odd) {
         display: flex;
       }
       .ProfileCoverImg{
+        @media screen and (max-width: 767px) {
+        background-color: #242424;
+        max-height: 123px;
+        }
         img{
           @media screen and (max-width: 767px) {
-            height: 140px;
-            width: 130px;
+            height: 120px;
+            width: 120px;
           }
+          @media screen and (max-width: 374px) {
+            width: 100px;
+          }
+        }
+      }
+      h2{
+        @media screen and (max-width: 767px) {
+          min-height: 10px;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          line-clamp: 1;
+        }
+      }
+      :global(.category){
+        @media screen and (max-width: 767px) {
+          margin-bottom: 10px;
         }
       }
     }
   }
   .SoledProduct {
-    position: relative;
-    overflow: hidden;
-    filter: grayscale(100%);
+    // position: relative;
+    // overflow: hidden;
+    // // filter: grayscale(100%);
   
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.35);
-      z-index: 1;
-    }
+    // &::after {
+    //   content: "";
+    //   position: absolute;
+    //   inset: 0;
+    //   background: rgba(0, 0, 0, 0.35);
+    //   z-index: 1;
+    // }
   
     &::before {
       content: "SOLD";
@@ -1122,6 +1145,9 @@ tr:nth-child(odd) {
 }
 .viewMoreWrapper{
   text-align: center;
+  @media screen and (max-width: 767px) {
+    margin-top: 10px;
+  }
 }
 .countdownTimer {
   display: inline-block;

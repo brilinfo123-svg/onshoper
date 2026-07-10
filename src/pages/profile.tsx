@@ -31,7 +31,7 @@ const PropertyDetailPage: React.FC = () => {
   const router = useRouter();
   const [shopData, setShopData] = useState<ShopData | null>(null);
   const [products, setProducts] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState("rent");
+  const [activeTab, setActiveTab] = useState("all");
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
@@ -106,22 +106,37 @@ const PropertyDetailPage: React.FC = () => {
   // =========================
   // MEMOIZED PRODUCTS
   // =========================
+
+  const activeProducts = useMemo(() => {
+    return products.filter((p: any) => p.status !== "sold");
+  }, [products]);
+  
   const rentProducts = useMemo(() => {
-    return products.filter((p: any) => p.SaleType === "Rent");
+    return products.filter(
+      (p: any) =>
+        p.SaleType === "Rent" &&
+        p.status !== "sold"
+    );
   }, [products]);
-
+  
   const saleProducts = useMemo(() => {
-    return products.filter((p: any) => p.SaleType === "Sale");
+    return products.filter(
+      (p: any) =>
+        p.SaleType === "Sale" &&
+        p.status !== "sold"
+    );
   }, [products]);
-
+  
   const soldProducts = useMemo(() => {
-    return products.filter((p: any) => p.status === "sold");
+    return products.filter(
+      (p: any) => p.status === "sold"
+    );
   }, [products]);
 
   const currentProducts = useMemo(() => {
     switch (activeTab) {
       case "all":
-        return products;
+        return activeProducts;
       case "rent":
         return rentProducts;
       case "sale":
@@ -131,7 +146,7 @@ const PropertyDetailPage: React.FC = () => {
       default:
         return [];
     }
-  }, [activeTab, products, rentProducts, saleProducts, soldProducts]);
+  }, [activeTab, activeProducts, rentProducts, saleProducts, soldProducts]);
 
   // =========================
   // VIEW MORE
@@ -145,7 +160,7 @@ const PropertyDetailPage: React.FC = () => {
   // =========================
   const handleTabChange = useCallback((tab: string) => {
     setActiveTab(tab);
-    setVisibleCount(1);
+    setVisibleCount(4);
   }, []);
 
   // =========================
@@ -316,6 +331,61 @@ const PropertyDetailPage: React.FC = () => {
     }
   };
 
+  const handleRepublish = async (productId: string) => {
+    const confirm = await Swal.fire({
+      title: "Republish Product?",
+      text: "This product will become active again.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Republish",
+      cancelButtonText: "Cancel",
+    });
+  
+    if (!confirm.isConfirmed) return;
+  
+    try {
+      setActionLoading(true);
+  
+      const res = await fetch(
+        `/api/products/republish?id=${productId}`,
+        {
+          method: "PUT",
+        }
+      );
+  
+      if (res.ok) {
+        setProducts((prev) =>
+          prev.map((item: any) =>
+            item._id === productId
+              ? { ...item, status: "active" }
+              : item
+          )
+        );
+  
+        Swal.fire({
+          icon: "success",
+          title: "Republished Successfully",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: "Could not republish product",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+  
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Something went wrong",
+      });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   // =========================
   // TABS
   // =========================
@@ -356,7 +426,7 @@ const PropertyDetailPage: React.FC = () => {
                   </div>
                 )}
                 <div className={styles.ProductTabs}>
-                  <button className={activeTab === "all" ? styles.activeTab : ""} onClick={() => handleTabChange("all")}>All {products.length > 0 && <span className={styles.badge}>{products.length}</span>}</button>
+                  <button className={activeTab === "all" ? styles.activeTab : ""} onClick={() => handleTabChange("all")}>All {activeProducts.length > 0 && <span className={styles.badge}>{activeProducts.length}</span>}</button>
                   <button className={activeTab === "rent" ? styles.activeTab : ""} onClick={() => handleTabChange("rent")}>Rental {rentProducts.length > 0 && <span className={styles.badge}>{rentProducts.length}</span>}</button>
                   <button className={activeTab === "sale" ? styles.activeTab : ""} onClick={() => handleTabChange("sale")}>Sale {saleProducts.length > 0 && <span className={styles.badge}>{saleProducts.length}</span>}</button>
                   <button className={activeTab === "sold" ? styles.activeTab : ""} onClick={() => handleTabChange("sold")}>Sold {soldProducts.length > 0 && <span className={styles.badge}>{soldProducts.length}</span>}</button>
@@ -392,6 +462,7 @@ const PropertyDetailPage: React.FC = () => {
                             isFeatured={product.feature || false}
                             onDelete={handleDelete}
                             onSold={handleMarkSold}
+                            onRepublish={handleRepublish}
                             status={product.status}
                             onUpdate={(id) => router.push(`/product/productUpdate/${id}`)}
                             shopOwnerID={product.shopOwnerID}
@@ -483,7 +554,7 @@ const PropertyDetailPage: React.FC = () => {
                     <Image src={shopData?.user?.photo || "/images/profile.png"} width={100} height={100} alt="userProfile" className={styles.profileImage} priority/>
                     <div className={styles.userPersonalDetails}>
                       <h3>{shopData?.user?.name || "User"}</h3>
-                      {/* <div
+                      <div
                         className={styles.verifiedBadge}
                       >
                         <span className={styles.icon}>
@@ -492,7 +563,7 @@ const PropertyDetailPage: React.FC = () => {
                         <span className={styles.text}>
                           Verified
                         </span>
-                      </div> */}
+                      </div>
                     </div>
                   </>
                 )}

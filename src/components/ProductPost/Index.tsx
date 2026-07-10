@@ -62,7 +62,7 @@ interface ProductCardProps {
   className?: string;
   CoverImgClass?: string;
   favoriteIconeClass?: string;
-  
+  onRepublish?: (id: string) => void;
 }
 
 const ProductCard = ({
@@ -87,6 +87,7 @@ const ProductCard = ({
   onDelete,
   onUpdate,
   onSold,
+  onRepublish,
   status,
   year,
   KmDriven,
@@ -219,6 +220,7 @@ const toggleFavorite = async () => {
         </div>
 
         <div className={`${styles.content} ${filter.content}`}>
+        <div className={filter.ProductContentWrap}>
         <span className={styles.category}>
           {category} {">"} {subCategory}
         </span>
@@ -270,7 +272,7 @@ const toggleFavorite = async () => {
             {SalePrice}
           </span>
         </div>
-      </div>
+        </div>
           <h2>
               {(() => {
                 let displayTitle = title;
@@ -307,7 +309,7 @@ const toggleFavorite = async () => {
                   </>
                 );
               })()}
-            </h2>
+          </h2>
 
 
           <div className={styles.descWrap}>
@@ -323,15 +325,27 @@ const toggleFavorite = async () => {
           </span>
 
           </div>
-
+          </div>
           {/* CTA Buttons */}
           <div className={styles.CtaBtn}>
             {/* {!onUpdate && !onDelete && (<Link href={`/product/${_id}`} className={styles.button}>View Details</Link>)} */}
             {status !== "sold" && onUpdate && (<button className={`${styles.updateBtn}`} onClick={(e) => {e.preventDefault(); e.stopPropagation(); router.push(`/product/productUpdate/${_id}`);}}><i className="icon-pencil"></i> Update</button>)}
-            {status !== "sold" && onSold && (<button onClick={(e) => { e.stopPropagation(); e.preventDefault(); onSold(_id);}} className={`${styles.soldBtn}`}><i className="icon-ok-1"></i>  Mark Sold</button>)}
+            {status !== "sold" && onSold && (<button onClick={(e) => { e.stopPropagation(); e.preventDefault(); onSold(_id);}} className={`${styles.soldBtn}`}><i className="icon-ok-circled"></i>  Mark Sold</button>)}
             {onDelete && (<button onClick={(e) => { e.stopPropagation(); e.preventDefault(); onDelete(_id);}} className={`${styles.deleteBtn}`}><i className="icon-trash-delete"></i> Delete</button>)}
-            
+            {status === "sold" && onRepublish && (
+  <button
+    className={styles.republishBtn}
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      onRepublish(_id);
+    }}
+  >
+    <i className="icon-ccw"></i> Republish
+  </button>
+)}
           </div>
+          
           {isFeatured && <PremiumBadge Premium={isFeatured} />}
         </div>
       </Link>

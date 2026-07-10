@@ -245,6 +245,11 @@
       right: 0;
       bottom: 0;
       display: flex;
+      @media screen and (max-width: 767px) {
+        position: relative;
+        gap: 5px;
+        margin-top: 10px;
+      }
     .button {
       display: inline-block;
       padding: 12px 0;
@@ -267,12 +272,23 @@
       background: #EF4444;
       color: #fff;
       cursor: pointer;
-      text-transform: uppercase;
       font-weight: 600;
       @media screen and (max-width: 767px) {
         font-weight: 500;
-        font-size: 13px;
-        padding: 7px 5px;
+        font-size: 10px;
+        padding: 7px 0;
+        border-radius: 5px;
+      }
+      i{
+        &::before{
+          @media screen and (max-width: 767px) {
+            padding: 0;
+            margin: 0;
+          }
+          @media screen and (max-width: 374px) {
+            display: none;
+          }
+        }
       }
     }
     .updateBtn{
@@ -280,29 +296,51 @@
       padding: 12px 0;
       background: linear-gradient(135deg, #F59E0B, #F97316);
       color: #fff;
-      border-radius: 0;
       text-decoration: none;
       font-size: 14px;
       transition: background 0.2s;
       text-align: center;
       font-weight: 600;
-      text-transform: uppercase;
       letter-spacing: 0.5px;
       width: 100%;
       @media screen and (max-width: 767px) {
         padding: 7px 0;
         font-weight: 500;
-        font-size: 13px;
+        font-size: 10px;
+        background: transparent;
+        color: #134ee9;
+        border: 1px solid #134ee9;
       }
     }
     .soldBtn{
       background: #10B981;
       color: #fff;
+      @media screen and (max-width: 767px) {
+        background: transparent;
+        color: #10B981;
+        border: 1px solid #10B981;
+      }
     }
     .deleteBtn{
       background: #EF4444;
       color: #fff;
       z-index: 999;
+      @media screen and (max-width: 767px) {
+        background: transparent;
+        color: #EF4444;
+        z-index: 999;
+        border: 1px solid #EF4444;
+      }
+    }
+    .republishBtn {
+      background: #249924;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    
+      &:hover {
+        background: #1d4ed8;
+      }
     }
   }
     .descWrap{

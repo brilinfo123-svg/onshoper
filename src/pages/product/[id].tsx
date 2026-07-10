@@ -1048,8 +1048,32 @@ useEffect(() => {
                 {/* <p>{shopData ? (<span className="icon-phone"> {shopData.registration?.mobile || "Gurmeet Kour"}</span>) : (<span>Loading...</span>)}</p> */}
                 {shopData ? (
                   <>
+                   <div className={styles.personalDetails}>
+                    <div className={styles.detailCard}>
+                      <div className={`${styles.iconBox} ${styles.IconPhone}`}>
+                        <span className="icon-phone"></span>
+                      </div>
+                      <div className={styles.detailContent}>
+                        <span className={styles.label}>Phone Number</span>
+                        {shopData ? (<p>{shopData?.user?.mobile || "Not Provided"}</p>) : (<span>Loading...</span>)}
+                        {/* <p>{shopData?.user?.mobile || "N/A"}</p> */}
+                      </div>
+                    </div>
+                    <div className={styles.detailCard}>
+                      <div className={`${styles.iconBox} ${styles.IconMail}`}>
+                        <span className="icon-mail"></span>
+                      </div>
+                      <div className={styles.detailContent}>
+                        <span className={styles.label}>Email Address</span>
+                        {shopData ? (<p>{shopData?.user?.contact || "Not Provided"}</p>) : (<span>Loading...</span>)}
+                        {/* <p>{shopData?.user?.contact || "N/A"}</p> */}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* svcfvd
                     <p>{shopData ? (<span className="icon-mail"> {shopData?.user?.contact || "Not Provided"}</span>) : (<span>Loading...</span>)}</p>
-                    <p>{shopData ? (<span className="icon-phone"> {shopData?.user?.mobile || "Not Provided"}</span>) : (<span>Loading...</span>)}</p>
+                    <p>{shopData ? (<span className="icon-phone"> {shopData?.user?.mobile || "Not Provided"}</span>) : (<span>Loading...</span>)}</p> */}
                   </>
                 ) : (
                   <ProfilePicSkeleton size="xlarge" showCircle={false}
@@ -1152,7 +1176,7 @@ useEffect(() => {
                   <div className="map-wrapper">
                     <iframe
                       width="100%"
-                      height="250"
+                      height="150"
                       frameBorder="0"
                       style={{ border: 0 }}
                       src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${product.location.coordinates.lat},${product.location.coordinates.lng}&zoom=15&maptype=roadmap`}
