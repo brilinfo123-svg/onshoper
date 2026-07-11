@@ -406,7 +406,7 @@ function AllCategoryRentalForm() {
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [showTerms, setShowTerms] = useState(false);
   const [step, setStep] = useState(1);
-
+  
 
   const handleFormattedPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawInput = e.target.value;
@@ -1492,7 +1492,7 @@ function AllCategoryRentalForm() {
     // End Commercial Vehicles
 
     // Vehicles
-    if (selectedCategory === "Vehicles") {
+    if (selectedCategory === "Bikes") {
       switch (selectedSubcategory) {
         case "Motorcycles":
         case "Scooters":
@@ -1966,6 +1966,7 @@ function AllCategoryRentalForm() {
 
     "Default": "/icons/subcategory.png",
   };
+  console.log(formData, "formData");
   return (
     <>
       <Head>

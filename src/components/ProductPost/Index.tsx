@@ -60,6 +60,7 @@ interface ProductCardProps {
   salaryPeriod?: string;
   positionType?: string;
   className?: string;
+  CtaClassName?: string;
   CoverImgClass?: string;
   favoriteIconeClass?: string;
   onRepublish?: (id: string) => void;
@@ -99,7 +100,8 @@ const ProductCard = ({
   positionType,
   className,
   CoverImgClass,
-  favoriteIconeClass
+  favoriteIconeClass,
+  CtaClassName
 }: ProductCardProps) => {
   const { data: session } = useSession();
   const { addFavorite, removeFavorite, isFavorite } = useFavorites(); // Use the context
@@ -327,7 +329,7 @@ const toggleFavorite = async () => {
           </div>
           </div>
           {/* CTA Buttons */}
-          <div className={styles.CtaBtn}>
+          <div className={`${styles.CtaBtn} ${CtaClassName || ""}`}>
             {/* {!onUpdate && !onDelete && (<Link href={`/product/${_id}`} className={styles.button}>View Details</Link>)} */}
             {status !== "sold" && onUpdate && (<button className={`${styles.updateBtn}`} onClick={(e) => {e.preventDefault(); e.stopPropagation(); router.push(`/product/productUpdate/${_id}`);}}><i className="icon-pencil"></i> Update</button>)}
             {status !== "sold" && onSold && (<button onClick={(e) => { e.stopPropagation(); e.preventDefault(); onSold(_id);}} className={`${styles.soldBtn}`}><i className="icon-ok-circled"></i>  Mark Sold</button>)}

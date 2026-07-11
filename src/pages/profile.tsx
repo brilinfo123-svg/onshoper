@@ -468,6 +468,7 @@ const PropertyDetailPage: React.FC = () => {
                             shopOwnerID={product.shopOwnerID}
                             className={`${styles.ProfileProduct} ${product.status === "sold" ? styles.SoledProduct : ""}`}
                             CoverImgClass={styles.ProfileCoverImg}
+                            CtaClassName={styles.actBtnGroup}
                             favoriteIconeClass={styles.ProfileFavoriteIcon}
                           />
                         ))
