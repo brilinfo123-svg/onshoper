@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef, useMemo } from "react";
 import { format, formatDistanceToNow } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
 import Link from "next/link";
@@ -84,7 +84,7 @@ const ProductDetails = () => {
 
   // const [isHomeDeliveryAvailable, setIsHomeDeliveryAvailable] = useState(true);
 
-  const startChat = () => {
+  const startChat = useCallback(() => {
     if (!session) {
       router.push('/login');
       return;
@@ -118,21 +118,28 @@ const ProductDetails = () => {
         }
       });
     }
-  };
+  }, [
+    session,
+    router,
+    product,
+    shopOwnerID,
+    SallerName,
+    openChat
+    ]);
 
  
 
-  const handleCallClick = () => {
+    const handleCallClick = useCallback(() => {
     if (SallerMobile) {
       const cleanNumber = SallerMobile.replace(/\D/g, '');
       window.location.href = `tel:${cleanNumber}`;
     } else {
       alert('Mobile number not available');
     }
-  };
+  }, [SallerMobile]);
 
   // Function to handle WhatsApp click
-  const handleWhatsAppClick = () => {
+  const handleWhatsAppClick = useCallback(() => {
     if (SallerMobile) {
       const cleanNumber = SallerMobile.replace(/\D/g, '');
       let whatsappNumber = cleanNumber;
@@ -163,9 +170,11 @@ Thank you 🙂`;
     } else {
       alert('Mobile number not available');
     }
-  };
+  }, [SallerMobile, SallerName]);
   // const MobileWithWhatshap = /^\d+$/.test(product?.ownerEmail || shopData?.user?.mobile || "");
-  const MobileWithWhatshap = /^\d+$/.test(shopData?.user?.mobile || "");
+  const MobileWithWhatshap = useMemo(() => {
+    return /^\d+$/.test(shopData?.user?.mobile || "");
+}, [shopData?.user?.mobile]);
   
 
   // console.log("currentUserId:", session?.user?.id);
@@ -188,7 +197,7 @@ Thank you 🙂`;
     "Books, Sports & Hobbies",
     "Fashion",
     "Furniture",
-    "Electronics & Appliances",
+    "Electronics",
     "Real Estate",
     "Books & Sports",
   ];
@@ -201,9 +210,9 @@ Thank you 🙂`;
   //     setIsHomeDeliveryAvailable(shop.homeDelivery);
   //   }
   // }, [shop?.homeDelivery]);
-  // console.log("SELLER:", data?.seller);
-  console.log("SHOPDATA:", shopData);
-  console.log("MobileWithWhatshap", MobileWithWhatshap, shopData?.user?.mobile)
+  // console.log("SELLER:", data?.seller);  
+  // console.log("SHOPDATA:", shopData);
+  // console.log("MobileWithWhatshap", MobileWithWhatshap, shopData?.user?.mobile)
   
   const openReportModal = (productId) => {
     Swal.fire({
@@ -285,32 +294,43 @@ useEffect(() => {
   if (!id) return;
 
   const loadData = async () => {
-    const res = await fetch(
-      `/api/products/${id}?userId=${session?.user?.contact || ""}`
-    );
-    const data = await res.json();
+    try {
+      setProduct(null); // Skeleton show hoga
 
-    if (data.success) {
-      setProduct(data.product);
-    
-      setShopData({
-        user: {
-          _id: data.seller?._id,
-          name: data.seller?.name,
-          contact: data.seller?.contact, // 👈 email
-          mobile: data.seller?.mobile,
-          photo: data.seller?.photo,     // 👈 image
-        },
-      });
-      
-    
-      setFavorite(data.isFavourite);
+      const res = await fetch(
+        `/api/products/${id}?userId=${session?.user?.contact || ""}`
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        setProduct(data.product);
+
+        setShopData({
+          user: {
+            _id: data.seller?._id,
+            name: data.seller?.name,
+            contact: data.seller?.contact,
+            mobile: data.seller?.mobile,
+            photo: data.seller?.photo,
+          },
+        });
+
+        setFavorite(data.isFavourite);
+      }
+    } catch (err) {
+      console.error(err);
     }
-    
   };
 
   loadData();
 }, [id, session?.user?.contact]);
+
+useEffect(() => {
+  setSelectedIndex(0);
+  setCurrentImageIndex(0);
+  setShowImageModal(false);
+}, [id]);
 
 
   // Embla Carousel hooks
@@ -483,17 +503,19 @@ useEffect(() => {
     
     
 
-  if (!product) return <ProductDetailsSkeleton />;
+  
 
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    arrow: true,
-    slidesToScroll: 1,
-    className: styles.slider,
-  };
+const sliderSettings = useMemo(() => ({
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  arrows: true,
+  slidesToScroll: 1,
+  className: styles.slider,
+}), []);
+
+  if (!product) return <ProductDetailsSkeleton />;
 
   return (
     <div className="container">
@@ -588,7 +610,8 @@ useEffect(() => {
                               alt={`product-${index}`}
                               fill
                               style={{ objectFit: "contain" }}
-                              priority={index === currentImageIndex}
+                              priority={index === 0}
+                              loading={index === 0 ? "eager" : "lazy"}
                             />
                           </div>
                         </div>
@@ -764,7 +787,7 @@ useEffect(() => {
                 <div className={styles.labelCol}>
                   <ul className={styles.infoList}>
                     {!(
-                      ["Education & Learning", "Pets & Pet Care", "Tools & Equipment", "Jobs", "Events & Entertainment", "Services", "Books & Sports", "Fashion", "Furniture", "Electronics & Appliances", "Real Estate"].includes(product?.category) ||
+                      ["Education & Learning", "Pets & Pet Care", "Tools & Equipment", "Jobs", "Events & Entertainment", "Services", "Books & Sports", "Fashion", "Furniture", "Electronics", "Real Estate"].includes(product?.category) ||
                       ["Tablets", "Spare Parts"].includes(product?.subcategory)
                     ) && (
                         <li><strong className="icon-tag"> Brand:</strong> {product?.commercialBrand || product?.brand || product?.BicyclesBrand || product?.MobileBrand || product?.MobileModel || product?.TabsType || product?.carBrand || "..."}</li>

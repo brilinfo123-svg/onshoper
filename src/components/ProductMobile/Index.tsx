@@ -91,7 +91,7 @@ const ProductMobile = ({
     "Books & Sports": "/icons/books.svg",
     "Fashion": "/icons/pyjamas-suit.svg",
     "Furniture": "/icons/furnitures.png",
-    "Electronics & Appliances": "/icons/computer-tv.svg",
+    "Electronics": "/icons/computer-tv.svg",
     "Car": "/icons/car.png",
     "Spare Parts": "/icons/spare-parts.svg",
     "Default": "/icons/category.png"

@@ -28,7 +28,7 @@ const categoryPrices: Record<string, number> = {
   Services: 120,
   "Real Estate": 499,
   "Pets & Pet Care": 120,
-  "Electronics & Appliances": 150,
+  "Electronics": 150,
   "Commercial Vehicles": 200,
   "Books & Sports": 99,
   "Tools & Equipment": 99,

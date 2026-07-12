@@ -47,7 +47,7 @@ export default function SubscriptionPage() {
     { name: "Books & Sports", icon: "/icons/referee.png" },
     { name: "Fashion", icon: "/icons/dress.png" },
     { name: "Furniture", icon: "/icons/furnitures.png" },
-    { name: "Electronics & Appliances", icon: "/icons/device.png" },
+    { name: "Electronics", icon: "/icons/device.png" },
     { name: "Car", icon: "/icons/car.png" },
     { name: "Spare Parts", icon: "/icons/adapter.png" },
     { name: "Default", icon: "/icons/sketch-book.png" }
@@ -66,7 +66,7 @@ export default function SubscriptionPage() {
       } catch (err) {
         console.error("Error fetching categories:", err);
         // fallback if API fails
-        setCategories(["Electronics & Appliances", "Fashion", "Real Estate", "Vehicles", "Services"]);
+        setCategories(["Electronics", "Fashion", "Real Estate", "Vehicles", "Services"]);
       }
     };
     fetchCategories();

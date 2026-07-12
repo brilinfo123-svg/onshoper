@@ -8,7 +8,7 @@ const categoryRules = {
     Services: { freeLimit: 1, pricePerExtra: 120 },
     "Real Estate": { freeLimit: 1, pricePerExtra: 499 },
     "Pets & Pet Care": { freeLimit: 1, pricePerExtra: 120},
-    "Electronics & Appliances":{ freeLimit: 1, pricePerExtra: 150 },
+    "Electronics":{ freeLimit: 1, pricePerExtra: 150 },
     "Commercial Vehicles": { freeLimit: 1, pricePerExtra: 200 },
     "Books & Sports": { freeLimit: 1, pricePerExtra: 99 },
     "Tools & Equipment": {freeLimit: 1, pricePerExtra: 99 },

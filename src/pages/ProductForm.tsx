@@ -13,12 +13,11 @@ import Image from "next/image";
 import imageCompression from "browser-image-compression";
 
 const categories = {
-  Bikes: ["Motorcycles", "Scooters", "Other Vehicles"],
+  Bikes: ["Motorcycles", "Scooters", "Bicycles", "Other Vehicles"],
   Car: ["Cars", "Spare Parts",],
   "Electronics": ["TV & Video", "Computers & Laptops", "Home Appliances", "ACs & Coolers", "Kitchen Appliances", "Cameras & Accessories", "Gaming Consoles", "Smart Home Devices", "Power Banks & Chargers", "Projectors",
     "Monitors & Accessories", "Printers & Scanners", "Water Purifiers", "Heaters & Geysers", "Audio & Music Systems", "Washing Machines", "Other Electronics",],
   Mobiles: ["Mobile Phones", "Tablets", "Accessories", "Other Device"],
-  Bicycles: ["Bicycles", "Other Vehicles"],
   "Commercial Vehicles": ["Tractors", "E-Rickshaws", "Pickups", "Delivery Vans", "Mini Trucks", "Passenger Buses", "Auto Rickshaws", "Construction Vehicles", "Other Commercial Vehicles"],
   
   Furniture: ["Beds & Wardrobes", "Sofas & Dining", "Tables & Chairs", "Mattresses", "Office Furniture", "Other Household Items"],

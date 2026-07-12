@@ -65,7 +65,7 @@ const Sidebar = ({
     "Books, Sports & Hobbies": "/icons/referee.png",
     "Fashion": "/icons/dress.png",
     "Furniture": "/icons/furnitures.png",
-    "Electronics & Appliances": "/icons/device.png",
+    "Electronics": "/icons/device.png",
     "Car": "/icons/car.png",
     "Spare Parts": "/icons/spare-parts.svg"
   };
