@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import type { AppProps } from "next/app";
 import MobileBottomNav from "@/components/MobileBottomNav/Index";
 import { useRouter } from "next/router";
+import { ProfileProvider } from "@/contexts/ProfileContext";
 
 // ✅ Import helper functions for FCM
 import { generateToken, listenForMessages } from "@/lib/firebase"; 
@@ -102,6 +103,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <SessionProvider session={pageProps.session}>
+      <ProfileProvider>
       <ProductProvider>
         <CategoryProvider>
           <NotificationProvider>
@@ -127,6 +129,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </NotificationProvider>
         </CategoryProvider>
       </ProductProvider>
+      </ProfileProvider>
     </SessionProvider>
   );
 }

@@ -16,6 +16,7 @@ import Button from "@/components/Button/Index";
 import Swal from "sweetalert2";
 import Head from "next/head";
 import Loader from "@/components/loader/Index";
+import { useProfile } from "@/contexts/ProfileContext";
 
 interface ShopData {
   user: any;
@@ -29,16 +30,16 @@ interface ShopData {
 const PropertyDetailPage: React.FC = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [shopData, setShopData] = useState<ShopData | null>(null);
-  const [products, setProducts] = useState<any[]>([]);
+  // const [shopData, setShopData] = useState<ShopData | null>(null);
+  // const [products, setProducts] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState("all");
-  const [loadingProfile, setLoadingProfile] = useState(true);
-  const [loadingProducts, setLoadingProducts] = useState(true);
+  // const [loadingProfile, setLoadingProfile] = useState(true);
+  // const [loadingProducts, setLoadingProducts] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(3);
   const [isMobile, setIsMobile] = useState(false);
 
-  console.log(shopData);
+  // console.log(shopData);
 
   // =========================
   // MOBILE CHECK
@@ -57,51 +58,25 @@ const PropertyDetailPage: React.FC = () => {
   // =========================
   // FETCH PROFILE + PRODUCTS
   // =========================
-  useEffect(() => {
-    if (status !== "authenticated") return;
-    if (!session?.user?.contact) return;
 
-    let isMounted = true;
+  const {
+    profile: shopData,
+    products,
+    loading,
+    fetchProfile,
+    refreshProfile,
+    setProducts,
+  } = useProfile();
+  
+  const loadingProfile = loading;
+  const loadingProducts = loading;
 
-    const fetchProfileData = async () => {
-      try {
-        setLoadingProfile(true);
-        setLoadingProducts(true);
+useEffect(() => {
+  if (status !== "authenticated") return;
+  if (!session?.user?.contact) return;
 
-        const response = await fetch(
-          `/api/profile?userEmail=${session.user.contact}`,
-          {
-            method: "GET",
-            cache: "no-store",
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch profile");
-        }
-
-        const data = await response.json();
-
-        if (!isMounted) return;
-
-        setShopData(data || null);
-        setProducts(data?.products || []);
-      } catch (error) {
-        console.error("Profile Fetch Error:", error);
-      } finally {
-        if (isMounted) {
-          setLoadingProfile(false);
-          setLoadingProducts(false);
-        }
-      }
-    };
-
-    fetchProfileData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [session?.user?.contact, status]);
+  fetchProfile(session.user.contact);
+}, [status, session?.user?.contact, fetchProfile]);
 
   // =========================
   // MEMOIZED PRODUCTS
