@@ -7,6 +7,7 @@ import {
   useState,
   ReactNode,
 } from "react";
+
 import { io, Socket } from "socket.io-client";
 import { useSession } from "next-auth/react";
 
@@ -33,22 +34,21 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!session?.user?.id) return;
 
-    const initSocket = async () => {
-      // ✅ Use absolute URL in production
-      const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
+    const initSocket = () => {
+      // 🔥 Connect to external Render socket server
+      const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
         path: "/api/socket",
         transports: ["websocket", "polling"], // fallback allowed
       });
-      
 
       setSocket(socketInstance);
 
       socketInstance.on("connect", () => {
         setIsConnected(true);
-        console.log("✅ Socket connected:", socketInstance.id);
+        console.log("✅ Connected:", socketInstance.id);
 
         socketInstance.emit("join", session.user.id);
-        console.log("🚀 JOIN EVENT SENT:", session.user.id);
+        console.log("🚀 JOIN SENT:", session.user.id);
       });
 
       socketInstance.on("userOnline", (data) => {
@@ -66,7 +66,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       });
 
       socketInstance.on("disconnect", (reason) => {
-        console.log("❌ Socket disconnected:", reason);
+        console.log("❌ Disconnected:", reason);
         setIsConnected(false);
       });
     };
