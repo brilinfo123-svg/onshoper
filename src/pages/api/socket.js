@@ -1,91 +1,185 @@
 import { Server } from "socket.io";
+
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
 
-export default async function handler(req, res) {
-  // Initialize Socket.IO only once
-  if (!res.socket.server.io) {
-    const io = new Server(res.socket.server, {
-      path: "/api/socket",
-      addTrailingSlash: false,
-    });
+export default async function handler(req,res){
 
-    res.socket.server.io = io;
+if(!res.socket.server.io){
 
-    // ---------------------------------------------------------
-    // 🔌 CONNECTION
-    // ---------------------------------------------------------
-    io.on("connection", (socket) => {
-      console.log("User connected:", socket.id);
+const io=new Server(
+res.socket.server,
+{
+path:"/api/socket",
+addTrailingSlash:false,
+}
+);
 
-      // ---------------------------------------------------------
-      // 👤 JOIN USER ROOM
-      // ---------------------------------------------------------
-      socket.on("join", async (userId) => {
-        try {
-          console.log("JOIN REQUEST:", userId);
+res.socket.server.io=io;
 
-          socket.userId = String(userId);
-          socket.join(String(userId));
+io.on(
+"connection",
+(socket)=>{
 
-          await dbConnect();
+console.log(
+"User connected:",
+socket.id
+);
 
-          await User.findByIdAndUpdate(userId, {
-            isOnline: true,
-            emailNotificationSent: false,
-          });
 
-          io.emit("userOnline", { userId });
+// Join user room
+socket.on(
+"join",
+async(userId)=>{
 
-          console.log("Online:", userId);
-        } catch (error) {
-          console.log("JOIN ERROR:", error);
-        }
-      });
+try{
 
-      // ---------------------------------------------------------
-      // 💬 SEND REAL-TIME MESSAGE
-      // ---------------------------------------------------------
-      socket.on("sendMessage", (data) => {
-        io.to(String(data.receiverId)).emit("receiveMessage", data);
-        io.to(String(data.senderId)).emit("receiveMessage", data);
-      });
+console.log(
+"JOIN REQUEST:",
+userId
+);
 
-      // ---------------------------------------------------------
-      // ❌ USER DISCONNECT
-      // ---------------------------------------------------------
-      socket.on("disconnect", async (reason) => {
-        try {
-          console.log("SOCKET DISCONNECTED:", socket.id, reason);
+// Save userId on socket
+socket.userId=String(userId);
 
-          const userId = socket.userId;
+// Join room
+socket.join(String(userId));
 
-          console.log("DISCONNECT USER:", userId);
+await dbConnect();
 
-          if (!userId) {
-            console.log("USER ID NOT FOUND");
-            return;
-          }
+await User.findByIdAndUpdate(
+userId,
+{
+isOnline:true,
+emailNotificationSent:false
+}
+);
 
-          await dbConnect();
+io.emit(
+"userOnline",
+{
+userId,
+}
+);
 
-          const lastSeen = new Date();
+console.log(
+"Online:",
+userId
+);
 
-          await User.findByIdAndUpdate(userId, {
-            isOnline: false,
-            lastSeen,
-            emailNotificationSent: false,
-          });
+}catch(error){
 
-          io.emit("userOffline", { userId, lastSeen });
+console.log(
+"JOIN ERROR:",
+error
+);
 
-          console.log("Offline:", userId);
-        } catch (error) {
-          console.log("DISCONNECT ERROR:", error);
-        }
-      });
-    });
-  }
+}
 
-  res.end();
+}
+);
+
+
+
+// Send real-time message
+socket.on(
+"sendMessage",
+(data)=>{
+
+io.to(
+String(data.receiverId)
+).emit(
+"receiveMessage",
+data
+);
+
+io.to(
+String(data.senderId)
+).emit(
+"receiveMessage",
+data
+);
+
+}
+);
+
+
+
+
+// User disconnect
+socket.on(
+"disconnect",
+async(reason)=>{
+
+try{
+
+console.log(
+"SOCKET DISCONNECTED:",
+socket.id,
+reason
+);
+
+// Get saved user id
+const userId=socket.userId;
+
+console.log(
+"DISCONNECT USER:",
+userId
+);
+
+if(!userId){
+
+console.log(
+"USER ID NOT FOUND"
+);
+
+return;
+
+}
+
+await dbConnect();
+
+const lastSeen=new Date();
+
+await User.findByIdAndUpdate(
+userId,
+{
+isOnline:false,
+lastSeen,
+emailNotificationSent:false
+}
+);
+
+io.emit(
+"userOffline",
+{
+userId,
+lastSeen,
+}
+);
+
+console.log(
+"Offline:",
+userId
+);
+
+}catch(error){
+
+console.log(
+"DISCONNECT ERROR:",
+error
+);
+
+}
+
+}
+);
+
+}
+);
+
+}
+
+res.end();
+
 }
