@@ -9,13 +9,11 @@ import {
   import {io,Socket} from "socket.io-client";
   import {useSession} from "next-auth/react";
   
-  
   interface SocketContextType{
   socket:Socket|null;
   isConnected:boolean;
   onlineUsers:string[];
   }
-  
   
   const SocketContext=createContext<SocketContextType>({
   socket:null,
@@ -23,9 +21,7 @@ import {
   onlineUsers:[],
   });
   
-  
   export const useSocket=()=>useContext(SocketContext);
-  
   
   export const SocketProvider=({
   children,
@@ -41,24 +37,38 @@ import {
   
   const {data:session}=useSession();
   
-  
   useEffect(()=>{
   
   if(!session?.user?.id){
   return;
   }
   
+  let socketInstance:Socket;
+  
   const initSocket=async()=>{
+  
+  if(process.env.NODE_ENV==="development"){
   
   await fetch("/api/socket");
   
-  const socketInstance=io({
+  socketInstance=io({
   path:"/api/socket",
   transports:["websocket"],
   });
   
-  setSocket(socketInstance);
+  }else{
   
+  socketInstance=io(
+  process.env.NEXT_PUBLIC_SOCKET_URL!,
+  {
+  path:"/socket.io",
+  transports:["websocket"],
+  }
+  );
+  
+  }
+  
+  setSocket(socketInstance);
   
   socketInstance.on(
   "connect",
@@ -83,7 +93,6 @@ import {
   
   }
   );
-  
   
   socketInstance.on(
   "userOnline",
@@ -114,7 +123,6 @@ import {
   }
   );
   
-  
   socketInstance.on(
   "userOffline",
   (data)=>{
@@ -133,7 +141,6 @@ import {
   
   }
   );
-  
   
   socketInstance.on(
   "disconnect",
@@ -159,12 +166,11 @@ import {
   "🧹 Disconnecting socket..."
   );
   
-  socket?.disconnect();
+  socketInstance?.disconnect();
   
   };
   
   },[session?.user?.id]);
-  
   
   return(
   
