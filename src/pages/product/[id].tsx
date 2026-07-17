@@ -66,7 +66,7 @@ const ProductDetails = () => {
   const [shopData, setShopData] = useState<ShopData | null>(null);
   const [showImageModal, setShowImageModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const { openChat } = useChat();
+  const { startChat: createChat } = useChat();
   const [isChatOpen, setIsChatOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 992px)");
   const isDesckTop = useMediaQuery("(min-width: 992px)");
@@ -80,51 +80,44 @@ const ProductDetails = () => {
 
   const SallerName = shopData?.user?.name;
   const SallerMobile = shopData?.user?.mobile || shopData?.user?.contact;
-  const shopOwnerID = shopData?.user?.contact || shopData?.user?.mobile;
+  const shopOwnerID = product?.shopOwnerID;
 
   // const [isHomeDeliveryAvailable, setIsHomeDeliveryAvailable] = useState(true);
 
   const startChat = useCallback(() => {
+
     if (!session) {
-      router.push('/login');
-      return;
+    router.push('/login');
+    return;
     }
-
-    const useSidebarChat = true;
-
-    if (useSidebarChat) {
-      const coverImage = product?.coverImage || product?.images?.[0] || null;
-      const otherUserName = SallerName;
-
-      openChat(
-        {
-          id: shopOwnerID,
-          name: otherUserName // ✅ seller name
-        },
-        {
-          id: product._id,
-          title: product.title,
-          coverImage: coverImage || product.images?.[0] || null,
-          otherUserName: SallerName
-        }
-      );
-    } else {
-      router.push({
-        pathname: `/chat/${product.shopOwnerID}`,
-        query: {
-          sellerName: SallerName,
-          productId: product._id,
-          productTitle: product.title
-        }
-      });
+    
+    const coverImage =
+    product?.coverImage ||
+    product?.images?.[0] ||
+    null;
+    
+    
+    createChat(
+    {
+    id: shopOwnerID,
+    name:SallerName
+    },
+    {
+    id:product._id,
+    title:product.title,
+    coverImage,
+    otherUserName:SallerName
     }
-  }, [
+    );
+    
+    
+    },[
     session,
     router,
     product,
     shopOwnerID,
     SallerName,
-    openChat
+    createChat
     ]);
 
  

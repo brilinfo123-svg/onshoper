@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import Banner from "../Banner/Index";
 import { useFavorites } from "@/contexts/FavoriteContext";
 import ProductPost from "@/components/ProductPost/Index";
-import ChatSidebar from "@/components/ChatSidebar/Index";
+// import ChatSidebar from "@/components/ChatSidebar/Index";
 import Layout from "../Layout/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import { useFilter } from "@/contexts/FilterContext";
@@ -19,12 +19,12 @@ import Swal from "sweetalert2";
 import WelcomeChoice from "@/components/WelcomeChoice/Index";
 
 
-
+import {useChat} from "@/contexts/ChatContext";
 
 
 const Header: React.FC = () => {
   const { data: session, status } = useSession();
-  const { notifications, clearAllNotifications, getTotalNotifications } = useNotifications();
+  const {clearAllNotifications, getTotalNotifications } = useNotifications();
   const isDesckTop = useMediaQuery("(min-width: 992px)");
   const router = useRouter();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -37,10 +37,9 @@ const Header: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const favoritesSidebarRef = useRef<HTMLDivElement | null>(null);
   const { favorites } = useFavorites();
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const {totalUnread}=useChat();
   const isOnChatPage = router.pathname.startsWith('/chat');
   const { filterType, setFilterType } = useFilter();
-  // Don't show notifications if we're on chat page
   const [fullPageMessage, setFullPageMessage] = useState<string | null>(null);
   const [isSticky, setIsSticky] = useState(false);
   const hasFetchedWishlist = useRef(false);
@@ -132,38 +131,6 @@ const Header: React.FC = () => {
       window.removeEventListener('resize', checkIsMobile);
     };
   }, []);
-
-  // Fetch wishlist products when favorites sidebar is opened
-  // useEffect(() => {
-  //   const fetchWishlist = async () => {
-  //     if (isFavoritesSidebarOpen && session?.user?.contact) {
-  //       setLoadingFavorites(true);
-  //       try {
-  //         const res = await fetch("/api/favorites/fetchFavoritesByShopOwner", {
-  //           method: "POST",
-  //           headers: { "Content-Type": "application/json" },
-  //           body: JSON.stringify({ userId: session.user.contact }),
-  //         });
-
-  //         const text = await res.text();
-  //         const data = text ? JSON.parse(text) : {};
-
-  //         if (res.ok) {
-  //           setWishlistProducts(data.products || []);
-  //         } else {
-  //           console.error("Failed to fetch wishlist:", data.error || "Unknown error");
-  //         }
-  //       } catch (error) {
-  //         console.error("Error fetching wishlist:", error);
-  //       } finally {
-  //         setLoadingFavorites(false);
-  //       }
-  //     }
-  //   };
-
-  //   fetchWishlist();
-  // }, [isFavoritesSidebarOpen, session]);
-
 
   useEffect(() => {
     if (!session?.user?.contact) return;
@@ -525,12 +492,17 @@ const Header: React.FC = () => {
         {!isMobile && <li><Link href="/ProductForm" className={`${Style.sellAdd} ${"icon-plus"}`} onClick={closeSidebar}>Post</Link></li>}
           <li className={Style.notificationItem}>
           {!isMobile && 
-          <div className={`${Style.Notification} icon-bell`} onClick={() => setIsChatOpen(true)} role="button" tabIndex={0}>
-            {totalNotifications > 0 && (
-              <span className={Style.notificationBadge}>
-                {totalNotifications > 99 ? '99+' : totalNotifications}
-              </span>
-            )}
+          <div
+          className={`${Style.Notification} icon-chats`}
+          onClick={() => router.push("/chat")}
+          role="button"
+          tabIndex={0}
+          >
+          {totalUnread>0&&(
+          <span className={Style.notificationBadge}>
+          {totalUnread>99?"99+":totalUnread}
+          </span>
+          )}
           </div>
           }     
           </li>
@@ -553,18 +525,18 @@ const Header: React.FC = () => {
           }
         </ul>
       </div>
-      <ChatSidebar 
+      {/* <ChatSidebar 
         isOpen={isChatOpen} 
         onClose={() => setIsChatOpen(false)} 
-      />
+      /> */}
 
       <Layout hideOnOverlayClick={true} children={undefined} >
       </Layout>
       
       {/* Overlay for when sidebar is open */}
-      <div className={`${Style.overlay} ${isChatOpen ? Style.open : ''}`}
+      {/* <div className={`${Style.overlay} ${isChatOpen ? Style.open : ''}`}
         onClick={() => setIsChatOpen(false)}
-      />
+      /> */}
       {/* <button 
         className={Style.chatButton}
         onClick={() => setIsChatOpen(true)}

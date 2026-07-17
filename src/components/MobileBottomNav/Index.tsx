@@ -3,7 +3,8 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
-import { useNotifications } from "@/contexts/NotificationContext";
+// import { useNotifications } from "@/contexts/NotificationContext";
+import {useChat} from "@/contexts/ChatContext";
 import styles from "./index.module.scss";
 import ChatSidebar from "../ChatSidebar/Index";
 import Image from "next/image";
@@ -12,53 +13,51 @@ import debounce from "lodash.debounce";
 const MobileBottomNav = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  const { clearAllNotifications, getTotalNotifications } = useNotifications();
-
+  // const { clearAllNotifications, getTotalNotifications } = useNotifications();
+  const {totalUnread}=useChat();
   const [isAccountOpen, setAccountOpen] = useState(false);
   const [isNotificationsOpen, setNotificationsOpen] = useState(false);
   const accountRef = useRef<HTMLDivElement | null>(null);
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  // const [isChatOpen, setIsChatOpen] = useState(false);
 
   // ✅ new state for DB notifications
-  const [dbNotifications, setDbNotifications] = useState(0);
+  // const [dbNotifications, setDbNotifications] = useState(0);
 
   const isOnChatPage = router.pathname.startsWith("/chat");
 
   // ✅ fetch notifications from DB when session loads + auto refresh
-  useEffect(() => {
-    if (!session?.user?.id) return;
+  // useEffect(() => {
+  //   if (!session?.user?.id) return;
   
-    let isMounted = true;
+  //   let isMounted = true;
   
-    const fetchNotifications = async () => {
-      try {
-        const res = await fetch(`/api/notifications/${session.user.id}`);
-        const data = await res.json();
+  //   const fetchNotifications = async () => {
+  //     try {
+  //       const res = await fetch(`/api/notifications/${session.user.id}`);
+  //       const data = await res.json();
   
-        if (isMounted) {
-          setDbNotifications(data.unreadCount || 0);
-        }
-      } catch (err) {
-        console.error("Error fetching notifications:", err);
-      }
-    };
+  //       if (isMounted) {
+  //         setDbNotifications(data.unreadCount || 0);
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching notifications:", err);
+  //     }
+  //   };
   
-    // initial fetch
-    fetchNotifications();
+  //   // initial fetch
+  //   fetchNotifications();
   
-    // stable interval (NO debounce)
-    const interval = setInterval(fetchNotifications, 30000);
+  //   // stable interval (NO debounce)
+  //   const interval = setInterval(fetchNotifications, 30000);
   
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, [session?.user?.id]);
+  //   return () => {
+  //     isMounted = false;
+  //     clearInterval(interval);
+  //   };
+  // }, [session?.user?.id]);
 
   // ✅ merge socket + DB counts
-  const totalNotifications = isOnChatPage
-    ? 0
-    : Math.max(dbNotifications, getTotalNotifications());
+  const totalNotifications=isOnChatPage?0:totalUnread;
 
   const handleLogout = () => {
     signOut({ callbackUrl: "/login" });
@@ -79,11 +78,11 @@ const MobileBottomNav = () => {
     }
   };
 
-  const handleNotificationClick = () => {
-    clearAllNotifications();
-    setNotificationsOpen(false);
-    setDbNotifications(0); // ✅ clear DB badge too
-  };
+  // const handleNotificationClick = () => {
+  //   clearAllNotifications();
+  //   setNotificationsOpen(false);
+  //   setDbNotifications(0); // ✅ clear DB badge too
+  // };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (accountRef.current && !accountRef.current.contains(event.target as Node)) {
@@ -118,9 +117,10 @@ const MobileBottomNav = () => {
       onClick: () => {
         setAccountOpen(false);
         setNotificationsOpen(false);
-        if (session?.user) {
-          setIsChatOpen(true);
-        } else {
+    
+        if(session?.user){
+          router.push("/chat");
+        }else{
           router.push("/login");
         }
       },
@@ -238,7 +238,7 @@ const MobileBottomNav = () => {
         </div>
       )}
 
-      <ChatSidebar isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+      {/* <ChatSidebar isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} /> */}
     </>
   );
 };

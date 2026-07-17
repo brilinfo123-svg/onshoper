@@ -1,0 +1,49 @@
+.chatLayout {
+  display: flex;
+  height: calc(100dvh - 70px);
+  background: #fff;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    height: 100dvh;
+    flex-direction: column;
+  }
+}
+
+.sidebar {
+  width: 360px;
+  height: 100%;
+  border-right: 1px solid #ddd;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    border-right: none;
+  }
+}
+
+.window {
+  flex: 1;
+  height: 100%;
+  display: flex;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.showMobile {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+.hideMobile {
+  display: flex;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}

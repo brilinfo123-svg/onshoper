@@ -6,7 +6,7 @@ import { NotificationProvider } from "../contexts/NotificationContext";
 import { FilterProvider } from "@/contexts/FilterContext";
 import { CityFilterProvider } from "@/contexts/CityFilterContext";
 import { FavoriteProvider } from "../contexts/FavoriteContext";
-import { ChatProvider } from "@/contexts/ChatContext";
+import {ChatProvider} from "@/contexts/ChatContext";
 import ProtectedHeader from "@/components/ProtectedHeader/Index";
 import Footer from "@/components/Footer/Index";
 import { ToastContainer } from "react-toastify";
@@ -20,6 +20,7 @@ import type { AppProps } from "next/app";
 import MobileBottomNav from "@/components/MobileBottomNav/Index";
 import { useRouter } from "next/router";
 import { ProfileProvider } from "@/contexts/ProfileContext";
+import {SocketProvider} from "@/contexts/SocketContext";
 
 // ✅ Import helper functions for FCM
 import { generateToken, listenForMessages } from "@/lib/firebase"; 
@@ -42,6 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const ProductForms = router.pathname === "/ProductForm";
   const isInstall = router.pathname === "/install";
   const profilePage = router.pathname === "/profile";
+  const isChat = router.pathname === "/chat";
   
   const [isMobile, setIsMobile] = useState(false);
 
@@ -106,6 +108,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ProfileProvider>
       <ProductProvider>
         <CategoryProvider>
+        <SocketProvider>
           <NotificationProvider>
             <FavoriteProvider>
               <ChatProvider>
@@ -114,19 +117,22 @@ export default function App({ Component, pageProps }: AppProps) {
                     <ToastContainer position="top-right" autoClose={3000} />
                     <AutoUnfeaturePoller />
 
-                    {!isAdminPage && !isAuthPage && !isOfflinePage && !isInstall && !(router.pathname === "/ProductForm" && isMobile) && !(router.pathname.startsWith("/profile") && isMobile) && (<HeaderComponent Component={Component} />)}
+                    {!isAdminPage && !isAuthPage && !isOfflinePage && !isInstall && !isChat &&  !(router.pathname === "/ProductForm" && isMobile) && !(router.pathname.startsWith("/profile") && isMobile) && (<HeaderComponent Component={Component} />)}
 
                     <main>
                       <Component {...pageProps} />
                     </main>
 
-                    {!isAdminPage && !isOfflinePage && !isInstall && !ProductForms && <Footer />}
-                    {!isAdminPage && !isProductDetailPage && !isOfflinePage && !isInstall && !ProductForms && <MobileBottomNav />}
+                    {/* Hide Footer and Mobile Menu on Chat Page */}
+                  {!isAdminPage && !isOfflinePage && !isInstall && !ProductForms && !isChat && <Footer />}
+                  {!isAdminPage && !isProductDetailPage && !isOfflinePage && !isInstall && !ProductForms && !isChat && <MobileBottomNav />}
+
                   </FilterProvider>
                 </CityFilterProvider>
               </ChatProvider>
             </FavoriteProvider>
           </NotificationProvider>
+          </SocketProvider>
         </CategoryProvider>
       </ProductProvider>
       </ProfileProvider>

@@ -1,0 +1,51 @@
+/* ChatWindow container */
+.window {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fafafa;
+  position: relative;
+}
+.empty{
+  position: absolute;
+  top: 50%;
+  left: 59%;
+  transform: translate(-50%, -50%);
+  h3{
+    color: #757575;
+    font-weight: 400;
+  }
+}
+/* Slide IN */
+.windowSlideIn {
+  animation: slideInRight 0.15s ease forwards;
+}
+
+/* Slide OUT */
+.windowSlideOut {
+  animation: slideOutRight 0.15s ease forwards;
+}
+
+/* Keyframes */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 1;
+  }
+}

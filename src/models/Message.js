@@ -1,21 +1,69 @@
 import mongoose from "mongoose";
 
-const MessageSchema = new mongoose.Schema({
-  sender: { type: String, required: true },        // sender user ID
-  senderName: { type: String, default: null },     // optional sender name
-  receiver: { type: String, required: true },      // receiver user ID
-  message: { type: String, required: true },       // chat text
-  productId: { type: String },
-  productTitle: { type: String },
-  coverImage: { type: String, default: null },
-  otherUserName: { type: String, default: null },
-  hiddenForSender: { type: Boolean, default: false },
-  hiddenForReceiver: { type: Boolean, default: false },
+const MessageSchema = new mongoose.Schema(
+  {
+    chatId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Chat",
+      required: true,
+    },
 
-  // ✅ NEW FIELD for read/unread tracking
-  isRead: { type: Boolean, default: false },
+    senderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
 
-  createdAt: { type: Date, default: Date.now },
-}, { timestamps: true });
+    receiverId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
 
-export default mongoose.models.Message || mongoose.model("Message", MessageSchema);
+    message: {
+      type: String,
+      required: true,
+    },
+
+    messageType: {
+      type: String,
+      default: "text",
+    },
+
+    isSeen: {
+      type: Boolean,
+      default: false,
+    },
+
+    seenAt: {
+      type: Date,
+      default: null,
+    },
+    buyerDeleted:{
+      type:Boolean,
+      default:false
+      },
+      
+      sellerDeleted:{
+      type:Boolean,
+      default:false
+      },
+      
+      buyerDeletedAt:{
+      type:Date,
+      default:null
+      },
+      
+      sellerDeletedAt:{
+      type:Date,
+      default:null
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+
+export default mongoose.models.Message ||
+  mongoose.model("Message", MessageSchema);
