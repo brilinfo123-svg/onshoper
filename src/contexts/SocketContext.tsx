@@ -42,7 +42,7 @@ const [socket,setSocket]=useState<Socket|null>(null);
 const [isConnected,setIsConnected]=useState(false);
 
 const [onlineUsers,setOnlineUsers]=useState<string[]>([]);
-const [lastSeenUsers,setLastSeenUsers]=useState({});
+
 
 const {data:session}=useSession();
 
