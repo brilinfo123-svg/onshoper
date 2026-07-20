@@ -27,6 +27,7 @@ userId
 const chat=await Chat.findById(chatId);
 
 
+
 if(!chat){
 
 return res.status(404).json({
@@ -66,11 +67,14 @@ seenAt:seenTime
 
 
 
-if(chat.buyer.toString()===String(userId)){
+if(
+String(chat.buyer)===String(userId)
+){
 
 chat.buyerUnreadCount=0;
 
-}else{
+}
+else{
 
 chat.sellerUnreadCount=0;
 
@@ -86,58 +90,68 @@ await chat.save();
 
 
 
-
-// SOCKET EMIT
-
-const io=res.socket?.server?.io;
-
-
-if(io){
+// ===============================
+// 🔥 SEND REALTIME SOCKET EVENT
+// ===============================
 
 
-const senderId=
+const senderId =
 
-chat.buyer.toString()===String(userId)
+String(chat.buyer)===String(userId)
 
 ?
 
-chat.seller.toString()
+String(chat.seller)
 
 :
 
-chat.buyer.toString();
+String(chat.buyer);
 
 
 
-io.to(senderId).emit(
-"messagesSeen",
+try{
+
+
+await fetch(
+`${process.env.NEXT_PUBLIC_SOCKET_URL}/emit-seen`,
 {
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+senderId,
 
 chatId:String(chatId),
 
 seenAt:seenTime
 
+})
+
 }
+
 );
 
 
-
 console.log(
-"👁 SEEN EVENT SENT:",
+"👁 REALTIME SEEN SENT:",
 senderId
 );
 
 
-
-}else{
-
+}catch(socketError){
 
 console.log(
-"❌ SOCKET NOT FOUND"
+"SOCKET EMIT FAILED:",
+socketError.message
 );
 
-
 }
+
 
 
 
