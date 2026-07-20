@@ -81,173 +81,156 @@ session.user.id
 const handleReceiveMessage=(message)=>{
 
 
-console.log(
-"📩 NEW MESSAGE RECEIVED",
-message
-);
-
-
-
-// UPDATE SIDEBAR CHAT REALTIME
-
-setChats(prev=>{
-
-
-let chatExists=false;
-
-
-
-const updated=prev.map(chat=>{
-
-
-if(
-String(chat._id)!==
-String(message.chatId)
-){
-
-return chat;
-
-}
-
-
-
-chatExists=true;
-
-
-
-return{
-
-
-...chat,
-
-
-lastMessage:message,
-
-
-updatedAt:message.createdAt,
-
-
-
-unreadCount:
-
-activeChat?._id===message.chatId
-
-?
-
-0
-
-:
-
-(chat.unreadCount || 0)+1
-
-
-
-};
-
-
-});
-
-
-
-
-// if new chat then reload
-
-if(!chatExists){
-
-fetchChats();
-
-return prev;
-
-}
-
-
-
-// sort latest message top
-
-updated.sort((a,b)=>
-
-new Date(b.updatedAt).getTime()
--
-new Date(a.updatedAt).getTime()
-
-);
-
-
-
-updateUnreadCount(updated);
-
-
-
-return updated;
-
-
-});
-
-
-
-
-// if chat open
-
-if(
-
-activeChat &&
-String(message.chatId)===String(activeChat._id)
-
-){
-
-
-setMessages(prev=>{
-
-
-const exists=prev.some(
-
-item=>item._id===message._id
-
-);
-
-
-if(exists)
-return prev;
-
-
-
-return[
-...prev,
-message
-];
-
-
-});
-
-
-
-// mark seen
-
-fetch("/api/chat/markSeen",{
-
-method:"PUT",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-
-chatId:message.chatId,
-
-userId:session.user.id
-
-})
-
-}).catch(console.log);
-
-
-
-}
-
-
-
-};
+  console.log(
+  "📩 NEW MESSAGE RECEIVED",
+  message
+  );
+  
+  
+  
+  setChats(prev=>{
+  
+  
+  let found=false;
+  
+  
+  const updated=prev.map(chat=>{
+  
+  
+  if(
+  String(chat._id)!==
+  String(message.chatId)
+  ){
+  
+  return chat;
+  
+  }
+  
+  
+  
+  found=true;
+  
+  
+  
+  const isCurrentChat =
+  activeChat &&
+  String(activeChat._id) === String(message.chatId);
+  
+  
+  
+  return{
+  
+  ...chat,
+  
+  lastMessage:message,
+  
+  updatedAt:message.createdAt,
+  
+  
+  unreadCount:isCurrentChat
+  ?
+  0
+  :
+  (chat.unreadCount || 0)+1
+  
+  
+  };
+  
+  
+  
+  });
+  
+  
+  
+  // new chat received
+  
+  if(!found){
+  
+  fetchChats();
+  
+  return prev;
+  
+  }
+  
+  
+  
+  updated.sort((a,b)=>
+  
+  new Date(b.updatedAt)
+  -
+  new Date(a.updatedAt)
+  
+  );
+  
+  
+  
+  updateUnreadCount(updated);
+  
+  
+  
+  return updated;
+  
+  
+  });
+  
+  
+  
+  
+  
+  if(
+  activeChat &&
+  String(activeChat._id)===String(message.chatId)
+  
+  ){
+  
+  
+  setMessages(prev=>{
+  
+  
+  const exists=prev.some(
+  item=>item._id===message._id
+  );
+  
+  
+  if(exists)
+  return prev;
+  
+  
+  
+  return [
+  ...prev,
+  message
+  ];
+  
+  
+  });
+  
+  
+  
+  fetch("/api/chat/markSeen",{
+  
+  method:"PUT",
+  
+  headers:{
+  "Content-Type":"application/json"
+  },
+  
+  body:JSON.stringify({
+  
+  chatId:message.chatId,
+  
+  userId:session.user.id
+  
+  })
+  
+  });
+  
+  
+  }
+  
+  
+  
+  };
 
 
 
