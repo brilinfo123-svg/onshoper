@@ -1,88 +1,81 @@
 "use client";
 
-import {useEffect,useRef} from "react";
+import { useEffect, useRef, useState } from "react";
 import MessageBubble from "@/components/Chat/MessageBubble/Index";
-import {useChat} from "@/contexts/ChatContext";
-import {useSession} from "next-auth/react";
+import { useChat } from "@/contexts/ChatContext";
+import { useSession } from "next-auth/react";
 import styles from "./index.module.scss";
+import MessageSkeleton from "@/components/Chat/MessageList/MessageSkeleton/Index";
 
-export default function MessageList(){
+export default function MessageList() {
+  const { activeChat, messages, setMessages } = useChat();
+  const { data: session } = useSession();
 
-const {activeChat,messages,setMessages}=useChat();
+  const [loading, setLoading] = useState(false);
+  const chatContainerRef = useRef(null);
 
-const {data:session}=useSession();
+  // ===============================
+  // LOAD MESSAGES WHEN CHAT CHANGES
+  // ===============================
+  useEffect(() => {
+    if (!activeChat) return;
+    fetchMessages();
+  }, [activeChat]);
 
-const chatContainerRef=useRef(null);
+  // ===============================
+  // AUTO SCROLL TO BOTTOM
+  // ===============================
+  useEffect(() => {
+    if (!chatContainerRef.current) return;
 
-useEffect(()=>{
+    chatContainerRef.current.scrollTo({
+      top: chatContainerRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages]);
 
-if(!activeChat)return;
+  // ===============================
+  // FETCH MESSAGES
+  // ===============================
+  const fetchMessages = async () => {
+    try {
+      setLoading(true);
 
-fetchMessages();
+      const res = await fetch(`/api/chat/getMessages?chatId=${activeChat._id}`);
+      const data = await res.json();
 
-},[activeChat]);
+      if (data.success) {
+        setMessages(data.messages);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-useEffect(() => {
-  if (!chatContainerRef.current) return;
+  // ===============================
+  // LAST OWN MESSAGE ID
+  // ===============================
+  const lastOwnMessageId =
+    messages
+      .filter((msg) => msg.senderId === session?.user?.id)
+      .slice(-1)[0]?._id;
 
-  chatContainerRef.current.scrollTo({
-    top: chatContainerRef.current.scrollHeight,
-    behavior: "smooth",
-  });
-}, [messages]);
-
-
-const fetchMessages=async()=>{
-
-try{
-
-const res=await fetch(
-`/api/chat/getMessages?chatId=${activeChat._id}`
-);
-
-const data=await res.json();
-
-if(data.success){
-
-setMessages(data.messages);
-
-}
-
-}catch(error){
-
-console.log(error);
-
-}
-
-};
-
-// Find the last message sent by the current user
-const lastOwnMessageId = messages
-  .filter((message) => message.senderId === session.user.id)
-  .slice(-1)[0]?._id;
-
-return(
-
-<div
-className={styles.list}
-ref={chatContainerRef}
->
-
-{
-messages.map((message)=>(
-
-<MessageBubble
-key={message._id}
-message={message}
-isOwn={message.senderId===session.user.id}
-isLastOwnMessage={message._id===lastOwnMessageId}
-/>
-
-))
-}
-
-</div>
-
-);
-
+  return (
+    <div className={styles.list} ref={chatContainerRef}>
+      {loading ? (
+        <MessageSkeleton />
+      ) : (
+        messages.map((message) => (
+          <MessageBubble
+            key={message._id}
+            message={message}
+            isOwn={message.senderId === session?.user?.id}
+            isLastOwnMessage={message._id === lastOwnMessageId}
+          />
+        ))
+      )}
+    </div>
+  );
 }

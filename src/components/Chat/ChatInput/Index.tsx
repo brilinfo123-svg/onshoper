@@ -1,121 +1,74 @@
 "use client";
 
-import {useState} from "react";
-import {useChat} from "@/contexts/ChatContext";
-import {useSession} from "next-auth/react";
+import { useState } from "react";
+import { useChat } from "@/contexts/ChatContext";
+import { useSession } from "next-auth/react";
 import styles from "./index.module.scss";
 
-export default function ChatInput(){
+export default function ChatInput() {
+  const { activeChat, addMessage, socket } = useChat();
+  const { data: session } = useSession();
 
-const {activeChat,addMessage,socket}=useChat();
+  const [text, setText] = useState("");
 
-const [text,setText]=useState("");
+  // ===============================
+  // SEND MESSAGE
+  // ===============================
+  const sendMessage = async () => {
+    if (!text.trim() || !activeChat || !session) return;
 
-const {data:session}=useSession();
+    const receiverId =
+      activeChat.otherUser?._id ||
+      (activeChat.buyer === session.user.id
+        ? activeChat.seller
+        : activeChat.buyer);
 
-const sendMessage=async()=>{
+    if (!receiverId) return;
 
-if(!text.trim()||!activeChat||!session)return;
+    const messageData = {
+      chatId: activeChat._id,
+      senderId: session.user.id,
+      receiverId,
+      message: text,
+    };
 
-const receiverId=
+    try {
+      const res = await fetch("/api/chat/sendMessage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(messageData),
+      });
 
-activeChat.otherUser?._id ||
+      const data = await res.json();
 
-(activeChat.buyer===session.user.id
-?activeChat.seller
-:activeChat.buyer);
+      if (data.success) {
+        addMessage(data.message);
 
-if(!receiverId){
+        socket.emit("sendMessage", {
+          ...data.message,
+          senderId: session.user.id,
+          receiverId,
+        });
 
-return;
+        setText("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-}
+  return (
+    <div className={styles.inputBox}>
+      <input
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Type a message..."
+        onKeyDown={(e) => {
+          if (e.key === "Enter") sendMessage();
+        }}
+      />
 
-const messageData={
-
-chatId:activeChat._id,
-
-senderId:session.user.id,
-
-receiverId,
-
-message:text
-
-};
-
-
-try{
-
-const res=await fetch("/api/chat/sendMessage",{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify(messageData)
-
-});
-
-const data=await res.json();
-
-if(data.success){
-
-addMessage(data.message);
-
-socket.emit("sendMessage",{
-
-...data.message,
-
-senderId:session.user.id,
-
-receiverId
-
-});
-
-setText("");
-
-}
-
-}catch(error){
-
-console.log(error);
-
-}
-
-};
-
-return(
-
-<div className={styles.inputBox}>
-
-<input
-
-value={text}
-
-onChange={(e)=>setText(e.target.value)}
-
-placeholder="Type a message..."
-
-onKeyDown={(e)=>{
-
-if(e.key==="Enter"){
-
-sendMessage();
-
-}
-
-}}
-
-/>
-
-<button onClick={sendMessage}>
-Send
-</button>
-
-</div>
-
-);
-
+      <button onClick={sendMessage}>Send</button>
+    </div>
+  );
 }

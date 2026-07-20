@@ -6,14 +6,17 @@ import ChatListItem from "@/components/Chat/ChatListItem/Index";
 import { useChat } from "@/contexts/ChatContext";
 import styles from "./index.module.scss";
 import { useSocket } from "@/contexts/SocketContext";
+import ChatSidebarSkeleton from "@/components/Chat/ChatSidebar/ChatSidebarSkeleton/Index";
 import Swal from "sweetalert2";
 import router from "next/router";
 
 export default function ChatSidebar() {
   const { socket } = useSocket();
   const { openChat, activeChat, closeChat, chats, fetchChats } = useChat();
-  const [search, setSearch] = useState("");
   const { data: session, status } = useSession();
+
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   // ===============================
   // SOCKET MESSAGE LISTENER
@@ -37,9 +40,15 @@ export default function ChatSidebar() {
   // INITIAL LOAD
   // ===============================
   useEffect(() => {
-    if (status === "authenticated") {
-      fetchChats();
-    }
+    const loadChats = async () => {
+      if (status !== "authenticated") return;
+
+      setLoading(true);
+      await fetchChats();
+      setLoading(false);
+    };
+
+    loadChats();
   }, [status]);
 
   // ===============================
@@ -115,21 +124,25 @@ export default function ChatSidebar() {
 
       {/* Chat List */}
       <div className={styles.chatList}>
-        {filteredChats.map((chat) => (
-          <ChatListItem
-            key={chat._id}
-            chat={{
-              ...chat,
-              unreadCount:
-                chat._id === activeChat?._id ? 0 : chat.unreadCount,
-            }}
-            onClick={async () => {
-              await openChat(chat);
-              await fetchChats();
-            }}
-            onDelete={() => deleteChat(chat._id)}
-          />
-        ))}
+        {loading ? (
+          <ChatSidebarSkeleton />
+        ) : (
+          filteredChats.map((chat) => (
+            <ChatListItem
+              key={chat._id}
+              chat={{
+                ...chat,
+                unreadCount:
+                  chat._id === activeChat?._id ? 0 : chat.unreadCount,
+              }}
+              onClick={async () => {
+                await openChat(chat);
+                await fetchChats();
+              }}
+              onDelete={() => deleteChat(chat._id)}
+            />
+          ))
+        )}
       </div>
     </div>
   );
