@@ -27,7 +27,6 @@ userId
 const chat=await Chat.findById(chatId);
 
 
-
 if(!chat){
 
 return res.status(404).json({
@@ -42,6 +41,9 @@ message:"Chat not found"
 
 
 
+const seenTime=new Date();
+
+
 
 await Message.updateMany(
 
@@ -52,10 +54,10 @@ isSeen:false
 },
 
 {
-    $set:{
-    isSeen:true,
-    seenAt:new Date()
-    }
+$set:{
+isSeen:true,
+seenAt:seenTime
+}
 }
 
 );
@@ -64,7 +66,7 @@ isSeen:false
 
 
 
-if(chat.buyer.toString()===userId){
+if(chat.buyer.toString()===String(userId)){
 
 chat.buyerUnreadCount=0;
 
@@ -84,6 +86,7 @@ await chat.save();
 
 
 
+
 // SOCKET EMIT
 
 const io=res.socket?.server?.io;
@@ -94,7 +97,7 @@ if(io){
 
 const senderId=
 
-chat.buyer.toString()===userId
+chat.buyer.toString()===String(userId)
 
 ?
 
@@ -107,21 +110,20 @@ chat.buyer.toString();
 
 
 io.to(senderId).emit(
-
 "messagesSeen",
-
 {
 
-chatId:String(chatId)
+chatId:String(chatId),
+
+seenAt:seenTime
 
 }
-
 );
 
 
 
 console.log(
-"DOUBLE TICK SENT TO:",
+"👁 SEEN EVENT SENT:",
 senderId
 );
 
@@ -131,7 +133,7 @@ senderId
 
 
 console.log(
-"SOCKET NOT FOUND"
+"❌ SOCKET NOT FOUND"
 );
 
 
@@ -142,7 +144,9 @@ console.log(
 
 return res.status(200).json({
 
-success:true
+success:true,
+
+seenAt:seenTime
 
 });
 

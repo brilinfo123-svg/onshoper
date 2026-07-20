@@ -34,7 +34,12 @@ export function ChatProvider({ children }) {
       console.log("NEW MESSAGE RECEIVED", message);
 
       if (!activeChat) return;
-      if (message.chatId !== activeChat._id) return;
+      if(
+        String(message.chatId)!==
+        String(activeChat._id)
+        ){
+        return;
+        }
 
       setMessages((prev) => {
         const exists = prev.some((item) => item._id === message._id);
@@ -56,21 +61,47 @@ export function ChatProvider({ children }) {
     // ----------------------------
     // 👁 Mark messages seen
     // ----------------------------
-    const handleMessagesSeen = ({ chatId }) => {
-      console.log("MESSAGES SEEN EVENT:", chatId);
+    const handleMessagesSeen = ({ chatId, seenAt }) => {
 
-      setMessages((prev) =>
-        prev.map((msg) => {
-          if (
-            String(msg.chatId) === String(chatId) &&
-            String(msg.senderId) === String(session.user.id)
-          ) {
-            return { ...msg, isSeen: true };
-          }
-          return msg;
-        })
+      console.log(
+      "👁 REALTIME MESSAGE SEEN:",
+      chatId,
+      seenAt
       );
-    };
+      
+      
+      setMessages((prev)=>
+      
+      prev.map((msg)=>{
+      
+      
+      if(
+      String(msg.chatId)===String(chatId) &&
+      String(msg.senderId)===String(session.user.id)
+      ){
+      
+      return{
+      
+      ...msg,
+      
+      isSeen:true,
+      
+      seenAt:seenAt || new Date()
+      
+      };
+      
+      }
+      
+      
+      return msg;
+      
+      
+      })
+      
+      );
+      
+      
+      };
 
     socket.on("receiveMessage", handleReceiveMessage);
     socket.on("messagesSeen", handleMessagesSeen);
@@ -197,10 +228,27 @@ export function ChatProvider({ children }) {
   // -------------------------------------------------------------
   // ➕ ADD MESSAGE LOCALLY
   // -------------------------------------------------------------
-  const addMessage = (message) => {
-    setMessages((prev) => [...prev, message]);
-  };
+  const addMessage = (message)=>{
 
+    setMessages((prev)=>{
+    
+    const exists=prev.some(
+    (item)=>item._id===message._id
+    );
+    
+    if(exists){
+    return prev;
+    }
+    
+    
+    return [
+    ...prev,
+    message
+    ];
+    
+    });
+    
+    };
   // -------------------------------------------------------------
   // PROVIDER VALUE
   // -------------------------------------------------------------
