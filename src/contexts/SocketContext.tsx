@@ -14,8 +14,14 @@ import { useSession } from "next-auth/react";
 
 interface SocketContextType{
   socket:Socket|null;
+
   isConnected:boolean;
+  
   onlineUsers:string[];
+  
+  lastSeenUsers:{
+  [userId:string]:string;
+  };
 }
 
 
@@ -23,6 +29,7 @@ const SocketContext=createContext<SocketContextType>({
   socket:null,
   isConnected:false,
   onlineUsers:[],
+  lastSeenUsers:{},
 });
 
 
@@ -36,7 +43,7 @@ export const SocketProvider=({
   children:ReactNode;
 })=>{
 
-
+  const [lastSeenUsers,setLastSeenUsers]=useState<Record<string,string>>({});
 const [socket,setSocket]=useState<Socket|null>(null);
 
 const [isConnected,setIsConnected]=useState(false);
@@ -137,6 +144,15 @@ socketInstance.on(
 "userOnline",
 (data)=>{
 
+  setLastSeenUsers(prev=>{
+
+    const copy={...prev};
+    
+    delete copy[String(data.userId)];
+    
+    return copy;
+    
+    });
 
 console.log(
 "🟢 USER ONLINE:",
@@ -176,27 +192,23 @@ String(data.userId)
 
 
 socketInstance.on(
-"userOffline",
-(data)=>{
+  "userOffline",
+  (data)=>{
 
+    console.log("🔴 USER OFFLINE:",data.userId,data.lastSeen);
 
-console.log(
-"🔴 USER OFFLINE:",
-data.userId
-);
+    setOnlineUsers(prev=>
+      prev.filter(
+        id=>id!==String(data.userId)
+      )
+    );
 
+    setLastSeenUsers(prev=>({
+      ...prev,
+      [String(data.userId)]:data.lastSeen
+    }));
 
-
-setOnlineUsers(prev=>
-prev.filter(
-(id)=>
-id!==String(data.userId)
-)
-);
-
-
-
-}
+  }
 );
 
 
@@ -263,6 +275,7 @@ value={{
 socket,
 isConnected,
 onlineUsers,
+lastSeenUsers,
 }}
 
 >
