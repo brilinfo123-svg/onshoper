@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
 import styles from "@/styles/login.module.scss";
 import Swal from "sweetalert2";
+import LoginSkeleton from "@/components/Login/LoginSkeleton/Index";
 
 export default function LoginPage() {
   const { data: session, status } = useSession();
@@ -222,7 +223,7 @@ export default function LoginPage() {
   return (
     <div className={styles.loginWrapper}>
       {status === "loading" ? (
-        <p>Loading...</p>
+        <LoginSkeleton />
       ) : status === "authenticated" ? (
         <p>Redirecting...</p>
       ) : (
