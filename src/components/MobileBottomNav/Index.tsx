@@ -23,7 +23,7 @@ const MobileBottomNav = () => {
   // ✅ new state for DB notifications
   // const [dbNotifications, setDbNotifications] = useState(0);
 
-  // const isOnChatPage = router.pathname.startsWith("/chat");
+  const isOnChatPage = router.pathname.startsWith("/chat");
 
   // ✅ fetch notifications from DB when session loads + auto refresh
   // useEffect(() => {
@@ -57,7 +57,7 @@ const MobileBottomNav = () => {
   // }, [session?.user?.id]);
 
   // ✅ merge socket + DB counts
-  const totalNotifications = totalUnread;
+  const totalNotifications=isOnChatPage?0:totalUnread;
 
   const handleLogout = () => {
     signOut({ callbackUrl: "/login" });
