@@ -11,7 +11,7 @@ import ProductPost from "@/components/ProductPost/Index";
 import ProductMobile from "@/components/ProductMobile/Index";
 import BannerPost from "@/components/BannerPost";
 import IntroAnimation from "@/components/IntroAnimation/Index";
-import Head from "@/components/Head";
+import SEO from "@/components/Head";
 import styles from "@/styles/Home.module.scss";
 
 interface Product {
@@ -184,7 +184,7 @@ export default function Home() {
 
   return (
     <div className="main">
-      <Head />
+      <SEO />
       <IntroAnimation />
       <div className="container">
         <ProductMobile
