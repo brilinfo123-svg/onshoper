@@ -214,7 +214,7 @@ const toggleFavorite = async () => {
             FOR RENT
           </span>
         )}
-        <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} placeholder="blur" blurDataURL={coverImage || images?.[0] || "/images/placeholder.jpg"} loading="lazy" />
+        <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} loading="lazy" />
         <span className={`${styles.timeStamp} ${filter.timeStamp}`}>
           <p>{formatPostedTime(createdAt)}</p>
         </span>
