@@ -23,7 +23,7 @@ const Button = ({ children, href, color = "black", text = "white", onClick, ...p
   }
 
   return (
-    <button onClick={onClick} className="custom-button" style={style} {...props}>
+    <button aria-label="Buton" onClick={onClick} className="custom-button" style={style} {...props}>
       {children}
     </button>
   );

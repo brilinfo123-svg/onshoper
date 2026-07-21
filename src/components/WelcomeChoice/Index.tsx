@@ -18,8 +18,7 @@ const WelcomeChoice: React.FC<WelcomeChoiceProps> = ({ onChoose }) => {
 
           <h2>What would you like to explore?</h2>
 
-          <p>
-          Choose how you'd like to explore OnShoper.
+          <p>Choose how you'd like to explore OnShoper.
           <br></br>You can switch between Buy and Rent anytime from top menu.
           </p>
         </div>
@@ -27,6 +26,7 @@ const WelcomeChoice: React.FC<WelcomeChoiceProps> = ({ onChoose }) => {
         <div className={styles.cards}>
           {/* BUY */}
           <button
+          aria-label="Sale"
             className={styles.card}
             onClick={() => onChoose("Sale")}
           >
@@ -37,6 +37,7 @@ const WelcomeChoice: React.FC<WelcomeChoiceProps> = ({ onChoose }) => {
                 width={115}
                 height={115}
                 priority
+                style={{ width: "115px", height: "115px" }}
               />
             </div>
 
@@ -50,6 +51,7 @@ const WelcomeChoice: React.FC<WelcomeChoiceProps> = ({ onChoose }) => {
 
           {/* RENT */}
           <button
+            aria-label="rent"
             className={styles.card}
             onClick={() => onChoose("Rent")}
           >
@@ -60,6 +62,7 @@ const WelcomeChoice: React.FC<WelcomeChoiceProps> = ({ onChoose }) => {
                 width={115}
                 height={115}
                 priority
+                style={{ width: "115px", height: "115px" }}
               />
             </div>
 

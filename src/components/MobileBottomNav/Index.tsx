@@ -188,6 +188,7 @@ const MobileBottomNav = () => {
           >
             {item.name === "Account" || item.name === "Chat" ? (
               <button
+              aria-label="Account"
                 className={`${styles.navItem} ${
                   router.pathname === item.path ? styles.active : ""
                 }`}
@@ -223,7 +224,7 @@ const MobileBottomNav = () => {
                   My Account
                 </Link>
 
-                <button onClick={handleLogout}>
+                <button aria-label="Logout" onClick={handleLogout}>
                   <span className={"icon-off"}></span>
                   Logout
                 </button>

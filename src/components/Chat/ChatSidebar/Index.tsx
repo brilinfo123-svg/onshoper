@@ -106,10 +106,7 @@ export default function ChatSidebar() {
     <div className={styles.sidebar}>
       {/* Header */}
       <div className={styles.header}>
-        <button
-          className={`${styles.backBtn} icon-left-1`}
-          onClick={() => router.push("/")}
-        ></button>
+        <button aria-label="Go Home" className={`${styles.backBtn} icon-left-1`} onClick={() => router.push("/")}></button>
         <h2>Messages</h2>
       </div>
 

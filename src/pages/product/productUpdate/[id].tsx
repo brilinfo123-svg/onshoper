@@ -195,7 +195,7 @@ export default function UpdateProduct() {
         </div>
 
         {/* Submit */}
-        <button type="submit" className={styles.submitButton}>
+        <button aria-label="Submit" type="submit" className={styles.submitButton}>
           Update
         </button>
       </form>

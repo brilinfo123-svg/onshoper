@@ -109,12 +109,7 @@ const Sidebar = ({
   return (
     <div className={styles.sidebarWrapper}>
       {/* Toggle button for mobile */}
-      <button
-        className={`${styles.toggleButton} ${
-          isSidebarVisible ? styles.hideOnDesktop : ""
-        }`}
-        onClick={toggleSidebar}
-      >
+      <button aria-label="Toggle Button" className={`${styles.toggleButton} ${isSidebarVisible ? styles.hideOnDesktop : ""}`} onClick={toggleSidebar}>
         {isSidebarVisible ? "Close Filters" : "Filter by Categories"}
         <span className="icon-sliders"></span>
       </button>

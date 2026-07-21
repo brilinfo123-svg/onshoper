@@ -526,7 +526,7 @@ return (
           {/* HEADER */}
           <div className={styles.header}>
             {view !== "state" && (
-              <button className={styles.backBtn} onClick={handleBack}>
+              <button aria-label="Back button" className={styles.backBtn} onClick={handleBack}>
                 ←
               </button>
             )}
@@ -564,7 +564,7 @@ return (
             </div>
 
             {/* CLOSE BUTTON */}
-            <button onClick={() => setShowLocationSheet(false)}>✕</button>
+            <button aria-label="Close" onClick={() => setShowLocationSheet(false)}>✕</button>
           </div>
 
           {/* SEARCH */}

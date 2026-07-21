@@ -216,7 +216,7 @@ const RegistrationForm: React.FC = () => {
             )}
 
             {/* Submit Button */}
-            <button type="submit" className={styles.submitButton}>
+            <button aria-label="Submit" type="submit" className={styles.submitButton}>
               Sign Up
             </button>
 
@@ -242,17 +242,12 @@ const RegistrationForm: React.FC = () => {
                 required
               />
               {otpError && <p className={styles.errorText}>{otpError}</p>}
-              <button
-                type="button"
-                className={styles.otpButton}
-                onClick={verifyOtp}
-              >
-                Verify OTP
-              </button>
+              <button aria-label="Verify OTP" type="button" className={styles.otpButton} onClick={verifyOtp}>Verify OTP</button>
             </div>
 
             {/* Back to sign-up form */}
             <button
+              aria-label="Back to Sign Up"
               type="button"
               className={styles.backButton}
               onClick={() => setIsSignUpSubmitted(false)}

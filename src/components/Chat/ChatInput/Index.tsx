@@ -68,7 +68,7 @@ export default function ChatInput() {
         }}
       />
 
-      <button onClick={sendMessage}>Send</button>
+      <button aria-label="Send Message" onClick={sendMessage}>Send</button>
     </div>
   );
 }

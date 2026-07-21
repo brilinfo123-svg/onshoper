@@ -176,10 +176,7 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
           </div>
 
           {!isMobile && (
-            <button
-              className={Style.searchButton}
-              onClick={() => handleSearch()}
-            >
+            <button aria-label="Search" className={Style.searchButton} onClick={() => handleSearch()}>
               <span className="icon-search-1" />
             </button>
           )}

@@ -62,7 +62,10 @@ export default async function handler(
         const stream = cloudinary.uploader.upload_stream(
           {
             folder,
-            resource_type: "auto", // ✅ Allows all formats: image, video, raw
+            resource_type: "auto",
+            transformation: [
+              { quality: "auto", fetch_format: "auto" }   // ⭐ q_auto,f_auto
+            ]
           },
           (error, result) => {
             if (error || !result) return reject(error);

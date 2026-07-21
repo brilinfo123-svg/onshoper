@@ -114,40 +114,12 @@ chat.unreadCount>0&&(
 
 
 
-<button
-className={styles.deleteBtn}
-onClick={(e)=>{
-
-e.stopPropagation();
-
-onDelete();
-
-}}
-title="Delete Chat"
->
-
-🗑️
-
-</button>
-
+<button aria-label="Delete" className={styles.deleteBtn} onClick={(e)=>{e.stopPropagation(); onDelete();}} title="Delete Chat">🗑️</button>
 
 </div>
-
-
 </div>
 
-
-<p>
-
-{
-chat.lastMessage?.message
-||
-chat.lastMessage
-||
-"Start conversation"
-}
-
-</p>
+<p>{chat.lastMessage?.message || chat.lastMessage || "Start conversation"}</p>
 
 
 </div>

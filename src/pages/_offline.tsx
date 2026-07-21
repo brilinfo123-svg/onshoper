@@ -126,6 +126,7 @@ export default function Offline() {
         <p>Please check your network and try again.</p>
 
         <button
+        aria-label="offline retry"
           className="retryButton"
           onClick={() => {
             if (navigator.onLine) {

@@ -180,7 +180,7 @@ export default function ProfileForm() {
         <input type="tel" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder="Mobile" />
       </div>
 
-      <button className={styles.button} onClick={updateProfile}>Update Profile</button>
+      <button aria-label="Update Profile" className={styles.button} onClick={updateProfile}>Update Profile</button>
       </div>
     </div>
   );

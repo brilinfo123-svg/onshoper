@@ -419,7 +419,7 @@ const ProductMobile = ({
               </div>
             </div>
 
-            <button className={`${styles.carouselControl} ${styles.rightArrow} ${"icon-right-open-big"}`} onClick={scrollNext} disabled={!emblaApi || !emblaApi.canScrollNext()}></button>
+            <button aria-label="Right" className={`${styles.carouselControl} ${styles.rightArrow} ${"icon-right-open-big"}`} onClick={scrollNext} disabled={!emblaApi || !emblaApi.canScrollNext()}></button>
           </div>
         </div>
       )}
@@ -428,7 +428,7 @@ const ProductMobile = ({
       <aside className={`${styles.sidebar} ${isSidebarVisible ? styles.visible : ''}`}>
         <div className={styles.sidebarHeader}>
           <h2>Filter Products</h2>
-          <button className={`${styles.closeButton} ${"icon-cancel"}`} onClick={toggleSidebar}>
+          <button aria-label="Close" className={`${styles.closeButton} ${"icon-cancel"}`} onClick={toggleSidebar}>
             {/* <Image src="/icons/close.png" alt="Close" width={20} height={20} /> */}
           </button>
         </div>
@@ -438,7 +438,7 @@ const ProductMobile = ({
           <span className={`${styles.searchIcon} ${"icon-search-1"}`}></span>
           <input type="text" placeholder="Search categories..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className={styles.searchInput}/>
           {searchTerm && (
-            <button className={`${styles.clearSearch} ${"icon-cancel-squared"}`} onClick={() => setSearchTerm("")}>
+            <button aria-label="Search" className={`${styles.clearSearch} ${"icon-cancel-squared"}`} onClick={() => setSearchTerm("")}>
               {/* <Image src="/icons/close.png" alt="Clear" width={14} height={14} /> */}
             </button>
           )}
@@ -456,7 +456,7 @@ const ProductMobile = ({
                     <span className={styles.categoryName}>{category.name}</span>
                   </div>
 
-                  <button className={styles.expandButton} onClick={(e) => { e.stopPropagation(); handleCategoryClick(category.id); }}>
+                  <button aria-label="Oppen category" className={styles.expandButton} onClick={(e) => { e.stopPropagation(); handleCategoryClick(category.id); }}>
                     <span className={`${openCategory === category.id ? "icon-up-open-big" : "icon-down-open-big"}`}></span>
                   </button>
                 </div>
@@ -476,7 +476,7 @@ const ProductMobile = ({
             <div className={styles.noResults}>
               <Image src="/icons/not-found.png" alt="No results" width={60} height={60} />
               <p>No categories found</p>
-              <button onClick={() => setSearchTerm("")}>Clear search</button>
+              <button aria-label="Clear Search" onClick={() => setSearchTerm("")}>Clear search</button>
             </div>
           )}
         </div>
@@ -489,12 +489,12 @@ const ProductMobile = ({
               {selectedSubcategories.map(subcategory => (
                 <span key={subcategory} className={styles.filterTag}>
                   {subcategory}
-                  <button onClick={() => onSubcategoryChange(subcategory)}>
+                  <button aria-label="Subcategory" onClick={() => onSubcategoryChange(subcategory)}>
                     <Image src="/icons/close.png" alt="Remove" width={12} height={12} />
                   </button>
                 </span>
               ))}
-              <button className={styles.clearAllButton} onClick={() => {selectedSubcategories.forEach(sub => onSubcategoryChange(sub));}}>Clear All</button>
+              <button aria-label="Clear All" className={styles.clearAllButton} onClick={() => {selectedSubcategories.forEach(sub => onSubcategoryChange(sub));}}>Clear All</button>
             </div>
           </div>
         )}

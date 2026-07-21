@@ -57,15 +57,11 @@ const FeatureProductButton = ({ shopOwnerID }) => {
   return (
     <div className={styles.featureWrapper}>
       <button
+        aria-label="feature"
         className={`${styles.featureButton} ${isFeatured ? styles.active : ""}`}
         onClick={handleFeature}
-        disabled={isFeatured}
-      >
-        {isFeatured ? (
-          <>
-            <span className={styles.timerDot}></span>
-            Featured ({remainingTime}s)
-          </>
+        disabled={isFeatured}>
+        {isFeatured ? (<><span className={styles.timerDot}></span>Featured ({remainingTime}s)</>
         ) : (
           "✨ Make Featured"
         )}

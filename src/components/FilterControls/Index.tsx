@@ -45,12 +45,7 @@ const FilterControls = ({
         </div>
 
         <div className={styles.applyBtn}>
-          <button onClick={() => {
-            onApplyFilters();
-            onClose(); // ✅ close drawer
-          }}>
-            Apply Filters
-          </button>
+          <button aria-label="Apply Filters" onClick={() => {onApplyFilters(); onClose();}}>Apply Filters</button>
         </div>
       </div>
     </>

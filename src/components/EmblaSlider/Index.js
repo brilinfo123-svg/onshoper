@@ -26,8 +26,8 @@ const EmblaSlider = ({ slides }) => {
         </div>
       </div>
 
-      <button className={styles.emblaPrev} onClick={scrollPrev}>‹</button>
-      <button className={styles.emblaNext} onClick={scrollNext}>›</button>
+      <button aria-label="Prev" className={styles.emblaPrev} onClick={scrollPrev}>‹</button>
+      <button aria-label="Next" className={styles.emblaNext} onClick={scrollNext}>›</button>
     </div>
   );
 };

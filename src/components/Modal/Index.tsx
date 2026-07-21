@@ -14,7 +14,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
-        <button className={styles.closeButton} onClick={onClose}>
+        <button aria-label="Close" className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
         <div className={styles.content}>{children}</div>

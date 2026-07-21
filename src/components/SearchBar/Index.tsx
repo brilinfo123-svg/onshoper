@@ -55,7 +55,7 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, searchDesc, onLocat
             </div>
           </div>
 
-          <button className={Style.searchButton} onClick={handleSearch}>
+          <button aria-label="Search" className={Style.searchButton} onClick={handleSearch}>
             <span role="img" aria-label="Search" className="icon-search-1"></span>
           </button>
         </div>

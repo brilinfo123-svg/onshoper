@@ -37,6 +37,7 @@ export default function ShareDropdown({ title }: ShareDropdownProps) {
   return (
     <div className={styles.shareContainer} ref={dropdownRef}>
       <button
+        aria-label="Share"
         className={`${styles.shareBtn} icon-share`}
         onClick={() => setOpen(!open)}
       ></button>
@@ -100,7 +101,7 @@ export default function ShareDropdown({ title }: ShareDropdownProps) {
           </li>
 
           <li className={styles.copy}>
-            <button onClick={copyLink} className="icon-docs">
+            <button aria-label="Copy" onClick={copyLink} className="icon-docs">
               {copied ? "Copied!" : "Copy Link"}
             </button>
           </li>

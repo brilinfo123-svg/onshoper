@@ -563,9 +563,7 @@ useEffect(() => {
       <div className={styles.sidebarHeader}>
         {selectedChat ? (
           <div className={styles.chatHeader}>
-            <button className={styles.backButton} onClick={goBackToList}>
-              ←
-            </button>
+            <button aria-label="Go Back To List" className={styles.backButton} onClick={goBackToList}>←</button>
             <div className={styles.chatUserInfo}>
             <div className={styles.userChatList}>
             <img src={receiverMap[selectedChat.otherUserId]?.photo || "/icons/profile.png"}
@@ -603,7 +601,7 @@ useEffect(() => {
         )}
 
 
-        <button className={styles.closeButton} onClick={onClose}>×</button>
+        <button aria-label="Close" className={styles.closeButton} onClick={onClose}>×</button>
       </div>
 
       <div className={styles.sidebarContent}>
@@ -664,7 +662,8 @@ useEffect(() => {
                   className={styles.messageInput}
                 />
                 <button
-                  onClick={sendMessage}
+                aria-label="Send Message"
+                onClick={sendMessage}
                   // disabled={sendingMessage || !newMessage.trim() || !isConnected}
                   className={styles.sendButton}
                 >

@@ -42,7 +42,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const isOfflinePage = router.pathname === "/_offline";
   const ProductForms = router.pathname === "/ProductForm";
   const isInstall = router.pathname === "/install";
-  const profilePage = router.pathname === "/profile";
   const isChat = router.pathname === "/chat";
   
   const [isMobile, setIsMobile] = useState(false);
@@ -115,7 +114,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <CityFilterProvider>
                   <FilterProvider>
                     <ToastContainer position="top-right" autoClose={3000} />
-                    <AutoUnfeaturePoller />
+                    {/* <AutoUnfeaturePoller /> */}
 
                     {!isAdminPage && !isAuthPage && !isOfflinePage && !isInstall && !isChat &&  !(router.pathname === "/ProductForm" && isMobile) && !(router.pathname.startsWith("/profile") && isMobile) && (<HeaderComponent Component={Component} />)}
 
@@ -155,12 +154,12 @@ const HeaderComponent = ({ Component }: any) => {
 // -----------------------------------------------------------------
 // Auto poll /api/unfeature-expired
 // -----------------------------------------------------------------
-const AutoUnfeaturePoller = () => {
-  useEffect(() => {
-    const interval = setInterval(() => {
-      fetch("/api/unfeature-expired");
-    }, 86400000); // once per day
-    return () => clearInterval(interval);
-  }, []);
-  return null;
-};
+// const AutoUnfeaturePoller = () => {
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       fetch("/api/unfeature-expired");
+//     }, 86400000); // once per day
+//     return () => clearInterval(interval);
+//   }, []);
+//   return null;
+// };

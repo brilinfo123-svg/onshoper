@@ -158,10 +158,10 @@ const OffersSlider: React.FC = () => {
           </div>
 
           {/* Prev / Next buttons */}
-          <button className={styles.embla__buttonPrev} onClick={scrollPrev}>
+          <button aria-label="Back" className={styles.embla__buttonPrev} onClick={scrollPrev}>
             ◀
           </button>
-          <button className={styles.embla__buttonNext} onClick={scrollNext}>
+          <button aria-label="Next" className={styles.embla__buttonNext} onClick={scrollNext}>
             ▶
           </button>
         </div>

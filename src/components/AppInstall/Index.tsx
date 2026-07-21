@@ -61,6 +61,7 @@ export default function InstallButton() {
 
       {!isInstalled && (
         <button
+          aria-label="Install App"
           onClick={installApp}
           style={{
             padding: "12px 20px",

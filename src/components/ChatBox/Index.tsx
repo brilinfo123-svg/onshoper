@@ -207,9 +207,7 @@ export default function ChatBox({ currentUserId, currentUserName, otherUserId, o
           onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
           // Removed disabled from input - user can always type
         />
-        <button onClick={sendMessage} disabled={!newMsg.trim() || !isConnected}>
-          Send
-        </button>
+        <button aria-label="Send Message " onClick={sendMessage} disabled={!newMsg.trim() || !isConnected}>Send</button>
         {!isConnected && (
           <span className={styles.connectionStatus}>Connecting...</span>
         )}

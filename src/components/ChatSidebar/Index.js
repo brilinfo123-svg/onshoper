@@ -561,7 +561,7 @@ useEffect(() => {
       <div className={styles.sidebarHeader}>
         {selectedChat ? (
           <div className={styles.chatHeader}>
-            <button className={styles.backButton} onClick={goBackToList}>
+            <button aria-label="Go Back To List " className={styles.backButton} onClick={goBackToList}>
               ←
             </button>
             <div className={styles.chatUserInfo}>

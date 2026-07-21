@@ -27,9 +27,7 @@ export default function ChatHeader({ user, onBack }) {
   return (
     <div className={styles.header}>
       {/* Back Button */}
-      <button className={styles.backBtn} onClick={onBack}>
-        ←
-      </button>
+      <button aria-label="Back" className={styles.backBtn} onClick={onBack}>←</button>
 
       <div className={styles.user}>
         {/* Avatar */}

@@ -214,7 +214,7 @@ const toggleFavorite = async () => {
             FOR RENT
           </span>
         )}
-        <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} loading="lazy" />
+        <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} sizes="(max-width:500px) 100vw, 300px" quality={70} loading="lazy" />
         <span className={`${styles.timeStamp} ${filter.timeStamp}`}>
           <p>{formatPostedTime(createdAt)}</p>
         </span>
@@ -330,21 +330,11 @@ const toggleFavorite = async () => {
           {/* CTA Buttons */}
           <div className={`${styles.CtaBtn} ${CtaClassName || ""}`}>
             {/* {!onUpdate && !onDelete && (<Link href={`/product/${_id}`} className={styles.button}>View Details</Link>)} */}
-            {status !== "sold" && onUpdate && (<button className={`${styles.updateBtn}`} onClick={(e) => {e.preventDefault(); e.stopPropagation(); router.push(`/product/productUpdate/${_id}`);}}><i className="icon-pencil"></i> Update</button>)}
-            {status !== "sold" && onSold && (<button onClick={(e) => { e.stopPropagation(); e.preventDefault(); onSold(_id);}} className={`${styles.soldBtn}`}><i className="icon-ok-circled"></i>  Mark Sold</button>)}
-            {onDelete && (<button onClick={(e) => { e.stopPropagation(); e.preventDefault(); onDelete(_id);}} className={`${styles.deleteBtn}`}><i className="icon-trash-delete"></i> Delete</button>)}
+            {status !== "sold" && onUpdate && (<button aria-label="Update" className={`${styles.updateBtn}`} onClick={(e) => {e.preventDefault(); e.stopPropagation(); router.push(`/product/productUpdate/${_id}`);}}><i className="icon-pencil"></i> Update</button>)}
+            {status !== "sold" && onSold && (<button aria-label="Mark Sold" onClick={(e) => { e.stopPropagation(); e.preventDefault(); onSold(_id);}} className={`${styles.soldBtn}`}><i className="icon-ok-circled"></i>  Mark Sold</button>)}
+            {onDelete && (<button aria-label="Delete" onClick={(e) => { e.stopPropagation(); e.preventDefault(); onDelete(_id);}} className={`${styles.deleteBtn}`}><i className="icon-trash-delete"></i> Delete</button>)}
             {status === "sold" && onRepublish && (
-  <button
-    className={styles.republishBtn}
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      onRepublish(_id);
-    }}
-  >
-    <i className="icon-ccw"></i> Republish
-  </button>
-)}
+            <button aria-label="Publish" className={styles.republishBtn} onClick={(e) => {e.stopPropagation(); onRepublish(_id);}}><i className="icon-ccw"></i> Republish</button>)}
           </div>
           
           {isFeatured && <PremiumBadge Premium={isFeatured} />}

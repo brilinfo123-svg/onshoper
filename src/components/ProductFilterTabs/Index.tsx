@@ -70,27 +70,17 @@ const WatchFilter: React.FC<Props> = ({ products, productsLoading, displayCount 
       <div className={styles.wrapper}>
         {/* Filter Buttons */}
         <div className={styles.buttons}>
-          <button
-            className={filterType === "Sale" ? styles.activeBtn : ""}
-            onClick={() => setFilterType("Sale")}
-          >
+          <button aria-label="Buy" className={filterType === "Sale" ? styles.activeBtn : ""} onClick={() => setFilterType("Sale")}>
             Buy ({saleTotal})
             {filterType === "Sale" && ``}
           </button>
 
-          <button
-            className={filterType === "Rent" ? styles.activeBtn : ""}
-            onClick={() => setFilterType("Rent")}
-          >
+          <button aria-label="Rent" className={filterType === "Rent" ? styles.activeBtn : ""} onClick={() => setFilterType("Rent")}>
             Rent ({rentTotal})
             {filterType === "Rent" && ``}
           </button>
 
-          <button
-            className={filterType === "all" ? styles.activeBtn : ""}
-            onClick={() => setFilterType("all")}
-          >
-            All ({allTotal})
+          <button aria-label="All" className={filterType === "all" ? styles.activeBtn : ""} onClick={() => setFilterType("all")}>All ({allTotal})
             {filterType === "all" && ``}
           </button>
         </div>
@@ -139,7 +129,7 @@ const WatchFilter: React.FC<Props> = ({ products, productsLoading, displayCount 
         {/* ✅ View More Button */}
         {!productsLoading && visibleCount < filteredProducts.length && (
           <div className={styles.viewMoreWrapper}>
-            <button onClick={() => setVisibleCount((prev) => prev + displayCount)}>
+            <button aria-label="View More" onClick={() => setVisibleCount((prev) => prev + displayCount)}>
               View More
             </button>
           </div>

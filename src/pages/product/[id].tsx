@@ -588,7 +588,7 @@ const sliderSettings = useMemo(() => ({
           {showImageModal && (
             <div className={styles.imageModal} onClick={closeImageModal}>
               <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                <button className={styles.closeButton} onClick={closeImageModal}>
+                <button aria-label="Close Button" className={styles.closeButton} onClick={closeImageModal}>
                  <span className="icon-cancel"></span>
                 </button>
 
@@ -615,6 +615,7 @@ const sliderSettings = useMemo(() => ({
                   {product.images.length > 1 && (
                     <>
                       <button
+                        aria-label="Previous Slide"
                         className={`${styles.embla__button} ${styles.embla__button__prev}`}
                         onClick={scrollPrev}
                         disabled={!prevBtnEnabled}
@@ -625,6 +626,7 @@ const sliderSettings = useMemo(() => ({
                       </button>
 
                       <button
+                        aria-label="Next Slide"
                         className={`${styles.embla__button} ${styles.embla__button__next}`}
                         onClick={scrollNext}
                         disabled={!nextBtnEnabled}
@@ -637,6 +639,7 @@ const sliderSettings = useMemo(() => ({
                       <div className={styles.embla__dots}>
                         {scrollSnaps.map((_, index) => (
                           <button
+                            aria-label="Go to slide"
                             key={index}
                             className={`${styles.embla__dot} ${index === selectedIndex ? styles.embla__dot__selected : ''}`}
                             type="button"
@@ -1047,11 +1050,11 @@ const sliderSettings = useMemo(() => ({
                 <div className={styles.subscribers}>
 
                   <div className={styles.contactButtons}>
-                    <button onClick={startChat} className="icon-chats"></button> 
+                    <button aria-label="Start Chat" onClick={startChat} className="icon-chats"></button> 
                     {MobileWithWhatshap && (
                         <>
-                          <button onClick={handleCallClick} className="icon-phone"></button>
-                          <button onClick={handleWhatsAppClick} className="icon-whatsapp"></button>
+                          <button aria-label="Phone" onClick={handleCallClick} className="icon-phone"></button>
+                          <button aria-label="Whatsapp" onClick={handleWhatsAppClick} className="icon-whatsapp"></button>
                         </>
                       )}
                   </div>
@@ -1142,7 +1145,7 @@ const sliderSettings = useMemo(() => ({
                 </div>
 
                 <div className={styles.reportAction}>
-                  <button className={styles.reportBtn} onClick={() => openReportModal(product?._id)}>Report this Ad</button>
+                  <button aria-label="Report this Add" className={styles.reportBtn} onClick={() => openReportModal(product?._id)}>Report this Ad</button>
                 </div>
               </div>
           <div className={styles.addressSection}>

@@ -177,8 +177,10 @@ export default function BannerPost() {
             width={1920}
             height={400}
             sizes="100vw"
-            loading="lazy"
-            quality={60}
+            loading="eager"         
+            priority
+            fetchPriority="high"
+            quality={80}
             className={styles.bannerImage}
           />
         </div>

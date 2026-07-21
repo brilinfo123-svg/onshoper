@@ -332,9 +332,9 @@ const Header: React.FC = () => {
           <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
-              <button onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Buy</button>
-              <button onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rental</button>
-              <button onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
+              <button aria-label="Sale" onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Buy</button>
+              <button aria-label="Rent" onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rental</button>
+              <button aria-label="all" onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
           </div>
 
@@ -377,14 +377,14 @@ const Header: React.FC = () => {
           <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
-              <button onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Buy</button>
-              <button onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rental</button>
-              <button onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
+              <button aria-label="Sale" onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Buy</button>
+              <button aria-label="Rent" onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rental</button>
+              <button aria-label="all" onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
           </div>
           }
           <div className={`${Style.sidebar} ${isSidebarOpen ? Style.sidebarOpen : ""}`}>
-            <button className={Style.closeButton} onClick={closeSidebar}>&times;</button>
+            <button aria-label="Close Sidebar" className={Style.closeButton} onClick={closeSidebar}>&times;</button>
             <ul>
               {/* <li><Link href="/subscribePlan"><span className="icon-star"></span> My Purchase</Link></li> */}
               <li><Link href="/profile" onClick={closeSidebar}><span className="icon-user-circle"></span> My Account</Link></li>
@@ -401,10 +401,9 @@ const Header: React.FC = () => {
           >
             <div className={Style.favoritesSidebarHeader}>
               <h2>
-                <span className="icon-heart"></span>
-                My Favorites ({favorites.size})
+                <span className="icon-heart"></span>My Favorites ({favorites.size})
               </h2>
-              <button className={Style.closeButton} onClick={closeFavoritesSidebar}>&times;</button>
+              <button aria-label="Close Favorites Sidebar" className={Style.closeButton} onClick={closeFavoritesSidebar}>&times;</button>
             </div>
 
             <div className={Style.favoritesSidebarContent}>
@@ -451,13 +450,7 @@ const Header: React.FC = () => {
                   <span className="icon-heart-empty"></span>
                   <p>No favorites yet</p>
                   <p>Start adding products to your wishlist!</p>
-                  <button
-                    className={Style.browseButton}
-                    onClick={() => {
-                      closeFavoritesSidebar();
-                      router.push('/');
-                    }}
-                  >
+                  <button aria-label="Back to home" className={Style.browseButton} onClick={() => {closeFavoritesSidebar(); router.push('/');}}>
                     Browse Products
                   </button>
                 </div>
@@ -466,12 +459,7 @@ const Header: React.FC = () => {
 
             {favorites.size > 0 && (
               <div className={Style.favoritesSidebarFooter}>
-                <button
-                  className={Style.viewAllButton}
-                  onClick={handleViewAllFavorites}
-                >
-                  View All Favorites
-                </button>
+                <button aria-label="View All Favorites" className={Style.viewAllButton} onClick={handleViewAllFavorites}>View All Favorites</button>
               </div>
             )}
           </div>
@@ -517,7 +505,7 @@ const Header: React.FC = () => {
           </li>
           {!isMobile && 
           <li>
-            <button className={`${Style.toggleButton}`} onClick={toggleSidebar}>
+            <button aria-label="toggle Sidebar" className={`${Style.toggleButton}`} onClick={toggleSidebar}>
               <span className="icon-user-circle"></span>
               {/* <span>Account</span> */}
             </button>
