@@ -92,10 +92,16 @@ const nextConfig: NextConfig = {
 // -------------------------
 export default withPWA({
   dest: "public",
+
   register: true,
+
   skipWaiting: true,
 
-  disable: process.env.NODE_ENV === "development", // 🔥 ADD THIS
+  disable: process.env.NODE_ENV === "development",
+
+  buildExcludes: [
+    /dynamic-css-manifest\.json$/,
+  ],
 
   fallbacks: {
     document: "/_offline",
@@ -107,23 +113,31 @@ export default withPWA({
       handler: "CacheFirst",
       options: {
         cacheName: "svg-icons",
-        expiration: { maxEntries: 50 },
+        expiration: {
+          maxEntries: 50,
+        },
       },
     },
+
     {
       urlPattern: /\/offline\.css$/,
       handler: "CacheFirst",
       options: {
         cacheName: "offline-css",
-        expiration: { maxEntries: 1 },
+        expiration: {
+          maxEntries: 1,
+        },
       },
     },
+
     {
       urlPattern: /\/images\/.*$/,
       handler: "CacheFirst",
       options: {
         cacheName: "offline-images",
-        expiration: { maxEntries: 20 },
+        expiration: {
+          maxEntries: 20,
+        },
       },
     },
   ],

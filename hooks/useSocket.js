@@ -18,7 +18,7 @@ addTrailingSlash:false
 });
 
 socket.on("connect",()=>{
-console.log("Socket connected:",socket.id);
+// console.log("Socket connected:",socket.id);
 setConnected(true);
 socket.emit("join",userId);
 });

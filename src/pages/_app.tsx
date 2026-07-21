@@ -63,10 +63,10 @@ export default function App({ Component, pageProps }: AppProps) {
     const initFirebaseMessaging = async () => {
       try {
         const token = await generateToken();
-        if (token) {
-          console.log("✅ FCM Token:", token);
-          // 👉 send token to backend /api/saveToken
-        }
+        // if (token) {
+        //   console.log("✅ FCM Token:", token);
+        //   // 👉 send token to backend /api/saveToken
+        // }
         listenForMessages();
       } catch (err) {
         console.error("❌ FCM init failed:", err);
@@ -79,7 +79,7 @@ export default function App({ Component, pageProps }: AppProps) {
       navigator.serviceWorker
         .register("/firebase-messaging-sw.js")
         .then((registration) => {
-          console.log("✅ Service Worker registered:", registration);
+          // console.log("✅ Service Worker registered:", registration);
         })
         .catch((err) => {
           console.error("❌ Service Worker registration failed:", err);

@@ -62,10 +62,10 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       // Connected
       socketInstance.on("connect", () => {
         setIsConnected(true);
-        console.log("✅ SOCKET CONNECTED:", socketInstance.id);
+        // console.log("✅ SOCKET CONNECTED:", socketInstance.id);
 
         socketInstance.emit("join", session.user.id);
-        console.log("🚀 JOIN SENT:", session.user.id);
+        // console.log("🚀 JOIN SENT:", session.user.id);
       });
 
       // User Online
