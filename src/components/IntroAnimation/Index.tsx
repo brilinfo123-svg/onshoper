@@ -28,11 +28,11 @@ const IntroAnimation = () => {
       setFadeOut(true); // ✅ trigger fade out
     }, 500);
   };
-
-  if (!showAnimation) return null;
-
+  if (!showAnimation) {
+    return null;
+  }
   return (
-    <div className={`${styles.overlay} ${fadeOut ? styles.fadeOut : ""}`}>
+    <div className={`${styles.overlay} ${ fadeOut ? styles.fadeOut:""}`}>
       <div className={styles.logo}>
         <span className={styles.letter}>O</span>
         <span className={styles.letter}>n</span>

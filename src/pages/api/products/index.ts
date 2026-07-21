@@ -1,25 +1,97 @@
-// pages/api/products/index.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import { MongoClient } from "mongodb";
 
-const uri = process.env.MONGODB_URI || "mongodb+srv://admin:admin@cluster1.pzyia.mongodb.net/test";
-const client = new MongoClient(uri);
+const uri = process.env.MONGODB_URI || "";
+let client: MongoClient | null = null;
 
+// ===============================
+// 📦 CONNECT MONGODB
+// ===============================
+async function connectDB() {
+  if (!client) {
+    client = new MongoClient(uri);
+    await client.connect();
+  }
+  return client;
+}
+
+// ===============================
+// 📦 API HANDLER
+// ===============================
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "GET") return res.status(405).json({ message: "Method Not Allowed" });
+  if (req.method !== "GET") {
+    return res.status(405).json({ message: "Method Not Allowed" });
+  }
 
   try {
-    await client.connect();
+    const client = await connectDB();
     const db = client.db("test");
     const collection = db.collection("products");
 
-    const products = await collection.find().sort({ createdAt: -1 }).toArray();
+    // ===============================
+    // 📌 PAGINATION
+    // ===============================
+    const limit = Number(req.query.limit) || 20;
+    const page = Number(req.query.page) || 1;
+    const skip = (page - 1) * limit;
 
-    res.status(200).json({ success: true, products });
+    // ===============================
+    // 📌 FETCH PRODUCTS
+    // ===============================
+    const products = await collection
+      .find(
+        { status: { $ne: "sold" } },
+        {
+          projection: {
+            title: 1,
+            category: 1,
+            subcategory: 1,
+            SaleType: 1,
+            type: 1,
+            feature: 1,
+            coverImage: 1,
+            images: { $slice: 1 },
+            price: 1,
+            priceWeek: 1,
+            priceMonth: 1,
+            SalePrice: 1,
+            location: 1,
+            createdAt: 1,
+            shopOwnerID: 1,
+            year: 1,
+            KmDriven: 1,
+            MobileBrand: 1,
+            MobileModel: 1,
+            salaryFrom: 1,
+            salaryTo: 1,
+            salaryPeriod: 1,
+            positionType: 1,
+          },
+        }
+      )
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+
+    // ===============================
+    // 📌 TOTAL COUNT
+    // ===============================
+    const total = await collection.countDocuments();
+
+    return res.status(200).json({
+      success: true,
+      products,
+      total,
+      page,
+      limit,
+    });
   } catch (err) {
     console.error("Error fetching products:", err);
-    res.status(500).json({ success: false, message: "Error fetching products" });
-  } finally {
-    await client.close();
+
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching products",
+    });
   }
 }

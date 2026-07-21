@@ -124,49 +124,63 @@ export default function Home() {
 
   // ✅ Filter products
   const filteredProducts = useMemo(() => {
-    const rentFallbackCategories = ["Services", "Jobs", "Education & Learning"];
+    const rentFallbackCategories = [
+      "Services",
+      "Jobs",
+      "Education & Learning",
+    ];
+  
     let filtered = products.filter((product) => {
-      // Hide sold products
       if (product.status === "sold") return false;
-    
+  
       const saleType = product.SaleType || product.type;
-    
+  
       if (filterType === "Rent") {
-        const rentFallbackCategories = [
-          "Services",
-          "Jobs",
-          "Education & Learning",
-        ];
-    
         const isRentType = saleType === "Rent";
         const isFallbackCategory = rentFallbackCategories.includes(product.category);
-    
-        if (!isRentType && !isFallbackCategory) return false;
+  
+        if (!isRentType && !isFallbackCategory) {
+          return false;
+        }
       }
-    
+  
       if (filterType === "Sale" && saleType !== "Sale") {
         return false;
       }
-    
+  
       if (
         selectedCategories.length > 0 &&
         !selectedCategories.includes(product.category)
       ) {
         return false;
       }
-    
+  
       if (
         selectedSubcategories.length > 0 &&
         !selectedSubcategories.includes(product.subcategory || "")
       ) {
         return false;
       }
-    
+  
       return true;
     });
+  
     filtered = filterProductsByCity(filtered, selectedCity);
+  
     return filtered;
-  }, [products, filterType, selectedCategories, selectedSubcategories, selectedCity]);
+  }, [
+    products,
+    filterType,
+    selectedCategories,
+    selectedSubcategories,
+    selectedCity,
+  ]);
+
+  const sortedProducts = useMemo(() => {
+    return [...filteredProducts].sort(
+      (a, b) => (b.feature ? 1 : 0) - (a.feature ? 1 : 0)
+    );
+  }, [filteredProducts]);
 
   return (
     <div className="main">
@@ -205,8 +219,7 @@ export default function Home() {
               </div>
             ) : (
               <div className={styles.productGrid}>
-                {filteredProducts
-                  .sort((a, b) => (b.feature ? 1 : 0) - (a.feature ? 1 : 0))
+                {sortedProducts
                   .slice(0, visibleCount)
                   .map((product) => (
                     <ProductPost

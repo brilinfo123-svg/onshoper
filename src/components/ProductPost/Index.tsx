@@ -16,7 +16,6 @@ import Image from "next/image";
 import NProgress from "nprogress";
 
 export function formatPostedTime(utcDate: string | Date) {
-  const router = useRouter();
   const timeZone = "Asia/Kolkata";
   const zonedDate = toZonedTime(new Date(utcDate), timeZone);
   const now = toZonedTime(new Date(), timeZone);
@@ -215,7 +214,7 @@ const toggleFavorite = async () => {
             FOR RENT
           </span>
         )}
-        <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} placeholder="blur" blurDataURL={coverImage || images?.[0] || "/images/placeholder.jpg"} priority />
+        <Image src={coverImage || images?.[0] || "/images/placeholder.jpg"} alt={title} width={500}  height={300}  className={`${styles.image} ${filter.image}`} placeholder="blur" blurDataURL={coverImage || images?.[0] || "/images/placeholder.jpg"} loading="lazy" />
         <span className={`${styles.timeStamp} ${filter.timeStamp}`}>
           <p>{formatPostedTime(createdAt)}</p>
         </span>

@@ -38,6 +38,16 @@ interface Props {
   contentClass?: any;
 }
 
+const placeholders = [
+  "Search Mobile Phones...",
+  "Search Cars...",
+  "Search Bikes...",
+  "Search Electronics...",
+  "Search Jobs...",
+  "Search Services...",
+  "Search Properties...",
+];
+
 const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
   const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 992px)");
@@ -46,15 +56,7 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const placeholders = [
-    "Search Mobile Phones...",
-    "Search Cars...",
-    "Search Bikes...",
-    "Search Electronics...",
-    "Search Jobs...",
-    "Search Services...",
-    "Search Properties...",
-  ];
+
 
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
@@ -68,7 +70,7 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
   const debouncedSearchTerm = useDebounce(searchTerm, 400);
 
   useEffect(() => {
-    if (debouncedSearchTerm.trim().length < 2) {
+    if (debouncedSearchTerm.trim().length < 3) {
       setSuggestions([]);
       return;
     }
@@ -148,8 +150,6 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
                           width={40}
                           height={40}
                           className={Style.suggestionImage}
-                          placeholder="blur"
-                          blurDataURL="/images/placeholder.png"
                         />
 
                         {/* Text container */}
