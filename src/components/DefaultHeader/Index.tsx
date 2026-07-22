@@ -16,8 +16,8 @@ import WelcomeChoice from "@/components/WelcomeChoice/Index";
 const Header: React.FC = () => {
   const isDesktop = useMediaQuery("(min-width: 992px)");
   const router = useRouter();
-  const [setIsLoading] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
+  // const [setIsLoading] = useState(true);
+  const isMobile = !isDesktop;
   const { data: session } = useSession();
   const { filterType, setFilterType } = useFilter();
   const [isSticky, setIsSticky] = useState(false);
@@ -63,17 +63,17 @@ const Header: React.FC = () => {
       }, 1000);
     };
 
-  useEffect(() => {
-    const checkIsMobile = () => setIsMobile(window.innerWidth <= 991);
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
+  // useEffect(() => {
+  //   const checkIsMobile = () => setIsMobile(window.innerWidth <= 991);
+  //   checkIsMobile();
+  //   window.addEventListener("resize", checkIsMobile);
 
-    // const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => {
-      // clearTimeout(timer);
-      window.removeEventListener("resize", checkIsMobile);
-    };
-  }, []);
+  //   // const timer = setTimeout(() => setIsLoading(false), 800);
+  //   return () => {
+  //     // clearTimeout(timer);
+  //     window.removeEventListener("resize", checkIsMobile);
+  //   };
+  // }, []);
 
     useEffect(() => {
       const handleScroll = () => {
@@ -108,29 +108,6 @@ const Header: React.FC = () => {
       handleFilterChange(type);
       setShowChoice(false);
     };
-  
-
-  // const HeaderSkeleton = () => (
-  //   <header className={Style.header}>
-  //     <div className={Style.headerWrapper}>
-  //       <div className={Style.logoSkeleton}>
-  //         <div className={Style.skeletonLogo}></div>
-  //       </div>
-  //       {!isMobile && (
-  //         <div className={Style.bannerSkeleton}>
-  //           <div className={Style.skeletonBanner}></div>
-  //         </div>
-  //       )}
-  //       <ul className={Style.rightMenus}>
-  //         <li><div className={Style.skeletonButton}></div></li>
-  //         <li><div className={Style.skeletonNotification}></div></li>
-  //         <li><div className={Style.skeletonAccount}></div></li>
-  //       </ul>
-  //     </div>
-  //   </header>
-  // );
-
-  // if (isLoading) return <HeaderSkeleton />;
 
   return (
     <header className={Style.header}>
@@ -197,10 +174,6 @@ const Header: React.FC = () => {
           {!isMobile && (
             <li><Link href="/ProductForm" className={`${Style.sellAdd} icon-plus`} rel="noopener noreferrer">POST</Link></li>
           )}
-         {/* <li className={Style.notificationItem}>
-            <div className={`${Style.Notification} icon-bell`} role="button" tabIndex={0} onClick={() => handleProtectedRedirect("/ProductForm")}
-            />
-          </li> */}
 
           <li className={Style.favoriteItem}>
             <div className={`${Style.favoriteTrigger} icon-heart-empty`} role="button" tabIndex={0} onClick={() => handleProtectedRedirect("/ProductForm")}></div>

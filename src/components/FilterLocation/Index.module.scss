@@ -8,6 +8,15 @@
 .citySelector {
   position: relative;
   gap: 1rem;
+  @media screen and (max-width: 767px) {
+    width: 100px;
+  }
+  @media screen and (max-width: 413px) {
+    width: 90px;
+  }
+  @media screen and (max-width: 375px) {
+    width: 80px;
+  }
 }
 
 .cityButton {
@@ -67,7 +76,7 @@
     }
   }
   @media screen and (max-width: 767px) {
-    padding: 4px 10px 4px 15px;
+    padding: 4px 2px 4px 2px;
   }
   @media screen and (max-width: 413.98px) {
     padding: 4px 5px;

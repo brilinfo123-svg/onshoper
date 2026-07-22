@@ -51,7 +51,7 @@ const Banner: React.FC<Props> = ({ bannerClass, searchTitle, searchDesc, onLocat
               <PickupLocationSearch
                 setLat={(lat) => setLatitude(lat)}
                 setLng={(lng) => setLongitude(lng)}
-                setAddress={(address) => setLocationTerm(address)} onLocationUpdate={undefined}              />
+                setAddress={(address) => setLocationTerm(address)} onLocationUpdate={false}              />
             </div>
           </div>
 
