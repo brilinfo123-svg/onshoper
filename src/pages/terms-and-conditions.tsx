@@ -1,8 +1,20 @@
 import React from "react";
 import styles from "../styles/PrivacyPolicy.module.scss";
+import SEO from "next/head";
 
 export default function PrivacyPolicy() {
   return (
+    <>
+    <SEO>
+        <title>Terms & Conditions – OnShoper Marketplace</title>
+        <meta
+          name="description"
+          content="Read OnShoper's Terms & Conditions to understand user responsibilities, listing rules, transactions, intellectual property rights, and account termination policies."
+        />
+        <link rel="canonical" href="https://onshoper.com/terms-and-conditions" />
+        <meta name="robots" content="index, follow" />
+      </SEO>
+    
     <div className={styles.wrapper}>
       <div className={styles.card}>
       <h1 className={styles.title}>Terms & Conditions</h1>
@@ -64,5 +76,6 @@ export default function PrivacyPolicy() {
 
       </div>
     </div>
+    </>
   );
 }

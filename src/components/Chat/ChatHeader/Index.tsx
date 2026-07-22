@@ -33,12 +33,7 @@ export default function ChatHeader({ user, onBack }) {
         {/* Avatar */}
         <div className={styles.avatar}>
           {user?.photo ? (
-            <Image
-              src={user.photo}
-              alt={user.name || "User"}
-              width={45}
-              height={45}
-            />
+            <Image src={user.photo} alt={user.name || "User"} width={45} height={45}/>
           ) : (
             <div className={styles.initial}>
               {user?.name?.charAt(0).toUpperCase() || "U"}
@@ -49,14 +44,7 @@ export default function ChatHeader({ user, onBack }) {
         {/* User Info */}
         <div>
           <h3>{user?.name || "User"}</h3>
-
-          <p>
-            <span
-              className={
-                isOnline ? styles.onlineDot : styles.offlineDot
-              }
-            />
-
+          <p><span className={isOnline ? styles.onlineDot : styles.offlineDot}/>
             {isOnline ? "Online" : formatLastSeen(lastSeen)}
           </p>
         </div>

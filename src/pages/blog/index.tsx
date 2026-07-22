@@ -3,6 +3,7 @@ import styles from "@/styles/blog.module.scss";
 import Link from "next/link";
 import { blogs } from "@/data/blogs";
 import Image from "next/image";
+import SEO from "next/head";
 
 export default function BlogPage() {
   const [search, setSearch] = useState("");
@@ -15,7 +16,18 @@ export default function BlogPage() {
   );
 
   return (
-    <div className={styles.container}>
+    <>
+      <SEO>
+        <title>OnShoper Blogs – Tips, Guides & Safety Advice</title>
+        <meta
+          name="description"
+          content="Explore OnShoper Blogs for buying, selling, and renting tips, marketplace guides, and safety advice. Stay updated with the latest insights to make smarter deals."
+        />
+        <link rel="canonical" href="https://onshoper.com/blog" />
+        <meta name="robots" content="index, follow" />
+      </SEO>
+   
+      <div className={styles.container}>
       <div className={styles.headingWrper}>
         <h1>Onshoper Blogs</h1>
         <p>Buying, selling & renting tips • Marketplace guides • Safety advice.</p>
@@ -66,5 +78,6 @@ export default function BlogPage() {
         )}
       </div>
     </div>
+    </>
   );
 }

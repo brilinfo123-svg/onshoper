@@ -1,9 +1,29 @@
 import InstallButton from "@/components/AppInstall/Index";
 import Link from "next/link";
+import SEO from "next/head";
 
 export default function InstallApp() {
   return (
     <>
+    <SEO>
+        <title>Install OnShoper App – Fast & Easy</title>
+        <meta
+          name="description"
+          content="Install the OnShoper PWA app on your device. Get quick access to buy, sell, and rent products and services anytime, anywhere."
+        />
+        <link rel="canonical" href="https://onshoper.com/install" />
+        <meta name="robots" content="index, follow" />
+
+        {/* Social Sharing */}
+        <meta property="og:title" content="Install OnShoper App – Fast & Easy" />
+        <meta
+          property="og:description"
+          content="Add OnShoper to your home screen. Buy, sell, and rent products instantly with our progressive web app."
+        />
+        <meta property="og:image" content="/images/OnshoperApp.png" />
+        <meta property="og:url" content="https://onshoper.com/install" />
+      </SEO>
+
       <style>{`
         body {
           margin: 0;

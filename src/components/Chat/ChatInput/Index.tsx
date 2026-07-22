@@ -59,15 +59,10 @@ export default function ChatInput() {
 
   return (
     <div className={styles.inputBox}>
-      <input
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Type a message..."
-        onKeyDown={(e) => {
+      <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Type a message..." onKeyDown={(e) => {
           if (e.key === "Enter") sendMessage();
         }}
       />
-
       <button aria-label="Send Message" onClick={sendMessage}>Send</button>
     </div>
   );

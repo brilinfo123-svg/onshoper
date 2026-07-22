@@ -14,24 +14,12 @@ export default function ChatLayout() {
     <div className={styles.chatLayout}>
 
       {/* SIDEBAR */}
-      <div
-        className={
-          isMobile && activeChat
-            ? styles.hideMobile
-            : styles.sidebar
-        }
-      >
+      <div className={isMobile && activeChat ? styles.hideMobile : styles.sidebar}>
         <ChatSidebar />
       </div>
 
       {/* WINDOW */}
-      <div
-        className={
-          isMobile && activeChat
-            ? styles.showMobile
-            : styles.window
-        }
-      >
+      <div className={isMobile && activeChat ? styles.showMobile : styles.window}>
         <ChatWindow />
       </div>
 

@@ -30,11 +30,7 @@ export default function ChatWindow() {
   };
 
   return (
-    <div
-      className={`${styles.window} ${
-        isClosing ? styles.windowSlideOut : styles.windowSlideIn
-      }`}
-    >
+    <div className={`${styles.window} ${isClosing ? styles.windowSlideOut : styles.windowSlideIn}`}>
       <ChatHeader user={activeChat.otherUser} onBack={handleBack} />
       <SafetyBanner />
       <MessageList />

@@ -112,11 +112,7 @@ export default function ChatSidebar() {
 
       {/* Search */}
       <div className={styles.search}>
-        <input
-          placeholder="Search chats"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <input placeholder="Search chats" value={search} onChange={(e) => setSearch(e.target.value)}/>
       </div>
 
       {/* Chat List */}
@@ -126,17 +122,13 @@ export default function ChatSidebar() {
         ) : (
           filteredChats.map((chat) => (
             <ChatListItem
-              key={chat._id}
-              chat={{
+              key={chat._id} chat={{
                 ...chat,
                 unreadCount:
-                  chat._id === activeChat?._id ? 0 : chat.unreadCount,
+                chat._id === activeChat?._id ? 0 : chat.unreadCount,
               }}
-              onClick={async () => {
-                await openChat(chat);
-                await fetchChats();
-              }}
-              onDelete={() => deleteChat(chat._id)}
+              onClick={async () => {await openChat(chat); await fetchChats();
+              }} onDelete={() => deleteChat(chat._id)}
             />
           ))
         )}

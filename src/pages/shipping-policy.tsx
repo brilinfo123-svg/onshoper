@@ -1,8 +1,20 @@
 import React from "react";
 import styles from "../styles/PrivacyPolicy.module.scss"; // reuse same styles
+import SEO from "next/head"; 
 
 export default function UploadPolicy() {  
   return (
+    <>
+     <SEO>
+        <title>Subscription Policy – OnShoper Marketplace</title>
+        <meta
+          name="description"
+          content="Read OnShoper's Subscription Policy to understand free upload benefits, subscription rules, renewal process, and refund guidelines for product listings."
+        />
+        <link rel="canonical" href="https://onshoper.com/shipping-policy" />
+        <meta name="robots" content="index, follow" />
+      </SEO>
+    
     <div className={styles.wrapper}>
       <div className={styles.card}>
         <h1 className={styles.title}>Subscription Policy</h1>
@@ -99,5 +111,6 @@ export default function UploadPolicy() {
       </div>
 
     </div>
+    </>
   );
 }

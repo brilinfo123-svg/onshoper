@@ -183,9 +183,7 @@ const OffersSlider: React.FC<OffersSliderProps> = ({ onCityChange }) => {
               ))}
             </div>
 
-            <button className={styles.closeButton} onClick={() => setShowCityModal(false)}>
-              Close
-            </button>
+            <button aria-label="Close" className={styles.closeButton} onClick={() => setShowCityModal(false)}>Close</button>
           </div>
         </div>
       )}

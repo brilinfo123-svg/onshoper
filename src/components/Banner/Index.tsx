@@ -117,31 +117,21 @@ const Banner: React.FC<Props> = ({ bannerClass, contentClass }) => {
       <div className={`${Style.content} ${contentClass}`}>
         <div className={Style.searchSection}>
           <div className={Style.searchBox}>
-            <input
-              type="text"
-              className={Style.searchInput}
-              placeholder={placeholders[placeholderIndex]}
-              value={searchTerm}
+            <input type="text" className={Style.searchInput} placeholder={placeholders[placeholderIndex]} value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
-
             {/* Suggestions Dropdown */}
             {searchTerm && suggestions.length > 0 && (
               <div className={Style.suggestionsDropdown}>
                 {suggestions.map((item) => {
                   // ⭐ Title for UI
                   const label = item.title || "";
-
                   // ⭐ Subcategory for search + UI
                   const subLabel = item.subcategory || "";
 
                   return (
-                    <div
-                      key={item._id}
-                      className={Style.suggestionItem}
-                      onClick={() => handleSearch(subLabel || label)} // ⭐ send subcategory to filter page
-                    >
+                    <div key={item._id} className={Style.suggestionItem} onClick={() => handleSearch(subLabel || label)}>
                       <div className={Style.suggestionContent}>
                         {/* Image */}
                         <Image

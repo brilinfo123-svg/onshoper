@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "../styles/contactUs.module.scss";
 import Swal from "sweetalert2";
+import SEO from "next/head";
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -53,6 +54,15 @@ export default function ContactUs() {
   };
 
   return (
+    <>
+      <SEO>
+        <title>Contact Us – OnShoper Marketplace</title>
+        <meta name="description" content="Reach out to OnShoper for queries, support, or partnership opportunities. Contact us via phone, email, or visit our Mohali office."
+        />
+        <link rel="canonical" href="https://onshoper.com/contact-us" />
+        <meta name="robots" content="index, follow" />
+      </SEO>
+    
     <div className={styles.wrapper}>
       <div className={styles.card}>
         <h1 className={styles.title}>Contact Us</h1>
@@ -136,5 +146,6 @@ export default function ContactUs() {
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -1968,22 +1968,19 @@ function AllCategoryRentalForm() {
   console.log(formData, "formData");
   return (
     <>
-      <Head>
-        <title>Post Your Product – OnShoper</title>
-        <meta
-          name="description"
-          content="Create a new listing on OnShoper. Sell or rent your products and services with ease."
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta charSet="UTF-8" />
+     <Head>
+      <title>Post Free Ad – Sell & Rent on OnShoper</title>
+      <meta name="description" content="Create your free listing on OnShoper. Post products or services for sale or rent, reach buyers across India, and grow your business instantly."
+      />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta charSet="UTF-8" />
 
-        {/* Optional: Social Sharing */}
-        <meta property="og:title" content="Post Your Product – OnShoper" />
-        <meta property="og:description" content="Sell or rent your items on OnShoper. Reach thousands of buyers instantly." />
-        <meta property="og:image" content="/images/og-product-form.jpg" />
-        <meta property="og:url" content="https://onshoper.com/product/create" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Head>
+      {/* Optional: Social Sharing */}
+      <meta property="og:title" content="Post Free Ad – Sell & Rent on OnShoper" />
+      <meta property="og:description" content="Easily post your products or services for sale or rent on OnShoper. Connect with thousands of buyers and renters instantly."
+      />
+      <meta property="og:url" content="https://onshoper.com/ProductForm" />
+    </Head>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
        
 

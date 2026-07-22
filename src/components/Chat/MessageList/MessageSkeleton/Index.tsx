@@ -16,30 +16,14 @@ export default function MessageSkeleton(){
 return(
 
 <>
-
 {items.map((item,index)=>(
-
-<div
-key={index}
-className={`${styles.row} ${styles[item.side]}`}
->
-
-<div
-className={`${styles.bubble} ${styles[item.size]}`}
->
-
-<div className={styles.line}></div>
-
-<div className={styles.time}></div>
-
+<div key={index} className={`${styles.row} ${styles[item.side]}`}>
+    <div className={`${styles.bubble} ${styles[item.size]}`}>
+        <div className={styles.line}></div>
+        <div className={styles.time}></div>
+    </div>
 </div>
-
-</div>
-
 ))}
-
 </>
-
 );
-
 }
