@@ -18,7 +18,7 @@ const IntroAnimation = () => {
     if (fadeOut) {
       const timeout = setTimeout(() => {
         setShowAnimation(false); // ✅ hide component after fade
-      }, 2000); // match fadeOut transition duration
+      }, 1000); // match fadeOut transition duration
       return () => clearTimeout(timeout);
     }
   }, [fadeOut]);
@@ -26,7 +26,7 @@ const IntroAnimation = () => {
   const handleLastLetterAnimationEnd = () => {
     setTimeout(() => {
       setFadeOut(true); // ✅ trigger fade out
-    }, 500);
+    }, 100);
   };
   if (!showAnimation) {
     return null;
@@ -41,9 +41,7 @@ const IntroAnimation = () => {
         <span className={styles.letter}>o</span>
         <span className={styles.letter}>p</span>
         <span className={styles.letter}>e</span>
-        <span className={styles.letter} onAnimationEnd={handleLastLetterAnimationEnd}>
-          r
-        </span>
+        <span className={styles.letter} onAnimationEnd={handleLastLetterAnimationEnd}>r</span>
       </div>
     </div>
   );

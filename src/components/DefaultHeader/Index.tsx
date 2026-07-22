@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Style from "./index.module.scss";
 import FilterLocation from "@/components/FilterLocation/Index";
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Banner from "../Banner/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
@@ -16,7 +16,7 @@ import WelcomeChoice from "@/components/WelcomeChoice/Index";
 const Header: React.FC = () => {
   const isDesktop = useMediaQuery("(min-width: 992px)");
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const [setIsLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const { data: session } = useSession();
   const { filterType, setFilterType } = useFilter();
@@ -55,7 +55,7 @@ const Header: React.FC = () => {
     
       setTimeout(() => {
         setFilterType(type);
-        setIsLoading(false);
+        // setIsLoading(false);
         const target = document.querySelector("#products-section");
         if (target) {
           target.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -68,9 +68,9 @@ const Header: React.FC = () => {
     checkIsMobile();
     window.addEventListener("resize", checkIsMobile);
 
-    const timer = setTimeout(() => setIsLoading(false), 800);
+    // const timer = setTimeout(() => setIsLoading(false), 800);
     return () => {
-      clearTimeout(timer);
+      // clearTimeout(timer);
       window.removeEventListener("resize", checkIsMobile);
     };
   }, []);
@@ -110,27 +110,27 @@ const Header: React.FC = () => {
     };
   
 
-  const HeaderSkeleton = () => (
-    <header className={Style.header}>
-      <div className={Style.headerWrapper}>
-        <div className={Style.logoSkeleton}>
-          <div className={Style.skeletonLogo}></div>
-        </div>
-        {!isMobile && (
-          <div className={Style.bannerSkeleton}>
-            <div className={Style.skeletonBanner}></div>
-          </div>
-        )}
-        <ul className={Style.rightMenus}>
-          <li><div className={Style.skeletonButton}></div></li>
-          <li><div className={Style.skeletonNotification}></div></li>
-          <li><div className={Style.skeletonAccount}></div></li>
-        </ul>
-      </div>
-    </header>
-  );
+  // const HeaderSkeleton = () => (
+  //   <header className={Style.header}>
+  //     <div className={Style.headerWrapper}>
+  //       <div className={Style.logoSkeleton}>
+  //         <div className={Style.skeletonLogo}></div>
+  //       </div>
+  //       {!isMobile && (
+  //         <div className={Style.bannerSkeleton}>
+  //           <div className={Style.skeletonBanner}></div>
+  //         </div>
+  //       )}
+  //       <ul className={Style.rightMenus}>
+  //         <li><div className={Style.skeletonButton}></div></li>
+  //         <li><div className={Style.skeletonNotification}></div></li>
+  //         <li><div className={Style.skeletonAccount}></div></li>
+  //       </ul>
+  //     </div>
+  //   </header>
+  // );
 
-  if (isLoading) return <HeaderSkeleton />;
+  // if (isLoading) return <HeaderSkeleton />;
 
   return (
     <header className={Style.header}>

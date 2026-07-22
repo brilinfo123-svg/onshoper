@@ -66,17 +66,13 @@ export default function ContactUs() {
     <div className={styles.wrapper}>
       <div className={styles.card}>
         <h1 className={styles.title}>Contact Us</h1>
-        <p className={styles.updated}>
-          Your queries are important to us reach out with confidence
-        </p>
+        <p className={styles.updated}>Your queries are important to us reach out with confidence</p>
 
         <div className={styles.grid}>
           {/* Left Column - Direct Contact */}
           <div className={styles.contactInfo}>
             <h2>Direct Contact</h2>
-            <p>
-              You can reach us directly via phone, email, or visit our office at the address below.
-            </p>
+            <p>You can reach us directly via phone, email, or visit our office at the address below.</p>
             <ul className={styles.contactList}>
                 <li>
                 <span className="icon-user"></span>
@@ -104,34 +100,17 @@ export default function ContactUs() {
             <form onSubmit={handleSubmit} className={styles.form}>
               <div>
                 <label>Name:</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
+                <input type="text" name="name" value={formData.name} onChange={handleChange} required />
               </div>
               <div>
                 <label>Email:</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
+                <input type="email" name="email" value={formData.email} onChange={handleChange} required />
               </div>
               <div>
                 <label>Message:</label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                />
+                <textarea name="message" value={formData.message} onChange={handleChange} required/>
               </div>
-              <button type="submit" disabled={loading}>
+              <button aria-label="Submit" type="submit" disabled={loading}>
                 {loading ? (
                   <>
                     <span className={styles.loader}></span>

@@ -8,7 +8,7 @@ import SkeletonCard from "@/components/SkeletonCard/Index";
 import ProductPost from "@/components/ProductPost/Index";
 import ProductMobile from "@/components/ProductMobile/Index";
 import BannerPost from "@/components/BannerPost";
-import IntroAnimation from "@/components/IntroAnimation/Index";
+// import IntroAnimation from "@/components/IntroAnimation/Index";
 import SEO from "@/components/Head";
 
 import styles from "@/styles/Home.module.scss";
@@ -199,7 +199,7 @@ export default function Home({ initialProducts }: HomeProps) {
   return (
     <div className="main">
       <SEO />
-      <IntroAnimation />
+      {/* <IntroAnimation /> */}
 
       <div className="container">
         <ProductMobile

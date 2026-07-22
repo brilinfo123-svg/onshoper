@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Style from "@/components/ProtectedHeader/index.module.scss";
 import FilterLocation from "@/components/FilterLocation/Index";
-import { useCityFilter } from "@/contexts/CityFilterContext";
+// import { useCityFilter } from "@/contexts/CityFilterContext";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { useNotifications } from "@/contexts/NotificationContext";
@@ -12,18 +12,16 @@ import Banner from "../Banner/Index";
 import { useFavorites } from "@/contexts/FavoriteContext";
 import ProductPost from "@/components/ProductPost/Index";
 // import ChatSidebar from "@/components/ChatSidebar/Index";
-import Layout from "../Layout/Index";
+// import Layout from "../Layout/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import { useFilter } from "@/contexts/FilterContext";
 import Swal from "sweetalert2";
 import WelcomeChoice from "@/components/WelcomeChoice/Index";
-
-
 import {useChat} from "@/contexts/ChatContext";
 
 
 const Header: React.FC = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const {clearAllNotifications, getTotalNotifications } = useNotifications();
   const isDesckTop = useMediaQuery("(min-width: 992px)");
   const router = useRouter();
@@ -40,7 +38,7 @@ const Header: React.FC = () => {
   const {totalUnread}=useChat();
   const isOnChatPage = router.pathname.startsWith('/chat');
   const { filterType, setFilterType } = useFilter();
-  const [fullPageMessage, setFullPageMessage] = useState<string | null>(null);
+  // const [fullPageMessage, setFullPageMessage] = useState<string | null>(null);
   const [isSticky, setIsSticky] = useState(false);
   const hasFetchedWishlist = useRef(false);
 
@@ -187,21 +185,12 @@ const Header: React.FC = () => {
     setSidebarOpen(false);
   };
 
-  // const toggleFavoritesSidebar = () => {
-  //   setFavoritesSidebarOpen((prev) => !prev);
-  //   // Close account sidebar if open
-  //   if (isSidebarOpen) {
-  //     setSidebarOpen(false);
-  //   }
-  // };
-
+  
   const toggleFavoritesSidebar = () => {
     setFavoritesSidebarOpen(prev => !prev);
     if (isSidebarOpen) setSidebarOpen(false);
   };
-  const handleRemoveFromWishlist = (id: string) => {
-    setWishlistProducts(prev => prev.filter(p => p._id !== id));
-  };  
+  
   const closeFavoritesSidebar = () => {
     setFavoritesSidebarOpen(false);
   };
@@ -217,11 +206,6 @@ const Header: React.FC = () => {
     if (favoritesSidebarRef.current && !favoritesSidebarRef.current.contains(event.target as Node)) {
       setFavoritesSidebarOpen(false);
     }
-  };
-
-  const handleNotificationClick = () => {
-    clearAllNotifications();
-    closeSidebar();
   };
 
   const handleViewAllFavorites = () => {
@@ -261,64 +245,50 @@ const Header: React.FC = () => {
     }
   };
 
-  
-
   // Skeleton Loading Component
-  const HeaderSkeleton = () => (
-    <header className={Style.header}>
-      <div className={`${Style.headerWrapper}`}>
-        {/* Logo Skeleton */}
-        <div className={Style.logoSkeleton}>
-          <div className={Style.skeletonLogo}></div>
-        </div>
+  // const HeaderSkeleton = () => (
+  //   <header className={Style.header}>
+  //     <div className={`${Style.headerWrapper}`}>
+  //       {/* Logo Skeleton */}
+  //       <div className={Style.logoSkeleton}>
+  //         <div className={Style.skeletonLogo}></div>
+  //       </div>
 
-        {/* Banner Skeleton (hidden on mobile) */}
-        {!isMobile && (
-          <div className={Style.bannerSkeleton}>
-            <div className={Style.skeletonBanner}></div>
-          </div>
-        )}
+  //       {/* Banner Skeleton (hidden on mobile) */}
+  //       {!isMobile && (
+  //         <div className={Style.bannerSkeleton}>
+  //           <div className={Style.skeletonBanner}></div>
+  //         </div>
+  //       )}
 
-        {/* Action Section Skeleton */}
-        <ul className={`${Style.rightMenus} ${Style.headerScalton}`}>
-          <li>
-            <div className={Style.skeletonButton}></div>
-          </li>
-          <li>
-            <div className={Style.skeletonNotification}></div>
-          </li>
-          <li>
-            <div className={Style.skeletonAccount}></div>
-          </li>
-        </ul>
-      </div>
-    </header>
-  );
+  //       {/* Action Section Skeleton */}
+  //       <ul className={`${Style.rightMenus} ${Style.headerScalton}`}>
+  //         <li>
+  //           <div className={Style.skeletonButton}></div>
+  //         </li>
+  //         <li>
+  //           <div className={Style.skeletonNotification}></div>
+  //         </li>
+  //         <li>
+  //           <div className={Style.skeletonAccount}></div>
+  //         </li>
+  //       </ul>
+  //     </div>
+  //   </header>
+  // );
 
-  if (isLoading) {
-    return <HeaderSkeleton />;
-  }
+  // if (isLoading) {
+  //   return <HeaderSkeleton />;
+  // }
 
   return (
     <header className={Style.header}>
-      {fullPageMessage && (
-        <div className={Style.fullPageOverlay}>
-          <div className={Style.messageBox}>
-            {fullPageMessage}
-          </div>
-        </div>
-      )}
       {showChoice && (
         <WelcomeChoice onChoose={handleWelcomeChoice} />
       )}
       {!isDesckTop && 
         <div className={Style.MobileTopbar}>
         <Link href="/">
-          {/* <h3 style={{ fontSize: "25px", fontWeight: "bold", fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif", margin: 0 }}>
-            <span style={{ color: "#007bff", fontFamily: "cursive", }}>A</span>
-            <span style={{ color: "#28a745" }}>S</span>
-            <span style={{ color: "#ff5722" }}>R</span>
-          </h3> */}
           {/* <img src="/icons/logo2.png" alt="" width="100px"/> */}
           <div className={Style.logo}>
               <h3>ON</h3>
@@ -342,10 +312,6 @@ const Header: React.FC = () => {
           </div>
         </div>
       }
-      {/* <h4 className={Style.showinMobile}>
-      
-        <span className="icon-shop"></span> You can find the nearest store in your area
-      </h4> */}
 
       <div className={`${Style.headerWrapper} ${isSticky ? Style.isSticky : ""}`}>
         {/* Logo Section */}
@@ -479,20 +445,13 @@ const Header: React.FC = () => {
         <ul className={Style.rightMenus}>
         {!isMobile && <li><Link href="/ProductForm" className={`${Style.sellAdd} ${"icon-plus"}`} onClick={closeSidebar}>Post</Link></li>}
           <li className={Style.notificationItem}>
-          {!isMobile && 
-          <div
-          className={`${Style.Notification} icon-chats`}
-          onClick={() => router.push("/chat")}
-          role="button"
-          tabIndex={0}
-          >
-          {totalUnread>0&&(
-          <span className={Style.notificationBadge}>
-          {totalUnread>99?"99+":totalUnread}
-          </span>
-          )}
-          </div>
-          }     
+            {!isMobile && 
+            <div className={`${Style.Notification} icon-chats`} onClick={() => router.push("/chat")} role="button" tabIndex={0}>
+            {totalUnread>0&&(
+            <span className={Style.notificationBadge}>{totalUnread>99?"99+":totalUnread}</span>
+            )}
+            </div>
+            }     
           </li>
 
           <li className={Style.favoriteItem}>
@@ -513,24 +472,6 @@ const Header: React.FC = () => {
           }
         </ul>
       </div>
-      {/* <ChatSidebar 
-        isOpen={isChatOpen} 
-        onClose={() => setIsChatOpen(false)} 
-      /> */}
-
-      <Layout hideOnOverlayClick={true} children={undefined} >
-      </Layout>
-      
-      {/* Overlay for when sidebar is open */}
-      {/* <div className={`${Style.overlay} ${isChatOpen ? Style.open : ''}`}
-        onClick={() => setIsChatOpen(false)}
-      /> */}
-      {/* <button 
-        className={Style.chatButton}
-        onClick={() => setIsChatOpen(true)}
-      >
-        💬 Chats
-      </button> */}
     </header>
   );
 };
