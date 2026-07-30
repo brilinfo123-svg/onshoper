@@ -59,6 +59,12 @@ const MobileBottomNav = () => {
   // ✅ merge socket + DB counts
   const totalNotifications=isOnChatPage?0:totalUnread;
 
+  useEffect(() => {
+    console.log("📱 Mobile totalUnread:", totalUnread);
+    console.log("📱 totalNotifications:", totalNotifications);
+    console.log("📱 isOnChatPage:", isOnChatPage);
+  }, [totalUnread, totalNotifications, isOnChatPage]);
+  
   const handleLogout = () => {
     signOut({ callbackUrl: "/login" });
     setAccountOpen(false);

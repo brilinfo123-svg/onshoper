@@ -45,30 +45,23 @@ sellerDeleted:false
 updatedAt:-1
 });
 
-const formattedChats=chats.map(chat=>{
+const formattedChats = chats
+  .filter((chat) => chat.buyer && chat.seller)
+  .map((chat) => {
 
-const isBuyer=
-chat.buyer._id.toString()===userId;
+    const isBuyer =
+      String(chat.buyer?._id) === String(userId);
 
-const otherUser=
-isBuyer
-?chat.seller
-:chat.buyer;
+    const otherUser = isBuyer ? chat.seller : chat.buyer;
 
-return{
-
-...chat.toObject(),
-
-otherUser,
-
-unreadCount:
-isBuyer
-?chat.buyerUnreadCount
-:chat.sellerUnreadCount
-
-};
-
-});
+    return {
+      ...chat.toObject(),
+      otherUser,
+      unreadCount: isBuyer
+        ? (chat.buyerUnreadCount || 0)
+        : (chat.sellerUnreadCount || 0),
+    };
+  });
 
 return res.status(200).json({
 success:true,
@@ -77,9 +70,11 @@ chats:formattedChats
 
 }catch(error){
 
+console.error("❌ GET CHATS ERROR:", error);
+
 return res.status(500).json({
-success:false,
-message:error.message
+    success:false,
+    message:error.message
 });
 
 }
