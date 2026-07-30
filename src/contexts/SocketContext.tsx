@@ -59,20 +59,31 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
       setSocket(socketInstance);
 
-      // Connected
+      // ===============================
+      // CONNECTED
+      // ===============================
       socketInstance.on("connect", () => {
         setIsConnected(true);
-        // console.log("✅ SOCKET CONNECTED:", socketInstance.id);
+
+        console.log("✅ SOCKET CONNECTED:", socketInstance.id);
 
         socketInstance.emit("join", session.user.id);
-        // console.log("🚀 JOIN SENT:", session.user.id);
       });
 
-      // User Online
+      // ===============================
+      // RECEIVE ALL ONLINE USERS
+      // ===============================
+      socketInstance.on("onlineUsers", (users: string[]) => {
+        console.log("🟢 ONLINE USERS:", users);
+        setOnlineUsers(users);
+      });
+
+      // ===============================
+      // USER ONLINE
+      // ===============================
       socketInstance.on("userOnline", (data) => {
         console.log("🟢 USER ONLINE:", data.userId);
 
-        // Remove lastSeen entry
         setLastSeenUsers((prev) => {
           const updated = { ...prev };
           delete updated[String(data.userId)];
@@ -85,7 +96,9 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         });
       });
 
-      // User Offline
+      // ===============================
+      // USER OFFLINE
+      // ===============================
       socketInstance.on("userOffline", (data) => {
         console.log("🔴 USER OFFLINE:", data.userId, data.lastSeen);
 
@@ -99,7 +112,9 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         }));
       });
 
-      // Disconnected
+      // ===============================
+      // DISCONNECTED
+      // ===============================
       socketInstance.on("disconnect", (reason) => {
         console.log("❌ SOCKET DISCONNECTED:", reason);
         setIsConnected(false);
@@ -110,7 +125,11 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     return () => {
       console.log("🧹 CLEAN SOCKET");
-      socketInstance?.disconnect();
+
+      if (socketInstance) {
+        socketInstance.removeAllListeners();
+        socketInstance.disconnect();
+      }
     };
   }, [session?.user?.id]);
 

@@ -34,7 +34,6 @@ export function ChatProvider({ children }) {
   useEffect(() => {
     if (!socket || !session?.user?.id) return;
 
-    socket.emit("join", session.user.id);
 
     const handleReceiveMessage = (message) => {
       console.log("📩 NEW MESSAGE RECEIVED", message);
@@ -113,13 +112,24 @@ export function ChatProvider({ children }) {
       );
     };
 
-    socket.on("receiveMessage", handleReceiveMessage);
-    socket.on("messagesSeen", handleMessagesSeen);
 
-    return () => {
-      socket.off("receiveMessage", handleReceiveMessage);
-      socket.off("messagesSeen", handleMessagesSeen);
-    };
+socket.on("receiveMessage", handleReceiveMessage);
+
+socket.on("messagesSeen", handleMessagesSeen);
+
+// Chat Updated
+const handleChatUpdated = () => {
+  console.log("📋 CHAT UPDATED");
+  fetchChats();
+};
+
+socket.on("chatUpdated", handleChatUpdated);
+
+return () => {
+  socket.off("receiveMessage", handleReceiveMessage);
+  socket.off("messagesSeen", handleMessagesSeen);
+  socket.off("chatUpdated", handleChatUpdated);
+};
   }, [socket, session, activeChat]);
 
   // ===============================
