@@ -70,7 +70,7 @@
           .content {
             @media screen and (max-width: 767px) {
               padding: 0 15px;
-              display: flex !important;
+              // display: flex !important;
               height: 100%;
             }
             @media screen and (max-width: 375px) {
@@ -160,6 +160,9 @@
     background-color: #f8f9fa;
     padding: 10px 20px;
     border: 1px solid #ddd;
+    @media screen and (max-width: 767px) {
+      margin: 20px 0 0;
+    }
     .openFilterBtn{
       background: #000;
       color: #fff;
@@ -171,22 +174,37 @@
       border-radius: 5px;
       display: none;
       letter-spacing: 0.5px;
+      @media screen and (max-width: 992px) {
+        display: block;
+        // padding: 10px 20px;
+      }
+      @media screen and (max-width: 767px) {
+        padding: 7px 12px;
+        font-size: 12px;
+        border-radius: 3px;
+      }
+      
+      @media screen and (max-width: 374px) {
+        padding: 5px 10px;
+        font-size: 11px;
+      }
       span{
         color: #fff;
         margin-right: 4px;
         font-size: 14px;
+        @media screen and (max-width: 767px) {
+          font-size: 12px;
+        }
+        &::before{
+          @media screen and (max-width: 767px) {
+            margin-left: 0;
+          }
+        }
       }
-      @media screen and (max-width: 992px) {
-        display: block;
-        padding: 10px 20px;
-      }
-      @media screen and (max-width: 374px) {
-        padding: 10px 12px;
-        font-size: 13px;
-      }
+    
     }
     @media screen and (max-width: 767px) {
-      padding: 10px;
+      padding: 5px;
     }
     .btnWrapper{
       gap: 12px;
@@ -277,7 +295,34 @@
       }
     }
   }
-}
+  .resetFilterBtn {
+    background: #f44336;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: 600;
+    transition: 0.3s;
+    margin-left: 10px;
+    @media screen and (max-width: 767px) {
+      padding: 8px 12px;
+      font-size: 12px;
+      margin-right: 0;
+      margin-left: 5px;
+      border-radius: 3px;
+    }
+    @media screen and (max-width: 374px) {
+      padding: 8px 10px;
+      font-size: 10px;
+    }
+  }
+  
+  .resetFilterBtn:hover {
+    background: #d32f2f;
+  }
+} 
 .notFoundShops{
   background-color: #f0f8ff;
   width: 100%;
@@ -396,8 +441,14 @@
     letter-spacing: 0.5px;
     border-radius: 5px;
     cursor: pointer;
+    @media screen and (max-width: 767px) {
+      padding: 8px 12px;
+      font-size: 12px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
     @media screen and (max-width: 374px) {
-      padding: 10px 12px;
-      font-size: 13px;
+      padding: 8px 10px;
+      font-size: 10px;
     }
 }

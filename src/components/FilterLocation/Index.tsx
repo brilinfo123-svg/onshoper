@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./Index.module.scss";
+import { useSearch } from "@/contexts/SearchContext";
 
 interface OffersSliderProps {
   onCityChange: (city: string, isManual?: boolean) => void;
@@ -12,9 +13,10 @@ const OffersSlider: React.FC<OffersSliderProps> = ({ onCityChange }) => {
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCityModal, setShowCityModal] = useState(false);
-  const [selectedCity, setSelectedCity] = useState<string>("Select Your Cities");
   const [cities, setCities] = useState<string[]>([]);
   const [searchCityTerm, setSearchCityTerm] = useState<string>("");
+
+  const { selectedCity, setSelectedCity } = useSearch();
 
   const filteredCities = cities.filter((city) =>
     city.toLowerCase().includes(searchCityTerm.toLowerCase())
@@ -48,7 +50,9 @@ const OffersSlider: React.FC<OffersSliderProps> = ({ onCityChange }) => {
                 : products.filter((p) => p.location?.city === savedCity)
             );
           } else {
-            detectNearestCity(); // ✅ now clean call
+            setSelectedCity("All Cities");
+            localStorage.setItem("selectedCity", "All Cities");
+            setFilteredProducts(products);
           }
         }
       } catch (err) {
@@ -59,7 +63,7 @@ const OffersSlider: React.FC<OffersSliderProps> = ({ onCityChange }) => {
     };
 
     fetchOffers();
-  }, []);
+  }, [onCityChange, setSelectedCity]);
 
   const detectNearestCity = async () => {
     navigator.geolocation.getCurrentPosition(
@@ -74,16 +78,12 @@ const OffersSlider: React.FC<OffersSliderProps> = ({ onCityChange }) => {
           });
 
           const data = await res.json();
-
           const finalCity = data.city || "All Cities";
 
           setSelectedCity(finalCity);
           localStorage.setItem("selectedCity", finalCity);
 
-          // ✅ Close modal when live location is selected
           setShowCityModal(false);
-
-          // ✅ Redirect same as manual city selection
           onCityChange(finalCity, true);
 
           setFilteredProducts(
@@ -139,9 +139,6 @@ const OffersSlider: React.FC<OffersSliderProps> = ({ onCityChange }) => {
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <h3>Select Your City</h3>
 
-            {/* ✅ Live Location Button now triggers API call */}
-            
-
             <div className={styles.searchSticky}>
               <div className={styles.searchInputWrapper}>
                 <span className="icon-search" />
@@ -154,18 +151,18 @@ const OffersSlider: React.FC<OffersSliderProps> = ({ onCityChange }) => {
                 />
               </div>
               <button aria-label="Live Location" onClick={detectNearestCity} className={styles.liveLocation}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="25"
-                height="25"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                style={{ marginRight: "6px" }}
-              >
-                <path d="M12 2a1 1 0 0 1 1 1v1.07A7.002 7.002 0 0 1 19.93 11H21a1 1 0 1 1 0 2h-1.07A7.002 7.002 0 0 1 13 19.93V21a1 1 0 1 1-2 0v-1.07A7.002 7.002 0 0 1 4.07 13H3a1 1 0 1 1 0-2h1.07A7.002 7.002 0 0 1 11 4.07V3a1 1 0 0 1 1-1zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/>
-              </svg>
-              Use My Location
-            </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="25"
+                  height="25"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  style={{ marginRight: "6px" }}
+                >
+                  <path d="M12 2a1 1 0 0 1 1 1v1.07A7.002 7.002 0 0 1 19.93 11H21a1 1 0 1 1 0 2h-1.07A7.002 7.002 0 0 1 13 19.93V21a1 1 0 1 1-2 0v-1.07A7.002 7.002 0 0 1 4.07 13H3a1 1 0 1 1 0-2h1.07A7.002 7.002 0 0 1 11 4.07V3a1 1 0 0 1 1-1zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10z" />
+                </svg>
+                Use My Location
+              </button>
             </div>
 
             <div className={styles.cityList}>
@@ -173,9 +170,7 @@ const OffersSlider: React.FC<OffersSliderProps> = ({ onCityChange }) => {
                 <button
                   aria-label="city"
                   key={city}
-                  className={`${styles.cityOption} ${
-                    selectedCity === city ? styles.selected : ""
-                  }`}
+                  className={`${styles.cityOption} ${selectedCity === city ? styles.selected : ""}`}
                   onClick={() => handleCityChange(city)}
                 >
                   {city}
@@ -183,7 +178,9 @@ const OffersSlider: React.FC<OffersSliderProps> = ({ onCityChange }) => {
               ))}
             </div>
 
-            <button aria-label="Close" className={styles.closeButton} onClick={() => setShowCityModal(false)}>Close</button>
+            <button aria-label="Close" className={styles.closeButton} onClick={() => setShowCityModal(false)}>
+              Close
+            </button>
           </div>
         </div>
       )}

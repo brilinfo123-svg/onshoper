@@ -23,6 +23,7 @@ import { useFavorites } from "@/contexts/FavoriteContext";
 import { toast } from "react-toastify";
 // const [selectedIndex, setSelectedIndex] = useState(0);
 import Swal from "sweetalert2";
+import { useProducts } from "@/contexts/ProductContext";
 // import { WheelGesturesPlugin } from 'emb';
 
 
@@ -83,6 +84,12 @@ const ProductDetails = () => {
   const shopOwnerID = product?.shopOwnerID;
 
   // const [isHomeDeliveryAvailable, setIsHomeDeliveryAvailable] = useState(true);
+
+  const {
+    products,
+    productDetails,
+    setProductDetails
+} = useProducts();
 
   const startChat = useCallback(() => {
 
@@ -286,44 +293,92 @@ if (fullLocation === "All Cities") {
 useEffect(() => {
   if (!id) return;
 
+  const productId = id as string;
+
+  // ✅ 1. Check cache
+  if (productDetails[productId]) {
+
+    const cached = productDetails[productId];
+
+    setProduct(cached.product);
+    setShopData(cached.shopData);
+    setFavorite(cached.favorite);
+
+    return;
+  }
+
+  // ✅ 2. Show product instantly from Home Context
+  const homeProduct = products.find(
+    (p) => p._id === productId
+  );
+
+  if (homeProduct) {
+    setProduct(homeProduct);
+  }
+
+  // ✅ 3. Fetch only once
   const loadData = async () => {
+
     try {
-      setProduct(null); // Skeleton show hoga
 
       const res = await fetch(
-        `/api/products/${id}?userId=${session?.user?.contact || ""}`
+        `/api/products/${productId}?userId=${session?.user?.contact || ""}`
       );
 
       const data = await res.json();
 
       if (data.success) {
-        setProduct(data.product);
 
-        setShopData({
-          user: {
-            _id: data.seller?._id,
-            name: data.seller?.name,
-            contact: data.seller?.contact,
-            mobile: data.seller?.mobile,
-            photo: data.seller?.photo,
+        const cache = {
+
+          product: data.product,
+
+          shopData: {
+
+            user: {
+
+              _id: data.seller?._id,
+              name: data.seller?.name,
+              contact: data.seller?.contact,
+              mobile: data.seller?.mobile,
+              photo: data.seller?.photo,
+
+            },
+
           },
-        });
 
-        setFavorite(data.isFavourite);
+          favorite: data.isFavourite,
+
+        };
+
+        setProduct(cache.product);
+        setShopData(cache.shopData);
+        setFavorite(cache.favorite);
+
+        setProductDetails((prev) => ({
+          ...prev,
+          [productId]: cache,
+        }));
+
       }
+
     } catch (err) {
+
       console.error(err);
+
     }
+
   };
 
   loadData();
-}, [id, session?.user?.contact]);
 
-useEffect(() => {
-  setSelectedIndex(0);
-  setCurrentImageIndex(0);
-  setShowImageModal(false);
-}, [id]);
+}, [
+  id,
+  session?.user?.contact,
+  products,
+  productDetails,
+  setProductDetails,
+]);
 
 
   // Embla Carousel hooks
@@ -513,10 +568,10 @@ const sliderSettings = useMemo(() => ({
   return (
     <div className="container">
       <Head>
-        <title>{product.title} – OnShoper</title>
+        <title>{product?.title} – OnShoper</title>
         <meta
           name="description"
-          content={`Find ${product.title} for ${product.SaleType || "Rent/Sale"} on OnShoper. ${product.description.slice(0, 150)}...`}
+          content={`Find ${product?.title} for ${product?.SaleType || "Rent/Sale"} on OnShoper. ${product?.description?.slice(0, 150)}...`}
         />
       </Head>
       
@@ -926,7 +981,7 @@ const sliderSettings = useMemo(() => ({
                   <section className={styles.DescriptionCard}>
                     <h2>Description</h2>
                     <p>
-                      {product.description.split("\n").map((line, index) => (
+                      {product?.description?.split("\n").map((line, index) => (
                         <span key={index}>
                           {line}
                           <br />

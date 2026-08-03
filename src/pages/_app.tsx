@@ -11,6 +11,7 @@ import ProtectedHeader from "@/components/ProtectedHeader/Index";
 import Footer from "@/components/Footer/Index";
 import { ToastContainer } from "react-toastify";
 import "slick-carousel/slick/slick.css";
+import { SearchProvider } from "@/contexts/SearchContext";
 import "slick-carousel/slick/slick-theme.css";
 import "@/styles/globals.css";
 import "@/styles/fontFamily/stylesheet.css";
@@ -113,6 +114,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <ChatProvider>
                 <CityFilterProvider>
                   <FilterProvider>
+                  <SearchProvider>
                     <ToastContainer position="top-right" autoClose={3000} />
                     {/* <AutoUnfeaturePoller /> */}
 
@@ -125,7 +127,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     {/* Hide Footer and Mobile Menu on Chat Page */}
                   {!isAdminPage && !isOfflinePage && !isInstall && !ProductForms && !isChat && <Footer />}
                   {!isAdminPage && !isProductDetailPage && !isOfflinePage && !isInstall && !ProductForms && !isChat && <MobileBottomNav />}
-
+                  </SearchProvider>
                   </FilterProvider>
                 </CityFilterProvider>
               </ChatProvider>

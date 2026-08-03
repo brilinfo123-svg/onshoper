@@ -52,9 +52,9 @@ interface HomeProps {
 
 export default function Home({ initialProducts }: HomeProps) {
   const { filterType } = useFilter();
-  const { products, setProducts, loaded, setLoaded } = useProducts();
+  // const { products, setProducts, loaded, setLoaded } = useProducts();
 
-  const [productsLoading, setProductsLoading] = useState(!loaded);
+  // const [productsLoading, setProductsLoading] = useState(!loaded);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
   const [selectedCity, setSelectedCity] = useState<string>("All Cities");
@@ -63,6 +63,15 @@ export default function Home({ initialProducts }: HomeProps) {
   const productsRef = useRef<HTMLDivElement>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
+  const {
+    products,
+    setProducts,
+    loaded,
+    setLoaded,
+    setLastFetch,
+  } = useProducts();
+
+  const [productsLoading, setProductsLoading] = useState(!loaded);
   // ===============================
   // 📌 INITIAL PRODUCT LOAD (SSR + fallback)
   // ===============================
@@ -287,20 +296,26 @@ export default function Home({ initialProducts }: HomeProps) {
 // ===============================
 // 📦 SSR FETCH PRODUCTS
 // ===============================
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_URL || "https://onshoper.com";
+    const protocol =
+      process.env.NODE_ENV === "development" ? "http" : "https";
 
-    const res = await fetch(`${baseUrl}/api/products`);
+    const host = context.req.headers.host;
+
+    const res = await fetch(`${protocol}://${host}/api/products`);
+
     const data = await res.json();
+
+    console.log("SSR Products:", data.products.length);
 
     return {
       props: {
         initialProducts: data.products || [],
       },
     };
-  } catch (error) {
-    console.error("SSR Product Fetch Error:", error);
+  } catch (err) {
+    console.error(err);
 
     return {
       props: {

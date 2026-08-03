@@ -11,6 +11,7 @@ async function connectDB() {
   if (!client) {
     client = new MongoClient(uri);
     await client.connect();
+    console.log("✅ MongoDB Connected");
   }
   return client;
 }
@@ -18,9 +19,15 @@ async function connectDB() {
 // ===============================
 // 📦 API HANDLER
 // ===============================
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== "GET") {
-    return res.status(405).json({ message: "Method Not Allowed" });
+    return res.status(405).json({
+      success: false,
+      message: "Method Not Allowed",
+    });
   }
 
   try {
@@ -29,18 +36,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const collection = db.collection("products");
 
     // ===============================
-    // 📌 PAGINATION
-    // ===============================
-    const limit = Number(req.query.limit) || 20;
-    const page = Number(req.query.page) || 1;
-    const skip = (page - 1) * limit;
-
-    // ===============================
-    // 📌 FETCH PRODUCTS
+    // 📌 FETCH ALL PRODUCTS
     // ===============================
     const products = await collection
       .find(
-        { status: { $ne: "sold" } },
+        {
+          status: { $ne: "sold" },
+        },
         {
           projection: {
             title: 1,
@@ -70,24 +72,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       )
       .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
       .toArray();
 
-    // ===============================
-    // 📌 TOTAL COUNT
-    // ===============================
-    const total = await collection.countDocuments();
+    console.log("✅ Products fetched:", products.length);
 
     return res.status(200).json({
       success: true,
       products,
-      total,
-      page,
-      limit,
+      total: products.length,
     });
   } catch (err) {
-    console.error("Error fetching products:", err);
+    console.error("❌ Error fetching products:", err);
 
     return res.status(500).json({
       success: false,

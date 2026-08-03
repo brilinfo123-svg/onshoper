@@ -10,6 +10,8 @@ import Image from "next/image";
 import Head from "next/head";
 import { useFilter } from "@/contexts/FilterContext";
 import Modal from "@/components/Modal/Index";
+import { useProducts } from "@/contexts/ProductContext";
+import { useSearch } from "@/contexts/SearchContext";
 
 interface Product {
   status: string;
@@ -66,7 +68,7 @@ const Filter: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const subcategoriesParam = searchParams.get("subcategories") || "";
   const subcategoriesFromUrl = subcategoriesParam ? subcategoriesParam.split(",") : [];
-  const [products, setProducts] = useState<Product[]>([]);
+  // const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -80,10 +82,22 @@ const Filter: React.FC = () => {
   const { data: session } = useSession();
   const [shopData, setShopData] = useState<ShopData | null>(null);
 
-
+  const {
+    products,
+    setProducts,
+    loaded,
+    setLoaded,
+    lastFetch,
+    setLastFetch,
+  } = useProducts();
   // Unique brands for Cars
   // 1. Normalize subcategories from URL (lowercase trim)
   const normalizedSubcategories = selectedSubcategories.map((s) => s.toLowerCase());
+
+  const {
+    setSearchTerm,
+    setSelectedCity,
+} = useSearch();
 
   const filteredForBrandCounts = products.filter((p) => {
     const matchesCity =
@@ -144,23 +158,57 @@ const Filter: React.FC = () => {
   }, [session]);
 
   // Fetch products from API
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch("/api/Search");
-      if (!res.ok) throw new Error("Failed to fetch products");
-
-      const data = await res.json();
-      setProducts(data?.data || []);
-      setFilteredProducts(data?.data || []);
-    } catch (err: any) {
-      setError(err.message || "An error occurred while fetching products");
-    } finally {
-      setProductsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchProducts();
+
+    const CACHE_TIME = 1000 * 60 * 5;
+  
+    const expired =
+      Date.now() - lastFetch > CACHE_TIME;
+  
+    if (
+      loaded &&
+      products.length &&
+      !expired
+    ) {
+  
+      setFilteredProducts(products);
+  
+      setProductsLoading(false);
+  
+      return;
+  
+    }
+  
+    const loadProducts = async () => {
+  
+      try {
+  
+        const res = await fetch("/api/Search");
+  
+        const data = await res.json();
+  
+        setProducts(data.data || []);
+  
+        setFilteredProducts(data.data || []);
+  
+        setLoaded(true);
+  
+        setLastFetch(Date.now());
+  
+      } catch (err) {
+  
+        console.log(err);
+  
+      } finally {
+  
+        setProductsLoading(false);
+  
+      }
+  
+    };
+  
+    loadProducts();
+  
   }, []);
 
   const handleCategoryChange = (categoryId: string) => {
@@ -174,7 +222,26 @@ const Filter: React.FC = () => {
       prev.includes(subcategoryId) ? prev.filter((id) => id !== subcategoryId) : [...prev, subcategoryId]
     );
   };
+  const handleResetFilters = () => {
 
+    setSelectedCategories([]);
+    setSelectedSubcategories([]);
+    setSelectedFilterBrand(null);
+
+    setMinPrice("");
+    setMaxPrice("");
+
+    setSearchTerm("");
+
+    setSelectedCity("All Cities");
+
+    localStorage.setItem(
+        "selectedCity",
+        "All Cities"
+    );
+
+    router.replace("/filter");
+};
   // Apply filters when dependencies change
   useEffect(() => {
     let filtered = [...products];
@@ -420,7 +487,7 @@ if (searchTerm) {
 
           <div className={styles.buttons}>
             <div className={styles.priceFilter}>
-              <button className={styles.openFilterBtn} onClick={() => setShowFilter(true)}><span className="icon-sliders" />Filter By Price</button>
+              <button className={styles.openFilterBtn} onClick={() => setShowFilter(true)}><span className="icon-sliders" />Filter Price</button>
               <div className={styles.priceInput}>
                 <label htmlFor="minPrice" className="icon-rupee">From</label>
                 <input id="minPrice" type="number" placeholder="Min Price" value={minPrice} onChange={(e) =>
@@ -442,18 +509,13 @@ if (searchTerm) {
               </div>
             </div>
             <div>
-  {/* Show button only if at least one category has brands */}
-  {(Object.keys(carBrandCounts).length > 0 ||
-    Object.keys(vehicleBrandCounts).length > 0 ||
-    Object.keys(mobileBrandCounts).length > 0) && (
-    <button
-      className={styles.filterByBrand}
-      onClick={() => setIsModalOpen(true)}
-    >
-      Filter By Brands
-    </button>
-  )}
-
+            {/* Show button only if at least one category has brands */}
+            {(Object.keys(carBrandCounts).length > 0 ||
+              Object.keys(vehicleBrandCounts).length > 0 ||
+              Object.keys(mobileBrandCounts).length > 0) && (
+              <button className={styles.filterByBrand} onClick={() => setIsModalOpen(true)}>Filter Brands</button>
+            )}
+          <button className={styles.resetFilterBtn} onClick={handleResetFilters}>Reset Filters</button>
   <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
     <>
       <div className={styles.btnWrapper}>
