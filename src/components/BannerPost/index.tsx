@@ -175,9 +175,11 @@ export default function BannerPost() {
           <div className={styles.singleBanner}>
             <Image
               src={imageSrc}
-              alt="main-banner"
+              alt="Find Second Hand Products and Rentals on OnShoper"
               width={1920}
               height={400}
+              title="Browse all products"
+              aria-label="Browse all products"
               sizes="100vw"
               priority
               loading="eager"

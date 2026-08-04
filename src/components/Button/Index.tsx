@@ -1,8 +1,16 @@
-import { Cursor } from "mongoose";
 import Link from "next/link";
 import React from "react";
 
-const Button = ({ children, href, color = "black", text = "white", onClick, ...props }) => {
+const Button = ({
+  children,
+  href,
+  color = "black",
+  text = "white",
+  onClick,
+  ariaLabel,
+  title,
+  ...props
+}) => {
   const style = {
     backgroundColor: color,
     color: text,
@@ -14,20 +22,39 @@ const Button = ({ children, href, color = "black", text = "white", onClick, ...p
     cursor: "pointer",
   };
 
+  // Generate label from children if not provided
+  const label =
+    ariaLabel ||
+    (typeof children === "string" ? children : "Button");
+
   if (href) {
     return (
-      <Link href={href} className="custom-button" style={style} {...props}>
+      <Link
+        href={href}
+        className="custom-button"
+        style={style}
+        aria-label={label}
+        title={title || label}
+        {...props}
+      >
         {children}
       </Link>
     );
   }
 
   return (
-    <button aria-label="Buton" onClick={onClick} className="custom-button" style={style} {...props}>
+    <button
+      type="button"
+      onClick={onClick}
+      className="custom-button"
+      style={style}
+      aria-label={label}
+      title={title || label}
+      {...props}
+    >
       {children}
     </button>
   );
 };
-
 
 export default Button;

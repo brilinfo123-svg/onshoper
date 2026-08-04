@@ -110,10 +110,10 @@ const Header: React.FC = () => {
     };
 
   return (
-    <header className={Style.header}>
+    <header className={Style.header} role="banner">
       {!isDesktop && (
         <div className={Style.MobileTopbar}>
-          <Link href="/">
+          <Link href="/" aria-label="OnShoper Home" title="OnShoper - Home">
             <div className={Style.logo}>
               <h3>ON</h3>
               <div className={Style.logoDesc}>
@@ -126,9 +126,9 @@ const Header: React.FC = () => {
           <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
-              <button aria-label="Sale" onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
-              <button aria-label="Rent" onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rental</button>
-              <button aria-label="all" onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
+              <button aria-label="Sale" title="Show Sale products" onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
+              <button aria-label="Rent" title="Show Rental products" onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rental</button>
+              <button aria-label="all" title="Show all products" onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
           </div>
 
@@ -140,7 +140,7 @@ const Header: React.FC = () => {
     <div className={`${Style.headerWrapper} ${isSticky ? Style.isSticky : ""}`}>
         {!isMobile && (
           <div className={Style.logoSection}>
-            <Link href="/">
+            <Link href="/" aria-label="OnShoper Home" title="OnShoper - Home">
               <div className={Style.logo}>
                 <h3>ON</h3>
                 <div className={Style.logoDesc}>
@@ -170,17 +170,17 @@ const Header: React.FC = () => {
           }
         </div>
 
-        <ul className={Style.rightMenus}>
+        <ul className={Style.rightMenus} aria-label="Main navigation">
           {!isMobile && (
-            <li><Link href="/ProductForm" className={`${Style.sellAdd} icon-plus`} rel="noopener noreferrer">POST</Link></li>
+            <li><Link href="/ProductForm" className={`${Style.sellAdd} icon-plus`} rel="noopener noreferrer" aria-label="Post a new ad" title="Post a new ad">POST</Link></li>
           )}
 
           <li className={Style.favoriteItem}>
-            <div className={`${Style.favoriteTrigger} icon-heart-empty`} role="button" tabIndex={0} onClick={() => handleProtectedRedirect("/ProductForm")}></div>
+            <div className={`${Style.favoriteTrigger} icon-heart-empty`} role="button" tabIndex={0} onClick={() => handleProtectedRedirect("/ProductForm")} aria-label="Add to favourites" title="Add to favourites"></div>
             
           </li>
         </ul>
-      </div>
+      </div> 
     </header>
   );
 };
