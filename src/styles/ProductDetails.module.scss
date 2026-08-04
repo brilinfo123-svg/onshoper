@@ -2015,7 +2015,7 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
+    background: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2044,7 +2044,7 @@
     }
     
     &.active {
-      background: rgb(255 68 68 / 37%);
+      background: #fff;
       
       span {
         color: #ff4444;
