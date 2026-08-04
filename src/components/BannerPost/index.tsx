@@ -140,10 +140,11 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./banner.module.scss";
+import Link from "next/link";
 
 const banner = {
   desktop: "/images/banner1_4K.png",
-  mobile: "/images/banner1_Mobile.jpg",
+  mobile: "/images/mobileNewBanner.png",
 };
 
 export default function BannerPost() {
@@ -170,20 +171,22 @@ export default function BannerPost() {
   return (
     <div className="container">
       <div className={styles.bannerWrapper}>
-        <div className={styles.singleBanner}>
-          <Image
-            src={imageSrc}
-            alt="main-banner"
-            width={1920}
-            height={400}
-            sizes="100vw"
-            loading="eager"         
-            priority
-            fetchPriority="high"
-            quality={80}
-            className={styles.bannerImage}
-          />
-        </div>
+      <Link href="/filter" className={styles.bannerLink}>
+          <div className={styles.singleBanner}>
+            <Image
+              src={imageSrc}
+              alt="main-banner"
+              width={1920}
+              height={400}
+              sizes="100vw"
+              priority
+              loading="eager"
+              fetchPriority="high"
+              quality={80}
+              className={styles.bannerImage}
+            />
+          </div>
+        </Link>
       </div>
     </div>
   );

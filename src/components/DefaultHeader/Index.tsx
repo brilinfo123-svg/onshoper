@@ -114,13 +114,13 @@ const Header: React.FC = () => {
       {!isDesktop && (
         <div className={Style.MobileTopbar}>
           <Link href="/">
-            <div className={Style.logo}>
+            {/* <div className={Style.logo}>
               <h3>ON</h3>
               <div className={Style.logoDesc}>
                 <h4>Shoper</h4>
                 <span>Sale & Rent</span>
               </div>
-            </div>
+            </div> */}
           </Link>
           <div className={Style.wrapper}>
           <div className={Style.toggleWrapper}>
@@ -141,13 +141,13 @@ const Header: React.FC = () => {
         {!isMobile && (
           <div className={Style.logoSection}>
             <Link href="/">
-              <div className={Style.logo}>
+              {/* <div className={Style.logo}>
                 <h3>ON</h3>
                 <div className={Style.logoDesc}>
                   <h4>Shoper</h4>
                   <span>Sale & Rent</span>
                 </div>
-              </div>
+              </div> */}
             </Link>
           </div>
         )}

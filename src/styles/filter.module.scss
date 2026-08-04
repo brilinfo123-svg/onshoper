@@ -43,7 +43,7 @@
         @media screen and (max-width: 767px) {
             border-radius: 0;
         }
-        a{
+        a{ 
           @media screen and (max-width: 767px) {
               display: flex;
               align-items: center;
@@ -108,7 +108,7 @@
             }
           .PriceNumber{
             @media screen and (max-width: 767px) {
-              font-size: 16px;
+              font-size: 18px;
             }
             @media screen and (max-width: 414px) {
               font-size: 15px;
@@ -116,18 +116,20 @@
           }
         }
         .ProductCoverImg{
+          @media screen and (max-width: 767px) {
+            aspect-ratio: 4 / 3;
+          }
           .timeStamp{
             @media screen and (max-width: 767px) {
               position: absolute;
-              bottom: 0;
-              right: 0;
-              width: max-content;
+              bottom: 6px;
+              right: 4px;
+              border-radius: 3px;
+              padding: 3px 5px;
             }
             p{
               @media screen and (max-width: 767px) {
-                right: inherit;
-                top: initial;
-                position: relative;
+                padding: 0;
               }
             }
           }
