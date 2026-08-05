@@ -49,27 +49,15 @@ export default async function handler(req, res) {
                 <tr>
                   <td style="background:linear-gradient(135deg,#2563eb,#1d4ed8);padding:25px 0 10px;text-align:center">
                     <h1 style="margin:0;color:#fff;font-size:30px;font-weight:bold">OnShoper</h1>
-                    <p style="margin-top:10px;color:#dbeafe;font-size:16px">Login Verification</p>
+                    <p style="margin-top:5px;color:#dbeafe;font-size:14px">Login Verification</p>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding:40px 35px;text-align:center">
-                    <div style="display:inline-block;margin:30px 0;padding:16px 40px;background:#f8fbff;border:2px dashed #2563eb;border-radius:14px;letter-spacing:10px;font-size:34px;font-weight:bold;color:#2563eb">
+                  <td style="padding:20px 25px;text-align:center">
+                    <div style="display:inline-block;margin:20px 0;padding:16px 40px;background:#f8fbff;border:2px dashed #2563eb;border-radius:14px; letter-spacing: 1.5px; font-size:34px;font-weight:bold;color:#000">
                       ${otp}
                     </div>
                     <p style="margin-top:5px;font-size:14px;color:#6b7280">Code expires in <strong style="color:#ef4444">5 minutes</strong>.</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:0 35px 35px">
-                    <div style="background:#f9fafb;border-left:5px solid #2563eb;border-radius:10px;padding:16px">
-                      <h3 style="margin:0 0 10px;color:#111827;font-size:17px">🔒 Security</h3>
-                      <ul style="margin:0;padding-left:18px;color:#4b5563;line-height:26px;font-size:14px">
-                        <li>Do not share this OTP with anyone.</li>
-                        <li>OnShoper will never ask for your OTP.</li>
-                        <li>If you didn’t request this login, ignore this email.</li>
-                      </ul>
-                    </div>
                   </td>
                 </tr>
                 <tr>
