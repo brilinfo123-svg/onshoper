@@ -44,26 +44,42 @@ export default async function handler(req, res) {
 
     // ✅ Stylish HTML template
     const htmlTemplate = `
-      <div style="font-family: Arial, sans-serif; background-color:#f9f9f9; padding:20px;">
-        <div style="max-width:600px; margin:auto; background:#ffffff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); overflow:hidden;">
-          <div style="background:#4CAF50; padding:15px; text-align:center; color:#fff;">
-            <h2 style="margin:0;">Login Verification</h2>
-          </div>
-          <div style="padding:20px; text-align:center;">
-            <p style="font-size:16px; color:#333;">Hello 👋,</p>
-            <p style="font-size:16px; color:#333;">Use the following One-Time Password (OTP) to complete your login:</p>
-            <h1 style="font-size:32px; letter-spacing:4px; color:#4CAF50; margin:20px 0;">${otp}</h1>
-            <p style="font-size:14px; color:#555;">This OTP is valid for <strong>5 minutes</strong>. Please do not share it with anyone.</p>
-            <div style="margin-top:30px;">
-              <a href="https://onshoper.com" style="background:#4CAF50; color:#fff; padding:12px 24px; text-decoration:none; border-radius:4px; font-size:16px;">Go to Onshoper</a>
-            </div>
-          </div>
-          <div style="background:#f1f1f1; padding:10px; text-align:center; font-size:12px; color:#777;">
-            <p>&copy; ${new Date().getFullYear()} Onshoper. All rights reserved.</p>
-          </div>
-        </div>
-      </div>
-    `;
+            <div style="margin:0;padding:40px 15px;background:#f4f7fb;font-family:Arial,Helvetica,sans-serif">
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:620px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.08)">
+                <tr>
+                  <td style="background:linear-gradient(135deg,#2563eb,#1d4ed8);padding:25px 0 10px;text-align:center">
+                    <h1 style="margin:0;color:#fff;font-size:30px;font-weight:bold">OnShoper</h1>
+                    <p style="margin-top:10px;color:#dbeafe;font-size:16px">Login Verification</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:40px 35px;text-align:center">
+                    <div style="display:inline-block;margin:30px 0;padding:16px 40px;background:#f8fbff;border:2px dashed #2563eb;border-radius:14px;letter-spacing:10px;font-size:34px;font-weight:bold;color:#2563eb">
+                      ${otp}
+                    </div>
+                    <p style="margin-top:5px;font-size:14px;color:#6b7280">Code expires in <strong style="color:#ef4444">5 minutes</strong>.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:0 35px 35px">
+                    <div style="background:#f9fafb;border-left:5px solid #2563eb;border-radius:10px;padding:16px">
+                      <h3 style="margin:0 0 10px;color:#111827;font-size:17px">🔒 Security</h3>
+                      <ul style="margin:0;padding-left:18px;color:#4b5563;line-height:26px;font-size:14px">
+                        <li>Do not share this OTP with anyone.</li>
+                        <li>OnShoper will never ask for your OTP.</li>
+                        <li>If you didn’t request this login, ignore this email.</li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="background:#f3f4f6;padding:22px;text-align:center">
+                    <p style="margin:0;font-size:14px;color:#6b7280">Need help? <a href="http://onshoper.com/contact-us" style="color:#2563eb;text-decoration:none">Contact Support</a></p>
+                    <p style="margin-top:12px;font-size:13px;color:#9ca3af">© ${new Date().getFullYear()} OnShoper. All rights reserved.</p>
+                  </td>
+                </tr>
+              </table>
+            </div>`;
 
     await transporter.sendMail({
       from: `"Onshoper" <${process.env.EMAIL_USER}>`,
