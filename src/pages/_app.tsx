@@ -22,6 +22,7 @@ import MobileBottomNav from "@/components/MobileBottomNav/Index";
 import { useRouter } from "next/router";
 import { ProfileProvider } from "@/contexts/ProfileContext";
 import {SocketProvider} from "@/contexts/SocketContext";
+import '../styles/profile/variables.scss';
 
 // ✅ Import helper functions for FCM
 import { generateToken, listenForMessages } from "@/lib/firebase"; 
@@ -44,6 +45,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const ProductForms = router.pathname === "/ProductForm";
   const isInstall = router.pathname === "/install";
   const isChat = router.pathname === "/chat";
+  const isProfilesPage = router.pathname.startsWith("/profiles");
+
   
   const [isMobile, setIsMobile] = useState(false);
 
@@ -118,15 +121,15 @@ export default function App({ Component, pageProps }: AppProps) {
                     <ToastContainer position="top-right" autoClose={3000} />
                     {/* <AutoUnfeaturePoller /> */}
 
-                    {!isAdminPage && !isAuthPage && !isOfflinePage && !isInstall && !isChat &&  !(router.pathname === "/ProductForm" && isMobile) && !(router.pathname.startsWith("/profile") && isMobile) && (<HeaderComponent Component={Component} />)}
+                    {!isAdminPage && !isAuthPage && !isOfflinePage && !isInstall && !isChat && !isProfilesPage && !(router.pathname === "/ProductForm" && isMobile) && !(router.pathname.startsWith("/profile") && isMobile) &&  (<HeaderComponent Component={Component} />)}
 
                     <main>
                       <Component {...pageProps} />
                     </main>
 
                     {/* Hide Footer and Mobile Menu on Chat Page */}
-                  {!isAdminPage && !isOfflinePage && !isInstall && !ProductForms && !isChat && <Footer />}
-                  {!isAdminPage && !isProductDetailPage && !isOfflinePage && !isInstall && !ProductForms && !isChat && <MobileBottomNav />}
+                  {!isAdminPage && !isOfflinePage && !isInstall && !ProductForms && !isChat && !isProfilesPage &&  <Footer />}
+                  {!isAdminPage && !isProductDetailPage && !isOfflinePage && !isInstall && !ProductForms && !isChat && !isProfilesPage && <MobileBottomNav />}
                   </SearchProvider>
                   </FilterProvider>
                 </CityFilterProvider>

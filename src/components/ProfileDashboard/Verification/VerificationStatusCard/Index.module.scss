@@ -1,0 +1,46 @@
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .badge {
+    display: inline-block;
+    padding: 10px 30px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .approved {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  .rejected {
+    background: #f8d7da;
+    color: #721c24;
+  }
+  
+  .pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+  
+  .info {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0.5rem;
+  }
+  

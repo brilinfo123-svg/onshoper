@@ -330,7 +330,9 @@ const toggleFavorite = async () => {
           {/* CTA Buttons */}
           <div className={`${styles.CtaBtn} ${CtaClassName || ""}`}>
             {/* {!onUpdate && !onDelete && (<Link href={`/product/${_id}`} className={styles.button}>View Details</Link>)} */}
-            {status !== "sold" && onUpdate && (<button aria-label="Update" className={`${styles.updateBtn}`} onClick={(e) => {e.preventDefault(); e.stopPropagation(); router.push(`/product/productUpdate/${_id}`);}}><i className="icon-pencil"></i> Update</button>)}
+            {/* {status !== "sold" && onUpdate && (<button aria-label="Update" className={`${styles.updateBtn}`} onClick={(e) => {e.preventDefault(); e.stopPropagation(); router.push(`/product/productUpdate/${_id}`);}}><i className="icon-pencil"></i> Update</button>)} */}
+            {status !== "sold" && onUpdate && (<button aria-label="Update" className={styles.updateBtn} onClick={(e) => { e.preventDefault(); e.stopPropagation(); onUpdate(_id);}}><i className="icon-pencil"></i> Update</button>)}
+
             {status !== "sold" && onSold && (<button aria-label="Mark Sold" onClick={(e) => { e.stopPropagation(); e.preventDefault(); onSold(_id);}} className={`${styles.soldBtn}`}><i className="icon-ok-circled"></i>  Mark Sold</button>)}
             {onDelete && (<button aria-label="Delete" onClick={(e) => { e.stopPropagation(); e.preventDefault(); onDelete(_id);}} className={`${styles.deleteBtn}`}><i className="icon-trash-delete"></i> Delete</button>)}
             {status === "sold" && onRepublish && (

@@ -1,0 +1,24 @@
+@import './variables';
+@import './dashboard';
+@import './sidebar';
+@import './header';
+@import './cards';
+@import './table';
+@import './chart';
+@import './profile';
+
+@media (max-width: 1024px) {
+  .profile-dashboard__content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sidebar {
+    display: none; // later: convert to mobile drawer
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

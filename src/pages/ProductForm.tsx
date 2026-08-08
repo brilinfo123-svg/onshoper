@@ -70,7 +70,8 @@ function AllCategoryRentalForm() {
   const [shop, setShop] = useState(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const shopId = "677bccf4e93c318e3075b932";
+  const [,setShowVerificationModal] = useState(false);
+  const [verificationStatus, setVerificationStatus] = useState<any>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB
   const MAX_IMAGES = 8;
@@ -933,18 +934,64 @@ function AllCategoryRentalForm() {
   };
 
   // ✅ Text / Select Handler
+  // ✅ Fetch verification status
+  useEffect(() => {
+    const fetchVerification = async () => {
+      if (!session?.user?.id) return;
+      const res = await fetch(`/api/verification/checkStatus?userId=${session.user.id}`);
+      const data = await res.json();
+      setVerificationStatus(data);
+    };
+    fetchVerification();
+  }, [session?.user?.id]);
+
+  // ✅ Handle change
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement |
-      HTMLTextAreaElement |
-      HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    setFormData((prev) => ({
+    const { name, value } = e.target;
+  
+    // ==============================
+    // RENT VERIFICATION CHECK
+    // ==============================
+    if (name === "SaleType" && value === "Rent") {
+      if (verificationStatus?.status !== "Approved") {
+        Swal.fire({
+          icon: "warning",
+          title: "Verification Required",
+          text: "Please complete your verification before posting a rental product.",
+          showCancelButton: true,
+          confirmButtonText: "Start Verification",
+          cancelButtonText: "Cancel",
+          confirmButtonColor: "#ff6b00",
+          cancelButtonColor: "#e5e7eb",
+          reverseButtons: true,
+          customClass: {
+            popup: "onshoperVerificationPopup",
+            title: "onshoperVerificationTitle",
+            htmlContainer: "onshoperVerificationText",
+            confirmButton: "onshoperVerificationConfirm",
+            cancelButton: "onshoperVerificationCancel",
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // ✅ Redirect to verification page
+            router.push("/profiles/verification");
+          }
+        });
+  
+        // ❗ Prevent selecting Rent until verified
+        return;
+      }
+    }
+  
+    // ✅ Normal form update
+    setFormData((prev: any) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
+  
 
   // ✅ Format File Size
   const formatSize = (bytes: number) => {
@@ -2089,11 +2136,11 @@ function AllCategoryRentalForm() {
               !["Services", "Jobs", "Education & Learning"].includes(selectedCategory) && (
                 <>
                   <div className={styles.formGroup}>
-                    <label>Type</label>
-                    <div className={styles.SaleType}>
-                      <label> <input type="radio" name="SaleType" value="Rent" checked={formData.SaleType === "Rent"} onChange={handleChange} />Rent</label>
-                      <label><input type="radio" name="SaleType" value="Sale" checked={formData.SaleType === "Sale"} onChange={handleChange} />Sale</label>
-                    </div>
+                      <label>Type</label>
+                      <div className={styles.SaleType}>
+                        <label><input type="radio" name="SaleType" value="Rent" checked={formData.SaleType === "Rent"} onChange={handleChange}/>Rent</label>
+                        <label><input type="radio" name="SaleType" value="Sale" checked={formData.SaleType === "Sale"}onChange={handleChange}/>Sale</label>
+                      </div>
                     {!["Jobs", "Services", "Education & Learning"].includes(selectedCategory) &&
                       errors.SaleType && (
                         <p className={styles.errorText}>{errors.SaleType}</p>

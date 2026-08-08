@@ -1,0 +1,225 @@
+.header {
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1.5rem;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  .brand {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #2563eb;
+  }
+}
+
+.search {
+  flex: 1;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  background: #f9fafb;
+  border-radius: 6px;
+  padding: 0px 0.8rem;
+  margin: 0 1rem;
+  background-color: transparent;
+  border: 1px solid #ddd;
+  // min-height: 45px;
+
+  input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 0.95rem;
+    min-height: 45px;
+  }
+
+  .searchIcon {
+    color: #6b7280;
+    margin-right: 0.5rem;
+    font-size: 20px;
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  gap: 35px;
+
+  .icon {
+    font-size: 1.3rem;
+    color: #374151;
+    cursor: pointer;
+  }
+
+  .bellWrapper {
+    position: relative;
+
+    .badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #ef4444;
+      color: #fff;
+      font-size: 0.7rem;
+      border-radius: 50%;
+      padding: 2px 5px;
+    }
+  }
+
+  .user {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+
+    .avatar {
+      border-radius: 50%;
+    }
+
+    .userInfo {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+
+      .name {
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .verified {
+        font-size: 0.75rem;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 4px;
+        .ProfileIcon{
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background: #1d5ed8;
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 10px;
+          font-weight: 900;
+          box-shadow: 0 2px 6px rgba(29, 94, 216, 0.25);
+        }
+      }
+    }
+  }
+}
+.menuIcon {
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-right: 10px;
+  color: #374151;
+  transition: 0.2s ease;
+
+  &:hover {
+    color: #2563eb;
+  }
+}
+
+.user {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+
+  .avatar {
+    border-radius: 50%;
+  }
+
+  .userInfo {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+
+    .name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .verified {
+      font-size: 0.75rem;
+      color: #2563eb;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 4px;
+
+      .ProfileIcon {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #1d5ed8;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 900;
+        box-shadow: 0 2px 6px rgba(29, 94, 216, 0.25);
+      }
+    }
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 55px;
+    right: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    width: 180px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease;
+
+    .dropdownItem {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.8rem 1rem;
+      font-size: 0.9rem;
+      color: #374151;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease;
+
+      svg {
+        font-size: 1rem;
+      }
+
+      &:hover {
+        background: #f3f4f6;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

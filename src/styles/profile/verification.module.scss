@@ -1,0 +1,96 @@
+.verificationSection {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .sectionTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .btnPrimary {
+    background: #ff6b00;
+    color: #fff;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+  
+  .btnPrimary:hover {
+    background: #e65a00;
+  }
+  
+  .btnSecondary {
+    background: #0077ff;
+    color: #fff;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+  
+  .btnSecondary:hover {
+    background: #005fcc;
+  }
+  .pendingBox {
+    padding: 10px 10px 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fff8e1, #fffde7);
+    border: 1px solid #ffecb3;
+    box-shadow: 0 2px 10px rgba(255, 193, 7, 0.15);
+    text-align: center;
+    transition: 0.3s ease;
+  }
+  
+  .pendingBox:hover {
+    box-shadow: 0 4px 14px rgba(255, 193, 7, 0.25);
+  }
+  
+  .pendingHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 0.8rem;
+  }
+  
+  .pendingIcon {
+    font-size: 1.6rem;
+    color: #ff9800;
+  }
+  
+  .pendingTitle {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .pendingText {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #2e7d32;
+    margin-top: 0.5rem;
+  }
+  
+  .pendingSubText {
+    font-size: 0.95rem;
+    color: #555;
+    margin-top: 0.3rem;
+  }
+  

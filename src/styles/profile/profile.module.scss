@@ -1,0 +1,101 @@
+.verificationCard {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 14px;
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  
+  .title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem;
+    background: #f9fafc;
+    border-radius: 8px;
+  }
+  
+  .badge {
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  
+  .verified {
+    background: #22c55e;
+  }
+  
+  .pending {
+    background: #f59e0b;
+  }
+  .profileCard {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 14px;
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  
+  .avatar {
+    width: 80px;
+    height: 80px;
+    background: #e5e7eb;
+    border-radius: 50%;
+  }
+  
+  .info h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  
+  .statsGrid {
+    margin-top: 1rem;
+    display: flex;
+    gap: 2rem;
+  
+    div h4 {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+  
+    div p {
+      color: #6b7280;
+    }
+  }
+  .documentCard {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 14px;
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  
+  .docList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .docItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem;
+    background: #f9fafc;
+    border-radius: 8px;
+  }
+  

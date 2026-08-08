@@ -32,7 +32,7 @@ const nextConfig: NextConfig = {
           {
             key: "Permissions-Policy",
             value:
-              "geolocation=(self), microphone=(), camera=(), payment=()",
+              "geolocation=(self), microphone=(), camera=(self), payment=()",
           },
         ],
       },

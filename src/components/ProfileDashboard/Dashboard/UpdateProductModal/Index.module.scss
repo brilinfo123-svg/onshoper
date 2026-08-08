@@ -1,0 +1,163 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(3px);
+}
+
+.modalBox {
+  background: #fff;
+  width: 520px;
+  max-width: 95%;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  animation: fadeIn 0.25s ease;
+}
+
+.modalTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  color: #1f2937;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #374151;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 0.95rem;
+    background: #f9fafb;
+    transition: 0.2s ease;
+
+    &:focus {
+      border-color: #2563eb;
+      background: #fff;
+    }
+  }
+
+  textarea {
+    min-height: 110px;
+  }
+}
+
+/* Social Inputs */
+.socialGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.socialInput {
+  display: flex;
+  align-items: center;
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  transition: all 0.2s ease;
+
+  &:focus-within {
+    border-color: #2563eb;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  }
+
+  .socialIcon {
+    font-size: 1.3rem;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.95rem;
+    color: #374151;
+
+    &::placeholder {
+      color: #9ca3af;
+    }
+  }
+
+  &:hover .socialIcon {
+    transform: scale(1.1);
+  }
+}
+
+/* Brand Colors */
+.instagram .socialIcon {
+  color: #e1306c;
+}
+
+.facebook .socialIcon {
+  color: #1877f2;
+}
+
+.twitter .socialIcon {
+  color: #1da1f2;
+}
+
+/* Buttons */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cancelBtn {
+  background: #e5e7eb;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.updateBtn {
+  background: #2563eb;
+  color: #fff;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+
+  &:hover {
+    background: #1e4fc7;
+  }
+}

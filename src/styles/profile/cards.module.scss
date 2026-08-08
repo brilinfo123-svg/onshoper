@@ -1,0 +1,269 @@
+.welcomeCard {
+  background: #f9fafc;
+  padding: 1.8rem 2rem;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.avatarWrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+
+  .avatar {
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #e5e7eb;
+  }
+
+  .cameraBtn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #374151;
+    transition: 0.2s ease;
+
+    &:hover {
+      background: #f3f4f6;
+    }
+  }
+}
+
+.center {
+  flex: 1;
+  margin-left: 1.5rem;
+
+  .title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1f2937;
+  }
+
+  .subtitle {
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 0.95rem;
+  }
+
+  .infoRow {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+
+    .infoItem {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+
+  .editBtn {
+    background: #2563eb;
+    color: #fff;
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s ease;
+
+    &:hover {
+      background: #1e4fc7;
+    }
+  }
+}
+
+  .title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1f2937;
+  }
+  
+  .subtitle {
+    margin-top: 4px;
+    color: #6b7280;
+  }
+  
+  .editBtn {
+    background: #2563eb;
+    color: #fff;
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+  
+    &:hover {
+      background: #1e4fc7;
+    }
+  }
+  .statsGrid {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+  }
+  
+  .statCard {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: 0.2s ease;
+  
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
+  
+  .statLabel {
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+  
+  .statValue {
+    margin-top: 6px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #111827;
+  }
+  .notificationCard {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 14px;
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  
+  .notificationItem {
+    padding: 0.8rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+  
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  
+
+
+  .statsGrid {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+  }
+  
+  .statCard {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: 0.2s ease;
+  
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
+  
+  .iconWrapper {
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 1.6rem;
+    border-radius: 10px;
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .statLabel {
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+  
+  .statValue {
+    margin-top: 6px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #111827;
+  }
+  
+
+  .avatarSkeleton {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    animation: pulse 1.5s infinite;
+  }
+  
+  .titleSkeleton {
+    width: 60%;
+    height: 22px;
+    border-radius: 6px;
+    background: #e5e7eb;
+    animation: pulse 1.5s infinite;
+  }
+  
+  .subtitleSkeleton {
+    width: 80%;
+    height: 18px;
+    border-radius: 6px;
+    background: #e5e7eb;
+    margin-top: 8px;
+    animation: pulse 1.5s infinite;
+  }
+  
+  .infoSkeleton {
+    width: 50%;
+    height: 16px;
+    border-radius: 6px;
+    background: #e5e7eb;
+    animation: pulse 1.5s infinite;
+  }
+  
+  .editSkeleton {
+    width: 110px;
+    height: 40px;
+    border-radius: 10px;
+    background: #e5e7eb;
+    animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+  

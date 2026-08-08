@@ -21,7 +21,7 @@ const LoginPage: React.FC = () => {
 
     setError("");
     try {
-      const res = await fetch("/api/Verification/send-otp", {
+      const res = await fetch("/api/verification/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ contact }),
@@ -47,7 +47,7 @@ const LoginPage: React.FC = () => {
 
     setError("");
     try {
-      const res = await fetch("/api/Verification/verify-otp", {
+      const res = await fetch("/api/verification/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ contact, otp }),

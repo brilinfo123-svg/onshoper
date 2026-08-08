@@ -47,7 +47,7 @@ export default function LoginPage() {
   }, [otpSent, timer]);
 
   const fetchOtpExpiry = async () => {
-    const res = await fetch("/api/Verification/get-expiry", {
+    const res = await fetch("/api/verification/get-expiry", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ contact, loginType }),
@@ -104,8 +104,8 @@ export default function LoginPage() {
     // ✅ Decide API endpoint based on loginType
     const endpoint =
       loginType === "email"
-        ? "/api/Verification/send-email-otp"
-        : "/api/Verification/send-otp";
+        ? "/api/verification/send-email-otp"
+        : "/api/verification/send-otp";
   
     const res = await fetch(endpoint, {
       method: "POST",
@@ -144,7 +144,7 @@ export default function LoginPage() {
     setIsVerifying(true); // 👈 start loader
   
     try {
-      const res = await fetch("/api/Verification/verify-otp", {
+      const res = await fetch("/api/verification/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ contact, otp, loginType }),
