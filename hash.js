@@ -1,12 +1,15 @@
-// hash.js
-import bcrypt from "bcrypt";
+const bcrypt = require("bcrypt");
 
 async function generateHash() {
-  const password = ""; 
-  const saltRounds = 12; // security level (10–12 recommended)
+  const password = "admin76528";
 
-  const hash = await bcrypt.hash(password, saltRounds);
+  const hash = await bcrypt.hash(password, 12);
+
   console.log("Generated Hash:", hash);
+
+  const verified = await bcrypt.compare(password, hash);
+
+  console.log("Verified:", verified);
 }
 
 generateHash();

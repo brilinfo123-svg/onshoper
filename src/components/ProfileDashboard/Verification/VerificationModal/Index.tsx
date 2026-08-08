@@ -18,7 +18,7 @@ export default function VerificationModal({ onClose }) {
   // ✅ Selfie states
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [cameraActive, setCameraActive] = useState(false);
-
+  const [submitting, setSubmitting] = useState(false);
   // ✅ Utility: Compress image before upload
   const compressImage = async (file: File): Promise<File> => {
     return new Promise((resolve) => {
@@ -81,43 +81,132 @@ const toBase64 = (file: File) =>
     reader.onerror = (error) => reject(error);
   });
 
-const submitVerification = async () => {
-  if (!idType || !frontImage || !backImage || !capturedImage || !session?.user?.id) {
-    Swal.fire({ icon: "error", title: "Error", text: "Please upload ID and capture selfie" });
-    return;
-  }
-
-  // ✅ Compress + convert to base64
-  const optimizedFront = await compressImage(frontImage);
-  const optimizedBack = await compressImage(backImage);
-
-  const frontBase64 = await toBase64(optimizedFront);
-  const backBase64 = await toBase64(optimizedBack);
-
-  const res = await fetch("/api/verification/submitDucuments", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      userId: session.user.id,   // ✅ same as SelfieVerificationModal
-      idType,
-      frontImage: frontBase64,
-      backImage: backBase64,
-      selfieImage: capturedImage, // already base64
-    }),
-  });
-
-  const data = await res.json();
-
-  if (res.ok) {
-    Swal.fire({
-      icon: "success",
-      title: "Verification Submitted",
-      text: "Your documents and selfie are under review",
-    }).then(() => onClose());
-  } else {
-    Swal.fire({ icon: "error", title: "Upload Failed", text: data.error || "Please try again" });
-  }
-};
+  const submitVerification = async () => {
+    if (
+      !idType ||
+      !frontImage ||
+      !backImage ||
+      !capturedImage ||
+      !session?.user?.id
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Please upload ID and capture selfie",
+      });
+  
+      return;
+    }
+  
+    // Prevent double click
+    if (submitting) return;
+  
+    try {
+      setSubmitting(true);
+  
+      // ==========================================
+      // SHOW LOADING IMMEDIATELY
+      // ==========================================
+  
+      Swal.fire({
+        title: "Submitting Verification...",
+        text: "Please wait while we upload and verify your documents.",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+  
+      // ==========================================
+      // COMPRESS IMAGES
+      // ==========================================
+  
+      const optimizedFront = await compressImage(frontImage);
+      const optimizedBack = await compressImage(backImage);
+  
+      // ==========================================
+      // CONVERT TO BASE64
+      // ==========================================
+  
+      const frontBase64 = await toBase64(optimizedFront);
+      const backBase64 = await toBase64(optimizedBack);
+  
+      // ==========================================
+      // SEND TO API
+      // ==========================================
+  
+      const res = await fetch(
+        "/api/verification/submitDucuments",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: session.user.id,
+            idType,
+            frontImage: frontBase64,
+            backImage: backBase64,
+            selfieImage: capturedImage,
+          }),
+        }
+      );
+  
+      const data = await res.json();
+  
+      // ==========================================
+      // API ERROR
+      // ==========================================
+  
+      if (!res.ok) {
+        throw new Error(
+          data.error || "Failed to submit verification"
+        );
+      }
+  
+      // ==========================================
+      // SUCCESS
+      // ==========================================
+  
+      setSubmitting(false);
+  
+      await Swal.fire({
+        icon: "success",
+        title: "Verification Submitted",
+        text: "Your documents and selfie are under review.",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#16a34a",
+      });
+  
+      // ==========================================
+      // RELOAD PAGE ONCE
+      // ==========================================
+  
+      window.location.reload();
+  
+    } catch (error) {
+      console.error(
+        "Verification submission error:",
+        error
+      );
+  
+      setSubmitting(false);
+  
+      // Close loading popup if it is open
+      Swal.close();
+  
+      Swal.fire({
+        icon: "error",
+        title: "Upload Failed",
+        text:
+          error instanceof Error
+            ? error.message
+            : "Please try again.",
+      });
+    }
+  };
 
 
   return (
@@ -171,7 +260,12 @@ const submitVerification = async () => {
 
         {/* ✅ Single Submit Button */}
         <div className={styles.actions}>
-          <button className={styles.SubmitVerification} onClick={submitVerification}>Submit Verification</button>
+        <button className={styles.SubmitVerification} onClick={submitVerification} disabled={submitting}>{submitting ? (
+        <><span className={styles.spinner}></span>Submitting...</>
+          ) : (
+            "Submit Verification"
+          )}
+        </button>
           <button className={styles.closeBtn} onClick={onClose}>Close</button>
         </div>
       </div>
