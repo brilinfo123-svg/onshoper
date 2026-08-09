@@ -1,31 +1,46 @@
-import React from 'react';
-import styles from '@/styles/profile/profile.module.scss';
+"use client";
+import React, { useEffect, useState } from "react";
+import styles from "@/styles/profile/profile.module.scss";
+import { useSession } from "next-auth/react";
 
 const DocumentStatus = () => {
-  const docs = [
-    { name: 'Aadhar Card', status: 'Uploaded' },
-    { name: 'PAN Card', status: 'Missing' },
-    { name: 'Driving License', status: 'Uploaded' },
-  ];
+  const { data: session } = useSession();
+  const [doc, setDoc] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchDocStatus = async () => {
+      if (!session?.user?.id) return;
+      try {
+        const res = await fetch(`/api/verification/getCurrentUser?userId=${session.user.id}`);
+        const data = await res.json();
+        setDoc(data);
+      } catch (error) {
+        console.error("Failed to fetch document status:", error);
+      }
+    };
+    fetchDocStatus();
+  }, [session?.user?.id]);
 
   return (
     <div className={styles.documentCard}>
       <h3 className={styles.title}>Document Status</h3>
 
-      <ul className={styles.docList}>
-        {docs.map((d) => (
-          <li key={d.name} className={styles.docItem}>
-            <span>{d.name}</span>
+      {!doc ? (
+        <p>Loading...</p>
+      ) : (
+        <ul className={styles.docList}>
+          <li className={styles.docItem}>
+            <span>{doc.idType || "Unknown ID"}</span>
             <span
               className={`${styles.badge} ${
-                d.status === 'Uploaded' ? styles.verified : styles.pending
+                doc.status === "Approved" ? styles.verified : styles.pending
               }`}
             >
-              {d.status}
+              {doc.status}
             </span>
           </li>
-        ))}
-      </ul>
+        </ul>
+      )}
     </div>
   );
 };

@@ -10,16 +10,16 @@ export default function VerificationModal({ onClose }) {
   const { data: session } = useSession();
   const webcamRef = useRef<Webcam>(null);
 
-  // ✅ ID Upload states
+  // ✅ States
+  const [fullName, setFullName] = useState("");
   const [idType, setIdType] = useState("");
   const [frontImage, setFrontImage] = useState<File | null>(null);
   const [backImage, setBackImage] = useState<File | null>(null);
-
-  // ✅ Selfie states
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [cameraActive, setCameraActive] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  // ✅ Utility: Compress image before upload
+
+  // ✅ Utility: Compress image
   const compressImage = async (file: File): Promise<File> => {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -30,15 +30,10 @@ export default function VerificationModal({ onClose }) {
         img.onload = () => {
           const canvas = document.createElement("canvas");
           const ctx = canvas.getContext("2d");
-
-          // ✅ Resize (reduce dimensions)
-          const scale = 0.7; // 70% of original size
+          const scale = 0.7;
           canvas.width = img.width * scale;
           canvas.height = img.height * scale;
-
           ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-          // ✅ Convert to JPEG with quality 0.7
           canvas.toBlob((blob) => {
             if (blob) {
               resolve(new File([blob], file.name, { type: "image/jpeg" }));
@@ -49,40 +44,36 @@ export default function VerificationModal({ onClose }) {
     });
   };
 
-  // ✅ Open camera
+  // ✅ Camera controls
   const openCamera = () => {
     setCapturedImage(null);
     setCameraActive(true);
   };
-
-  // ✅ Capture selfie
   const captureSelfie = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (imageSrc) {
       setCapturedImage(imageSrc);
-      setCameraActive(false); // close camera after capture
+      setCameraActive(false);
     }
   };
-
-  // ✅ Retake selfie
   const retakeSelfie = () => {
     setCapturedImage(null);
-    setCameraActive(true); // reopen camera
+    setCameraActive(true);
   };
 
-  
-  // ✅ Submit Verification (ID + Selfie together)
-// ✅ Helper: Convert File to base64
-const toBase64 = (file: File) =>
-  new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
+  // ✅ Helper: Convert File to base64
+  const toBase64 = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
 
+  // ✅ Submit Verification
   const submitVerification = async () => {
     if (
+      !fullName.trim() ||
       !idType ||
       !frontImage ||
       !backImage ||
@@ -92,86 +83,46 @@ const toBase64 = (file: File) =>
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Please upload ID and capture selfie",
+        text: "Please enter your name, upload ID, and capture selfie.",
       });
-  
       return;
     }
-  
-    // Prevent double click
+
     if (submitting) return;
-  
+
     try {
       setSubmitting(true);
-  
-      // ==========================================
-      // SHOW LOADING IMMEDIATELY
-      // ==========================================
-  
       Swal.fire({
         title: "Submitting Verification...",
         text: "Please wait while we upload and verify your documents.",
         allowOutsideClick: false,
         allowEscapeKey: false,
         showConfirmButton: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
+        didOpen: () => Swal.showLoading(),
       });
-  
-      // ==========================================
-      // COMPRESS IMAGES
-      // ==========================================
-  
+
       const optimizedFront = await compressImage(frontImage);
       const optimizedBack = await compressImage(backImage);
-  
-      // ==========================================
-      // CONVERT TO BASE64
-      // ==========================================
-  
       const frontBase64 = await toBase64(optimizedFront);
       const backBase64 = await toBase64(optimizedBack);
-  
-      // ==========================================
-      // SEND TO API
-      // ==========================================
-  
-      const res = await fetch(
-        "/api/verification/submitDucuments",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: session.user.id,
-            idType,
-            frontImage: frontBase64,
-            backImage: backBase64,
-            selfieImage: capturedImage,
-          }),
-        }
-      );
-  
+
+      const res = await fetch("/api/verification/submitDucuments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: session.user.id,
+          name: fullName, // ✅ Added name
+          idType,
+          frontImage: frontBase64,
+          backImage: backBase64,
+          selfieImage: capturedImage,
+        }),
+      });
+
       const data = await res.json();
-  
-      // ==========================================
-      // API ERROR
-      // ==========================================
-  
-      if (!res.ok) {
-        throw new Error(
-          data.error || "Failed to submit verification"
-        );
-      }
-  
-      // ==========================================
-      // SUCCESS
-      // ==========================================
-  
+      if (!res.ok) throw new Error(data.error || "Failed to submit verification");
+
       setSubmitting(false);
-  
       await Swal.fire({
         icon: "success",
         title: "Verification Submitted",
@@ -179,53 +130,77 @@ const toBase64 = (file: File) =>
         confirmButtonText: "OK",
         confirmButtonColor: "#16a34a",
       });
-  
-      // ==========================================
-      // RELOAD PAGE ONCE
-      // ==========================================
-  
       window.location.reload();
-  
     } catch (error) {
-      console.error(
-        "Verification submission error:",
-        error
-      );
-  
+      console.error("Verification submission error:", error);
       setSubmitting(false);
-  
-      // Close loading popup if it is open
       Swal.close();
-  
       Swal.fire({
         icon: "error",
         title: "Upload Failed",
-        text:
-          error instanceof Error
-            ? error.message
-            : "Please try again.",
+        text: error instanceof Error ? error.message : "Please try again.",
       });
     }
   };
-
 
   return (
     <div className={styles.modal}>
       <div className={styles.modalContent}>
         <h2>Verification</h2>
 
+        {/* ✅ Name Field */}
+        <div className={`${styles.section} ${styles.NameOfDocumet}`}>
+          <label className={styles.inputLabel}>Name as per document</label>
+          <input
+            type="text"
+            className={styles.textInput}
+            placeholder="Enter your full name"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+          />
+        </div>
+
         {/* ✅ ID Upload Section */}
         <div className={styles.section}>
           <h3><FaIdCard /> Upload Government ID</h3>
-          <select className={styles.selectBox} onChange={(e) => setIdType(e.target.value)}>
+          {/* <label className={styles.inputLabel}>ID Type</label> */}
+          <select
+            className={styles.selectBox}
+            value={idType}
+            onChange={(e) => setIdType(e.target.value)}
+          >
             <option value="">Select ID Type</option>
             <option value="Aadhaar">Aadhaar</option>
             <option value="PAN">PAN</option>
             <option value="Passport">Passport</option>
             <option value="Driving License">Driving License</option>
           </select>
-          <input type="file" className={styles.fileInput} onChange={(e) => setFrontImage(e.target.files?.[0] || null)} />
-          <input type="file" className={styles.fileInput} onChange={(e) => setBackImage(e.target.files?.[0] || null)} />
+
+          {/* Front Image */}
+          <div className={styles.fileUploadBox}>
+            <label className={styles.inputLabel}><FaIdCard /> ID Front Side</label>
+            <p className={styles.inputHint}>Upload the front side of your government ID.</p>
+            <input
+              type="file"
+              className={styles.fileInput}
+              accept="image/*"
+              onChange={(e) => setFrontImage(e.target.files?.[0] || null)}
+            />
+            {frontImage && <span className={styles.fileSelected}>✓ {frontImage.name}</span>}
+          </div>
+
+          {/* Back Image */}
+          <div className={styles.fileUploadBox}>
+            <label className={styles.inputLabel}><FaIdCard /> ID Back Side</label>
+            <p className={styles.inputHint}>Upload the back side of your government ID.</p>
+            <input
+              type="file"
+              className={styles.fileInput}
+              accept="image/*"
+              onChange={(e) => setBackImage(e.target.files?.[0] || null)}
+            />
+            {backImage && <span className={styles.fileSelected}>✓ {backImage.name}</span>}
+          </div>
         </div>
 
         {/* ✅ Selfie Section */}
@@ -258,14 +233,15 @@ const toBase64 = (file: File) =>
           )}
         </div>
 
-        {/* ✅ Single Submit Button */}
+        {/* ✅ Submit + Close */}
         <div className={styles.actions}>
-        <button className={styles.SubmitVerification} onClick={submitVerification} disabled={submitting}>{submitting ? (
-        <><span className={styles.spinner}></span>Submitting...</>
-          ) : (
-            "Submit Verification"
-          )}
-        </button>
+          <button
+            className={styles.SubmitVerification}
+            onClick={submitVerification}
+            disabled={submitting}
+          >
+            {submitting ? <><span className={styles.spinner}></span>Submitting...</> : "Submit Verification"}
+          </button>
           <button className={styles.closeBtn} onClick={onClose}>Close</button>
         </div>
       </div>

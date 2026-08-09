@@ -20,6 +20,6 @@
     }
     
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next-auth.d.ts", "src/components/CurrentLocation/Index.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next-auth.d.ts", "src/components/CurrentLocation/Index.js", "src/pages/api/verification/getCurrentUser.js"],
   "exclude": ["node_modules"]
 }

@@ -1,12 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { FiSearch, FiBell, FiMessageSquare, FiMenu, FiUser, FiSettings, FiLogOut } from "react-icons/fi";
+import { useSession } from "next-auth/react";
+import { useProfile } from "@/contexts/ProfileContext";
+
+import {
+  FiSearch,
+  FiBell,
+  FiMessageSquare,
+  FiMenu,
+  FiUser,
+  FiSettings,
+  FiLogOut,
+} from "react-icons/fi";
 import styles from "@/styles/profile/header.module.scss";
 
-export default function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+export default function Header({
+  onToggleSidebar,
+  user, // ✅ receive user as prop from ProfileDashboard
+}: {
+  onToggleSidebar: () => void;
+  user: any;
+}) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
+  const { data: session } = useSession();
+  const { profile: shopData, loading, fetchProfile } = useProfile();
+
+  console.log("shopData", shopData);
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
+  // ✅ Fetch verification status only
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        if (!session?.user?.id) return;
+        const res = await fetch(
+          `/api/verification/getCurrentUser?userId=${session.user.id}`
+        );
+        const data = await res.json();
+        setStatus(data.status);
+      } catch (error) {
+        console.error("Failed to fetch verification status:", error);
+      }
+    };
+    fetchStatus();
+  }, [session?.user?.id]);
 
   return (
     <header className={styles.header}>
@@ -27,18 +66,25 @@ export default function Header({ onToggleSidebar }: { onToggleSidebar: () => voi
         </div>
 
         <div className={styles.user} onClick={toggleDropdown}>
+          {/* ✅ Dynamic photo from user prop */}
           <Image
-            src="/images/profile.png"
+            src={shopData?.user?.photo || "/images/profile.png"}
             alt="User Avatar"
             width={40}
             height={40}
             className={styles.avatar}
           />
+
           <div className={styles.userInfo}>
-            <span className={styles.name}>Sonu Serma</span>
-            <span className={styles.verified}>
-              <span className={styles.ProfileIcon}>✓</span> Verified
-            </span>
+            {/* ✅ Dynamic name from user prop */}
+            <span className={styles.name}>{shopData?.user?.name || "Guest User"}</span>
+
+            {/* ✅ Show Verified only if status is Approved */}
+            {status === "Approved" && (
+              <span className={styles.verified}>
+                <span className={styles.ProfileIcon}>✓</span> Verified
+              </span>
+            )}
           </div>
 
           {/* Dropdown */}

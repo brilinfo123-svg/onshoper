@@ -8,7 +8,13 @@ const UserVerificationSchema = new mongoose.Schema(
       required: true,
     },
 
-    // ✅ ADD THIS
+    // ✅ Add Name
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
     email: {
       type: String,
       required: true,

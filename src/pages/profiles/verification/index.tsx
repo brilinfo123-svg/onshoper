@@ -51,10 +51,7 @@ const Verification = () => {
             <div className={styles.card}>
               <p className={styles.infoText}>Complete your verification steps below:</p>
               <div className={styles.actions}>
-                <button
-                  onClick={() => setShowVerificationModal(true)}
-                  className={styles.btnPrimary}
-                >
+                <button onClick={() => setShowVerificationModal(true)} className={styles.btnPrimary}>
                   Start Verification
                 </button>
               </div>

@@ -15,7 +15,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       {isSidebarOpen && <Sidebar />}
 
       <div className={styles.main}>
-        <Header onToggleSidebar={toggleSidebar} />
+        <Header onToggleSidebar={toggleSidebar} user={undefined} />
         <div className={styles.pageContent}>{children}</div>
       </div>
     </div>

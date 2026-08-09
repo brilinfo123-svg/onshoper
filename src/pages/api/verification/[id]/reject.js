@@ -143,195 +143,73 @@ export default async function handler(req, res) {
     // ========================================
 
     const htmlTemplate = `
-      <div style="
-        margin:0;
-        padding:40px 15px;
-        background:#f4f7fb;
-        font-family:Arial,Helvetica,sans-serif;
-      ">
-
-        <table
-          role="presentation"
-          cellpadding="0"
-          cellspacing="0"
-          width="100%"
-          style="
-            max-width:620px;
-            margin:auto;
-            background:#fff;
-            border-radius:18px;
-            overflow:hidden;
-            box-shadow:0 10px 30px rgba(0,0,0,.08);
-          "
-        >
-
-          <!-- HEADER -->
-
-          <tr>
-            <td style="
-              background:linear-gradient(135deg,#dc2626,#b91c1c);
-              padding:30px 20px;
-              text-align:center;
-            ">
-
-              <h1 style="
-                margin:0;
-                color:#fff;
-                font-size:30px;
-                font-weight:bold;
-              ">
-                OnShoper
-              </h1>
-
-              <p style="
-                margin:8px 0 0;
-                color:#fee2e2;
-                font-size:14px;
-              ">
-                Identity Verification
-              </p>
-
-            </td>
-          </tr>
-
-
-          <!-- CONTENT -->
-
-          <tr>
-            <td style="
-              padding:35px 30px;
-            ">
-
-              <h2 style="
-                margin:0 0 15px;
-                color:#111827;
-                font-size:22px;
-              ">
-                Verification Rejected
-              </h2>
-
-              <p style="
-                margin:0 0 20px;
-                color:#4b5563;
-                font-size:15px;
-                line-height:1.7;
-              ">
-                Your identity verification request on
-                <strong>OnShoper</strong>
-                has been rejected.
-              </p>
-
-
-              <!-- REASON BOX -->
-
-              <div style="
-                margin:25px 0;
-                padding:20px;
-                background:#fef2f2;
-                border:1px solid #fecaca;
-                border-left:5px solid #dc2626;
-                border-radius:10px;
-              ">
-
-                <p style="
-                  margin:0 0 10px;
-                  color:#991b1b;
-                  font-size:14px;
-                  font-weight:bold;
-                ">
-                  Rejection Reason
-                </p>
-
-                <p style="
-                  margin:0;
-                  color:#7f1d1d;
-                  font-size:15px;
-                  line-height:1.6;
-                ">
-                  ${finalReason}
-                </p>
-
-              </div>
-
-
-              <p style="
-                margin:20px 0 0;
-                color:#4b5563;
-                font-size:15px;
-                line-height:1.7;
-              ">
-                Please review the reason above and submit your
-                verification documents again with the correct
-                information.
-              </p>
-
-
-              <p style="
-                margin:20px 0 0;
-                color:#4b5563;
-                font-size:15px;
-                line-height:1.7;
-              ">
-                If you believe this rejection was made by mistake,
-                please contact OnShoper support.
-              </p>
-
-
-              <p style="
-                margin:30px 0 0;
-                color:#374151;
-                font-size:15px;
-                line-height:1.6;
-              ">
-                Regards,<br />
-                <strong>OnShoper Team</strong>
-              </p>
-
-            </td>
-          </tr>
-
-
-          <!-- FOOTER -->
-
-          <tr>
-            <td style="
-              background:#f3f4f6;
-              padding:22px;
-              text-align:center;
-            ">
-
-              <p style="
-                margin:0;
-                font-size:13px;
-                color:#6b7280;
-              ">
-                Need help?
-                <a
-                  href="http://onshoper.com/contact-us"
-                  style="
-                    color:#2563eb;
-                    text-decoration:none;
-                  "
-                >
-                  Contact Support
-                </a>
-              </p>
-
-              <p style="
-                margin:10px 0 0;
-                font-size:12px;
-                color:#9ca3af;
-              ">
-                © ${new Date().getFullYear()}
-                OnShoper. All rights reserved.
-              </p>
-
-            </td>
-          </tr>
-
-        </table>
-
-      </div>
+    <div style="margin:0;padding:40px 15px;background:#f4f7fb;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%"
+      style="max-width:620px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.08);">
+  
+      <!-- HEADER -->
+      <tr>
+        <td style="background:linear-gradient(135deg,#dc2626,#b91c1c);padding:30px 20px;text-align:center;">
+          <h1 style="margin:0;color:#fff;font-size:30px;font-weight:bold;">OnShoper</h1>
+          <p style="margin:8px 0 0;color:#fee2e2;font-size:14px;">Identity Verification</p>
+        </td>
+      </tr>
+  
+      <!-- CONTENT -->
+      <tr>
+        <td style="padding:35px 30px;">
+          <div style="text-align:center;margin-bottom:20px;">
+            <div style="width:70px;height:70px;line-height:70px;margin:0 auto 20px;background:#fee2e2;border-radius:50%;color:#dc2626;font-size:38px;font-weight:bold;">
+              ✕
+            </div>
+            <h2 style="margin:0 0 15px;color:#111827;font-size:22px;">Verification Rejected</h2>
+            <p style="margin:0;color:#4b5563;font-size:15px;line-height:1.7;">
+              Your identity verification request has been rejected.
+            </p>
+          </div>
+  
+          <!-- REASON BOX -->
+          <div style="margin:25px 0;padding:20px;background:#fef2f2;border:1px solid #fecaca;border-left:5px solid #dc2626;border-radius:10px;">
+            <p style="margin:0 0 10px;color:#991b1b;font-size:14px;font-weight:bold;">Rejection Reason</p>
+            <p style="margin:0;color:#7f1d1d;font-size:15px;line-height:1.6;">${finalReason}</p>
+          </div>
+  
+          <p style="margin:20px 0 0;color:#4b5563;font-size:15px;line-height:1.7;">
+            Please review the reason above and resubmit your verification documents with the correct information.
+          </p>
+  
+          <p style="margin:20px 0 0;color:#4b5563;font-size:15px;line-height:1.7;">
+            If you have any questions, please contact OnShoper support.
+          </p>
+  
+          <!-- CALL TO ACTION -->
+          <div style="margin-top:30px;text-align:center;">
+            <a href="http://onshoper.com/verification"
+              style="display:inline-block;background:#dc2626;color:#fff;text-decoration:none;padding:14px 28px;border-radius:9px;font-size:14px;font-weight:bold;">
+              Resubmit Verification
+            </a>
+          </div>
+  
+          <p style="margin:30px 0 0;color:#374151;font-size:15px;line-height:1.6;">
+            Regards,<br /><strong>OnShoper Team</strong>
+          </p>
+        </td>
+      </tr>
+  
+      <!-- FOOTER -->
+      <tr>
+        <td style="background:#f3f4f6;padding:22px;text-align:center;">
+          <p style="margin:0;font-size:13px;color:#6b7280;">
+            Need help?
+            <a href="http://onshoper.com/contact-us" style="color:#2563eb;text-decoration:none;">Contact Support</a>
+          </p>
+          <p style="margin:10px 0 0;font-size:12px;color:#9ca3af;">
+            © ${new Date().getFullYear()} OnShoper. All rights reserved.
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>  
     `;
 
     await transporter.sendMail({

@@ -12,6 +12,7 @@
   display: flex;
   flex-direction: column;
   gap: 28px;
+
   h2 {
     font-size: 1.8rem;
     font-weight: 700;
@@ -24,7 +25,7 @@
 
 .section {
   border: 1px solid #e0e0e0;
-  padding: 40px 24px;
+  padding: 22px 24px 10px;
   border-radius: 12px;
   background: linear-gradient(180deg, #fafafa 0%, #fdfdfd 100%);
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
@@ -33,12 +34,13 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 1.2rem;
+    font-size: 16px;
     font-weight: 600;
     color: #333;
-    margin-bottom: 12px;
+    margin-bottom: 5px;
   }
-  .CaptureSelfie{
+
+  .CaptureSelfie {
     display: block;
     text-align: center;
   }
@@ -47,6 +49,25 @@
 .section:hover {
   border-color: #ff6b00;
   box-shadow: 0 0 12px rgba(255, 107, 0, 0.15);
+}
+
+/* ✅ New Name Input */
+.textInput {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #333;
+  background: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:focus {
+    border-color: #ff6b00;
+    box-shadow: 0 0 6px rgba(255, 107, 0, 0.25);
+    outline: none;
+  }
 }
 
 .selectBox,
@@ -116,21 +137,14 @@
   font-weight: 600;
   font-size: 15px;
   transition: all 0.3s ease;
-  // display: block;
-  // margin: 0 auto;
-  // margin-top: 30px;
-  // font-weight: 400;
 }
-.OpenCamera{
+
+.OpenCamera {
   display: block;
   margin: 0 auto;
   margin-top: 30px;
   font-weight: 400;
 }
-// .button:hover {
-//   background: linear-gradient(135deg, #e65a00, #ff7a00);
-//   transform: translateY(-1px);
-// }
 
 .closeBtn {
   background: #e0e0e0;
@@ -142,10 +156,10 @@
   font-weight: 500;
   font-size: 15px;
   transition: background 0.3s ease;
-}
 
-.closeBtn:hover {
-  background: #d5d5d5;
+  &:hover {
+    background: #d5d5d5;
+  }
 }
 
 .loaderBox {
@@ -169,13 +183,16 @@
     transform: rotate(360deg);
   }
 }
-.Capture{
+
+.Capture {
   background: #07bc0c;
-  &:hover{
+
+  &:hover {
     background: #07bc0c;
   }
 }
-.SubmitVerification{
+
+.SubmitVerification {
   background: #4266e1;
   color: #fff;
   border: none;
@@ -185,6 +202,11 @@
   font-weight: 600;
   font-size: 15px;
   transition: all 0.3s ease;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 }
 
 .spinner {
@@ -199,13 +221,52 @@
   vertical-align: middle;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+.inputLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+
+  svg {
+    font-size: 15px;
   }
 }
 
-.SubmitVerification:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.inputHint {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.fileUploadBox {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+}
+
+.fileInput {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.fileSelected {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #16a34a;
+  word-break: break-all;
+}
+.NameOfDocumet{
+  background: #faebd7;
 }

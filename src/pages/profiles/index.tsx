@@ -6,7 +6,6 @@ import WelcomeCard from "@/components/ProfileDashboard/Dashboard/WelcomeCard";
 import StatsCards from "@/components/ProfileDashboard/Dashboard/StatsCards";
 import RentalRequestsTable from "@/components/ProfileDashboard/Dashboard/RentalRequestsTable";
 import ProfileUpdateModal from "@/components/ProfileDashboard/Dashboard/ProfileUpdateModal/Index";
-import Notifications from "@/components/ProfileDashboard/Dashboard/Notifications";
 import DocumentStatus from "@/components/ProfileDashboard/Dashboard/DocumentStatus";
 import { withProtectedPage } from "@/components/withProtectedPage";
 
@@ -108,7 +107,7 @@ const ProfileDashboard = () => {
 
 
 
-      <Notifications />
+      {/* <Notifications /> */}
       <DocumentStatus />
     </DashboardLayout>
   );

@@ -28,28 +28,6 @@ const RentalRequestsTable = () => {
       deposit: "₹8,000",
       status: "Pending",
     },
-    {
-      product: {
-        name: "Canon EOS R50",
-        specs: "Camera",
-        image: "/images/img5.jpg",
-      },
-      user: { name: "Aman Verma", rating: 4.7, avatar: "/images/profile.png" },
-      duration: { days: "2 Days", range: "09 - 11 Aug" },
-      deposit: "₹3,000",
-      status: "Pending",
-    },
-    {
-      product: {
-        name: "Activa 6G",
-        specs: "Scooter",
-        image: "/images/img5.jpg",
-      },
-      user: { name: "Vikas Singh", rating: 4.6, avatar: "/images/profile.png" },
-      duration: { days: "7 Days", range: "12 - 19 Aug" },
-      deposit: "₹2,500",
-      status: "Pending",
-    },
   ];
 
   return (

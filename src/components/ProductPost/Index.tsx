@@ -328,7 +328,12 @@ const toggleFavorite = async () => {
           </div>
           </div>
           {/* CTA Buttons */}
-          <div className={`${styles.CtaBtn} ${CtaClassName || ""}`}>
+          
+          
+          {isFeatured && <PremiumBadge Premium={isFeatured} />}
+        </div>
+      </Link>
+      <div className={`${styles.CtaBtn} ${CtaClassName || ""}`}>
             {/* {!onUpdate && !onDelete && (<Link href={`/product/${_id}`} className={styles.button}>View Details</Link>)} */}
             {/* {status !== "sold" && onUpdate && (<button aria-label="Update" className={`${styles.updateBtn}`} onClick={(e) => {e.preventDefault(); e.stopPropagation(); router.push(`/product/productUpdate/${_id}`);}}><i className="icon-pencil"></i> Update</button>)} */}
             {status !== "sold" && onUpdate && (<button aria-label="Update" className={styles.updateBtn} onClick={(e) => { e.preventDefault(); e.stopPropagation(); onUpdate(_id);}}><i className="icon-pencil"></i> Update</button>)}
@@ -338,10 +343,6 @@ const toggleFavorite = async () => {
             {status === "sold" && onRepublish && (
             <button aria-label="Publish" className={styles.republishBtn} onClick={(e) => {e.stopPropagation(); onRepublish(_id);}}><i className="icon-ccw"></i> Republish</button>)}
           </div>
-          
-          {isFeatured && <PremiumBadge Premium={isFeatured} />}
-        </div>
-      </Link>
       <div className={`${style.favoriteIcon} ${favoriteIconeClass || ""} ${loading ? style.disabled : ""}`} onClick={toggleFavorite}>
         <div className={favorite ? style.active : ""}>
           <span className="icon-heart"></span>

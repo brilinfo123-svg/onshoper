@@ -1,0 +1,70 @@
+.page {
+    padding: 20px;
+  }
+  
+  .title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  
+  .docList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .docItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+  
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  .icon {
+    margin-right: 10px;
+    color: #4b5563;
+  }
+  
+  .docName {
+    flex: 1;
+    font-weight: 500;
+    color: #111827;
+  }
+  
+  .badge {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  
+  .verified {
+    background: #dcfce7;
+    color: #16a34a;
+  }
+  
+  .pending {
+    background: #fef9c3;
+    color: #ca8a04;
+  }
+  
+  .viewLink {
+    color: #2563eb;
+    font-size: 13px;
+    text-decoration: underline;
+    margin-left: 10px;
+  }
+  

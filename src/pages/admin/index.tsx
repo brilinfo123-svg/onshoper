@@ -9,6 +9,7 @@ interface Verification {
   _id: string;
   userId: string;
   email: string;
+  name: string;
   idType: string;
   frontImage: string;
   backImage: string;
@@ -449,13 +450,8 @@ export default function AdminDashboard() {
           🛡️ Verification Requests
         </button>
 
-        <button
-          className={`${styles.tabBtn} ${
-            activeTab === "reports" ? styles.active : ""
-          }`}
-          onClick={() => setActiveTab("reports")}
-        >
-          🚩 Product Reports
+        <button className={`${styles.tabBtn} ${"icon-flag-1"} ${activeTab === "reports" ? styles.active : ""}`} onClick={() => setActiveTab("reports")}>
+         Product Reports
         </button>
       </nav>
 
@@ -492,73 +488,59 @@ export default function AdminDashboard() {
     ) : (
       <div className={styles.tableWrap}>
         <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Email</th>
-              <th>ID Type</th>
-              <th>Selfie</th>
-              <th>Status</th>
-              <th>View</th>
-              <th>Action</th>
+        <thead>
+          <tr>
+            <th>Name</th>       {/* ✅ Added */}
+            <th>Email</th>
+            <th>ID Type</th>
+            <th>Selfie</th>
+            <th>Status</th>
+            <th>View</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {verifications.map((item) => (
+            <tr key={item._id}>
+              <td>
+                <span className={styles.name}>
+                  {item.name || "No name"}   {/* ✅ Display name */}
+                </span>
+              </td>
+
+              <td>
+                <span className={styles.email}>
+                  {item.email || "No email"}
+                </span>
+              </td>
+
+              <td>{item.idType}</td>
+
+              <td>
+                <span className={styles.verified}>✓ Verified</span>
+              </td>
+
+              <td>
+                <span className={styles.pending}>
+                  {item.status}
+                </span>
+              </td>
+
+              <td>
+                <button className={styles.viewBtn} onClick={() => setSelectedVerification(item)}>View</button>
+              </td>
+
+              <td>
+                <div className={styles.actions}>
+                  <button className={styles.approveBtn} onClick={() => handleApprove(item)}>Approve</button>
+                  <button className={styles.rejectBtn} onClick={() => openRejectModal(item)}>Reject</button>
+                </div>
+              </td>
             </tr>
-          </thead>
+          ))}
+        </tbody>
 
-          <tbody>
-            {verifications.map((item) => (
-              <tr key={item._id}>
-                <td>
-                  <span className={styles.email}>
-                    {item.email || "No email"}
-                  </span>
-                </td>
-
-                <td>{item.idType}</td>
-
-                <td>
-                  <span className={styles.verified}>
-                    ✓ Verified
-                  </span>
-                </td>
-
-                <td>
-                  <span className={styles.pending}>
-                    {item.status}
-                  </span>
-                </td>
-
-                <td>
-                  <button
-                    className={styles.viewBtn}
-                    onClick={() =>
-                      setSelectedVerification(item)
-                    }
-                  >
-                    👁 View
-                  </button>
-                </td>
-
-                <td>
-                  <div className={styles.actions}>
-                    <button
-                      className={styles.approveBtn}
-                      onClick={() => handleApprove(item)}
-                    >
-                      ✓ Approve
-                    </button>
-
-                    <button
-                      className={styles.rejectBtn}
-                      onClick={() =>
-                        openRejectModal(item)
-                      }
-                    >
-                      × Reject
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
         </table>
       </div>
     )}
