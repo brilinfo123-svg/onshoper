@@ -720,6 +720,7 @@
               }
             }
         }
+        
         .contactButtons {
           display: flex;
           gap: 16px;
@@ -939,19 +940,6 @@
 
     }
   }
-
-  // .personalDetails {
-  //   margin-top: 5px;
-
-  //   p {
-  //     text-align: left;
-
-  //     @media screen and (max-width: 767px) {
-  //       font-size: 14px;
-  //       letter-spacing: 0.3px;
-  //     }
-  //   }
-  // }
 }
 
 .realatedProduct {
@@ -2225,4 +2213,17 @@
       font-size: 13px;
     }
   }
+}
+.inquiryBtn {
+  background-color: #007bff;
+  border: none;
+  width: 100%;
+  color: #fff;
+  padding: 15px 0;
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
 }

@@ -46,6 +46,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const isInstall = router.pathname === "/install";
   const isChat = router.pathname === "/chat";
   const isProfilesPage = router.pathname.startsWith("/profiles");
+  const isProfilePage = router.pathname.startsWith("/profile");
 
   
   const [isMobile, setIsMobile] = useState(false);
@@ -121,7 +122,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     <ToastContainer position="top-right" autoClose={3000} />
                     {/* <AutoUnfeaturePoller /> */}
 
-                    {!isAdminPage && !isAuthPage && !isOfflinePage && !isInstall && !isChat && !isProfilesPage && !(router.pathname === "/ProductForm" && isMobile) && !(router.pathname.startsWith("/profile") && isMobile) &&  (<HeaderComponent Component={Component} />)}
+                    {!isAdminPage && !isAuthPage && !isOfflinePage && !isInstall && !isChat && !isProfilesPage && !isProfilePage && !(router.pathname === "/ProductForm" && isMobile) && !(router.pathname.startsWith("/profile") && isMobile) && !(router.pathname.startsWith("/profile") && isMobile) &&  (<HeaderComponent Component={Component} />)}
 
                     <main>
                       <Component {...pageProps} />
@@ -129,7 +130,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
                     {/* Hide Footer and Mobile Menu on Chat Page */}
                   {!isAdminPage && !isOfflinePage && !isInstall && !ProductForms && !isChat && !isProfilesPage &&  <Footer />}
-                  {!isAdminPage && !isProductDetailPage && !isOfflinePage && !isInstall && !ProductForms && !isChat && !isProfilesPage && <MobileBottomNav />}
+                  {!isAdminPage && !isProductDetailPage && !isOfflinePage && !isInstall && !ProductForms && !isChat && !isProfilesPage && !isProfilePage && <MobileBottomNav />}
                   </SearchProvider>
                   </FilterProvider>
                 </CityFilterProvider>

@@ -551,7 +551,7 @@ useEffect(() => {
     
     
 
-  
+  console.log("product",product);
 
 const sliderSettings = useMemo(() => ({
   dots: true,
@@ -1101,25 +1101,28 @@ const sliderSettings = useMemo(() => ({
                     withText={true} />
                 )}
                 {/* <StarRating rating={4} /> */}
-
+                {product?.SaleType !== "Rent" && (
                 <div className={styles.subscribers}>
-
                   <div className={styles.contactButtons}>
-                    <button aria-label="Start Chat" onClick={startChat} className="icon-chats"></button> 
+                    <button aria-label="Start Chat" onClick={startChat} className="icon-chats"></button>
                     {MobileWithWhatshap && (
-                        <>
-                          <button aria-label="Phone" onClick={handleCallClick} className="icon-phone"></button>
-                          <button aria-label="Whatsapp" onClick={handleWhatsAppClick} className="icon-whatsapp"></button>
-                        </>
-                      )}
+                      <>
+                        <button aria-label="Phone" onClick={handleCallClick} className="icon-phone"></button>
+                        <button aria-label="Whatsapp" onClick={handleWhatsAppClick} className="icon-whatsapp"></button>
+                      </>
+                    )}
                   </div>
-                  {/* <p><span className="icon-group"></span>Subscribers: <span>25</span></p>
-                  <p><span className="icon-eye"></span>views: <span>295</span></p> */}
                 </div>
+              )}
+                
               </div>
-
-              <div className={styles.personalDetails}>
-                {/* <p>{shopData ? (<span className="icon-phone"> {shopData.registration?.mobile || "Gurmeet Kour"}</span>) : (<span>Loading...</span>)}</p> */}
+                  
+              {product?.SaleType === "Rent" ? (
+                <div className={styles.subscribers}>
+                    <button type="button" className={styles.inquiryBtn}>Send Inquiry</button>
+                </div>
+              ) : (
+                <div className={styles.personalDetails}>
                 {shopData ? (
                   <>
                    <div className={styles.personalDetails}>
@@ -1144,18 +1147,16 @@ const sliderSettings = useMemo(() => ({
                       </div>
                     </div>
                   </div>
-
-                  {/* svcfvd
-                    <p>{shopData ? (<span className="icon-mail"> {shopData?.user?.contact || "Not Provided"}</span>) : (<span>Loading...</span>)}</p>
-                    <p>{shopData ? (<span className="icon-phone"> {shopData?.user?.mobile || "Not Provided"}</span>) : (<span>Loading...</span>)}</p> */}
                   </>
                 ) : (
                   <ProfilePicSkeleton size="xlarge" showCircle={false}
                     withText={true} />
                 )}
 
-
               </div>
+              )}
+
+              
               {/* <a href="#" className={styles.contactButton}>
                 Message Store Owner
               </a> */}

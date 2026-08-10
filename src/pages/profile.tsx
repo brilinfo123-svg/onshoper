@@ -448,7 +448,7 @@ useEffect(() => {
                           />
                         ))
                     )}
-                  </div>
+                  </div> 
 
                   {visibleCount < currentProducts.length && (
                     <div className={styles.viewMoreWrapper}>
