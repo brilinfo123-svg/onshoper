@@ -496,7 +496,7 @@ function AllCategoryRentalForm() {
 
   const [formData, setFormData] = useState({
     title: "",
-    SaleType: "",
+    SaleType: "Sale",
     description: "",
     subcategory: "",
     feature: false,
@@ -2132,14 +2132,14 @@ function AllCategoryRentalForm() {
               </h2>
               </div>
             {/* </div> */}
-            {!["Services"].includes(selectedSubcategory) &&
+            {/* {!["Services"].includes(selectedSubcategory) &&
               !["Services", "Jobs", "Education & Learning"].includes(selectedCategory) && (
                 <>
                   <div className={styles.formGroup}>
                       <label>Type</label>
                       <div className={styles.SaleType}>
                         <label><input type="radio" name="SaleType" value="Rent" checked={formData.SaleType === "Rent"} onChange={handleChange}/>Rent</label>
-                        <label><input type="radio" name="SaleType" value="Sale" checked={formData.SaleType === "Sale"}onChange={handleChange}/>Sale</label>
+                        <label><input type="radio" name="SaleType" value="Sale" checked={formData.SaleType === "Sale"} onChange={handleChange}/>Sale</label>
                       </div>
                     {!["Jobs", "Services", "Education & Learning"].includes(selectedCategory) &&
                       errors.SaleType && (
@@ -2147,7 +2147,7 @@ function AllCategoryRentalForm() {
                       )}
                   </div>
                 </>
-              )}
+              )} */}
 
 
             {/* Start Parts-Type */}

@@ -10,7 +10,7 @@ import useMediaQuery from "../../../hooks/useMediaQuery";
 import { useFilter } from "@/contexts/FilterContext";
 import Swal from "sweetalert2";
 
-import WelcomeChoice from "@/components/WelcomeChoice/Index";
+// import WelcomeChoice from "@/components/WelcomeChoice/Index";
 
 
 const Header: React.FC = () => {
@@ -103,11 +103,11 @@ const Header: React.FC = () => {
       }
     }, []);
 
-    const handleWelcomeChoice = (type: "Sale" | "Rent" | "all") => {
-      localStorage.setItem("homeChoice", type);
-      handleFilterChange(type);
-      setShowChoice(false);
-    };
+    // const handleWelcomeChoice = (type: "Sale" | "Rent" | "all") => {
+    //   localStorage.setItem("homeChoice", type);
+    //   handleFilterChange(type);
+    //   setShowChoice(false);
+    // };
 
   return (
     <header className={Style.header} role="banner">
@@ -123,14 +123,14 @@ const Header: React.FC = () => {
             </div>
           </Link>
           <div className={Style.wrapper}>
-          <div className={Style.toggleWrapper}>
+          {/* <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
               <button aria-label="Sale" title="Show Sale products" onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Sale</button>
               <button aria-label="Rent" title="Show Rental products" onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rental</button>
               <button aria-label="all" title="Show all products" onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
-          </div>
+          </div> */}
 
           <FilterLocation onCityChange={handleCityChange} />
           </div>
@@ -155,10 +155,10 @@ const Header: React.FC = () => {
         <div className={Style.filterLocationWrapper}>
           {!isMobile && <FilterLocation onCityChange={handleCityChange} />}
           <Banner />
-          {showChoice && (
+          {/* {showChoice && (
             <WelcomeChoice onChoose={handleWelcomeChoice} />
-          )}
-          {!isMobile && 
+          )} */}
+          {/* {!isMobile && 
           <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
@@ -167,7 +167,7 @@ const Header: React.FC = () => {
               <button aria-label="all" onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
           </div>
-          }
+          } */}
         </div>
 
         <ul className={Style.rightMenus} aria-label="Main navigation">

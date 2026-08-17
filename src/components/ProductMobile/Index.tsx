@@ -38,6 +38,12 @@ const ProductMobile = ({
   const [hideIcons, setHideIcons] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const fetchedRef = useRef(false);
+  const [isSubcategoryModalOpen, setIsSubcategoryModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<{
+    id: string;
+    name: string;
+    subcategories: string[];
+  } | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -279,19 +285,34 @@ const ProductMobile = ({
   };
 
   const handleCategoryClick = (categoryId: string) => {
-    if (viewMode === "carousel") {
-      // ONLY open sidebar, DON'T change view mode
-      setOpenCategory(categoryId);
-      setSidebarVisible(true);
-    } else {
-      // Toggle category in sidebar mode
-      if (openCategory === categoryId) {
-        setOpenCategory(null);
-      } else {
-        setOpenCategory(categoryId);
-      }
-    }
+    const category = filteredCategories.find(
+      (item) => item.id === categoryId
+    );
+  
+    if (!category) return;
+  
+    setSelectedCategory(category);
+    setIsSubcategoryModalOpen(true);
   };
+  const closeSubcategoryModal = () => {
+    setIsSubcategoryModalOpen(false);
+    setSelectedCategory(null);
+  };
+  // this is bakup of sidebar menu category
+  // const handleCategoryClick = (categoryId: string) => {
+  //   if (viewMode === "carousel") {
+  //     // ONLY open sidebar, DON'T change view mode
+  //     setOpenCategory(categoryId);
+  //     setSidebarVisible(true);
+  //   } else {
+  //     // Toggle category in sidebar mode
+  //     if (openCategory === categoryId) {
+  //       setOpenCategory(null);
+  //     } else {
+  //       setOpenCategory(categoryId);
+  //     }
+  //   }
+  // };
 
   const handleSubcategorySelect = (subcategory: string) => {
     const updatedSubcategories = selectedSubcategories.includes(subcategory)
@@ -504,6 +525,83 @@ const ProductMobile = ({
       {isSidebarVisible && (
         <div className={styles.overlay} onClick={toggleSidebar}></div>
       )}
+
+
+
+      {/* This is new design of modal */}
+        {/* Subcategory Modal */}
+        {isSubcategoryModalOpen && selectedCategory && (
+          <>
+            <div
+              className={styles.subcategoryModalOverlay}
+              onClick={closeSubcategoryModal}
+            />
+
+            <div className={styles.subcategoryModal}>
+              <div className={styles.subcategoryModalHeader}>
+                <div className={styles.modalCategoryInfo}>
+                  <div className={styles.modalCategoryIcon}>
+                    <Image
+                      src={getCategoryIcon(selectedCategory.name)}
+                      alt={selectedCategory.name}
+                      width={32}
+                      height={32}
+                    />
+                  </div>
+
+                  <div>
+                    <h2>{selectedCategory.name}</h2>
+                    <p>Select a subcategory</p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  aria-label="Close"
+                  className={styles.subcategoryModalClose}
+                  onClick={closeSubcategoryModal}
+                >
+                  <span className="icon-cancel"></span>
+                </button>
+              </div>
+
+              <div className={styles.subcategoryModalBody}>
+                {selectedCategory.subcategories.length > 0 ? (
+                  <div className={styles.subcategoryGrid}>
+                    {selectedCategory.subcategories.map((subcategory) => (
+                      <button
+                        type="button"
+                        key={subcategory}
+                        className={`${styles.subcategoryModalItem} ${
+                          selectedSubcategories.includes(subcategory)
+                            ? styles.selected
+                            : ""
+                        }`}
+                        onClick={() => handleSubcategorySelect(subcategory)}
+                      >
+                        <div className={styles.subcategoryModalIcon}>
+                          <Image
+                            src={getSubcategoryIcon(subcategory)}
+                            alt={subcategory}
+                            width={40}
+                            height={40}
+                          />
+                        </div>
+
+                        <span>{subcategory}</span>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className={styles.noSubcategories}>
+                    <p>No subcategories available.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+      {/* End new design of modal */}
     </div>
   );
 };

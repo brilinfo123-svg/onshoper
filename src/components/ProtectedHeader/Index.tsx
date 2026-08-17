@@ -16,7 +16,7 @@ import ProductPost from "@/components/ProductPost/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import { useFilter } from "@/contexts/FilterContext";
 import Swal from "sweetalert2";
-import WelcomeChoice from "@/components/WelcomeChoice/Index";
+// import WelcomeChoice from "@/components/WelcomeChoice/Index";
 import {useChat} from "@/contexts/ChatContext";
 
 
@@ -54,11 +54,11 @@ const Header: React.FC = () => {
     }
   }, []);
   
-  const handleWelcomeChoice = (type: "Sale" | "Rent" | "all") => {
-    localStorage.setItem("homeChoice", type);
-    handleFilterChange(type);
-    setShowChoice(false);
-  };
+  // const handleWelcomeChoice = (type: "Sale" | "Rent" | "all") => {
+  //   localStorage.setItem("homeChoice", type);
+  //   handleFilterChange(type);
+  //   setShowChoice(false);
+  // };
 
   const handleFilterChange = (type: "Sale" | "Rent" | "all") => {
 
@@ -283,9 +283,9 @@ const Header: React.FC = () => {
 
   return (
     <header className={Style.header}>
-      {showChoice && (
+      {/* {showChoice && (
         <WelcomeChoice onChoose={handleWelcomeChoice} />
-      )}
+      )} */}
       {!isDesckTop && 
         <div className={Style.MobileTopbar}>
         <Link href="/">
@@ -299,14 +299,14 @@ const Header: React.FC = () => {
             </div>
         </Link>
           <div className={Style.wrapper}>
-          <div className={Style.toggleWrapper}>
+          {/* <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
               <button aria-label="Sale" onClick={() => handleFilterChange("Sale")} className={filterType === "Sale" ? Style.active : ""}>Buy</button>
               <button aria-label="Rent" onClick={() => handleFilterChange("Rent")} className={filterType === "Rent" ? Style.active : ""}>Rental</button>
               <button aria-label="all" onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
-          </div>
+          </div> */}
 
           <FilterLocation onCityChange={handleCityChange} />
           </div>
@@ -339,7 +339,7 @@ const Header: React.FC = () => {
         {/* Action Section */}
         
         <div className={Style.actionSection}>
-        {!isMobile && 
+        {/* {!isMobile && 
           <div className={Style.toggleWrapper}>
             <div className={Style.toggleTrack}>
               <div className={`${Style.toggleThumb} ${Style[filterType]}`}/>
@@ -348,7 +348,7 @@ const Header: React.FC = () => {
               <button aria-label="all" onClick={() => handleFilterChange("all")} className={filterType === "all" ? Style.active : ""}>All</button>
             </div>
           </div>
-          }
+          } */}
           <div className={`${Style.sidebar} ${isSidebarOpen ? Style.sidebarOpen : ""}`}>
             <button aria-label="Close Sidebar" className={Style.closeButton} onClick={closeSidebar}>&times;</button>
             <ul>
