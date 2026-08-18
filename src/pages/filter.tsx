@@ -463,7 +463,7 @@ if (searchTerm) {
         <meta property="og:title" content="Filtered Results – OnShoper" />
         <meta
           property="og:description"
-          content="Find products for sale or rent by category, city, and price range on OnShoper."
+          content="Find products for sale by category, city, and price range on OnShoper."
         />
         <meta property="og:image" content="/images/og-filter.jpg" />
         <meta property="og:url" content={`https://onshoper.com/filter?category=${categorySlug}&city=${city}`} />

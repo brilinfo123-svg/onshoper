@@ -298,6 +298,21 @@ const ProductMobile = ({
     setIsSubcategoryModalOpen(false);
     setSelectedCategory(null);
   };
+
+  useEffect(() => {
+    if (isSubcategoryModalOpen) {
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    }
+  
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    };
+  }, [isSubcategoryModalOpen]);
   // this is bakup of sidebar menu category
   // const handleCategoryClick = (categoryId: string) => {
   //   if (viewMode === "carousel") {

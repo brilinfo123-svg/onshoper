@@ -401,9 +401,9 @@ useEffect(() => {
                   </div>
                 )}
                 <div className={styles.ProductTabs}>
-                  <button className={activeTab === "all" ? styles.activeTab : ""} onClick={() => handleTabChange("all")}>All {activeProducts.length > 0 && <span className={styles.badge}>{activeProducts.length}</span>}</button>
-                  <button className={activeTab === "rent" ? styles.activeTab : ""} onClick={() => handleTabChange("rent")}>Rental {rentProducts.length > 0 && <span className={styles.badge}>{rentProducts.length}</span>}</button>
-                  <button className={activeTab === "sale" ? styles.activeTab : ""} onClick={() => handleTabChange("sale")}>Sale {saleProducts.length > 0 && <span className={styles.badge}>{saleProducts.length}</span>}</button>
+                  <button className={activeTab === "all" ? styles.activeTab : ""} onClick={() => handleTabChange("all")}>My Listings{activeProducts.length > 0 && <span className={styles.badge}>{activeProducts.length}</span>}</button>
+                  {/* <button className={activeTab === "rent" ? styles.activeTab : ""} onClick={() => handleTabChange("rent")}>Rental {rentProducts.length > 0 && <span className={styles.badge}>{rentProducts.length}</span>}</button> */}
+                  {/* <button className={activeTab === "sale" ? styles.activeTab : ""} onClick={() => handleTabChange("sale")}>Sale {saleProducts.length > 0 && <span className={styles.badge}>{saleProducts.length}</span>}</button> */}
                   <button className={activeTab === "sold" ? styles.activeTab : ""} onClick={() => handleTabChange("sold")}>Sold {soldProducts.length > 0 && <span className={styles.badge}>{soldProducts.length}</span>}</button>
                 </div>
 

@@ -795,7 +795,7 @@
   background: rgba(0, 0, 0, 0.55);
   z-index: 1999;
 
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(10px);
   animation: modalOverlayFade 0.2s ease;
 }
 
@@ -909,9 +909,7 @@
 
 .subcategoryGrid {
   display: grid;
-
   grid-template-columns: repeat(4, 1fr);
-
   gap: 14px;
 }
 
@@ -1079,7 +1077,7 @@
   }
 
   .subcategoryGrid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
   }
 
@@ -1093,8 +1091,8 @@
     height: 50px;
 
     img {
-      width: 34px;
-      height: 34px;
+      width: 45px;
+      height: 45px;
     }
   }
 

@@ -1,8 +1,8 @@
 import Head from "next/head";
 
 export default function SEO() {
-  const title = "OnShoper - Buy, Sell & Rent Everything Online in India";
-  const description = "OnShoper is India's marketplace to buy, sell and rent products online. Find mobiles, cars, bikes, electronics, furniture, properties and more with easy listings.";
+  const title = "OnShoper - Buy, Sell Everything Online in India";
+  const description = "OnShoper is India's trusted marketplace to buy and sell used products online. Explore mobiles, cars, bikes, electronics, furniture, properties and more with simple listings and secure deals.";
 
   const url = "https://onshoper.com/";
   const image = "https://onshoper.com/images/ogImage.jpg";
