@@ -204,6 +204,10 @@
           width: 100%;
           max-width: 210px;
           height: auto;
+          @media screen and (max-width: 767px) {
+            width: 100%;
+            max-width: 140px;
+          }
         }
       }
       @media screen and (min-width: 1200px) and (max-width: 1440px) {

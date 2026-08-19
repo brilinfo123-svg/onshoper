@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-import styles from "./Index.module.scss";
+import styles from "./index.module.scss";
 
 interface LoginModalProps {
   isOpen: boolean;

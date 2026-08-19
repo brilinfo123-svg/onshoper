@@ -23,7 +23,7 @@
       // background-color: #000000;
     }
     @media screen and (max-width: 767px) {
-      padding: 8px 5px 8px 5px;
+      padding: 10px 5px 5px;
       // background-color: #000000;
     }
     a{
@@ -199,6 +199,10 @@
           width: 100%;
           max-width: 210px;
           height: auto;
+          @media screen and (max-width: 767px) {
+            width: 100%;
+            max-width: 140px;
+          }
         }
       }
       @media screen and (min-width: 1200px) and (max-width: 1440px) {
