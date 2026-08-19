@@ -206,6 +206,7 @@ const toggleFavorite = async () => {
 
   if (showOnlyWishlistItems && !favorite) return null;
   return (
+    <>
     <div className={`${styles.card} ${filter.card} ${className || ""}`}>
       <Link href={`/product/${_id}`} className={styles.button} onClick={handleClick}>
         <div className={`${styles.ProductCoverImg} ${filter.ProductCoverImg} ${CoverImgClass || ""}`}>
@@ -348,12 +349,12 @@ const toggleFavorite = async () => {
           <span className="icon-heart"></span>
         </div>
       </div>
-
-      <LoginModal
+    </div>
+    <LoginModal
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
       />
-    </div>
+    </>
   );
 };
 

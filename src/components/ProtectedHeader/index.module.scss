@@ -27,11 +27,12 @@
     }
     a{
       img{
+        width: 100%;
+        max-width: 210px;
         height: auto;
-          width: 100%;
         @media screen and (max-width: 767px) {
-          height: auto;
           width: 100%;
+          max-width: 140px;
         }
       }
     }
