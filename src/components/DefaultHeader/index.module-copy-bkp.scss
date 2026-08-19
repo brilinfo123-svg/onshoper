@@ -1,7 +1,6 @@
 .header {
   // position: relative;
-  // background-color:#ff6d01;
-  background-color:#f0f8ff;
+  background-color:#ff6d01;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -40,22 +39,8 @@
   }
   .filterLocationWrapper{
     display: flex;
-    width: 60%;
+    width: 100%;
     justify-content: center;
-    align-items: center;
-    @media screen and (min-width: 1200px) and (max-width: 1440px) {
-      width: 55%;
-    }
-    @media screen and (min-width:992px) and (max-width: 1199px) {
-      gap: 0;
-      width: 55%;
-    }
-    @media screen and (min-width:769px) and (max-width: 992px) {
-      width: 100%;
-    }
-    @media screen and (max-width: 768px) {
-      width: 100%;
-    }
   }
   .toggleButton {
     font-size: 16px;
@@ -193,17 +178,7 @@
     }
 
     .logoSection {
-      width: 20%;
-      a{
-        img{
-          width: 100%;
-          max-width: 210px;
-          height: auto;
-        }
-      }
-      @media screen and (min-width: 1200px) and (max-width: 1440px) {
-        width: 15%;
-      }
+      width: 14%;
       @media screen and (min-width: 991.99px) and (max-width: 1199px) {
         width: 15%;
       }
@@ -283,7 +258,7 @@
     right: 0;
     z-index: 100;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    background-color: #f0f8ff;
+    background-color: #ff6d01;
   }
   .logo{
     display: flex;
@@ -386,7 +361,7 @@
     list-style: none;
     align-items: center;
     background-color: #fff;
-    padding: 0 10px 0 0;
+    padding: 5px 6px;
     border-radius: 10px;
     @media screen and (max-width: 991.99px) {
       padding: 6px 0px;
@@ -428,7 +403,7 @@
 
     .sellAdd {
       background-color: #ff6d01;
-      padding: 15px;
+      padding: 10px;
       color: #fff;
       font-size: 14px;
       font-weight: 600;

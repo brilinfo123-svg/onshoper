@@ -3,11 +3,11 @@
     @media screen and (max-width: 767px) {
       position: initial;
     }
-    width: 75%;// Adjust the height as needed
+    width: 100%;// Adjust the height as needed
     // padding: 100px 0 60px;
     // background-color: #ff6500;
     @media screen and (min-width: 1200px) and (max-width: 1300px) {
-      width: 50%;
+      width: 100%;
     }
     @media screen and (max-width: 992px) {
       width: 100%;
@@ -149,15 +149,16 @@
         }
       }
         .searchInput {
-          padding: 15px 15px 15px 30px;
+          padding: 10px 15px 10px 30px;
           outline: none;
           font-size: 16px;
           border: none;
-          border-left: 1px solid #ddd;
+          border: 1px solid #ddd;
           width: 100%;
-          min-height: 60px;
+          min-height: 50px;
           background-color: #fff;
           color: #404040;
+          border-right: 0;
           @media screen and (min-width: 992px) and (max-width: 1199px) {
             padding: 15px 15px 15px 15px;
           }
@@ -179,18 +180,18 @@
       }
         .searchButton {
           color: #fff;
-          padding: 15px 20px;
+          padding: 10px 20px;
           border: none;
           border-radius: 0 5px 5px 0;
           cursor: pointer;
           font-size: 20px;
-          min-height: 60px;
+          min-height: 50px;
           border-left: 0;
           background-color: #0078ff;
-          border-bottom-left-radius: 5px;
-          border-top-left-radius: 5px;
+          border-bottom-left-radius: 0;
+          border-top-left-radius: 0;
           position: relative;
-          left: -18px;
+          left: 0;
           span{
             color: #fff;
           }

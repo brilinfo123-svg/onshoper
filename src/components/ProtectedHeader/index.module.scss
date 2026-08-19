@@ -1,6 +1,7 @@
 .header {
   position: relative;
-  background-color:#ff6d01;
+  // background-color:#ff6d01;
+  background-color:#f0f8ff;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -21,8 +22,18 @@
       // background-color: #000000;
     }
     @media screen and (max-width: 767px) {
-      padding: 5px;
+      padding: 10px 5px 5px;
       // background-color: #000000;
+    }
+    a{
+      img{
+        height: auto;
+          width: 100%;
+        @media screen and (max-width: 767px) {
+          height: auto;
+          width: 100%;
+        }
+      }
     }
     .wrapper{
       display: flex;
@@ -32,8 +43,22 @@
 
   .filterLocationWrapper{
     display: flex;
-    width: 100%;
+    width: 60%;
     justify-content: center;
+    align-items: center;
+    @media screen and (min-width: 1200px) and (max-width: 1440px) {
+      width: 55%;
+    }
+    @media screen and (min-width:992px) and (max-width: 1199px) {
+      gap: 0;
+      width: 55%;
+    }
+    @media screen and (min-width:769px) and (max-width: 992px) {
+      width: 100%;
+    }
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
   }
   .toggleButton {
     font-size: 16px;
@@ -140,14 +165,23 @@
     align-items: center;
     width: 100%;
     justify-content: space-between;
-    padding: 10px 30px;
+    padding: 5px 30px;
     border-bottom: 1px solid #ddd;
     transition: all 0.3s ease;
     position: relative;
-
+    gap: 10px;
+    @media screen and (min-width: 1200px) and (max-width: 1300px) {
+      gap: 18px;
+    }
+    @media screen and (min-width: 992px) and (max-width: 1199px) {
+      padding: 10px 10px;
+    }
+    @media screen and (min-width: 769px) and (max-width: 991px) {
+      gap: 0;
+    }
     @media screen and (max-width: 991.99px) {
       padding: 5px;
-      gap: 0px;
+      gap: 0;
     }
     @media screen and (max-width: 767px) {
       padding: 3px 5px;
@@ -164,9 +198,19 @@
     }
 
     .logoSection {
-      width: 14%;
+      width: 20%;
+      a{
+        img{
+          width: 100%;
+          max-width: 210px;
+          height: auto;
+        }
+      }
+      @media screen and (min-width: 1200px) and (max-width: 1440px) {
+        width: 15%;
+      }
       @media screen and (min-width: 991.99px) and (max-width: 1199px) {
-        width: 25%;
+        width: 15%;
       }
      
       @media screen and (max-width: 991px) {
@@ -261,7 +305,7 @@
     right: 0;
     z-index: 100;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1); // ✅ Flipkart-style shadow
-    background-color: #ff6d01;
+    background-color: #f0f8ff;
   }
   .logo{
     display: flex;
@@ -355,11 +399,37 @@
     list-style: none;
     align-items: center;
     background-color: #fff;
-    padding: 6px 6px;
+    padding: 0;
     border-radius: 10px;
+    width: 20%;
+    justify-content: right;
+    gap: 10px;
+    max-width: 294px;
+    @media screen and (min-width:1441px) and (max-width: 1680px) {
+      gap: 0;
+      width: auto;
+    }
+    @media screen and (min-width:1200px) and (max-width: 1440px) {
+      gap: 0;
+      width: auto;
+    }
+    @media screen and (min-width:992px) and (max-width: 1199px) {
+      gap: 0;
+      width: 30%;
+      max-width: fit-content;
+    }
+    @media screen and (min-width:768.99px) and (max-width: 992px) {
+      width: auto;
+    }
     @media screen and (max-width: 991.99px) {
-      padding: 6px 0px;
+      padding: 6px 10px;
       border-radius: 0;
+      border: 1px solid #ddd;
+      border-left: 0;
+      gap: 0;
+    }
+    @media screen and (min-width:768px) and (max-width: 991px) {
+      width: auto;
     }
     @media screen and (max-width: 767px) {
       padding: 3px 0px;
@@ -372,6 +442,7 @@
       justify-content: center;
       border-radius: 50px;
       background-color: transparent;
+      border: none;
     }
 
     a {
@@ -394,9 +465,9 @@
     }
 
     .sellAdd {
-      background-color: #fff;
-      padding: 12px 10px;
-      color: #000;
+      background-color: #ff6d01;
+      padding: 15px;
+      color: #fff;
       font-size: 14px;
       font-weight: 600;
       border-radius: 6px;

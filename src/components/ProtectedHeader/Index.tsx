@@ -18,6 +18,7 @@ import { useFilter } from "@/contexts/FilterContext";
 import Swal from "sweetalert2";
 // import WelcomeChoice from "@/components/WelcomeChoice/Index";
 import {useChat} from "@/contexts/ChatContext";
+import Image from "next/image";
 
 
 const Header: React.FC = () => {
@@ -289,14 +290,15 @@ const Header: React.FC = () => {
       {!isDesckTop && 
         <div className={Style.MobileTopbar}>
         <Link href="/">
+        <Image src="/images/LogoOnshoper.png" alt="ON Shoper" width={100} height={50} />
           {/* <img src="/icons/logo2.png" alt="" width="100px"/> */}
-          <div className={Style.logo}>
+          {/* <div className={Style.logo}>
               <h3>ON</h3>
               <div className={Style.logoDesc}>
                  <h4>Shoper</h4>
                  <span>Sale & Rent</span>
               </div>
-            </div>
+            </div> */}
         </Link>
           <div className={Style.wrapper}>
           {/* <div className={Style.toggleWrapper}>
@@ -319,13 +321,14 @@ const Header: React.FC = () => {
         <div className={Style.logoSection}>
           <Link href="/">
             {/* <h2><span className="icon-shop"></span> Local  </h2> */}
-            <div className={Style.logo}>
+            <Image src="/images/LogoOnshoper.png" alt="ON Shoper" width={200} height={40} />
+            {/* <div className={Style.logo}>
               <h3>ON</h3>
               <div className={Style.logoDesc}>
                  <h4>Shoper</h4>
                  <span>Sale & Rent</span>
               </div>
-            </div>
+            </div> */}
           </Link>
         </div>
         }
@@ -443,7 +446,7 @@ const Header: React.FC = () => {
         </div>
 
         <ul className={Style.rightMenus}>
-        {!isMobile && <li><Link href="/ProductForm" className={`${Style.sellAdd} ${"icon-plus"}`} onClick={closeSidebar}>Post</Link></li>}
+        {!isMobile && <li><Link href="/ProductForm" className={`${Style.sellAdd} ${"icon-plus"}`} onClick={closeSidebar}>Post Ads</Link></li>}
           <li className={Style.notificationItem}>
             {!isMobile && 
             <div className={`${Style.Notification} icon-chats`} onClick={() => router.push("/chat")} role="button" tabIndex={0}>

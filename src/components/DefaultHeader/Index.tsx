@@ -9,6 +9,7 @@ import Banner from "../Banner/Index";
 import useMediaQuery from "../../../hooks/useMediaQuery";
 import { useFilter } from "@/contexts/FilterContext";
 import Swal from "sweetalert2";
+import Image from "next/image";
 
 // import WelcomeChoice from "@/components/WelcomeChoice/Index";
 
@@ -114,13 +115,14 @@ const Header: React.FC = () => {
       {!isDesktop && (
         <div className={Style.MobileTopbar}>
           <Link href="/" aria-label="OnShoper Home" title="OnShoper - Home">
-            <div className={Style.logo}>
+          <Image src="/images/LogoOnshoper.png" alt="ON Shoper" width={200} height={40} />
+            {/* <div className={Style.logo}>
               <h3>ON</h3>
               <div className={Style.logoDesc}>
                 <h4>Shoper</h4>
                 <span>Sale & Rent</span>
               </div>
-            </div>
+            </div> */}
           </Link>
           <div className={Style.wrapper}>
           {/* <div className={Style.toggleWrapper}>
@@ -141,13 +143,14 @@ const Header: React.FC = () => {
         {!isMobile && (
           <div className={Style.logoSection}>
             <Link href="/" aria-label="OnShoper Home" title="OnShoper - Home">
-              <div className={Style.logo}>
+            <Image src="/images/LogoOnshoper.png" alt="ON Shoper" width={200} height={40} />
+              {/* <div className={Style.logo}>
                 <h3>ON</h3>
                 <div className={Style.logoDesc}>
                   <h4>Shoper</h4>
                   <span>Sale & Rent</span>
                 </div>
-              </div>
+              </div> */}
             </Link>
           </div>
         )}
@@ -172,12 +175,11 @@ const Header: React.FC = () => {
 
         <ul className={Style.rightMenus} aria-label="Main navigation">
           {!isMobile && (
-            <li><Link href="/ProductForm" className={`${Style.sellAdd} icon-plus`} rel="noopener noreferrer" aria-label="Post a new ad" title="Post a new ad">POST</Link></li>
+            <li><Link href="/ProductForm" className={`${Style.sellAdd} icon-plus`} rel="noopener noreferrer" aria-label="Post a new ad" title="Post a new ad">POST Ads</Link></li>
           )}
 
           <li className={Style.favoriteItem}>
             <div className={`${Style.favoriteTrigger} icon-heart-empty`} role="button" tabIndex={0} onClick={() => handleProtectedRedirect("/ProductForm")} aria-label="Add to favourites" title="Add to favourites"></div>
-            
           </li>
         </ul>
       </div> 
