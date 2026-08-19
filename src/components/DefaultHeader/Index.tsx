@@ -10,6 +10,7 @@ import useMediaQuery from "../../../hooks/useMediaQuery";
 import { useFilter } from "@/contexts/FilterContext";
 import Swal from "sweetalert2";
 import Image from "next/image";
+import LoginModal from "@/components/LoginModal/Index";
 
 // import WelcomeChoice from "@/components/WelcomeChoice/Index";
 
@@ -23,7 +24,7 @@ const Header: React.FC = () => {
   const { filterType, setFilterType } = useFilter();
   const [isSticky, setIsSticky] = useState(false);
   const [showChoice, setShowChoice] = useState(false);
-
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   
   const handleProtectedRedirect = (path: string) => {
@@ -175,14 +176,20 @@ const Header: React.FC = () => {
 
         <ul className={Style.rightMenus} aria-label="Main navigation">
           {!isMobile && (
-            <li><Link href="/ProductForm" className={`${Style.sellAdd} icon-plus`} rel="noopener noreferrer" aria-label="Post a new ad" title="Post a new ad">POST Ads</Link></li>
+            <li>
+            <Link href="#" onClick={(e) => {e.preventDefault(); setIsLoginOpen(true);}} className={`${Style.sellAdd} icon-plus`} aria-label="Post a new ad" title="Post a new ad">POST Ads</Link>
+          </li>
           )}
 
           <li className={Style.favoriteItem}>
-            <div className={`${Style.favoriteTrigger} icon-heart-empty`} role="button" tabIndex={0} onClick={() => handleProtectedRedirect("/ProductForm")} aria-label="Add to favourites" title="Add to favourites"></div>
+            <div className={`${Style.favoriteTrigger} icon-heart-empty`} role="button" tabIndex={0} onClick={() => setIsLoginOpen(true)} aria-label="Add to favourites" title="Add to favourites"></div>
           </li>
         </ul>
       </div> 
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+      />
     </header>
   );
 };

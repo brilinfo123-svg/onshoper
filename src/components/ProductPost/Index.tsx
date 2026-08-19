@@ -14,6 +14,7 @@ import router, { useRouter } from "next/router";
 import { useFavorites } from "@/contexts/FavoriteContext"; // Import the context
 import Image from "next/image";
 import NProgress from "nprogress";
+import LoginModal from "../LoginModal/Index";
 
 export function formatPostedTime(utcDate: string | Date) {
   const timeZone = "Asia/Kolkata";
@@ -107,7 +108,7 @@ const ProductCard = ({
   // const [favorite, setFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
   const favorite = isFavorite(_id);
-
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   
   // ✅ Check if this product is already in favorites from context
   // useEffect(() => {
@@ -158,8 +159,7 @@ const ProductCard = ({
 
 const toggleFavorite = async () => {
   if (!session?.user?.contact) {
-    toast.error("Please login first!");
-    router.push("/login");
+    setIsLoginOpen(true);
     return;
   }
 
@@ -348,6 +348,11 @@ const toggleFavorite = async () => {
           <span className="icon-heart"></span>
         </div>
       </div>
+
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+      />
     </div>
   );
 };

@@ -1,97 +1,64 @@
 "use client";
-import React, { useState, useRef, useEffect, useMemo } from "react";
+
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
-// import { useNotifications } from "@/contexts/NotificationContext";
-import {useChat} from "@/contexts/ChatContext";
+import { useChat } from "@/contexts/ChatContext";
 import styles from "./index.module.scss";
-import ChatSidebar from "../ChatSidebar/Index";
-import Image from "next/image";
-import debounce from "lodash.debounce";
+import LoginModal from "../LoginModal/Index";
 
 const MobileBottomNav = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  // const { clearAllNotifications, getTotalNotifications } = useNotifications();
-  const {totalUnread}=useChat();
+  const { totalUnread } = useChat();
+
   const [isAccountOpen, setAccountOpen] = useState(false);
   const [isNotificationsOpen, setNotificationsOpen] = useState(false);
-  const accountRef = useRef<HTMLDivElement | null>(null);
-  // const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
-  // ✅ new state for DB notifications
-  // const [dbNotifications, setDbNotifications] = useState(0);
+  const accountRef = useRef<HTMLDivElement | null>(null);
 
   const isOnChatPage = router.pathname.startsWith("/chat");
 
-  // ✅ fetch notifications from DB when session loads + auto refresh
-  // useEffect(() => {
-  //   if (!session?.user?.id) return;
-  
-  //   let isMounted = true;
-  
-  //   const fetchNotifications = async () => {
-  //     try {
-  //       const res = await fetch(`/api/notifications/${session.user.id}`);
-  //       const data = await res.json();
-  
-  //       if (isMounted) {
-  //         setDbNotifications(data.unreadCount || 0);
-  //       }
-  //     } catch (err) {
-  //       console.error("Error fetching notifications:", err);
-  //     }
-  //   };
-  
-  //   // initial fetch
-  //   fetchNotifications();
-  
-  //   // stable interval (NO debounce)
-  //   const interval = setInterval(fetchNotifications, 30000);
-  
-  //   return () => {
-  //     isMounted = false;
-  //     clearInterval(interval);
-  //   };
-  // }, [session?.user?.id]);
-
-  // ✅ merge socket + DB counts
-  const totalNotifications=isOnChatPage?0:totalUnread;
+  const totalNotifications = isOnChatPage ? 0 : totalUnread;
 
   useEffect(() => {
     console.log("📱 Mobile totalUnread:", totalUnread);
     console.log("📱 totalNotifications:", totalNotifications);
     console.log("📱 isOnChatPage:", isOnChatPage);
   }, [totalUnread, totalNotifications, isOnChatPage]);
-  
+
+  // --------------------------------
+  // Logout
+  // --------------------------------
+
   const handleLogout = () => {
     signOut({ callbackUrl: "/login" });
     setAccountOpen(false);
   };
 
+  // --------------------------------
+  // Account
+  // --------------------------------
+
   const toggleAccount = () => {
     setAccountOpen((prev) => !prev);
-    if (isNotificationsOpen) setNotificationsOpen(false);
-  };
 
-  const toggleNotifications = () => {
-    if (router.pathname !== "/chat") {
-      setNotificationsOpen((prev) => !prev);
-      if (isAccountOpen) setAccountOpen(false);
-    } else {
-      router.push("/chat");
+    if (isNotificationsOpen) {
+      setNotificationsOpen(false);
     }
   };
 
-  // const handleNotificationClick = () => {
-  //   clearAllNotifications();
-  //   setNotificationsOpen(false);
-  //   setDbNotifications(0); // ✅ clear DB badge too
-  // };
+  // --------------------------------
+  // Close dropdown
+  // --------------------------------
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (accountRef.current && !accountRef.current.contains(event.target as Node)) {
+    if (
+      accountRef.current &&
+      !accountRef.current.contains(event.target as Node)
+    ) {
       setAccountOpen(false);
       setNotificationsOpen(false);
     }
@@ -99,81 +66,133 @@ const MobileBottomNav = () => {
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  // ✅ navItems
+  // --------------------------------
+  // Open login modal
+  // --------------------------------
+
+  const openLoginModal = () => {
+    setAccountOpen(false);
+    setNotificationsOpen(false);
+    setIsLoginOpen(true);
+  };
+
+  // --------------------------------
+  // Protected navigation
+  // --------------------------------
+
+  const handleProtectedNavigation = (path: string) => {
+    setAccountOpen(false);
+    setNotificationsOpen(false);
+
+    if (session?.user) {
+      router.push(path);
+    } else {
+      openLoginModal();
+    }
+  };
+
+  // --------------------------------
+  // Navigation items
+  // --------------------------------
+
   const navItems = [
     {
       name: "Home",
       path: "/",
-      icon: <img src="/icons/homeIcone.png" alt="Home" width={32} height={32} />,
+      icon: (
+        <img
+          src="/icons/homeIcone.png"
+          alt="Home"
+          width={32}
+          height={32}
+        />
+      ),
       onClick: () => {
         setAccountOpen(false);
         setNotificationsOpen(false);
         router.push("/");
       },
     },
+
     {
       name: "Chat",
       path: "/chat",
-      icon: <img src="/icons/chat-round.svg" alt="Chat" width={30} height={30} />,
+      icon: (
+        <img
+          src="/icons/chat-round.svg"
+          alt="Chat"
+          width={30}
+          height={30}
+        />
+      ),
       onClick: () => {
-        setAccountOpen(false);
-        setNotificationsOpen(false);
-    
-        if(session?.user){
-          router.push("/chat");
-        }else{
-          router.push("/login");
-        }
+        handleProtectedNavigation("/chat");
       },
       showBadge: true,
     },
+
     {
       name: "Post Ads",
       path: "/ProductForm",
       icon: (
-        <img src="/icons/AddProducts.svg" width={35} height={35} alt="Post Ad" className={styles.postAdIcon}/>
+        <img
+          src="/icons/AddProducts.svg"
+          width={35}
+          height={35}
+          alt="Post Ad"
+          className={styles.postAdIcon}
+        />
       ),
       onClick: () => {
-        setAccountOpen(false);
-        setNotificationsOpen(false);
-        if (session?.user) {
-          router.push("/ProductForm");
-        } else {
-          router.push("/login");
-        }
+        handleProtectedNavigation("/ProductForm");
       },
     },
+
     {
       name: "My Ads",
       path: "/profile",
-      icon: <img src="/icons/catalog-alt.svg" alt="My Ads" width={25} height={23} />,
+      icon: (
+        <img
+          src="/icons/catalog-alt.svg"
+          alt="My Ads"
+          width={25}
+          height={23}
+        />
+      ),
       onClick: () => {
-        setAccountOpen(false);
-        setNotificationsOpen(false);
-        if (session?.user) {
-          router.push("/profile");
-        } else {
-          router.push("/login");
-        }
+        handleProtectedNavigation("/profile");
       },
     },
+
     {
       name: "Account",
       path: session ? "/profile" : "/auth/signin",
-      icon: <img src="/icons/userIcone.png" alt="Account" width={27} height={27} />,
+      icon: (
+        <img
+          src="/icons/userIcone.png"
+          alt="Account"
+          width={27}
+          height={27}
+        />
+      ),
       onClick: toggleAccount,
     },
   ];
 
-  // ✅ Helper to render icon + badge
+  // --------------------------------
+  // Render icon + badge
+  // --------------------------------
+
   const renderNavIcon = (item: any) => (
     <div className={styles.navIcon}>
       {item.icon}
+
       {item.showBadge && totalNotifications > 0 && (
         <span className={styles.notificationBadge}>
           {totalNotifications > 99 ? "99+" : totalNotifications}
@@ -184,68 +203,107 @@ const MobileBottomNav = () => {
 
   return (
     <>
+      {/* Mobile Bottom Navigation */}
+
       <div className={styles.mobileBottomNav}>
         {navItems.map((item) => (
           <div
             key={item.name}
             className={`${styles.navItemContainer} ${
-              item.name === "Post Ads" ? styles.postAdsContainer : ""
+              item.name === "Post Ads"
+                ? styles.postAdsContainer
+                : ""
             }`}
           >
-            {item.name === "Account" || item.name === "Chat" ? (
+            {/* Account */}
+            {item.name === "Account" ? (
               <button
-              aria-label="Account"
+                type="button"
+                aria-label="Account"
                 className={`${styles.navItem} ${
-                  router.pathname === item.path ? styles.active : ""
+                  router.pathname === item.path
+                    ? styles.active
+                    : ""
                 }`}
                 onClick={item.onClick}
               >
                 {renderNavIcon(item)}
-                <span className={styles.navLabel}>{item.name}</span>
+
+                <span className={styles.navLabel}>
+                  {item.name}
+                </span>
               </button>
             ) : (
-              <Link
-                href={item.path}
+              /* All other items */
+              <button
+                type="button"
                 className={`${styles.navItem} ${
-                  router.pathname === item.path ? styles.active : ""
+                  router.pathname === item.path
+                    ? styles.active
+                    : ""
                 }`}
                 onClick={item.onClick}
               >
                 {renderNavIcon(item)}
-                <span className={styles.navLabel}>{item.name}</span>
-              </Link>
+
+                <span className={styles.navLabel}>
+                  {item.name}
+                </span>
+              </button>
             )}
           </div>
         ))}
       </div>
 
       {/* Account Dropdown */}
+
       {isAccountOpen && (
-        <div ref={accountRef} className={styles.dropdown}>
+        <div
+          ref={accountRef}
+          className={styles.dropdown}
+        >
           <div className={styles.dropdownContent}>
             {session ? (
               <>
-                <Link href="/profile" onClick={() => setAccountOpen(false)}>
-                  <span className={"icon-user-circle"}></span>
+                <Link
+                  href="/profile"
+                  onClick={() => setAccountOpen(false)}
+                >
+                  <span className="icon-user-circle"></span>
                   My Account
                 </Link>
 
-                <button aria-label="Logout" onClick={handleLogout}>
-                  <span className={"icon-off"}></span>
+                <button
+                  type="button"
+                  aria-label="Logout"
+                  onClick={handleLogout}
+                >
+                  <span className="icon-off"></span>
                   Logout
                 </button>
               </>
             ) : (
-              <Link href="/login" onClick={() => setAccountOpen(false)}>
-                <span className={styles.dropdownIcon}>🔑</span>
+              <button
+                type="button"
+                onClick={openLoginModal}
+              >
+                <span className={styles.dropdownIcon}>
+                  🔑
+                </span>
+
                 Sign In to Continue
-              </Link>
+              </button>
             )}
           </div>
         </div>
       )}
 
-      {/* <ChatSidebar isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} /> */}
+      {/* Login Modal */}
+
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+      />
     </>
   );
 };
