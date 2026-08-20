@@ -330,11 +330,19 @@ const ProductMobile = ({
   // };
 
   const handleSubcategorySelect = (subcategory: string) => {
-    const updatedSubcategories = selectedSubcategories.includes(subcategory)
-      ? selectedSubcategories.filter((s) => s !== subcategory)
-      : [...selectedSubcategories, subcategory];
+    // Single subcategory selection
+    // Clicking a new subcategory removes the previous one
+    const updatedSubcategories =
+      selectedSubcategories.includes(subcategory)
+        ? []
+        : [subcategory];
   
+    // Update parent state
     onSubcategoryChange(subcategory);
+  
+    // Close modal
+    setIsSubcategoryModalOpen(false);
+    setSelectedCategory(null);
   
     const selectedCity =
       typeof window !== "undefined"
@@ -344,7 +352,9 @@ const ProductMobile = ({
     router.push({
       pathname: "/filter",
       query: {
-        subcategories: updatedSubcategories.join(","),
+        ...(updatedSubcategories.length > 0 && {
+          subcategories: updatedSubcategories.join(","),
+        }),
         city: selectedCity,
       },
     });

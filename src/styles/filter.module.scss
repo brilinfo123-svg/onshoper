@@ -454,3 +454,19 @@
       font-size: 10px;
     }
 }
+
+.rowFlex {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.productGrid {
+  flex: 1;
+  min-width: 0;
+}

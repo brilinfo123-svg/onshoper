@@ -22,7 +22,7 @@ interface Product {
   SaleType?: "Sale" | "Rent";
   type?: string;
   feature: boolean;
-  coverImage: any;
+  coverImage: any; 
   images: string[];
   price: number | string;
   priceWeek?: number | string;

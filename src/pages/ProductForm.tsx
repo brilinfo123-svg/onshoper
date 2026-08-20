@@ -197,8 +197,12 @@ function AllCategoryRentalForm() {
         if (!formData.maintenance) {
           newErrors.maintenance = "Please add maintenance.";
         }
-        if (!formData.bachelorsAllowed) {
-          newErrors.bachelorsAllowed = "Please Select bachelors Allowed or Not.";
+        if (
+          formData.SaleType !== "Sale" &&
+          !formData.bachelorsAllowed
+        ) {
+          newErrors.bachelorsAllowed =
+            "Please Select bachelors Allowed or Not.";
         }
         if (!formData.totalFloors) {
           newErrors.totalFloors = "Please Select total Floors.";
@@ -658,6 +662,7 @@ function AllCategoryRentalForm() {
     BMW: ["3 Series", "5 Series", "X1", "X5"],
     Audi: ["A4", "A6", "Q3", "Q5", "Q7"],
     Mercedes: ["C-Class", "E-Class", "GLA", "GLC", "GLE"],
+    All: ["All Cars"],
   };
 
   const commercialVehicleBrands = {
@@ -2264,6 +2269,7 @@ function AllCategoryRentalForm() {
                     <option value="Diesel">Diesel</option>
                     <option value="Electric">Electric</option>
                     <option value="CNG">CNG</option>
+                    <option value="All">All Types</option>
                   </select>
                   {errors.fuel && <p className={styles.errorText}>{errors.fuel}</p>}
                 </div>
@@ -2273,6 +2279,7 @@ function AllCategoryRentalForm() {
                     <option value="">Select Transmission</option>
                     <option value="Manual">Manual</option>
                     <option value="Automatic">Automatic</option>
+                    <option value="All">All Types</option>
                   </select>
                   {errors.transmission && <p className={styles.errorText}>{errors.transmission}</p>}
 
@@ -2963,6 +2970,7 @@ function AllCategoryRentalForm() {
                     <option value="Diesel">Diesel</option>
                     <option value="Electric">Electric</option>
                     <option value="CNG">CNG</option>
+                    <option value="All">All Types</option>
                   </select>
                   {errors.fuel && <p className={styles.errorText}>{errors.fuel}</p>}
                 </div>
@@ -2972,6 +2980,7 @@ function AllCategoryRentalForm() {
                     <option value="">Select Transmission</option>
                     <option value="Manual">Manual</option>
                     <option value="Automatic">Automatic</option>
+                    <option value="All">All Types</option>
                   </select>
                   {errors.transmission && <p className={styles.errorText}>{errors.transmission}</p>}
                 </div>
@@ -3037,6 +3046,7 @@ function AllCategoryRentalForm() {
                     <option value="">Select Fuel Type</option>
                     <option value="Petrol">Petrol</option>=
                     <option value="Electric">Electric</option>
+                    <option value="All">All Types</option>
                   </select>
                   {errors.fuel && <p className={styles.errorText}>{errors.fuel}</p>}
                 </div>
