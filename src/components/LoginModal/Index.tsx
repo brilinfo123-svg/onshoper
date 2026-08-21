@@ -23,6 +23,11 @@ export default function LoginModal({
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
 
+  // NEW
+  const [showMobileStep, setShowMobileStep] = useState(false);
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [verifiedEmail, setVerifiedEmail] = useState("");
+
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
@@ -51,6 +56,12 @@ export default function LoginModal({
     setContact("");
     setOtp("");
     setOtpSent(false);
+
+    // NEW
+    setShowMobileStep(false);
+    setMobileNumber("");
+    setVerifiedEmail("");
+
     setError("");
     setMessage("");
     setTimer(0);
@@ -251,6 +262,34 @@ export default function LoginModal({
         return;
       }
 
+      // =====================================================
+      // EMAIL OTP VERIFIED
+      // SHOW MOBILE NUMBER STEP
+      // =====================================================
+
+      if (loginType === "email") {
+        setVerifiedEmail(contact);
+
+        // If user already has mobile, show it
+        setMobileNumber(data.user.mobile || "");
+
+        setShowMobileStep(true);
+
+        // Hide OTP step
+        setOtpSent(false);
+        setOtp("");
+
+        setMessage(
+          "Please enter your mobile number."
+        );
+
+        return;
+      }
+
+      // =====================================================
+      // EXISTING MOBILE LOGIN FLOW
+      // =====================================================
+
       const result = await signIn("credentials", {
         redirect: false,
         contact,
@@ -298,12 +337,121 @@ export default function LoginModal({
 
       handleClose();
 
-      // If you want to redirect after login
       router.push("/ProductForm");
-
     } catch (error) {
       console.error("Verification error:", error);
       setError("Verification failed");
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  // =====================================================
+  // NEW: SAVE MOBILE NUMBER
+  // =====================================================
+
+  const submitMobile = async () => {
+    setError("");
+    setMessage("");
+
+    if (!mobileNumber) {
+      setError("Please enter your mobile number");
+      return;
+    }
+
+    if (mobileNumber.length !== 10) {
+      setError("Mobile number must be 10 digits");
+      return;
+    }
+
+    try {
+      setIsVerifying(true);
+
+      // ---------------------------------------------
+      // Update mobile using existing profile API
+      // ---------------------------------------------
+
+      const profileRes = await fetch("/api/users/profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contact: verifiedEmail,
+          mobile: mobileNumber,
+        }),
+      });
+
+      const profileData = await profileRes.json();
+
+      if (!profileRes.ok || !profileData.success) {
+        setError(
+          profileData.message ||
+            profileData.error ||
+            "Failed to save mobile number"
+        );
+        return;
+      }
+
+      // ---------------------------------------------
+      // Mobile saved
+      // Now login using verified email
+      // ---------------------------------------------
+
+      const result = await signIn("credentials", {
+        redirect: false,
+        contact: verifiedEmail,
+      });
+
+      if (!result?.ok) {
+        setError("Login failed");
+        return;
+      }
+
+      // ---------------------------------------------
+      // Generate FCM token
+      // ---------------------------------------------
+
+      import("@/lib/firebase").then(async ({ generateToken }) => {
+        try {
+          const token = await generateToken();
+
+          if (token) {
+            await fetch("/api/saveToken", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                contact: verifiedEmail,
+                token,
+                device: "web",
+              }),
+            });
+          }
+        } catch (error) {
+          console.error("FCM token error:", error);
+        }
+      });
+
+      // ---------------------------------------------
+      // Success
+      // ---------------------------------------------
+
+      await Swal.fire({
+        icon: "success",
+        title: "Login Successful",
+        text: "Your email and mobile number have been saved.",
+        confirmButtonText: "OK",
+        allowOutsideClick: false,
+      });
+
+      handleClose();
+
+      router.push("/ProductForm");
+    } catch (error) {
+      console.error("Mobile update error:", error);
+      setError("Something went wrong. Please try again.");
     } finally {
       setIsVerifying(false);
     }
@@ -314,6 +462,20 @@ export default function LoginModal({
   // -----------------------------
 
   const handleBack = () => {
+    // If currently on mobile step
+    if (showMobileStep) {
+      setShowMobileStep(false);
+      setMobileNumber("");
+      setVerifiedEmail("");
+      setError("");
+      setMessage("");
+
+      // Go back to email OTP
+      setOtpSent(true);
+
+      return;
+    }
+
     setLoginType("");
     setContact("");
     setOtp("");
@@ -335,28 +497,32 @@ export default function LoginModal({
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
+  // -----------------------------
+  // Lock body scroll
+  // -----------------------------
 
   useEffect(() => {
     if (!isOpen) return;
-  
+
     const scrollY = window.scrollY;
-  
+
     document.body.style.position = "fixed";
     document.body.style.top = `-${scrollY}px`;
     document.body.style.left = "0";
     document.body.style.right = "0";
     document.body.style.overflow = "hidden";
-  
+
     return () => {
       document.body.style.position = "";
       document.body.style.top = "";
       document.body.style.left = "";
       document.body.style.right = "";
       document.body.style.overflow = "";
-  
+
       window.scrollTo(0, scrollY);
     };
   }, [isOpen]);
+
   // -----------------------------
   // Don't render
   // -----------------------------
@@ -403,7 +569,9 @@ export default function LoginModal({
           </p>
         </div>
 
+        {/* ================================================= */}
         {/* Login options */}
+        {/* ================================================= */}
 
         {!loginType && (
           <div className={styles.options}>
@@ -413,7 +581,9 @@ export default function LoginModal({
               className={styles.optionButton}
               onClick={() => setLoginType("email")}
             >
-              <span className={`${styles.icon} ${"icon-mail"}`}></span>
+              <span
+                className={`${styles.icon} ${"icon-mail"}`}
+              ></span>
 
               <span>
                 <strong>Login with Email</strong>
@@ -444,9 +614,11 @@ export default function LoginModal({
           </div>
         )}
 
-        {/* Contact */}
+        {/* ================================================= */}
+        {/* Email / Mobile Input */}
+        {/* ================================================= */}
 
-        {loginType && !otpSent && (
+        {loginType && !otpSent && !showMobileStep && (
           <div className={styles.form}>
 
             <label>
@@ -456,7 +628,11 @@ export default function LoginModal({
             </label>
 
             <input
-              type={loginType === "mobile" ? "tel" : "email"}
+              type={
+                loginType === "mobile"
+                  ? "tel"
+                  : "email"
+              }
               placeholder={
                 loginType === "mobile"
                   ? "Enter mobile number"
@@ -524,9 +700,78 @@ export default function LoginModal({
           </div>
         )}
 
-        {/* OTP */}
+        {/* ================================================= */}
+        {/* MOBILE NUMBER STEP - NEW */}
+        {/* ================================================= */}
 
-        {otpSent && (
+        {showMobileStep && (
+          <div className={styles.form}>
+
+            <div className={styles.otpInfo}>
+              <span className={styles.EmailVerified}>Email verified successfully</span>
+
+              <strong>
+                {verifiedEmail}
+              </strong>
+            </div>
+
+            <label>
+              Mobile Number
+            </label>
+
+            <input
+              type="tel"
+              inputMode="numeric"
+              placeholder="Enter mobile number"
+              value={mobileNumber}
+              maxLength={10}
+              onChange={(e) => {
+                const value = e.target.value;
+
+                if (!/^\d*$/.test(value)) return;
+
+                setMobileNumber(value);
+
+                if (
+                  value.length > 0 &&
+                  value.length !== 10
+                ) {
+                  setError(
+                    "Mobile number must be 10 digits"
+                  );
+                } else {
+                  setError("");
+                }
+              }}
+            />
+
+            <button
+              type="button"
+              className={styles.primaryButton}
+              onClick={submitMobile}
+              disabled={isVerifying}
+            >
+              {isVerifying
+                ? "Saving..."
+                : "Continue"}
+            </button>
+
+            <button
+              type="button"
+              className={styles.backButton}
+              onClick={handleBack}
+            >
+              ← Back
+            </button>
+
+          </div>
+        )}
+
+        {/* ================================================= */}
+        {/* OTP */}
+        {/* ================================================= */}
+
+        {otpSent && !showMobileStep && (
           <div className={styles.form}>
 
             <div className={styles.otpInfo}>
@@ -566,7 +811,7 @@ export default function LoginModal({
             >
               {isVerifying
                 ? "Verifying..."
-                : "Verify OTP & Login"}
+                : "Verify OTP"}
             </button>
 
             <button
@@ -596,18 +841,25 @@ export default function LoginModal({
                   : "Resend OTP"}
               </button>
             )}
+
           </div>
         )}
 
+        {/* ================================================= */}
         {/* Error */}
+        {/* ================================================= */}
 
         {error && (
-          <p className={`${styles.message} ${styles.error}`}>
+          <p
+            className={`${styles.message} ${styles.error}`}
+          >
             {error}
           </p>
         )}
 
+        {/* ================================================= */}
         {/* Success */}
+        {/* ================================================= */}
 
         {message && (
           <p
@@ -616,6 +868,7 @@ export default function LoginModal({
             {message}
           </p>
         )}
+
       </div>
     </div>
   );

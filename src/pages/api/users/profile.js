@@ -30,26 +30,49 @@ export default async function handler(req, res) {
 
   if (method === "POST") {
     const { contact, name, mobile, photo } = req.body;
-
+  
     if (!contact || typeof contact !== "string") {
-      return res.status(400).json({ error: "Missing or invalid contact" });
+      return res.status(400).json({
+        error: "Missing or invalid contact",
+      });
     }
-
+  
     try {
+      const updateFields = {};
+  
+      if (name !== undefined) {
+        updateFields.name = name;
+      }
+  
+      if (mobile !== undefined) {
+        updateFields.mobile = mobile;
+      }
+  
+      if (photo !== undefined) {
+        updateFields.photo = photo;
+      }
+  
       const updateResult = await User.updateOne(
         { contact },
-        { $set: { name, mobile, photo } },
-        { upsert: true }
+        { $set: updateFields }
       );
-
-      if (updateResult.modifiedCount === 0 && !updateResult.upsertedCount) {
-        return res.status(304).json({ message: "No changes made" });
+  
+      if (updateResult.matchedCount === 0) {
+        return res.status(404).json({
+          error: "User not found",
+        });
       }
-
-      return res.status(200).json({ success: true, message: "Profile updated" });
+  
+      return res.status(200).json({
+        success: true,
+        message: "Profile updated",
+      });
     } catch (error) {
       console.error("POST /profile error:", error);
-      return res.status(500).json({ error: "Failed to update profile" });
+  
+      return res.status(500).json({
+        error: "Failed to update profile",
+      });
     }
   }
 
